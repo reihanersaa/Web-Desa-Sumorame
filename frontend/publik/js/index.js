@@ -353,29 +353,63 @@
     // ======================
     // CARD STATISTIK
     // ======================
-    window.addEventListener("load", () => {
 
-    const ctx = document.getElementById("myChart");
+    const statCards = document.querySelectorAll(".stat-card");
+    let statistikAnimated = false;
 
-    console.log(ctx);
+    function animateCounter(counter) {
 
-    new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: ["Laki-laki", "Perempuan"],
-            datasets: [{
-                label: "Jumlah Penduduk",
-                data: [25, 30],
-                backgroundColor: [
-                    "#22c55e",
-                    "#f59e0b"
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
+        const target = parseInt(counter.dataset.target);
+        let current = 0;
+
+        const increment = Math.ceil(target / 80);
+
+        function update() {
+
+            current += increment;
+
+            if (current >= target) {
+                current = target;
+            }
+
+            counter.textContent = current.toLocaleString("id-ID");
+
+            if (current < target) {
+                requestAnimationFrame(update);
+            }
+
         }
-    });
 
-}); 
+        update();
+    }
+
+    function showStatistik() {
+
+        if (statistikAnimated) return;
+
+        const statistik = document.getElementById("statistik");
+
+        if (statistik.getBoundingClientRect().top < window.innerHeight - 100) {
+
+            statistikAnimated = true;
+
+            statCards.forEach((card, index) => {
+
+                setTimeout(() => {
+
+                    card.classList.remove("opacity-0", "translate-y-10");
+
+                    card.querySelectorAll(".counter").forEach(counter => {
+                        animateCounter(counter);
+                    });
+
+                }, index * 200);
+
+            });
+
+        }
+
+    }
+
+    window.addEventListener("load", showStatistik);
+    window.addEventListener("scroll", showStatistik);
