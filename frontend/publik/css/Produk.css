@@ -1,0 +1,222 @@
+/* ==========================
+   FONT
+========================== */
+body{
+    font-family:'Inter',sans-serif;
+    scroll-behavior:smooth;
+    overflow-x:hidden;
+}
+
+.font-poppins {
+        font-family: 'Poppins', sans-serif;
+    }
+
+/* ==========================
+   NAVBAR
+========================== */
+.nav-item{
+    position:relative;
+    opacity:0;
+    transform:translateY(-20px);
+    transition:opacity .4s ease, transform .4s ease;
+}
+
+.nav-item::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-6px;
+    width:0%;
+    height:3px;
+    background:#15803d;
+    transition:.3s;
+    transform:translateX(-50%);
+    border-radius:20px;
+}
+
+.nav-item:hover::after{
+    width:70%;
+}
+
+/* ==========================
+   HERO
+========================== */
+.hero-item{
+    transition:
+    opacity .8s ease,
+    transform .8s ease;
+}
+
+/* ==========================
+   PRODUK CARD
+========================== */
+.produk-item{
+    opacity:0;
+    transform:translateY(64px);
+    transition:
+    opacity .8s ease,
+    transform .8s ease,
+    box-shadow .35s ease;
+}
+
+/* ketika muncul dari javascript */
+.produk-item.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* hover hanya mengatur shadow
+   tidak mengubah transform */
+.produk-item:hover{
+    box-shadow:
+    0 20px 35px rgba(0,0,0,.18);
+}
+
+/* ==========================
+   GAMBAR PRODUK
+========================== */
+.produk-item img{
+    transition:transform .5s ease;
+}
+
+.produk-item:hover img{
+    transform:scale(1.08);
+}
+
+/* ==========================
+   SEARCH
+========================== */
+input[type="text"]{
+    transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+input[type="text"]:focus{
+    transform:scale(1.02);
+    box-shadow:
+    0 0 0 3px rgba(21,128,61,.2);
+}
+
+/* ==========================
+   BUTTON PASARKAN
+========================== */
+.btn-pasarkan{
+    transition:
+    transform .35s ease,
+    box-shadow .35s ease;
+}
+
+.btn-pasarkan:hover{
+    transform:
+    translateY(-5px)
+    scale(1.04);
+    box-shadow:
+    0 15px 30px rgba(0,0,0,.18);
+}
+
+/* ==========================
+   BUTTON BELI
+========================== */
+.btn-beli{
+    transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.btn-beli:hover{
+    transform:translateY(-2px);
+    box-shadow:
+    0 10px 20px rgba(0,0,0,.2);
+}
+
+/* ==========================
+   FOOTER
+========================== */
+.footer-item{
+    transition:
+    opacity .8s ease,
+    transform .8s ease;
+}
+
+.kontak-item{
+    transition:
+    opacity .8s ease,
+    transform .8s ease;
+}
+
+/* ==========================
+   PULSE BUTTON
+========================== */
+.pulse-button{
+    animation:pulse .8s infinite;
+}
+
+@keyframes pulse{
+0%{
+transform:scale(1);
+}
+50%{
+transform:scale(1.08);
+}
+100%{
+transform:scale(1);
+}
+
+}
+
+/* ==========================
+   SCROLLBAR
+========================== */
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#f3f4f6;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#15803d;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#166534;
+}
+
+/* ==========================
+   ANIMASI FADE
+========================== */
+.fade-up{
+    opacity:0;
+    transform:translateY(50px);
+    transition:
+    opacity .8s ease,
+    transform .8s ease;
+}
+
+.fade-up.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* ==========================
+   MOBILE
+========================== */
+@media(max-width:768px){
+.hero-item h2{
+    font-size:34px;
+}
+.produk-item{
+    margin:auto;
+}
+}
+
+@media(max-width:640px){
+.hero-item{
+
+    text-align:center;
+
+}
+}

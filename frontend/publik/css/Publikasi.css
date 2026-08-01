@@ -1,0 +1,68 @@
+.material-symbols-outlined {
+      font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    }
+
+    body {
+      min-height: max(884px, 100dvh);
+    }
+
+    .nav-item {
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+    }
+
+    .nav-item::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0%;
+      height: 2px;
+      background: #006633;
+      transition: 0.3s;
+    }
+
+    .nav-item:hover::after {
+      width: 100%;
+    }
+
+    /* default (dari bawah) */
+    .pub-card {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.5s ease-out;
+      will-change: transform, opacity;
+    }
+
+    /* variasi arah */
+    .pub-card:nth-child(3n+1) {
+      transform: translateX(-40px);
+    }
+
+    .pub-card:nth-child(3n+2) {
+      transform: translateY(30px);
+    }
+
+    .pub-card:nth-child(3n+3) {
+      transform: translateX(40px);
+    }
+
+    /* saat muncul */
+    .pub-card.show {
+      opacity: 1;
+      transform: translate(0,0);
+      transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .pub-card {
+      cursor: pointer;
+    }
+
+    .pub-card img {
+      transition: transform 0.4s ease;
+    }
+
+    .pub-card:hover img {
+      transform: scale(1.05);
+    }

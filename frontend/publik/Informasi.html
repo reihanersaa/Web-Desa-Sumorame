@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informasi | Website Desa Sumorame</title>
+  <link rel="icon" href="../img/logo.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link rel="stylesheet" href="css/informasi.css">
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#004b24",
+            "primary-container": "#006633",
+            secondary: "#745b00",
+            "secondary-container": "#fecb00",
+            background: "#fbf9f8",
+            surface: "#fbf9f8",
+            "on-surface": "#1b1c1c",
+            "on-surface-variant": "#3f4940"
+          },
+          fontFamily: {
+            headline: ["Plus Jakarta Sans"],
+            body: ["Inter"],
+            label: ["Work Sans"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-surface font-body text-on-surface">
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md">
+    <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <div class="logo">
+          <img src="../img/logo.png" alt="Logo Desa Digital" width="40" height="36">
+        </div>
+        <h1 class="font-headline text-xl font-bold text-emerald-900">Desa Sumorame</h1>
+      </div>
+
+      <!-- NAVBAR -->
+      <nav class="hidden md:flex items-center font-medium text-green-900">
+        <a href="Index.html" class="nav-item relative px-5 font-bold">Profile Desa</a>
+        <div class="h-5 w-[1px] bg-gray-400"></div>
+
+        <a href="PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
+        <div class="h-5 w-[1px] bg-gray-400"></div>
+
+        <a href="Lembaga.html" class="nav-item relative px-5 font-bold">Lembaga</a>
+        <div class="h-5 w-[1px] bg-gray-400"></div>
+
+        <a href="#" class="nav-item relative px-5 font-bold">Informasi</a>
+        <div class="h-5 w-[1px] bg-gray-400"></div>
+
+        <a href="AdminP.html" class="nav-item relative px-5 font-bold text-green-800">Administrasi Persuratan</a>
+        <div class="h-5 w-[1px] bg-gray-400"></div>
+
+        <a href="Aduan.html" class="nav-item relative px-5 font-bold">Aduan</a>
+        <div class="h-5 w-[1px] bg-gray-400"></div>
+
+        <a href="Publikasi.html" class="nav-item relative px-5 font-bold">Publikasi</a>
+      </nav>
+
+      <!-- Logout -->
+      <a href="login.html" class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition">
+        <span class="material-symbols-outlined">logout</span>
+      </a>
+
+      <!-- Right Section -->
+      <div class="flex items-center gap-4">
+
+        <!-- Hamburger (Mobile Only) -->
+        <button id="menuBtn" class="md:hidden material-symbols-outlined text-emerald-900 text-3xl">
+          menu
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu" class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300">
+    <a href="index.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Profile Desa</a>
+    <a href="PPID.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">PPID</a>
+    <a href="Lembaga.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Lembaga</a>
+    <a href="#" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Informasi</a>
+    <a href="AdminP.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Administrasi Persuratan</a>
+    <a href="Aduan.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Aduan</a>
+    <a href="Publikasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Publikasi</a>
+    <a href="login.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Log Out</a>
+  </div>
+
+  <!-- HERO -->
+    <section class="relative overflow-hidden bg-primary h-[700px] flex items-center">
+      <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80" class="absolute inset-0 w-full h-full object-cover opacity-50">
+
+      <div class="relative z-10 px-8 max-w-7xl mx-auto pt-20">
+
+        <!-- Judul -->
+        <h2 class="hero-item opacity-0 -translate-x-16 transition-all duration-700 text-5xl font-bold text-white mb-4">
+          Informasi Dan Berita Desa
+        </h2>
+
+        <!-- Deskripsi -->
+        <p class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80">
+          Selamat Datang Di Desa Sumorame.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- CONTENT (KOSONG) -->
+    <main class="pt-32 max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+
+          <!-- CARD KIRI (GAMBAR) -->
+          <div class="card-kiri bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden opacity-0 -translate-x-40 transition-all duration-500 ease-out cursor-pointer">
+            <img src="../img/kegiatan.jpg" alt="Gambar Desa" class="w-full h-[500px] object-cover">
+          </div>
+
+          <!-- CARD KANAN (JUDUL) -->
+          <div class="card-kanan bg-white rounded-xl shadow-md hover:shadow-2xl p-8 flex flex-col justify-between min-h-[500px] opacity-0 translate-x-40 transition-all duration-500 ease-out delay-200 cursor-pointer">
+
+          <h2 class="text-3xl font-bold text-emerald-900 leading-tight">
+            Dukungan Pendidikan bagi Siswa Miskin Berprestasi. Diikuti oleh 105 siswa miskin/berprestasi. 
+            Siswa mendapat bingkisan berisi alat tulis dan buku, yang diserahkan oleh Bapak Kepala desa.
+          </h2>
+
+          <div class="border-t pt-4 flex justify-between items-center text-gray-500 text-sm mt-6">
+
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">person</span>
+              <span>Yoga Dwi Febrian</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">calendar_today</span>
+              <span>12 Maret 2026</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-base">visibility</span>
+              <span>50</span>
+            </div>
+          </div>  
+      </div>
+
+      <div id="artikelText" class="max-w-3xl mx-auto mt-10 text-gray-700 leading-relaxed text-justify">
+        <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
+          Dalam upaya mendorong kemajuan desa berbasis teknologi, Pemerintah Desa Digital menggelar Pelatihan Digitalisasi Desa yang diikuti oleh seluruh pimpinan lembaga desa. Kegiatan ini bertujuan untuk meningkatkan pemahaman dan keterampilan dalam pemanfaatan teknologi digital guna mendukung administrasi, pelayanan masyarakat, serta pembangunan desa yang lebih efektif dan efisien.
+        </p>
+
+        <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
+          Acara yang berlangsung di Desa Digital ini dibuka langsung oleh Kepala Desa Digital. Dalam sambutannya, beliau menyampaikan bahwa digitalisasi desa menjadi salah satu langkah strategis dalam mewujudkan desa yang mandiri, maju, dan berdaya saing di era digital saat ini.
+        </p>
+
+        <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
+          Kami ingin memastikan bahwa seluruh aparatur desa dan lembaga terkait memiliki keterampilan yang memadai dalam mengelola sistem digital, baik untuk pelayanan publik maupun dalam pengelolaan sumber daya desa. Dengan digitalisasi, kami berharap dapat memberikan pelayanan yang lebih cepat, transparan, dan efisien kepada masyarakat, ujar Kepala Desa.
+        </p>
+
+        <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
+          Pelatihan ini diikuti oleh berbagai elemen desa, termasuk Badan Permusyawaratan Desa (BPD), Lembaga Pemberdayaan Masyarakat (LPM), Karang Taruna, dan unsur lainnya. Materi yang diberikan mencakup penggunaan sistem administrasi desa berbasis digital, pengelolaan data kependudukan, pemanfaatan media sosial untuk promosi desa, serta sistem keuangan desa berbasis teknologi.
+        </p>
+
+        <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
+          Selain itu, pelatihan ini menghadirkan narasumber dari ahli teknologi informasi dan praktisi digital yang memberikan pemahaman mendalam tentang pentingnya digitalisasi dalam meningkatkan efisiensi pelayanan publik. Para peserta juga diberikan sesi praktik langsung dalam penggunaan aplikasi administrasi desa agar dapat segera diterapkan di masing-masing bidang.
+        </p>
+
+        <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
+          Ketua BPD menyambut baik pelatihan ini dan menegaskan pentingnya sinergi antara semua lembaga desa dalam menerapkan teknologi digital. Kami sangat mengapresiasi kegiatan ini karena digitalisasi bukan hanya tren, tetapi kebutuhan untuk meningkatkan kualitas pelayanan kepada masyarakat, ujarnya.
+        </p>
+
+        <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
+          Dengan adanya pelatihan ini, diharapkan seluruh perangkat desa dan pimpinan lembaga desa dapat mengimplementasikan teknologi digital dalam berbagai aspek pelayanan dan pembangunan desa. Ke depan, Pemerintah Desa Digital akan terus mengembangkan program-program berbasis digital guna mendukung kesejahteraan dan kemajuan masyarakat desa.
+        </p>
+
+        <!-- TAG -->
+        <div class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mt-6 text-emerald-700 font-semibold">
+          #DesaMaju #DigitalisasiDesa #PelatihanTeknologi #DesaBerdayaSaing
+        </div>
+      </div>
+
+      <!-- KANAN (SIDEBAR) -->
+      <div class="space-y-6">
+
+        <!-- JUDUL -->
+        <h3 class="text-lg font-semibold text-gray-700">Arsip Informasi</h3>
+
+          <!-- TAB -->
+          <div class="flex border-b-2 border-green-700">
+            <button id="btnTerkini" class="px-4 py-2 bg-yellow-400 text-white font-semibold">
+              Terkini
+            </button>
+          </div>
+
+          <!-- KONTEN TERKINI -->
+          <div id="contentTerkini" class="space-y-3 mt-4 transition-all duration-700 opacity-0 translate-x-20">
+            <!-- isi berita -->
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/gambar.jpg" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Sosialisasi Dan Edukasi Warga Desa tawangsari Terhadap Pembayaran PBB.</h4>
+                <p class="text-xs text-gray-500">17 April 2026</p>
+              </div>
+              <!-- TOMBOL PDF -->
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/kegiatan.jpg" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Dukungan Pendidikan bagi Siswa Miskin Berprestasi.</h4>
+                <p class="text-xs text-gray-500">12 Maret 2026</p>
+              </div>
+              <!-- TOMBOL PDF -->
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/kegiatan1.jpg" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Fasilitas sertifikasi halal bagi pelaku umkm di</h4>
+                <p class="text-xs text-gray-500">14 Juli 2025</p>
+              </div>
+              <!-- TOMBOL PDF -->
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/Kegiatan2.png" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Kegiatan Vaksinasi Polio Dan Edukasi Peningkatan Pengetahuan Terhadap Penyakit Polio.</h4>
+                <p class="text-xs text-gray-500">19 Januari 2024</p>
+              </div>
+              <!-- TOMBOL PDF -->
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/kegiatan4.png" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Kegiatan Agenda Hari Kedua Pelatihan Praktik Pemasangan Paving Blok.</h4>
+                <p class="text-xs text-gray-500">02 Oktober 2023</p>
+              </div>
+              <!-- TOMBOL PDF -->
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/Kegiatan3.png" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Kegiatan Pembekalan Dan Uji Sertifikasi Tukang Pasang Paving Blok</h4>
+                <p class="text-xs text-gray-500">30 September 2025</p>
+              </div>
+              <!-- TOMBOL PDF -->
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/kegiatan6.png" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Kegiatan Survei Kesehatan Indonesia(SKI) Pengukuran Status Kesehatan Gizi Balita.</h4>
+                <p class="text-xs text-gray-500">15 Juli 2025</p>
+              </div>
+              <!-- TOMBOL PDF -->
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/Kegiatan5.png" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Kegiatan Cooking Class Yang Diikuti Oleh PKK Yang Disponsori Oleh Asimo, PT CPI.</h4>
+                <p class="text-xs text-gray-500">11 September 2023</p>
+              </div>
+              <!-- TOMBOL PDF -->
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+            <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
+                bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+                hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+              <img src="../img/Kegiatan7.png" alt="Logo Desa" class="w-16 mb-3">
+              <div>
+                <h4 class="text-sm font-semibold">Kegiatan Bulanan POSBINDU Untuk Memonitoring dan Mendeteksi Dini Penyakit(PTM)</h4>
+                <p class="text-xs text-gray-500">15 Juli 2025</p>
+              </div>
+              <a href="Publikasi.html" 
+                class="ml-auto flex items-center justify-center 
+                bg-yellow-400 hover:bg-yellow-500 
+                active:scale-95 active:translate-y-[2px] active:shadow-md
+                text-white px-2 py-1 rounded-md 
+                transition-all duration-150 ease-in-out">
+                
+                <span class="material-symbols-outlined text-sm">folder</span>
+              </a>
+            </div>
+          </div>
+        </div>
+    </main>
+
+  <!-- FOOTER -->
+  <footer id="footer" class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+          <!-- Logo & Nama -->
+          <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
+            <img src="../img/logo.png" alt="Logo Desa" class="w-16 mb-3">
+            <h3 class="text-lg font-bold">Desa Tawangsari</h3>
+            <p class="text-sm text-gray-300">
+              Desa mandiri berbasis teknologi untuk masa depan yang lebih baik.
+            </p>
+          </div>
+
+          <!-- Kontak -->
+          <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200">
+              <!-- Judul -->
+              <h4 class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold">
+                Kontak
+              </h4>
+              <!-- Alamat (dari kiri) -->
+              <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300">
+                <span class="material-symbols-outlined text-lg mt-[2px]">location_on</span>
+                <span>
+                  Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271
+                </span>
+              </p>
+
+              <p class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300">
+                <span class="material-symbols-outlined text-lg">call</span>
+                0812-3456-7890 (Hanya Menerima Pengaduan).
+              </p>
+
+              <p class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300">
+                <span class="material-symbols-outlined text-lg">mail</span>
+                PemdesSumorame@gmail.com
+              </p>
+          </div>
+
+      <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
+        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300">
+            <h4 class="font-semibold mb-3">Ikuti Kami</h4>
+          <div class="flex gap-4 items-center">
+
+              <a href="#" class="hover:scale-125 transition duration-300">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" 
+                    class="w-6 h-6 invert" alt="Facebook">
+              </a>
+
+              <a href="#" class="hover:scale-125 transition duration-300">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" 
+                    class="w-6 h-6 invert" alt="Instagram">
+              </a>
+
+              <a href="#" class="hover:scale-125 transition duration-300">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" 
+                    class="w-6 h-6 invert" alt="YouTube">
+              </a>
+          </div>
+        </div>
+      </div>
+
+    <div class="text-center mt-6 text-sm text-gray-400">
+      ©2026 Intalasi Teknologi Dan Informasi, Kantor Desa Sumorame.
+    </div>
+  </footer>
+
+  <script src="js/informasi.js"></script>
+</body>
+</html>
