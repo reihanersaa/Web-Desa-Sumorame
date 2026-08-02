@@ -5,25 +5,32 @@ const overlay = document.getElementById('overlay');
 const mainContent = document.getElementById('mainContent');
 const headerLeft = document.getElementById('headerLeft');
 
-flatpickr("#tanggalTanggapan", {
-  dateFormat: "Y-m-d", // format: 2026-04-24
-  altInput: true,
-  altFormat: "d F Y", // tampil: 24 April 2026
-  allowInput: true
-});
-
 burgerBtn.addEventListener('click', () => {
+
   if (window.innerWidth < 768) {
     sidebar.classList.toggle('-translate-x-full');
     overlay.classList.toggle('hidden');
   } else {
     sidebar.classList.toggle('w-64');
     sidebar.classList.toggle('w-20');
+
     headerLeft.classList.toggle('w-64');
     headerLeft.classList.toggle('w-20');
+
     mainContent.classList.toggle('md:pl-64');
     mainContent.classList.toggle('md:pl-20');
+
+    document.querySelectorAll('.menu-text').forEach(el => {
+      el.classList.toggle('hidden');
+    });
   }
+});
+
+flatpickr("#tanggalTanggapan", {
+  dateFormat: "Y-m-d", // format: 2026-04-24
+  altInput: true,
+  altFormat: "d F Y", // tampil: 24 April 2026
+  allowInput: true
 });
 
   // Dropdown Sidebar
@@ -62,7 +69,7 @@ burgerBtn.addEventListener('click', () => {
   const closeEdit = document.getElementById('closeEdit');
   const btnCloseEdit = document.getElementById('btnCloseEdit');
 
-  // ================= OPEN VIEW =================
+  // ================= OPEN VIEW ==================
   document.querySelectorAll('.btnView').forEach(btn => {
     btn.addEventListener('click', () => {
 
@@ -302,5 +309,5 @@ burgerBtn.addEventListener('click', () => {
     }
   });
 
-  // INIT
+  // INITT
   renderTable();
