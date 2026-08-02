@@ -1,0 +1,360 @@
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    /* BACKGROUND (bisa diganti gambar nanti) */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;   /* 🔥 INI KUNCINYA */
+      justify-content: flex-start; /* dari atas */
+      align-items: center;      /* tetap tengah horizontal */
+      padding: 40px 0;
+      background: linear-gradient(135deg, #2e7d32, #4caf50, #66bb6a);
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 200px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50% 50% 0 0;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      top: 10%;
+      left: 10%;
+    }
+
+    /* CARD LOGIN */
+    .login-card {
+      width: 90%;
+      max-width: 400px;
+      padding-bottom: 10px;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      animation: cardPop 0.7s ease-out;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    .card-header {
+      background: #a5d6a7;
+      padding: 40px 20px; /* lebih tinggi */
+      text-align: center;
+      color: white;
+    }
+
+    .card-header img {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+
+    .card-header h2 {
+      font-size: 30px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    /* BODY */
+    .card-body {
+      padding: 30px;         /* normal saja */
+      min-height: 350px;     /* ini yang bikin tinggi */
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* biar isi tetap di tengah */
+      text-align: center;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+    }
+
+    .text-area {
+      display: inline-block; /* biar lebarnya ikut teks */
+      margin-bottom: 20px;
+    }
+
+    .form-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* center */
+    }
+
+    /* samakan lebar input & button dengan text */
+    .input-group,
+    .btn-login {
+      width: 100%;
+      max-width: 280px; /* sesuaikan dengan lebar teks */
+    }
+
+    .card-body h3 {
+      margin-bottom: 5px;
+      color: #2e7d32;
+    }
+
+    .card-body p {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .text-area {
+      margin-bottom: 20px;
+      transform: translateY(-20px); /* geser ke atas */
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(-20px); /* naikkan sedikit */
+    }
+
+    /* INPUT */
+    .input-group {
+      position: relative;
+      margin-bottom: 15px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .input-group i:not(.toggle-password) {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      padding-left: 35px;
+      padding-right: 35px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #777;
+    }
+
+    .input-group input:focus {
+      border-color: #2e7d32;
+      box-shadow: 0 0 5px rgba(46,125,50,0.3);
+    }
+
+    /* BUTTON */
+    .btn-login {
+      width: 100%;
+      padding: 10px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn-login:hover {
+      background: #1b5e20;
+    }
+
+    /* LABEL INPUT */
+    .input-label {
+      display: block;
+      text-align: left;
+      width: 100%;
+      max-width: 280px;
+      font-size: 12px;
+      color: #2e7d32;
+      font-weight: bold;
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
+
+    .extra-links {
+      margin-top: 10px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .extra-links p {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .extra-links a {
+      color: #2196f3;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline;
+      margin-top: 5px;
+    }
+
+    .extra-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* MODAL BACKGROUND */
+    .modal {
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* 🔥 naik ke atas */
+
+      padding-top: 80px; /* 🔥 posisi lebih ke atas */
+      background: rgba(0,0,0,0.5);
+
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.25s ease;
+    }
+
+    /* ketika aktif */
+    .modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* MODAL BOX */
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+
+      transform: scale(0.8);
+      opacity: 0;
+      transition: 0.25s ease;
+    }
+
+    /* animasi muncul */
+    .modal.show .modal-content {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    /* TOMBOL X */
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* GAMBAR */
+    .modal-img {
+      width: 100%;
+      margin-top: 15px;
+      border-radius: 8px;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(2px);
+      animation: floatUp linear infinite;
+    }
+
+    .c1 {
+      width: 120px;
+      height: 120px;
+      left: 10%;
+      bottom: -100px;
+      animation-duration: 10s;
+    }
+
+    .c2 {
+      width: 80px;
+      height: 80px;
+      left: 30%;
+      bottom: -120px;
+      animation-duration: 12s;
+    }
+
+    .c3 {
+      width: 150px;
+      height: 150px;
+      right: 15%;
+      bottom: -150px;
+      animation-duration: 14s;
+    }
+
+    .c4 {
+      width: 100px;
+      height: 100px;
+      right: 40%;
+      bottom: -100px;
+      animation-duration: 11s;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #000000; /* lebih terang */
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: auto;
+    }
+
+    /* ANIMASI */
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-120vh); /* naik ke atas layar */
+        opacity: 0;
+      }
+    }
+
+    @keyframes cardPop {
+      0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin | Website Desa Sumorame</title>
+  <link rel="icon" href="../img/logo.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/LoginAdmin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <div class="circle c1"></div>
+    <div class="circle c2"></div>
+    <div class="circle c3"></div>
+    <div class="circle c4"></div>
+
+  <div class="login-card">
+
+    <!-- HEADER -->
+    <div class="card-header">
+      <img src="../img/logo.png" alt="Logo Desa">
+      <h2>Desa Sumorame</h2>
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body">
+      <div class="text-area">
+        <h3>Selamat Datang Kembali!</h3>
+        <p>Login untuk melanjutkan ke dashboard</p>
+      </div>
+
+      <form id="loginForm">
+        <!-- NIP -->
+        <label class="input-label">Nomor Induk Pegawai</label>
+        <div class="input-group">
+          <i class="fa fa-user"></i>
+          <input type="text" id="nip" placeholder="Masukkan NIP">
+        </div>
+
+        <!-- PASSWORD -->
+        <label class="input-label">Password</label>
+        <div class="input-group">
+          <i class="fa fa-lock"></i> <!-- ICON KIRI (BALIKIN LAGI) -->
+          <input type="password" id="password" placeholder="Masukkan Password">
+          <i class="fa fa-eye-slash toggle-password" id="togglePassword"></i> <!-- ICON KANAN -->
+        </div>
+
+        <!-- BUTTON -->
+        <button class="btn-login">Login</button>
+
+        <div class="extra-links">
+          <a href="#" id="forgotPassword">Lupa Password?</a>
+          <a href="../publik/login.html">Masuk Sebagai Pemohon</a>
+        </div>
+      </form>
+
+        <!--MODAL LUPA PASSWORD-->
+        <div id="modalForgot" class="modal">
+          <div class="modal-content">
+            <span class="close-modal">&times;</span>
+
+            <h3>Lupa Password?</h3>
+            <p>Silakan hubungi nomor admin dibawah ini</p>
+
+            <!-- ISI GAMBAR DI SINI -->
+            <img src="../img/peringatan.png" alt="Panduan" class="modal-img">
+          </div>
+        </div>
+    </div>
+  </div>
+  
+      <!-- ✅ FOOTER PINDAH KE SINI -->
+      <div class="footer">
+        <p>@ 2026 Instalasi Teknologi Dan Informasi, Kantor Desa Sumorame.</p>
+      </div>
+
+      <script src="js/loginAdmin.js"></script>
+
+</body>
+</html>

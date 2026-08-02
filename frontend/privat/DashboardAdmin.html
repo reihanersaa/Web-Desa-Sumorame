@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin | Website Desa Tawangsari</title>
+  <link rel="icon" href="../img/logo.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/DashboardAdmin.css">
+
+</head>
+
+<body class="bg-gray-200">
+
+<!-- HEADER (TIDAK DIUBAH) -->
+<header class="fixed top-0 left-0 right-0 h-16 bg-white border-b flex z-50">
+
+  <div id="headerLeft"
+    class="w-64 bg-white flex items-center px-4 border-r transition-all duration-300">
+    <img src="../img/logo2.png" class="h-20 object-contain" />
+  </div>
+
+  <div class="flex-1 flex items-center justify-between px-4">
+    <div class="flex items-center">
+      <button id="burgerBtn" class="mr-4">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <h1 class="font-semibold text-lg">Dashboard</h1>
+    </div>
+
+    <a href="LoginAdmin.html" 
+      class="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition">
+      
+      <span class="material-symbols-outlined text-base">logout</span>
+      <span>Logout</span>
+
+    </a>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside id="sidebar"
+  class="fixed top-16 left-0 w-64 h-[calc(100%-4rem)] bg-black text-white p-4 transition-all duration-300 -translate-x-full md:translate-x-0">
+
+  <nav class="space-y-2 text-sm">
+
+    <a href="#" class="flex items-center p-2 bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">home</span>
+      <span class="menu-text">Dashboard</span>
+    </a>
+
+      <!-- Dropdown Menu-->   
+      <div>
+        <button id="jadwalToggle"
+          class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+
+          <span class="flex items-center">
+            <span class="material-symbols-outlined mr-3">article_person</span>
+            <span class="menu-text">Permohonan</span>
+          </span>
+
+          <span id="jadwalIcon" class="material-symbols-outlined text-sm transition-transform">
+            expand_more
+          </span>
+        </button>
+
+        <!-- Submenu -->
+        <div id="jadwalMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+          <a href="Pengaduan.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Aduan
+          </a>
+          <a href="SuratMenyurat.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Surat Menyurat
+          </a>
+          <a href="Informasi.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Informasi
+          </a>
+        </div>
+      </div>
+
+    <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">linked_camera</span>
+      <span class="menu-text">Publikasi</span>
+    </a>
+  </nav>
+</aside>
+
+<!-- OVERLAY -->
+<div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"></div>
+
+<!-- MAIN -->
+<div id="mainContent"
+  class="pt-16 md:pl-64 transition-all duration-300 min-h-screen flex flex-col">
+
+  <main class="flex-1 p-6 pb-20">
+
+    <!-- STATISTIK -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+
+      <!-- CARD 1 -->
+      <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-5 rounded-xl shadow fade-up delay-1 
+        hover:shadow-xl hover:-translate-y-1 transition duration-300 border-l-4 border-purple-500 card-hover">
+
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p class="text-gray-800 font-bold text-xs uppercase tracking-wide">Aduan</p>
+            <h3 id="aduan" class="text-3xl font-bold text-gray-800">0</h3>
+          </div>
+
+          <div class="bg-blue-100 text-blue-600 p-3 rounded-full">
+            <span class="material-symbols-outlined">campaign</span>
+          </div>
+        </div>
+
+        <!-- PROGRESS (TIDAK DIUBAH) -->
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+          <div class="bg-blue-500 h-2 rounded-full" style="width: 60%"></div>
+        </div>
+        <p class="text-xs font-bold text-gray-800">60% Penyelesaian</p>
+
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="bg-gradient-to-r from-green-500 to-emerald-500 text-white p-5 rounded-xl shadow fade-up delay-2 
+        hover:shadow-xl hover:-translate-y-1 transition duration-300 border-l-4 border-green-500 card-hover">
+
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p class="text-gray-800 font-bold text-xs uppercase tracking-wide">Surat Menyurat</p>
+            <h3 id="surat" class="text-3xl font-bold text-gray-800">0</h3>
+          </div>
+
+          <div class="bg-green-100 text-green-600 p-3 rounded-full">
+            <span class="material-symbols-outlined">description</span>
+          </div>
+        </div>
+
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+          <div class="bg-blue-500 h-2 rounded-full" style="width: 86%"></div>
+        </div>
+        <p class="text-xs font-bold text-gray-800">86% Penyelesaian</p>
+
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white p-5 rounded-xl shadow fade-up delay-3 
+        hover:shadow-xl hover:-translate-y-1 transition duration-300 border-l-4 border-yellow-500 card-hover">
+
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p class="text-gray-800 font-bold text-xs uppercase tracking-wide">Publikasi</p>
+            <h3 id="publikasi" class="text-3xl font-bold text-gray-800">0</h3>
+          </div>
+
+          <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">
+            <span class="material-symbols-outlined">photo_camera</span>
+          </div>
+        </div>
+
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+          <div class="bg-blue-500 h-2 rounded-full" style="width: 40%"></div>
+        </div>
+        <p class="text-xs font-bold text-gray-800">40% Penyelesaian</p>
+
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="bg-gradient-to-r from-red-500 to-pink-500 text-white p-5 rounded-xl shadow fade-up delay-4 
+        hover:shadow-xl hover:-translate-y-1 transition duration-300 border-l-4 border-red-500 card-hover">
+
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p class="text-gray-800 font-bold text-xs uppercase tracking-wide">Informasi</p>
+            <h3 id="info" class="text-3xl font-bold text-gray-800">0</h3>
+          </div>
+
+          <div class="bg-red-100 text-red-600 p-3 rounded-full">
+            <span class="material-symbols-outlined">folder</span>
+          </div>
+        </div>
+
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+          <div class="bg-blue-500 h-2 rounded-full" style="width: 50%"></div>
+        </div>
+        <p class="text-xs font-bold text-gray-800">50% Penyelesaian</p>
+
+      </div>
+    </div>
+
+    <!-- CHART / STATISTIK -->
+    <div class="rounded-lg shadow mb-6 overflow-hidden fade-up delay-3">
+
+      <!-- HEADER HITAM -->
+      <div class="bg-black text-white px-6 py-3 flex justify-between items-center">
+        <h3 class="text-sm font-semibold tracking-wide">STATISTIK PERMOHONAN</h3>
+        <span class="material-symbols-outlined text-gray-300 text-sm">bar_chart</span>
+      </div>
+
+      <!-- BODY -->
+      <div class="bg-white p-6">
+        <div class="h-80">
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="text-center p-4 border-t">
+    <p class="text-sm font-bold text-gray-500">@ 2026 Instalasi Teknologi Dan Informasi, Kantor Desa Tawangsari.</p>
+  </footer>
+
+</div>
+
+<script src="js/DashboardAdmin.js"></script>
+
+</body>
+</html>
