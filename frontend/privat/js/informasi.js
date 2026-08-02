@@ -276,7 +276,7 @@ flatpickr("#tanggalTanggapan", {
       row.style.display = "";
     });
 
-    // update info
+    // update infoo
     tableInfo.innerText =
       `Showing ${start + 1} to ${Math.min(end, total)} of ${total} entries`;
   }
