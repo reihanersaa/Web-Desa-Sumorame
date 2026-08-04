@@ -350,7 +350,7 @@
 
     });
 
-    // ======================
+    // =======================
     // CARD STATISTIK
     // ======================
 
@@ -362,7 +362,7 @@
         const target = parseInt(counter.dataset.target);
         let current = 0;
 
-        const increment = Math.ceil(target / 80);
+        const increment = Math.ceil(target / 180);
 
         function update() {
 
