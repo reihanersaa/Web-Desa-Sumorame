@@ -69,7 +69,7 @@ flatpickr("#tanggalTanggapan", {
   const closeEdit = document.getElementById('closeEdit');
   const btnCloseEdit = document.getElementById('btnCloseEdit');
 
-  // ================= OPEN VIEW =================
+  // ================= OPEN VIEW ==================
   document.querySelectorAll('.btnView').forEach(btn => {
     btn.addEventListener('click', () => {
 
@@ -309,5 +309,5 @@ flatpickr("#tanggalTanggapan", {
     }
   });
 
-  // INIT
+  // INITT
   renderTable();

@@ -249,7 +249,7 @@ flatpickr("#tanggalTanggapan", {
     renderTable();
   });
 
-  // SHOW ENTRIES
+  // SHOW ENTRIESS
   entriesSelect.addEventListener("change", () => {
     rowsPerPage = parseInt(entriesSelect.value);
     currentPage = 1;
@@ -268,7 +268,7 @@ flatpickr("#tanggalTanggapan", {
     const start = (currentPage - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    // sembunyikan semua
+    // sembunyikan semuaa
     rows.forEach(row => row.style.display = "none");
 
     // tampilkan sesuai page
@@ -276,7 +276,7 @@ flatpickr("#tanggalTanggapan", {
       row.style.display = "";
     });
 
-    // update info
+    // update infoo
     tableInfo.innerText =
       `Showing ${start + 1} to ${Math.min(end, total)} of ${total} entries`;
   }
