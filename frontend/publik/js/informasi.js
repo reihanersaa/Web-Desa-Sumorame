@@ -44,19 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, i * 100);
   });
 
-
-  // ===============================
-  // ANIMASI HERO
-  // ===============================
-  const heroItems = document.querySelectorAll(".hero-item");
-
-  heroItems.forEach((item, i) => {
-    setTimeout(() => {
-      item.classList.remove("opacity-0", "-translate-x-16");
-    }, i * 200);
-  });
-
-
   // ===============================
   // ANIMASI CARD UTAMA
   // ===============================
@@ -218,6 +205,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ======================
+// SCROLL TO TOP
+// ======================
+
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+// Tampilkan tombol saat scroll
+window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 300) {
+
+        scrollTopBtn.classList.add("show");
+
+    } else {
+
+        scrollTopBtn.classList.remove("show");
+
+    }
+
+});
+
+// Klik tombol
+scrollTopBtn.addEventListener("click", () => {
+
+    window.scrollTo({
+
+        top: 0,
+        behavior: "smooth"
+
+    });
+
+});
+
 
   // ===============================
   // ANIMASI PUBLIKASI (INTERSECTION)
@@ -235,6 +255,68 @@ document.addEventListener("DOMContentLoaded", () => {
   cards.forEach((card, i) => {
     observer.observe(card);
     card.style.transitionDelay = `${i * 0.15}s`;
+  });
+
+  // ======================
+  // ANIMASI JUDUL BERITA
+  // ======================
+
+  const judul = document.getElementById("judulBerita");
+  const teks = judul.textContent;
+
+  judul.innerHTML = "";
+
+  // Membuat setiap huruf menjadi span
+  teks.split("").forEach(huruf => {
+
+      const span = document.createElement("span");
+
+      span.className = "letter";
+      span.innerHTML = huruf === " " ? "&nbsp;" : huruf;
+
+      judul.appendChild(span);
+
+  });
+
+  const letters = document.querySelectorAll("#judulBerita .letter");
+
+  function animasiHuruf() {
+
+      letters.forEach((letter, index) => {
+
+          setTimeout(() => {
+
+              letter.style.animation = "flipLetter 0.7s ease";
+
+              // Reset agar bisa diputar lagi
+              letter.addEventListener("animationend", () => {
+                  letter.style.animation = "";
+              }, { once: true });
+
+          }, index * 120);
+
+      });
+
+  }
+
+  // Jalankan pertama kali
+  animasiHuruf();
+
+  // Hitung total durasi animasi
+  const totalDurasi = (letters.length * 120) + 3000;
+
+  // Loop terus
+  setInterval(animasiHuruf, totalDurasi);
+
+  // ================= ANIMASI HERO =================
+  const heroItems = document.querySelectorAll(".hero-item");
+
+  window.addEventListener("load", () => {
+    heroItems.forEach((item, i) => {
+      setTimeout(() => {
+        item.classList.remove("opacity-0", "-translate-x-16");
+      }, i * 200);
+    });
   });
 
 });
