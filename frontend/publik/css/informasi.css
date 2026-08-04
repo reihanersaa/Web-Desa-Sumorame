@@ -77,6 +77,28 @@
         }
     }
 
+        .text-justify {
+        text-align: justify;
+    }
+
+    /* ==========================
+    SCROLL TO TOP
+    ========================== */
+
+    #scrollTopBtn{
+        transform: translateY(20px);
+    }
+
+    #scrollTopBtn.show{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    #scrollTopBtn:hover{
+        box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+
     /* Animasi flip */
     @keyframes flipLetter {
         0% {
