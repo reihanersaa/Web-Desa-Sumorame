@@ -80,6 +80,41 @@
       });
     });
 
+    // === Animasi  Statistik Desa ===
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Ambil elemen target
+        const element = document.getElementById("teks-animasi");
+        
+        // 2. Ambil teks asli di dalamnya dan hapus spasi berlebih di awal/akhir
+        const text = element.innerText.trim();
+        
+        // 3. Kosongkan isi HTML agar bisa diisi ulang dengan huruf yang sudah dipisah
+        element.innerHTML = "";
+        
+        // 4. Jeda waktu putaran antar huruf (dalam detik)
+        const delayGap = 0.15; 
+        
+        // 5. Pecah teks menjadi array huruf, lalu proses satu per satu
+        text.split("").forEach((char, index) => {
+            const span = document.createElement("span");
+            
+            if (char === " ") {
+                // Jika karakter adalah spasi, jangan dianimasikan, cukup beri jarak
+                span.innerHTML = "&nbsp;"; 
+                span.className = "inline-block w-3";
+            } else {
+                // Jika karakter adalah huruf, masukkan teks dan kelas animasinya
+                span.innerText = char;
+                span.className = "animate-flip-y";
+                // Atur delay animasi agar bergantian
+                span.style.animationDelay = `${index * delayGap}s`;
+            }
+            
+            // Masukkan kembali <span> ke dalam <h2>
+            element.appendChild(span);
+        });
+    });
+
     // === Animasi Berita Terkini ===
     const berita = document.getElementById("berita");
     const beritaItems = berita.querySelectorAll(".berita-item");
