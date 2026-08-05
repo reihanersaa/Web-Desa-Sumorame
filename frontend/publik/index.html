@@ -177,51 +177,41 @@
     </div>
 
     <!-- HERO -->
-    <section class="relative overflow-hidden bg-primary aspect-[16/9] mt-16">
-      <!-- SLIDER -->
+    <section
+      id="hero"
+      class="relative overflow-hidden bg-primary aspect-[16/9] mt-16"
+    >
       <div
         id="slider"
         class="flex transition-transform duration-700 ease-in-out h-full"
       >
-        <!-- SLIDE 1 -->
-        <div class="min-w-full relative">
-          <img
-            src="../img/Panggilan.png"
-            class="w-full h-full object-contain bg-white"
-          />
+        <div class="min-w-full relative h-full">
+          <img src="../img/Panggilan.png" alt="Hero" class="hero-image" />
         </div>
-        <!-- SLIDE 2 -->
-        <div class="min-w-full relative">
-          <img
-            src="../img/zona.png"
-            class="w-full h-full object-contain bg-white"
-          />
+
+        <div class="min-w-full relative h-full">
+          <img src="../img/zona.png" alt="Hero" class="hero-image" />
         </div>
-        <!-- SLIDE 3 -->
-        <div class="min-w-full relative">
-          <img
-            src="../img/survey.png"
-            class="w-full h-full object-contain bg-white"
-          />
+
+        <div class="min-w-full relative h-full">
+          <img src="../img/survey.png" alt="Hero" class="hero-image" />
         </div>
-        <!-- SLIDE 4 -->
-        <div class="min-w-full relative">
-          <img
-            src="../img/korupsi.png"
-            class="w-full h-full object-contain bg-white"
-          />
+
+        <div class="min-w-full relative h-full">
+          <img src="../img/korupsi.png" alt="Hero" class="hero-image" />
         </div>
       </div>
-      <!-- BUTTON -->
+
       <button
         id="prev"
-        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded"
+        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded z-20"
       >
         ❮
       </button>
+
       <button
         id="next"
-        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded"
+        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded z-20"
       >
         ❯
       </button>
@@ -231,120 +221,218 @@
     <main class="pt-24 max-w-7xl mx-auto px-6">
       <section id="asal-usul" class="bg-[#EEEEEE] py-20">
         <div class="max-w-6xl mx-auto px-6">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <!-- GRID UTAMA -->
+          <div
+            class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start"
+          >
             <!-- ================================= -->
-            <!-- KOLOM KIRI -->
+            <!-- KOLOM KIRI : ASAL USUL DESA -->
             <!-- ================================= -->
-
-            <div class="">
+            <div class="lg:col-span-2">
               <!-- Judul -->
-              <h2 class="text-2xl md:text-3xl font-bold text-[#063b27] mb-7">
+              <h2
+                class="font-poppins text-2xl md:text-3xl font-bold text-[#063b27] mb-7"
+              >
                 Asal Usul Desa
               </h2>
 
               <!-- Deskripsi -->
-              <p class="text-[15px] leading-[1.7] text-gray-800 text-justify">
-                <span
-                  class="float-left text-5xl leading-[0.8] mr-1 text-[#063b27]"
-                >
-                  D
-                </span>
+              <div class="text-[15px] leading-[1.7] text-gray-800 text-justify">
+                <p class="mb-5">
+                  <span
+                    class="float-left text-5xl leading-[0.8] mr-1 text-[#063b27]"
+                  >
+                    D
+                  </span>
+                  esa Sumorame merupakan salah satu desa yang berada di
+                  Kecamatan Candi, Kabupaten Sidoarjo, Provinsi Jawa Timur.
+                  Berdasarkan penelusuran sejarah dan cerita yang berkembang di
+                  masyarakat, khususnya berdasarkan keterangan dari sesepuh desa
+                  seperti Mbah Atma Jaya dan Mbah Simojoyo, Desa Sumorame
+                  diperkirakan telah berdiri sejak tahun 1616 Masehi.
+                </p>
 
-                esa Sumorame berdiri sejak tahun 1920. Konon nama desa ini
-                diambil dari mata air abadi yang menjadi sumber kehidupan warga
-                sejak zaman kerajaan. Mata air tersebut tidak pernah kering
-                meskipun kemarau panjang melanda, melambangkan kemakmuran yang
-                terus mengalir bagi seluruh penduduk desa. Seiring berjalannya
-                waktu, desa ini berkembang menjadi pemukiman yang subur dan
-                harmonis, menjunjung tinggi nilai-nilai kegotongroyongan
-                peninggalan para leluhur.
-              </p>
+                <p class="mb-5">
+                  Menurut cerita yang diwariskan secara turun-temurun, nama
+                  <strong>Sumorame</strong> berasal dari gabungan nama dua dusun
+                  yang menjadi bagian dari wilayah desa, yaitu
+                  <strong>Dusun Sumotuwo</strong> dan
+                  <strong>Dusun Keramean</strong>. Kata “Sumo” diambil dari
+                  bagian nama Dusun Sumotuwo, sedangkan kata “Rame” berasal dari
+                  Dusun Keramean. Penggabungan kedua nama tersebut kemudian
+                  dikenal sebagai Sumorame.
+                </p>
+
+                <p class="mb-5">
+                  Dusun Sumotuwo dipercaya memiliki keterkaitan dengan istilah
+                  “Sumo” yang dalam cerita masyarakat dikaitkan dengan
+                  keberadaan singa tua, sumur tua, atau asal-usul para sesepuh
+                  yang dahulu menjadi bagian dari sejarah wilayah tersebut.
+                  Sementara itu, nama Keramean dikaitkan dengan kata “rame”,
+                  yang menggambarkan keadaan wilayah yang ramai oleh aktivitas
+                  dan kehidupan masyarakat.
+                </p>
+
+                <p class="mb-5">
+                  Kisah mengenai asal-usul tersebut merupakan bagian dari
+                  sejarah lisan yang diwariskan dari generasi ke generasi dan
+                  menjadi salah satu identitas budaya masyarakat Desa Sumorame.
+                  Dalam perkembangannya, Desa Sumorame secara administratif
+                  terbagi menjadi dua dusun utama, yaitu
+                  <strong>Dusun Sumotuwo</strong> dan
+                  <strong>Dusun Keramean</strong>. Kedua dusun tersebut menjadi
+                  bagian penting dalam perjalanan sejarah dan perkembangan Desa
+                  Sumorame hingga saat ini.
+                </p>
+
+                <p class="mb-5">
+                  Desa Sumorame memiliki luas wilayah sekitar
+                  <strong>113,98 hektare</strong>, yang terdiri atas kawasan
+                  permukiman, fasilitas umum, serta lahan pertanian. Sebagian
+                  masyarakat Desa Sumorame secara turun-temurun menggantungkan
+                  mata pencaharian pada sektor pertanian. Luas lahan pertanian
+                  yang terdapat di wilayah desa mencapai sekitar
+                  <strong>33 hektare</strong>, dengan hasil panen rata-rata
+                  sekitar <strong>210 ton per panen</strong>.
+                </p>
+
+                <!-- Batas Wilayah -->
+                <div class="mb-5">
+                  <p class="mb-3">
+                    Secara geografis, Desa Sumorame memiliki batas wilayah
+                    sebagai berikut:
+                  </p>
+
+                  <ul class="list-disc list-inside space-y-2 ml-2">
+                    <li>
+                      <strong>Sebelah Utara:</strong>
+                      Desa Gelam dan Desa Sugihwaras
+                    </li>
+
+                    <li>
+                      <strong>Sebelah Selatan:</strong>
+                      Desa Boro, Kecamatan Tanggulangin
+                    </li>
+
+                    <li>
+                      <strong>Sebelah Barat:</strong>
+                      Desa Karangtanjung
+                    </li>
+
+                    <li>
+                      <strong>Sebelah Timur:</strong>
+                      Desa Ngampelsari
+                    </li>
+                  </ul>
+                </div>
+
+                <p class="mb-5">
+                  Seiring dengan perkembangan zaman, Desa Sumorame terus
+                  mengalami perubahan dan pembangunan dalam berbagai bidang.
+                  Meskipun demikian, nilai-nilai sejarah, cerita para sesepuh,
+                  serta asal-usul terbentuknya desa tetap menjadi bagian penting
+                  dari identitas masyarakat. Sejarah tersebut menjadi warisan
+                  yang perlu dijaga dan dikenalkan kepada generasi penerus agar
+                  keberadaan serta jati diri Desa Sumorame tetap lestari.
+                </p>
+
+                <p>
+                  Dengan demikian, sejarah Desa Sumorame tidak hanya
+                  menggambarkan terbentuknya sebuah wilayah, tetapi juga
+                  mencerminkan perjalanan kehidupan masyarakat yang telah
+                  berkembang dari masa ke masa. Kisah yang diwariskan oleh para
+                  sesepuh menjadi bagian dari kekayaan sejarah lokal yang
+                  memperkuat identitas Desa Sumorame sebagai salah satu desa di
+                  Kecamatan Candi, Kabupaten Sidoarjo.
+                </p>
+              </div>
             </div>
 
             <!-- ================================= -->
-            <!-- KOLOM KANAN -->
+            <!-- KOLOM KANAN : CARD DESA -->
             <!-- ================================= -->
-
-            <div
-              class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-7"
-            >
-              <!-- Judul -->
-              <h3
-                class="text-center text-xl md:text-2xl font-medium text-[#063b27]"
-              >
-                Desa Sumorame
-              </h3>
-
-              <!-- Logo Desa -->
-              <div class="flex justify-center mt-4 mb-7">
-                <img
-                  src="../img/logo-desa.png"
-                  alt="Logo Desa Sumorame"
-                  class="w-24 h-24 object-contain"
-                />
-              </div>
-              <!-- Informasi Desa -->
-              <div class="space-y-4 mb-6">
-                <!-- Tanggal Berdiri -->
-                <div class="flex items-center gap-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5 text-[#0b5c3b] shrink-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M8 7V3m8 4V3m-9 8h10M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"
-                    />
-                  </svg>
-
-                  <p class="text-sm text-gray-600">
-                    Tanggal Berdiri:
-                    <span class="font-medium text-gray-700"> 1920 </span>
-                  </p>
-                </div>
-
-                <!-- Luas Wilayah -->
-                <div class="flex items-center gap-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5 text-[#0b5c3b] shrink-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M4 20L20 4M4 4h6M4 4v6M20 20h-6M20 20v-6"
-                    />
-                  </svg>
-
-                  <p class="text-sm text-gray-600">
-                    Luas Wilayah:
-                    <span class="font-medium text-gray-700"> 1.250 Ha </span>
-                  </p>
-                </div>
-              </div>
-
-              <!-- Peta Wilayah -->
+            <div class="lg:col-span-1">
               <div
-                class="w-full h-44 md:h-48 bg-[#e5e3df] rounded-xl overflow-hidden"
+                class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-7 w-full"
               >
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8623.09562957141!2d112.70613286328192!3d-7.492188175924805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e0b7b61c7bdf%3A0x7118f9773eab61d2!2sSumorame%2C%20Kec.%20Candi%2C%20Kabupaten%20Sidoarjo%2C%20Jawa%20Timur!5e1!3m2!1sid!2sid!4v1785899024439!5m2!1sid!2sid"
-                  class="w-full h-full"
-                  style="border: 0"
-                  allowfullscreen
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
+                <!-- Judul -->
+                <h3
+                  class="font-poppins text-center text-xl md:text-2xl font-medium text-[#063b27]"
                 >
-                </iframe>
+                  Desa Sumorame
+                </h3>
+
+                <!-- Logo Desa -->
+                <div class="flex justify-center mt-4 mb-7">
+                  <img
+                    src="../img/logo-desa.png"
+                    alt="Logo Desa Sumorame"
+                    class="w-24 h-24 object-contain"
+                  />
+                </div>
+
+                <!-- Informasi Desa -->
+                <div class="space-y-4 mb-6">
+                  <!-- Tanggal Berdiri -->
+                  <div class="flex items-center gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-5 h-5 text-[#0b5c3b] shrink-0"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M8 7V3m8 4V3m-9 8h10M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"
+                      />
+                    </svg>
+
+                    <p class="text-sm text-gray-600">
+                      Tahun Berdiri:
+                      <span class="font-medium text-gray-700"> 1616 M </span>
+                    </p>
+                  </div>
+
+                  <!-- Luas Wilayah -->
+                  <div class="flex items-center gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-5 h-5 text-[#0b5c3b] shrink-0"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M4 20L20 4M4 4h6M4 4v6M20 20h-6M20 20v-6"
+                      />
+                    </svg>
+
+                    <p class="text-sm text-gray-600">
+                      Luas Wilayah:
+                      <span class="font-medium text-gray-700"> 113,98 Ha </span>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Peta Wilayah -->
+                <div
+                  class="w-full h-44 md:h-48 bg-[#e5e3df] rounded-xl overflow-hidden"
+                >
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8623.09562957141!2d112.70613286328192!3d-7.492188175924805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e0b7b61c7bdf%3A0x7118f9773eab61d2!2sSumorame%2C%20Kec.%20Candi%2C%20Kabupaten%20Sidoarjo%2C%20Jawa%20Timur!5e1!3m2!1sid!2sid!4v1785899024439!5m2!1sid!2sid"
+                    class="w-full h-full"
+                    style="border: 0"
+                    allowfullscreen
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                  ></iframe>
+                </div>
               </div>
             </div>
           </div>
