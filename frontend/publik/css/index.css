@@ -132,3 +132,74 @@
     .pulse-button{
         animation:pulseButton .8s infinite;
     }
+/* Animasi berputar kiri ke kanan (Sumbu Y) */
+    @keyframes flip-wave {
+        0%   { transform: perspective(400px) rotateY(0deg); }
+        20%  { transform: perspective(400px) rotateY(360deg); }
+        100% { transform: perspective(400px) rotateY(360deg); }
+    }
+
+    .animate-flip-y {
+        /* Wajib inline-block agar transform bisa bekerja per huruf */
+        display: inline-block;
+        /* Durasi 4 detik, efeknya berulang */
+        animation: flip-wave 4s infinite ease-in-out; 
+    }
+
+    .menu-card {
+    @apply
+        relative
+        h-[190px]
+        rounded-xl
+        bg-gradient-to-b from-gray-100 to-gray-200
+        shadow-md
+        flex
+        flex-col
+        items-center
+        justify-center
+        text-center
+        overflow-hidden
+        transition-all
+        duration-300
+        hover:-translate-y-1
+        hover:shadow-xl
+        cursor-pointer;
+    }
+
+    .menu-card::before {
+    content: "";
+    position: absolute;
+
+    width: 150%;
+    height: 100px;
+
+    top: 45px;
+    left: -25%;
+
+    background: white;
+
+    border-radius: 50%;
+
+    z-index: 0;
+    }
+
+    .menu-icon {
+        @apply
+            w-24
+            h-24
+            object-contain
+            mb-2
+            transition-transform
+            duration-300;
+    }
+
+    .menu-card:hover .menu-icon {
+        @apply scale-110;
+    }
+
+    .menu-card span {
+        @apply
+            text-base
+            font-bold
+            text-gray-800;
+    }
