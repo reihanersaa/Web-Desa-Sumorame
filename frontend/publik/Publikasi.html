@@ -8,6 +8,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/Publikasi.css">
 
   <!-- Tailwind Config -->
@@ -130,10 +132,10 @@
 
   <!-- TITLE -->
   <div class="text-center mb-12">
-    <h3 class="text-3xl font-bold text-green-900 mb-2">
-      Publikasi Kegiatan Desa
+    <h3 class="title-loop font-poppins text-3xl font-bold text-green-900 mb-2">
+        Publikasi Kegiatan Desa
     </h3>
-    <p class="text-gray-600">
+    <p class="text-gray-600 font-poppins">
       Dokumentasi kegiatan dan informasi terbaru Desa Sumorame
     </p>
   </div>
@@ -302,6 +304,18 @@
 
       </div>
     </div>
+
+        <!-- Scroll To Top -->
+        <button id="scrollTopBtn"
+            class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800
+                  text-white rounded-full shadow-lg flex items-center justify-center
+                  opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+
+            <span class="material-symbols-outlined">
+                keyboard_arrow_up
+            </span>
+
+        </button>
 </main>
 
   <!-- FOOTER -->
