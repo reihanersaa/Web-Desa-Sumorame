@@ -157,42 +157,43 @@ body {
 }
 
 .menu-card {
-  @apply relative
-            h-[190px]
-            rounded-xl
-            bg-gradient-to-b from-gray-100 to-gray-200
-            shadow-md
-            flex
-            flex-col
-            items-center
-            justify-center
-            text-center
-            overflow-hidden
-            transition-all
-            duration-300
-            hover:-translate-y-1
-            hover:shadow-xl
-            cursor-pointer;
+  position: relative;
+  height: 190px;
+  border-radius: 0.75rem;
+  background: linear-gradient(to bottom, #f3f4f6, #e5e7eb);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.menu-card:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
 }
 
 .menu-icon {
-  @apply w-24
-            h-24
-            object-contain
-            mb-2
-            transition-transform
-            duration-300;
+  width: 6rem;
+  height: 6rem;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s;
 }
 
 .menu-card:hover .menu-icon {
-  @apply scale-110;
+  transform: scale(1.1);
 }
 
 .menu-card span {
-  @apply font-poppins
-            text-base
-            font-bold
-            text-gray-800;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
 }
 
 /* =====================================================
