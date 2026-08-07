@@ -41,3 +41,65 @@
         opacity: 0;
       }
     }
+
+    .hero-title{
+        display: inline-block;
+        white-space: nowrap;
+        animation: slideLoop 8s ease-in-out infinite;
+    }
+
+    /* Masuk → Diam 3 detik → Keluar → Ulang */
+    @keyframes slideLoop{
+
+        /* Mulai di luar kanan */
+        0%{
+            opacity: 0;
+            transform: translateX(120%);
+        }
+
+        /* Masuk */
+        15%{
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Diam sekitar 3 detik */
+        55%{
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Keluar ke kiri */
+        75%{
+            opacity: 0;
+            transform: translateX(-180%);
+        }
+
+        /* Tetap di luar kiri sebelum reset */
+        100%{
+            opacity: 0;
+            transform: translateX(-180%);
+        }
+    }
+
+        .text-justify {
+        text-align: justify;
+    }
+
+    /* ==========================
+      SCROLL TO TOP
+    ========================== */
+
+    #scrollTopBtn{
+        transform: translateY(20px);
+    }
+
+    #scrollTopBtn.show{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    #scrollTopBtn:hover{
+        box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }

@@ -103,26 +103,36 @@
   </div>
 
   <!-- HERO -->
-    <section class="relative overflow-hidden bg-primary h-[700px] flex items-center">
-      <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80"
-class="absolute inset-0 w-full h-full object-cover opacity-50">
+  <section class="relative overflow-hidden bg-primary h-[450px] md:h-[700px] flex items-center mt-16">
 
+      <!-- Background -->
+      <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80"
+          class="absolute inset-0 w-full h-full object-cover object-[center_40%] opacity-50">
+
+      <!-- Overlay -->
+      <div class="absolute inset-0 bg-black/30"></div>
+
+      <!-- Content -->
       <div class="relative z-10 px-8 max-w-7xl mx-auto pt-20">
 
-        <!-- Judul -->
-        <h2 class="hero-item opacity-0 -translate-x-16 transition-all duration-700 text-5xl font-bold text-white mb-4">
-          Panduan Pelayanan Dan Informasi Desa
-        </h2>
+          <!-- Judul -->
+          <h2 class="hero-title opacity-0 -translate-x-16 transition-all duration-700
+                    text-3xl sm:text-4xl md:text-5xl
+                    font-bold text-white mb-4 leading-tight">
+              Panduan Pelayanan<br class="sm:hidden">
+              Dan Informasi Desa
+          </h2>
 
-        <!-- Deskripsi -->
-        <p class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80">
-          Selamat Datang Di Desa Sumorame.
-        </p>
+          <!-- Deskripsi -->
+          <p id="heroItem"
+            class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80">
+              Selamat Datang Di Desa Sumorame.
+          </p>
 
       </div>
-    </section>
+  </section>
 
-      <!-- CONTENT (KOSONG) -->
+      <!-- CONTENT -->
       <main class="pt-28 max-w-7xl mx-auto px-6">
 
       <!-- TITLE -->
@@ -143,7 +153,7 @@ class="absolute inset-0 w-full h-full object-cover opacity-50">
           </h3>
 
           <!-- GRID MENU -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
 
             <!-- CARD 1 (MODAL) -->
             <div class="relative overflow-hidden cursor-pointer group bg-green-50 rounded-2xl p-6 text-center 
@@ -172,20 +182,11 @@ class="absolute inset-0 w-full h-full object-cover opacity-50">
               hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
 
               <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-200 flex items-center justify-center text-3xl group-hover:scale-110 transition">
-                ℹ️
-              </div>
-
-              <h4 class="font-semibold text-green-800">Layanan Informasi</h4>
-            </div>
-
-            <!-- CARD 4 -->
-            <div class="group bg-green-50 rounded-2xl p-6 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-              <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-200 flex items-center justify-center text-3xl group-hover:scale-110 transition">
                 📝
               </div>
+
               <h4 class="font-semibold text-green-800">Daftar Informasi</h4>
             </div>
-
           </div>
 
         </div>
@@ -216,7 +217,7 @@ class="absolute inset-0 w-full h-full object-cover opacity-50">
 
           <!-- TABEL -->
           <div class="overflow-hidden rounded-2xl border border-green-200 shadow-inner relative z-10">
-            <table class="w-full text-center text-sm">
+            <table class="w-full text-center text-xs">
               <thead class="bg-green-200 text-green-900 font-semibold">
                 <tr>
                   <th class="py-3">Hari</th>
@@ -235,7 +236,7 @@ class="absolute inset-0 w-full h-full object-cover opacity-50">
                 </tr>
 
                 <tr class="border-t hover:bg-green-100 hover:scale-[1.01] transition duration-300 cursor-pointer">
-                  <td class="py-3 font-medium">Jumat</td>
+                  <td class="py-3 font-sm">Jumat</td>
                   <td>07:30 - 14:00</td>
                   <td>11:20 - 12:30</td>
                 </tr>
@@ -372,6 +373,18 @@ class="absolute inset-0 w-full h-full object-cover opacity-50">
         </div>
       </div>
   </main>
+
+        <!-- Scroll To Top -->
+        <button id="scrollTopBtn"
+            class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800
+                  text-white rounded-full shadow-lg flex items-center justify-center
+                  opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+
+            <span class="material-symbols-outlined">
+                keyboard_arrow_up
+            </span>
+
+        </button>
 
   <!-- FOOTER -->
   <footer id="footer" class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700">
