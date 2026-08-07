@@ -190,7 +190,7 @@ body {
 }
 
 .menu-card span {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: #1f2937;
@@ -257,4 +257,33 @@ body {
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
+}
+/* =========================================
+   JELAJAH
+========================================= */
+
+#jelajahTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1px;
+
+  /* Supaya huruf yang jatuh tidak terpotong */
+  overflow: visible;
+
+  text-shadow: 0 3px 5px rgba(0, 0, 0, 0.35);
+}
+
+/* Setiap huruf */
+.jelajah-letter {
+  display: inline-block;
+
+  position: relative;
+
+  opacity: 0;
+
+  transform-origin: center bottom;
+
+  will-change: transform, opacity;
 }
