@@ -54,6 +54,15 @@
       flex-direction: column;
     }
 
+    /* PANEL DESKTOP (default disembunyikan) */
+    .card-side{
+        display:none;
+    }
+
+    .card-content{
+        width:100%;
+    }
+
     /* HEADER */
     .card-header {
       background: #a5d6a7;
@@ -91,6 +100,7 @@
     .text-area {
       display: inline-block; /* biar lebarnya ikut teks */
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .form-area {
@@ -300,7 +310,7 @@
       height: 120px;
       left: 10%;
       bottom: -100px;
-      animation-duration: 10s;
+      animation-duration: 6s;
     }
 
     .c2 {
@@ -308,7 +318,7 @@
       height: 80px;
       left: 30%;
       bottom: -120px;
-      animation-duration: 12s;
+      animation-duration: 8s;
     }
 
     .c3 {
@@ -316,7 +326,7 @@
       height: 150px;
       right: 15%;
       bottom: -150px;
-      animation-duration: 14s;
+      animation-duration: 10s;
     }
 
     .c4 {
@@ -324,7 +334,7 @@
       height: 100px;
       right: 40%;
       bottom: -100px;
-      animation-duration: 11s;
+      animation-duration: 7s;
     }
 
     .footer {
@@ -358,3 +368,95 @@
         transform: translateY(0) scale(1);
       }
     }
+
+    /* =========================
+   DESKTOP / LAPTOP
+========================= */
+@media (min-width:992px){
+
+    .login-card{
+        max-width:1100px;
+        min-height:650px;
+        display:flex;
+        flex-direction:row;
+        padding-bottom:0;
+    }
+
+    /* Panel kiri */
+    .card-side{
+        display:flex;
+        width:38%;
+        background:rgba(171,244,174,.7);
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        text-align:center;
+        padding:70px 50px;
+    }
+
+    .card-side img{
+        width:140px;
+        margin-bottom:25px;
+    }
+
+    .card-side h2{
+        color:#2e7d32;
+        font-size:32px;
+        margin-bottom:15px;
+    }
+
+    .card-side p{
+        color:#4e4e4e;
+        font-size:15px;
+        line-height:1.8;
+        max-width:300px;
+    }
+
+    /* Panel kanan */
+    .card-content{
+        width:62%;
+    }
+
+    /* Header HP disembunyikan */
+    .card-header{
+        display:none;
+    }
+
+    .card-body{
+        min-height:100%;
+        justify-content:center;
+        align-items:flex-start;
+        padding:50px 60px;
+        text-align:left;
+    }
+
+    .text-area{
+        width:100%;
+        transform:none;
+        margin-bottom:25px;
+    }
+
+    form{
+        width:100%;
+        align-items:flex-start;
+        transform:none;
+    }
+
+    .input-label,
+    .input-group,
+    .btn-login{
+        width:100%;
+        max-width:100%;
+    }
+
+    .extra-links{
+        width:100%;
+        text-align:center;
+        margin-top:20px;
+    }
+
+    .footer{
+        margin-top:20px;
+    }
+
+}
