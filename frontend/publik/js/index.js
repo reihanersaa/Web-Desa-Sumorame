@@ -446,5 +446,29 @@
 
     }
 
+    // === Smooth Scrolling untuk Menu Jelajah ===
+document.querySelectorAll('.menu-card[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault(); // Mencegah lompatan kasar bawaan HTML
+    
+    const targetId = this.getAttribute('href');
+    const targetSection = document.querySelector(targetId);
+    
+    if (targetSection) {
+      // Menghitung jarak offset agar tidak tertutup header yang fixed
+      // Angka 90 adalah perkiraan tinggi header ditambah sedikit ruang ekstra
+      const headerOffset = 90; 
+      const elementPosition = targetSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      // Eksekusi gulir halus
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  });
+});
+
     window.addEventListener("load", showStatistik);
     window.addEventListener("scroll", showStatistik);
