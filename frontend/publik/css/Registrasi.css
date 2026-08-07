@@ -1,226 +1,344 @@
-* {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+    padding:40px 0;
+    background:linear-gradient(135deg,#2e7d32,#4caf50,#66bb6a);
+    position:relative;
+    overflow-x:hidden;
+}
+
+
+/* CARD */
+.login-card{
+    width:90%;
+    max-width:1100px;
+    min-height:650px;
+    display:flex;
+    background:white;
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+    position:relative;
+    z-index:1;
+    margin-bottom:20px; /* jarak ke footer */
+}
+
+
+/* PANEL LOGO DESKTOP */
+.card-side{
+    width:38%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:rgba(171, 244, 174, 0.7);
+    padding:70px 50px;
+    text-align:center;
+}
+
+.card-side img{
+    width:140px;
+    margin-bottom:25px;
+}
+
+.card-side h2{
+    color:#2e7d32;
+    margin-bottom:15px;
+    font-size:32px;
+}
+
+.card-side p{
+    color:#4e4e4e;
+    line-height:1.8;
+    font-size:15px;
+    max-width:300px;
+}
+
+
+/* FORM AREA */
+.card-content{
+    width:62%;
+}
+
+.card-header{
+    display:none;
+}
+
+.card-body{
+    padding:50px 60px;
+    text-align:center;
+}
+
+.card-body h2{
+    margin-bottom:5px;
+    color:#2e7d32;
+}
+
+.card-body p{
+    font-size:12px;
+    color:#666;
+}
+
+
+/* FORM */
+form{
+    display:flex;
+    margin-top:20px;
+    flex-direction:column;
+    align-items:center;
+}
+
+.form-group{
+    width:100%;
+    max-width:280px;
+    margin:0 auto 15px;
+    text-align:left;
+}
+
+.form-group label{
+    font-size:13px;
+    color:#555;
+    margin-bottom:5px;
+    display:block;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+
+/* INPUT PASSWORD */
+.input-group{
+    position:relative;
+    width:100%;
+}
+
+.input-group input{
+    width:100%;
+    padding:10px 35px 10px 10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.toggle-password{
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#777;
+}
+
+
+/* SELECT2 */
+.select2-container{
+    width:100%!important;
+}
+
+
+/* BUTTON */
+.btn-login{
+    width:100%;
+    max-width:280px;
+    padding:10px;
+    background:#2e7d32;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+
+/* LOGIN LINK */
+.login-link{
+    margin-top:10px;
+    font-size:12px;
+    text-align:center;
+}
+
+.login-link a{
+    color:#2196f3;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.login-link a:hover{
+    text-decoration:underline;
+}
+
+
+/* HINT */
+.hint{
+    font-size:11px;
+    color:#777;
+    display:block;
+    margin-top:3px;
+}
+
+.error-text{
+    color:#d32f2f;
+}
+
+
+/* ANIMASI BACKGROUND */
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.20);
+    backdrop-filter:blur(2px);
+    animation:floatUp linear infinite;
+    z-index:0;
+}
+
+.c1{
+    width:120px;
+    height:120px;
+    left:10%;
+    bottom:-100px;
+    animation-duration:6s;
+}
+
+.c2{
+    width:80px;
+    height:80px;
+    left:30%;
+    bottom:-120px;
+    animation-duration:8s;
+}
+
+.c3{
+    width:150px;
+    height:150px;
+    right:15%;
+    bottom:-150px;
+    animation-duration:10s;
+}
+
+.c4{
+    width:100px;
+    height:100px;
+    right:40%;
+    bottom:-100px;
+    animation-duration:7s;
+}
+
+@keyframes floatUp{
+    0%{
+        transform:translateY(0);
+        opacity:.6;
     }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start; /* biar mulai dari atas */
-      align-items: center;         /* ini yang bikin ke tengah */
-      padding: 40px 0;
-      background: linear-gradient(135deg, #2e7d32, #4caf50, #66bb6a);
+    100%{
+        transform:translateY(-120vh);
+        opacity:0;
+    }
+}
+
+
+/* =========================
+   DESKTOP / LAPTOP
+   Memperlebar input saja
+   ========================= */
+@media(min-width:992px){
+
+    .card-body{
+        padding:50px 60px;
     }
 
-    .login-card {
-      width: 90%;
-      max-width: 400px;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      animation: cardPop 0.7s ease-out;
+
+    form{
+        align-items:flex-start;
     }
 
-    .card-header {
-      background: #a5d6a7;
-      padding: 40px 20px;
-      text-align: center;
 
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
+    .form-group{
+        width:100%;
+        max-width:100%;
     }
 
-    .card-header img {
-      width: 80px;
-      margin-bottom: 10px;
+
+    .btn-login{
+        width:100%;
+        max-width:100%;
     }
 
-    .card-header h2 {
-      color: #fff;
+    .login-link{
+        width:100%;
+        max-width:100%;
+        text-align:center;
+        margin-top:20px;
+    }
+}
+
+
+/* =========================
+   HP / TABLET
+   ========================= */
+@media(max-width:991px){
+
+    .login-card{
+        width:95%;
+        display:block;
     }
 
-    .card-body {
-      padding: 30px;
-      text-align: center;
+    .card-side{
+        display:none;
     }
 
-    .card-body h2 {
-      margin-bottom: 5px;
-      color: #2e7d32;
+    .card-content{
+        width:100%;
     }
 
-    .card-body p {
-      font-size: 12px; /* bisa 11px atau 10px kalau mau lebih kecil */
-      color: #666;
+    .card-header{
+        display:block;
+        background:#a5d6a7;
+        padding:40px 20px;
+        text-align:center;
     }
 
-    form {
-      display: flex;
-      margin-top: 20px;
-      flex-direction: column;
-      align-items: center;
+    .card-header img{
+        width:80px;
+        margin-bottom:10px;
     }
 
-    .form-group {
-      width: 100%;
-      max-width: 280px;
-      margin-bottom: 15px;
-      text-align: left;
-      margin: 0 auto;
+    .card-header h2{
+        color:white;
     }
 
-    .form-group label {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 5px;
-      display: block;
+    .card-body{
+        padding:30px;
     }
 
-    .form-group input {
-      padding-right: 35px;
-      position: relative;
+    .form-group{
+        max-width:100%;
     }
 
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .btn-login{
+        max-width:100%;
     }
 
-    .input-group {
-      position: relative;
-      width: 100%;
+    .login-link{
+        width:100%;
+        text-align:center;
     }
 
-    .input-group input {
-      width: 100%;
-      padding: 10px;
-      padding-right: 35px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .footer{
+        width:100%;
+        text-align:center;
     }
 
-    .select2-container {
-      width: 100% !important;
-    }
-
-    .toggle-password {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #777;
-    }
-
-    .btn-login {
-      width: 100%;
-      max-width: 280px;
-      padding: 10px;
-      background: #2e7d32;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .circle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(2px);
-      animation: floatUp linear infinite;
-    }
-
-    .c1 {
-      width: 120px;
-      height: 120px;
-      left: 10%;
-      bottom: -100px;
-      animation-duration: 10s;
-    }
-
-    .c2 {
-      width: 80px;
-      height: 80px;
-      left: 30%;
-      bottom: -120px;
-      animation-duration: 12s;
-    }
-
-    .c3 {
-      width: 150px;
-      height: 150px;
-      right: 15%;
-      bottom: -150px;
-      animation-duration: 14s;
-    }
-
-    .c4 {
-      width: 100px;
-      height: 100px;
-      right: 40%;
-      bottom: -100px;
-      animation-duration: 11s;
-    }
-
-    .hint {
-      font-size: 11px;
-      color: #777;
-      display: block;
-      margin-top: 3px;
-    }
-
-    .error-text {
-      color: #d32f2f;
-    }
-
-    .login-link {
-      margin-top: 10px;
-      font-size: 12px;
-      text-align: center;
-    }
-
-    .login-link a {
-      color: #2196f3; /* biru */
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-
-    .footer {
-      margin-top: 20px;
-      font-size: 12px;
-      text-align: center;
-    }
-
-    /* ANIMASI */
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0);
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateY(-120vh); /* naik ke atas layar */
-        opacity: 0;
-      }
-    }
-
-    @keyframes cardPop {
-      0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
+}

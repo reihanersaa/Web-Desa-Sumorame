@@ -22,7 +22,24 @@
 
   <div class="login-card">
 
-    <!-- HEADER -->
+  <!-- PANEL KIRI (Desktop) -->
+  <div class="card-side">
+
+    <img src="../img/logo.png" alt="Logo Desa" class="side-logo">
+
+    <h2>Desa Sumorame</h2>
+
+    <p>
+      Selamat Datang Di Sistem Pelayanan
+      Desa Sumorame Candi Sidoarjo.
+    </p>
+
+  </div>
+
+  <!-- PANEL KANAN -->
+  <div class="card-content">
+
+    <!-- HEADER (Hanya tampil di HP) -->
     <div class="card-header">
       <img src="../img/logo.png" alt="Logo Desa">
       <h2>Desa Sumorame</h2>
@@ -30,22 +47,28 @@
 
     <!-- BODY -->
     <div class="card-body">
+
       <div class="text-area">
         <h2>Daftar</h2>
         <p>Daftar Untuk Layanan Kantor Desa Sumorame Candi Sidoarjo</p>
       </div>
 
       <form id="form">
+
         <div class="form-group">
           <label>Nomor Induk Kependudukan(NIK)</label>
           <input type="text" id="nik" placeholder="Masukkan NIK">
-          <small class="hint">Masukkan NIK berupa angka 16 digit Contoh: (3515135552450008)</small>
+          <small class="hint">
+            Masukkan NIK berupa angka 16 digit Contoh: (3515135552450008)
+          </small>
         </div>
 
         <div class="form-group">
           <label>Nomor Kartu Keluarga</label>
           <input type="text" id="nokk" placeholder="Masukkan No KK">
-          <small class="hint">Masukkan No KK berupa angka 16 digit Contoh: (3515135552450008)</small>
+          <small class="hint">
+            Masukkan No KK berupa angka 16 digit Contoh: (3515135552450008)
+          </small>
         </div>
 
         <div class="form-group">
@@ -100,17 +123,25 @@
             <i class="fa-solid fa-eye-slash toggle-password" toggle="#konfirm_password"></i>
           </div>
 
-          <small class="hint error-text">Konfirmasi password harus sama dengan password</small>
+          <small class="hint error-text">
+            Konfirmasi password harus sama dengan password
+          </small>
         </div>
 
         <button class="btn-login">Daftar</button>
+
         <p class="login-link">
-          Sudah punya akun? <a href="login.html">Login</a>
+          Sudah punya akun?
+          <a href="login.html">Login</a>
         </p>
 
       </form>
+
     </div>
+
   </div>
+</div>
+
   <div class="footer">@2026 Instalasi Teknologi dan Informasi, Kantor Desa Sumorame.</div>
 
   <script src="js/Registrasi.js"></script>
