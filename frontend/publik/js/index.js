@@ -426,20 +426,14 @@ document.addEventListener("DOMContentLoaded", () => {
      KONFIGURASI
   ========================================= */
 
-  // Lama waktu setiap huruf jatuh
-  const fallDuration = 1400;
-
-  // Jarak waktu antar huruf
-  const letterDelay = 220;
-
-  // Jarak huruf dari atas
-  const fallDistance = 180;
-
-  // Besar goyangan
-  const swayAmount = 2.5;
+  // Jarak antar huruf mulai bergoyang
+  const letterDelay = 150;
 
   // Kecepatan goyangan
-  const swaySpeed = 0.0015;
+  const swaySpeed = 0.0018;
+
+  // Besar goyangan
+  const swayAmount = 3;
 
   /* =========================================
      SIMPAN TEXT ASLI
@@ -470,43 +464,31 @@ document.addEventListener("DOMContentLoaded", () => {
       index: index,
 
       /*
-        Waktu mulai akan diisi
-        ketika section terlihat
+        Setiap huruf memiliki
+        kecepatan sedikit berbeda.
       */
-      startTime: 0,
-
-      landed: false,
-
-      landTime: 0,
 
       swayTime: Math.random() * Math.PI * 2,
 
       swaySpeed: swaySpeed + Math.random() * 0.0005,
 
       swayAmount: swayAmount + Math.random() * 1.5,
+
+      startTime: 0,
     });
   });
 
   /* =========================================
-     EASING JATUH
-  ========================================= */
-
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  /* =========================================
-     ANIMASI
+     STATUS ANIMASI
   ========================================= */
 
   let animationStarted = false;
 
-  function animate(currentTime) {
-    /*
-      Kalau animasi belum dimulai,
-      jangan lakukan apa-apa.
-    */
+  /* =========================================
+     LOOP ANIMASI
+  ========================================= */
 
+  function animate(currentTime) {
     if (!animationStarted) {
       requestAnimationFrame(animate);
 
@@ -517,89 +499,40 @@ document.addEventListener("DOMContentLoaded", () => {
       const element = letter.element;
 
       /* =====================================
-         MENUNGGU GILIRAN HURUF
+         TUNGGU GILIRAN HURUF
       ===================================== */
 
       if (currentTime < letter.startTime) {
         element.style.opacity = "0";
 
-        element.style.transform = `translateY(-${fallDistance}px) rotate(0deg)`;
-
         return;
       }
 
-      const elapsed = currentTime - letter.startTime;
-
       /* =====================================
-         FASE 1
-         JATUH
+         FADE IN
       ===================================== */
 
-      if (!letter.landed) {
-        const progress = Math.min(elapsed / fallDuration, 1);
-
-        /*
-          Gerakan semakin lambat
-          ketika mendekati bawah.
-        */
-
-        const eased = easeOutCubic(progress);
-
-        const y = -fallDistance + fallDistance * eased;
-
-        /*
-          Sedikit berputar ketika jatuh
-        */
-
-        const rotation = Math.sin(progress * Math.PI * 2) * 5 * (1 - progress);
-
-        /*
-          Muncul perlahan
-        */
-
-        const opacity = Math.min(progress * 4, 1);
-
-        element.style.opacity = opacity;
-
-        element.style.transform = `
-          translateY(${y}px)
-          rotate(${rotation}deg)
-          `;
-
-        /*
-          Sudah sampai posisi akhir
-        */
-
-        if (progress >= 1) {
-          letter.landed = true;
-
-          letter.landTime = currentTime;
-        }
-
-        return;
-      }
+      element.style.opacity = "1";
 
       /* =====================================
-         FASE 2
-         GOYANG KIRI KANAN
+         GOYANG
       ===================================== */
 
       letter.swayTime += letter.swaySpeed * 16;
 
       /*
-        Sin menghasilkan gerakan
-        kiri -> kanan -> kiri
+        Gerakan kiri-kanan
       */
 
       const sway = Math.sin(letter.swayTime) * letter.swayAmount;
 
       /*
-        Rotasi mengikuti gerakan
+        Sedikit rotasi supaya
+        terlihat seperti benar-benar
+        bergoyang.
       */
 
-      const rotation = sway * 1.5;
-
-      element.style.opacity = "1";
+      const rotation = sway * 1.3;
 
       element.style.transform = `
         translateX(${sway}px)
@@ -618,26 +551,27 @@ document.addEventListener("DOMContentLoaded", () => {
     (entries) => {
       entries.forEach((entry) => {
         /*
-            Section sudah masuk layar
+            JELAJAH sudah terlihat
           */
 
         if (entry.isIntersecting && !animationStarted) {
           animationStarted = true;
 
-          /*
-              Tentukan waktu mulai
-              SETELAH section terlihat
-            */
-
           const startTime = performance.now();
+
+          /*
+              Huruf mulai bergoyang
+              satu per satu.
+            */
 
           letters.forEach((letter, index) => {
             letter.startTime = startTime + index * letterDelay;
           });
 
           /*
-              Observer tidak perlu
-              bekerja lagi.
+              Observer dihentikan
+              karena animasi cukup
+              dijalankan sekali.
             */
 
           observer.unobserve(section);
@@ -647,8 +581,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     {
       /*
-          Animasi dimulai ketika
-          sekitar 30% section terlihat.
+          Animasi mulai ketika
+          30% section terlihat.
         */
 
       threshold: 0.3,
@@ -656,13 +590,13 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   /* =========================================
-     MULAI OBSERVER
+     AKTIFKAN OBSERVER
   ========================================= */
 
   observer.observe(section);
 
   /* =========================================
-     MULAI LOOP ANIMASI
+     MULAI ANIMATION LOOP
   ========================================= */
 
   requestAnimationFrame(animate);
