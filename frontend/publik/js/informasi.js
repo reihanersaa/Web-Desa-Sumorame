@@ -205,38 +205,66 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ===============================
+  // HEADER HILANG HANYA DI PALING ATAS
+  // ===============================
+
+  const mainHeader = document.getElementById("mainHeader");
+  const heroSection = document.getElementById("heroSection");
+
+  window.addEventListener("scroll", function () {
+
+      if (window.scrollY <= 0) {
+
+          // Navbar hilang
+          mainHeader.classList.add("header-hidden");
+
+          // Hero langsung naik menutup celah
+          heroSection.classList.add("hero-top");
+
+      } else {
+
+          // Navbar muncul
+          mainHeader.classList.remove("header-hidden");
+
+          // Hero kembali ke posisi normal
+          heroSection.classList.remove("hero-top");
+      }
+
+  });
+
   // ======================
-// SCROLL TO TOP
-// ======================
+  // SCROLL TO TOP
+  // ======================
 
-const scrollTopBtn = document.getElementById("scrollTopBtn");
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
 
-// Tampilkan tombol saat scroll
-window.addEventListener("scroll", () => {
+  // Tampilkan tombol saat scroll
+  window.addEventListener("scroll", () => {
 
-    if (window.scrollY > 300) {
+      if (window.scrollY > 300) {
 
-        scrollTopBtn.classList.add("show");
+          scrollTopBtn.classList.add("show");
 
-    } else {
+      } else {
 
-        scrollTopBtn.classList.remove("show");
+          scrollTopBtn.classList.remove("show");
 
-    }
+      }
 
-});
+  });
 
-// Klik tombol
-scrollTopBtn.addEventListener("click", () => {
+  // Klik tombol
+  scrollTopBtn.addEventListener("click", () => {
 
-    window.scrollTo({
+      window.scrollTo({
 
-        top: 0,
-        behavior: "smooth"
+          top: 0,
+          behavior: "smooth"
 
-    });
+      });
 
-});
+  });
 
 
   // ===============================

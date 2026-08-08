@@ -27,6 +27,41 @@
       width: 100%;
     }
 
+    /* HEADER SCROLL */
+    #mainHeader {
+      transition: transform 0.3s ease;
+    }
+
+    #mainHeader.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    #heroSection {
+      transition: margin-top 0.3s ease;
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
+
+    /* ==========================
+          SCROLL TO TOP
+    ========================== */
+
+    #scrollTopBtn{
+        transform: translateY(20px);
+    }
+
+    #scrollTopBtn.show{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    #scrollTopBtn:hover{
+        box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
