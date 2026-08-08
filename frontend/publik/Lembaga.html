@@ -40,7 +40,7 @@
 <body class="bg-surface font-body text-on-surface">
 
   <!-- HEADER -->
-  <header class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md">
+  <header id="mainHeader" class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md">
     <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
 
       <!-- Logo -->
@@ -103,7 +103,7 @@
   </div>
 
   <!-- HERO -->
-    <section class="relative overflow-hidden bg-primary h-[700px] flex items-center">
+    <section id="heroSection" class="relative overflow-hidden bg-primary h-[700px] flex items-center">
       <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80" class="absolute inset-0 w-full h-full object-cover opacity-50">
 
       <div class="relative z-10 px-8 max-w-7xl mx-auto pt-20">
@@ -216,6 +216,18 @@
       </p>
 
     </main>
+
+    <!-- Scroll To Top -->
+        <button id="scrollTopBtn"
+            class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800
+                  text-white rounded-full shadow-lg flex items-center justify-center
+                  opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+
+            <span class="material-symbols-outlined">
+                keyboard_arrow_up
+            </span>
+
+        </button>
 
   <!-- FOOTER -->
   <footer id="footer" class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700">
