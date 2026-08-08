@@ -258,20 +258,24 @@ body {
   border-radius: 0 !important;
   background: transparent !important;
 }
-/* =========================================
-   JUDUL JELAJAH
-========================================= */
 
-#jelajahTitle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 1px;
-
-  overflow: visible;
-
-  text-shadow: 0 3px 5px rgba(0, 0, 0, 0.35);
+/* =====================================================
+   BACKGROUND BERSAMA (JELAJAH + STATISTIK) — efek jendela
+   =====================================================
+   Konsepnya: satu foto besar "ditempel" ke viewport
+   (background-attachment: fixed), lalu box JELAJAH dan
+   section STATISTIK masing-masing hanya jadi "lubang jendela"
+   yang menampilkan sebagian dari foto yang sama itu.
+   Karena posisi & ukuran gambar dihitung relatif terhadap
+   layar (bukan elemen), potongan yang tampil di kedua
+   jendela terasa berasal dari satu gambar yang sama & selaras,
+   walau ukuran/posisi kotaknya beda. */
+.shared-window-bg {
+  background-image: url("../../img/BalaiDesa.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 /* Setiap huruf */
