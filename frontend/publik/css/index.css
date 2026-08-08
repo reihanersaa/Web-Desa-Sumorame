@@ -259,31 +259,29 @@ body {
   background: transparent !important;
 }
 /* =========================================
-   JELAJAH
+   JUDUL JELAJAH
 ========================================= */
 
 #jelajahTitle {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   gap: 1px;
 
-  /* Supaya huruf yang jatuh tidak terpotong */
   overflow: visible;
 
   text-shadow: 0 3px 5px rgba(0, 0, 0, 0.35);
 }
 
 /* Setiap huruf */
+
 .jelajah-letter {
   display: inline-block;
 
   position: relative;
 
   opacity: 0;
-
-  transform-origin: center bottom;
 
   will-change: transform, opacity;
 }
