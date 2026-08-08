@@ -53,7 +53,7 @@
   <body class="bg-surface font-body text-on-surface">
     <!-- HEADER -->
     <header
-      class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md"
+      id="mainHeader" class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md"
     >
       <div
         class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16"
@@ -178,9 +178,7 @@
 
     <!-- HERO -->
     <section
-      id="hero"
-      class="relative overflow-hidden bg-primary aspect-[16/9] mt-16"
-    >
+      id="heroSection" class="relative overflow-hidden bg-primary h-[700px] flex items-center">
       <div
         id="slider"
         class="flex transition-transform duration-700 ease-in-out h-full"
@@ -1097,58 +1095,70 @@
       </div>
 
       <!-- MODAL Fleksible -->
-<div
-  id="myModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div
+            id="myModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
 
-  <div id="modalBox" 
-  class="relative bg-white rounded-2xl shadow-2xl
-         w-fit
-         max-w-[700px]
-         max-h-[95vh]
-         flex flex-col overflow-hidden">
+            <div id="modalBox" 
+            class="relative bg-white rounded-2xl shadow-2xl
+                  w-fit
+                  max-w-[700px]
+                  max-h-[95vh]
+                  flex flex-col overflow-hidden">
 
-    <!-- Tombol X -->
-          <button
-            onclick="closeModal()"
-            class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
-          >
-            ✕
-          </button>
+              <!-- Tombol X -->
+                    <button
+                      onclick="closeModal()"
+                      class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
+                    >
+                      ✕
+                    </button>
 
-    <!-- HEADER -->
-    <div class="p-6 border-b">
-      <h2 class="text-xl font-semibold text-green-800">
-        Pengumuman Pelayanan
-      </h2>
+              <!-- HEADER -->
+              <div class="p-6 border-b">
+                <h2 class="text-xl font-semibold text-green-800">
+                  Pengumuman Pelayanan
+                </h2>
 
-      <p class="text-sm text-gray-600 mt-1">
-        Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
-      </p>
-    </div>
+                <p class="text-sm text-gray-600 mt-1">
+                  Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
+                </p>
+              </div>
 
-    <!-- BODY -->
-    <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-      <img
-          src="../img/Dirgahayu.png"
-          class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg">
-    </div>
+              <!-- BODY -->
+              <div class="flex-1 overflow-y-auto p-6 flex justify-center">
+                <img
+                    src="../img/Dirgahayu.png"
+                    class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg">
+              </div>
 
-    <!-- FOOTER -->
-    <div class="p-4 border-t bg-white">
-      <a
-        href="PPID.html"
-        class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">
-        LIHAT PENGUMUMAN
-      </a>
-    </div>
+              <!-- FOOTER -->
+              <div class="p-4 border-t bg-white">
+                <a
+                  href="PPID.html"
+                  class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+                  LIHAT PENGUMUMAN
+                </a>
+              </div>
 
-  </div>
+            </div>
 
-</div>
+          </div>
         </div>
         </div>
       </div>
     </main>
+
+    <!-- Scroll To Top -->
+        <button id="scrollTopBtn"
+            class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800
+                  text-white rounded-full shadow-lg flex items-center justify-center
+                  opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+
+            <span class="material-symbols-outlined">
+                keyboard_arrow_up
+            </span>
+
+        </button>
 
     <footer
       id="footer"
