@@ -470,7 +470,11 @@
           class="sambutan-item opacity-0 translate-y-16 transition-all duration-700 bg-white shadow-md rounded-xl p-4 w-full max-w-xs mx-auto md:mx-0 md:w-80 text-center flex flex-col"
         >
           <img
+<<<<<<< HEAD
             src="../img/rochmanu-red.jpg"
+=======
+            src="../img/kepala.png"
+>>>>>>> main
             alt="Kepala Desa"
             class="rounded-lg mb-3 w-full h-96 object-cover object-top hover:scale-105 transition duration-300"
           />
@@ -1043,16 +1047,16 @@
 
       <!-- MODAL -->
       <div
-        id="myModal"
+        id=""
         class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden"
       >
         <div
-          id="modalBox"
+          id=""
           class="relative w-[90%] max-w-6xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col"
         >
           <!-- Tombol X -->
           <button
-            onclick="closeModal()"
+            onclick=""
             class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
           >
             ✕
@@ -1092,34 +1096,56 @@
         </div>
       </div>
 
-      <!-- MODAL FLEKSIBLE-->
-      <div
-        id=""
-        class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden"
-      >
-        <div
-          id=""
-          class="relative w-[90vw] max-w-[600px] aspect-square rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col"
-        >
-          <!-- Tombol X -->
+      <!-- MODAL Fleksible -->
+<div
+  id="myModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+
+  <div id="modalBox" 
+  class="relative bg-white rounded-2xl shadow-2xl
+         w-fit
+         max-w-[700px]
+         max-h-[95vh]
+         flex flex-col overflow-hidden">
+
+    <!-- Tombol X -->
           <button
-            onclick=""
+            onclick="closeModal()"
             class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
           >
             ✕
           </button>
 
-          <!-- CONTENT (SCROLLABLE) -->
-          <div class="overflow-y-auto p-6 md:p-8">
-            <!-- GAMBAR -->
-            <img
-              src="../img/buruh.png"
-              class="w-full h-full object-contain rounded-xl shadow-lg mb-5 mx-auto"
-            />
-          </div>
+    <!-- HEADER -->
+    <div class="p-6 border-b">
+      <h2 class="text-xl font-semibold text-green-800">
+        Pengumuman Pelayanan
+      </h2>
 
-          <!-- FOOTER (TOMBOL STICKY) -->
-          <div class="p-4 border-t bg-white flex justify-center"></div>
+      <p class="text-sm text-gray-600 mt-1">
+        Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
+      </p>
+    </div>
+
+    <!-- BODY -->
+    <div class="flex-1 overflow-y-auto p-6 flex justify-center">
+      <img
+          src="../img/Dirgahayu.png"
+          class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg">
+    </div>
+
+    <!-- FOOTER -->
+    <div class="p-4 border-t bg-white">
+      <a
+        href="PPID.html"
+        class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+        LIHAT PENGUMUMAN
+      </a>
+    </div>
+
+  </div>
+
+</div>
+        </div>
         </div>
       </div>
     </main>

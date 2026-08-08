@@ -206,37 +206,37 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ======================
-// SCROLL TO TOP
-// ======================
+  // SCROLL TO TOP
+  // ======================
 
-const scrollTopBtn = document.getElementById("scrollTopBtn");
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
 
-// Tampilkan tombol saat scroll
-window.addEventListener("scroll", () => {
+  // Tampilkan tombol saat scroll
+  window.addEventListener("scroll", () => {
 
-    if (window.scrollY > 300) {
+      if (window.scrollY > 300) {
 
-        scrollTopBtn.classList.add("show");
+          scrollTopBtn.classList.add("show");
 
-    } else {
+      } else {
 
-        scrollTopBtn.classList.remove("show");
+          scrollTopBtn.classList.remove("show");
 
-    }
+      }
 
-});
+  });
 
-// Klik tombol
-scrollTopBtn.addEventListener("click", () => {
+  // Klik tombol
+  scrollTopBtn.addEventListener("click", () => {
 
-    window.scrollTo({
+      window.scrollTo({
 
-        top: 0,
-        behavior: "smooth"
+          top: 0,
+          behavior: "smooth"
 
-    });
+      });
 
-});
+  });
 
 
   // ===============================
