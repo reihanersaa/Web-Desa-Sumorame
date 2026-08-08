@@ -417,39 +417,37 @@ window.addEventListener("load", showStatistik);
 window.addEventListener("scroll", showStatistik);
 
 document.addEventListener("DOMContentLoaded", () => {
+
   const title = document.getElementById("jelajahTitle");
   const section = document.getElementById("jelajah");
 
   if (!title || !section) return;
 
+
   /* =========================================
      KONFIGURASI
   ========================================= */
 
-  // Jarak antar huruf mulai bergoyang
   const letterDelay = 150;
 
-  // Kecepatan goyangan
   const swaySpeed = 0.0018;
 
-  // Besar goyangan
-  const swayAmount = 3;
+  const swayAmount = 2.5;
+
 
   /* =========================================
-     SIMPAN TEXT ASLI
+     BUAT SETIAP HURUF
   ========================================= */
 
   const text = title.textContent.trim();
-
-  /* =========================================
-     BUAT SPAN SETIAP HURUF
-  ========================================= */
 
   title.textContent = "";
 
   const letters = [];
 
+
   [...text].forEach((character, index) => {
+
     const span = document.createElement("span");
 
     span.classList.add("jelajah-letter");
@@ -458,172 +456,202 @@ document.addEventListener("DOMContentLoaded", () => {
 
     title.appendChild(span);
 
+
     letters.push({
+
       element: span,
 
       index: index,
 
-      /*
-        Setiap huruf memiliki
-        kecepatan sedikit berbeda.
-      */
-
-      swayTime: Math.random() * Math.PI * 2,
-
-      swaySpeed: swaySpeed + Math.random() * 0.0005,
-
-      swayAmount: swayAmount + Math.random() * 1.5,
-
       startTime: 0,
+
+      swayTime:
+        Math.random() * Math.PI * 2,
+
+      swaySpeed:
+        swaySpeed +
+        Math.random() * 0.0005,
+
+      swayAmount:
+        swayAmount +
+        Math.random() * 1.5
+
     });
+
   });
 
+
   /* =========================================
-     STATUS ANIMASI
+     STATUS
   ========================================= */
 
+  let isVisible = false;
   let animationStarted = false;
+  let animationFrame = null;
+
 
   /* =========================================
-     LOOP ANIMASI
+     ANIMASI
   ========================================= */
 
   function animate(currentTime) {
-    if (!animationStarted) {
-      requestAnimationFrame(animate);
+
+    /*
+      Kalau section tidak terlihat,
+      hentikan loop.
+    */
+
+    if (!isVisible) {
+
+      animationFrame = null;
 
       return;
     }
 
-    letters.forEach((letter) => {
-      const element = letter.element;
 
-      /* =====================================
-         TUNGGU GILIRAN HURUF
-      ===================================== */
+    letters.forEach(letter => {
 
-      if (currentTime < letter.startTime) {
-        element.style.opacity = "0";
+      /*
+        Belum waktunya huruf ini muncul
+      */
+
+      if (
+        currentTime <
+        letter.startTime
+      ) {
 
         return;
       }
 
-      /* =====================================
-         FADE IN
-      ===================================== */
 
-      element.style.opacity = "1";
+      const element =
+        letter.element;
+
 
       /* =====================================
          GOYANG
       ===================================== */
 
-      letter.swayTime += letter.swaySpeed * 16;
+      letter.swayTime +=
+        letter.swaySpeed * 16;
 
-      /*
-        Gerakan kiri-kanan
-      */
 
-      const sway = Math.sin(letter.swayTime) * letter.swayAmount;
+      const sway =
+        Math.sin(
+          letter.swayTime
+        ) *
+        letter.swayAmount;
 
-      /*
-        Sedikit rotasi supaya
-        terlihat seperti benar-benar
-        bergoyang.
-      */
 
-      const rotation = sway * 1.3;
+      const rotation =
+        sway * 1.2;
 
-      element.style.transform = `
-        translateX(${sway}px)
-        rotate(${rotation}deg)
-        `;
+
+      element.style.opacity = "1";
+
+      element.style.transform =
+        `translate3d(${sway}px, 0, 0)
+         rotate(${rotation}deg)`;
+
     });
 
-    requestAnimationFrame(animate);
+
+    /*
+      Lanjutkan frame berikutnya
+    */
+
+    animationFrame =
+      requestAnimationFrame(animate);
   }
+
 
   /* =========================================
      INTERSECTION OBSERVER
   ========================================= */
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
+  const observer =
+    new IntersectionObserver(
+
+      (entries) => {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+
+            /*
+              Section masuk layar
+            */
+
+            isVisible = true;
+
+
+            /*
+              Animasi hanya dimulai sekali
+            */
+
+            if (!animationStarted) {
+
+              animationStarted = true;
+
+
+              const startTime =
+                performance.now();
+
+
+              letters.forEach(
+                (letter, index) => {
+
+                  letter.startTime =
+                    startTime +
+                    index * letterDelay;
+
+                }
+              );
+
+            }
+
+
+            /*
+              Jalankan animasi kalau
+              belum ada animation frame
+            */
+
+            if (!animationFrame) {
+
+              animationFrame =
+                requestAnimationFrame(
+                  animate
+                );
+
+            }
+
+          } else {
+
+            /*
+              Section keluar layar
+            */
+
+            isVisible = false;
+
+          }
+
+        });
+
+      },
+
+      {
         /*
-            JELAJAH sudah terlihat
-          */
-
-        if (entry.isIntersecting && !animationStarted) {
-          animationStarted = true;
-
-          const startTime = performance.now();
-
-          /*
-              Huruf mulai bergoyang
-              satu per satu.
-            */
-
-          letters.forEach((letter, index) => {
-            letter.startTime = startTime + index * letterDelay;
-          });
-
-          /*
-              Observer dihentikan
-              karena animasi cukup
-              dijalankan sekali.
-            */
-
-          observer.unobserve(section);
-        }
-      });
-    },
-
-    {
-      /*
-          Animasi mulai ketika
-          30% section terlihat.
+          Animasi aktif ketika
+          30% section terlihat
         */
 
-      threshold: 0.3,
-    },
-  );
+        threshold: 0.3
 
-  /* =========================================
-     AKTIFKAN OBSERVER
-  ========================================= */
+      }
+
+    );
+
 
   observer.observe(section);
 
-  /* =========================================
-     MULAI ANIMATION LOOP
-  ========================================= */
-
-    // === Smooth Scrolling untuk Menu Jelajah ===
-document.querySelectorAll('.menu-card[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault(); // Mencegah lompatan kasar bawaan HTML
-    
-    const targetId = this.getAttribute('href');
-    const targetSection = document.querySelector(targetId);
-    
-    if (targetSection) {
-      // Menghitung jarak offset agar tidak tertutup header yang fixed
-      // Angka 90 adalah perkiraan tinggi header ditambah sedikit ruang ekstra
-      const headerOffset = 90; 
-      const elementPosition = targetSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      // Eksekusi gulir halus
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
-  });
-});
-
-    window.addEventListener("load", showStatistik);
-    window.addEventListener("scroll", showStatistik);
-  requestAnimationFrame(animate);
 });
