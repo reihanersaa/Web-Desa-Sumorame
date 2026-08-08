@@ -417,10 +417,12 @@ window.addEventListener("load", showStatistik);
 window.addEventListener("scroll", showStatistik);
 
 document.addEventListener("DOMContentLoaded", () => {
+
   const title = document.getElementById("jelajahTitle");
   const section = document.getElementById("jelajah");
 
   if (!title || !section) return;
+
 
   /* =========================================
      KONFIGURASI
@@ -432,6 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const swayAmount = 2.5;
 
+
   /* =========================================
      BUAT SETIAP HURUF
   ========================================= */
@@ -442,7 +445,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const letters = [];
 
+
   [...text].forEach((character, index) => {
+
     const span = document.createElement("span");
 
     span.classList.add("jelajah-letter");
@@ -451,20 +456,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     title.appendChild(span);
 
+
     letters.push({
+
       element: span,
 
       index: index,
 
       startTime: 0,
 
-      swayTime: Math.random() * Math.PI * 2,
+      swayTime:
+        Math.random() * Math.PI * 2,
 
-      swaySpeed: swaySpeed + Math.random() * 0.0005,
+      swaySpeed:
+        swaySpeed +
+        Math.random() * 0.0005,
 
-      swayAmount: swayAmount + Math.random() * 1.5,
+      swayAmount:
+        swayAmount +
+        Math.random() * 1.5
+
     });
+
   });
+
 
   /* =========================================
      STATUS
@@ -474,111 +489,169 @@ document.addEventListener("DOMContentLoaded", () => {
   let animationStarted = false;
   let animationFrame = null;
 
+
   /* =========================================
      ANIMASI
   ========================================= */
 
   function animate(currentTime) {
+
     /*
       Kalau section tidak terlihat,
       hentikan loop.
     */
 
     if (!isVisible) {
+
       animationFrame = null;
 
       return;
     }
 
-    letters.forEach((letter) => {
+
+    letters.forEach(letter => {
+
       /*
         Belum waktunya huruf ini muncul
       */
 
-      if (currentTime < letter.startTime) {
+      if (
+        currentTime <
+        letter.startTime
+      ) {
+
         return;
       }
 
-      const element = letter.element;
+
+      const element =
+        letter.element;
+
 
       /* =====================================
          GOYANG
       ===================================== */
 
-      letter.swayTime += letter.swaySpeed * 16;
+      letter.swayTime +=
+        letter.swaySpeed * 16;
 
-      const sway = Math.sin(letter.swayTime) * letter.swayAmount;
 
-      const rotation = sway * 1.2;
+      const sway =
+        Math.sin(
+          letter.swayTime
+        ) *
+        letter.swayAmount;
+
+
+      const rotation =
+        sway * 1.2;
+
 
       element.style.opacity = "1";
 
-      element.style.transform = `translate3d(${sway}px, 0, 0)
+      element.style.transform =
+        `translate3d(${sway}px, 0, 0)
          rotate(${rotation}deg)`;
+
     });
+
 
     /*
       Lanjutkan frame berikutnya
     */
 
-    animationFrame = requestAnimationFrame(animate);
+    animationFrame =
+      requestAnimationFrame(animate);
   }
+
 
   /* =========================================
      INTERSECTION OBSERVER
   ========================================= */
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          /*
+  const observer =
+    new IntersectionObserver(
+
+      (entries) => {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+
+            /*
               Section masuk layar
             */
 
-          isVisible = true;
+            isVisible = true;
 
-          /*
+
+            /*
               Animasi hanya dimulai sekali
             */
 
-          if (!animationStarted) {
-            animationStarted = true;
+            if (!animationStarted) {
 
-            const startTime = performance.now();
+              animationStarted = true;
 
-            letters.forEach((letter, index) => {
-              letter.startTime = startTime + index * letterDelay;
-            });
-          }
 
-          /*
+              const startTime =
+                performance.now();
+
+
+              letters.forEach(
+                (letter, index) => {
+
+                  letter.startTime =
+                    startTime +
+                    index * letterDelay;
+
+                }
+              );
+
+            }
+
+
+            /*
               Jalankan animasi kalau
               belum ada animation frame
             */
 
-          if (!animationFrame) {
-            animationFrame = requestAnimationFrame(animate);
-          }
-        } else {
-          /*
+            if (!animationFrame) {
+
+              animationFrame =
+                requestAnimationFrame(
+                  animate
+                );
+
+            }
+
+          } else {
+
+            /*
               Section keluar layar
             */
 
-          isVisible = false;
-        }
-      });
-    },
+            isVisible = false;
 
-    {
-      /*
+          }
+
+        });
+
+      },
+
+      {
+        /*
           Animasi aktif ketika
           30% section terlihat
         */
 
-      threshold: 0.3,
-    },
-  );
+        threshold: 0.3
+
+      }
+
+    );
+
 
   observer.observe(section);
+
 });
