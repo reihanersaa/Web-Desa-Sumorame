@@ -278,12 +278,49 @@ body {
   background-attachment: fixed;
 }
 
-/* Sebagian browser mobile (terutama iOS Safari lama) mengabaikan
-   background-attachment: fixed dan otomatis kembali ke "scroll".
-   Ini aman: gambar tetap tampil benar di tiap jendela, hanya efek
-   "menyatu saat discroll"-nya yang hilang di device tsb. */
-@media (prefers-reduced-motion: reduce) {
-  .shared-window-bg {
-    background-attachment: scroll;
-  }
+/* Setiap huruf */
+
+.jelajah-letter {
+  display: inline-block;
+
+  position: relative;
+
+  opacity: 0;
+
+  will-change: transform, opacity;
 }
+
+/* ==========================
+      SCROLL TO TOP
+    ========================== */
+
+    #scrollTopBtn{
+        transform: translateY(20px);
+    }
+
+    #scrollTopBtn.show{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    #scrollTopBtn:hover{
+        box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+
+    /* HEADER SCROLL */
+    #mainHeader {
+      transition: transform 0.3s ease;
+    }
+
+    #mainHeader.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    #heroSection {
+      transition: margin-top 0.3s ease;
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
