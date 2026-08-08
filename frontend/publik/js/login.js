@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // ✅ default ke halaman utama
             Swal.fire({
             title: "Login Berhasil 🎉",
-            text: "Selamat datang di Dashboard Desa Tawangsari",
+            text: "Selamat datang di Dashboard Desa Sumorame",
             icon: "success",
             showConfirmButton: false,
             timer: 2000,
