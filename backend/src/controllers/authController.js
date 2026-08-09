@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const supabase = require("../config/supabase");
+const jwt = require("jsonwebtoken");
 
 const registerWarga = async (req, res) => {
   try {
@@ -97,3 +98,73 @@ const registerWarga = async (req, res) => {
 };
 
 module.exports = { registerWarga };
+
+const loginWarga = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // 1. Cek apakah email dan password diisi
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email dan password wajib diisi!",
+      });
+    }
+
+    // 2. Cari user berdasarkan email di database
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (error || !user) {
+      return res.status(401).json({
+        success: false,
+        message: "Email tidak ditemukan atau salah.",
+      });
+    }
+
+    // 3. Cocokkan password yang diketik dengan yang ada di database
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Password yang Anda masukkan salah.",
+      });
+    }
+
+    // 4. Buat Tiket VIP (Token JWT)
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }, // Tiket hangus dalam 1 hari
+    );
+
+    // 5. Kirim balasan sukses beserta token
+    return res.status(200).json({
+      success: true,
+      message: "Login berhasil!",
+      token: token,
+      data: {
+        id: user.id,
+        nama_lengkap: user.nama_lengkap,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Login Error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan internal pada server.",
+    });
+  }
+};
+
+module.exports = { registerWarga, loginWarga };
