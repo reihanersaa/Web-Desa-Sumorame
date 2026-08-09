@@ -271,11 +271,13 @@ body {
    jendela terasa berasal dari satu gambar yang sama & selaras,
    walau ukuran/posisi kotaknya beda. */
 .shared-window-bg {
-  background-image: url("../../img/BalaiDesa.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-attachment: fixed;
+  background: url("../../img/BalaiDesa.jpg") center / cover no-repeat;
+}
+
+@media (max-width: 639px) {
+  #heroSection {
+    height: 455px !important;
+  }
 }
 
 /* Setiap huruf */
@@ -324,3 +326,81 @@ body {
     #heroSection.hero-top {
       margin-top: 0;
     }
+
+    /* ==========================================
+   HERO - SAMAKAN TINGGI SECTION & GAMBAR
+========================================== */
+
+#heroSection {
+  position: relative !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Slider mengikuti tinggi hero */
+#heroSection #slider {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Setiap slide */
+#heroSection #slider > div {
+  position: relative !important;
+  flex: 0 0 100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Gambar hero */
+#heroSection .hero-image {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: none !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+@media (max-width: 639px) {
+
+  #heroSection {
+    height: 455px !important;
+    min-height: 455px !important;
+    max-height: 455px !important;
+  }
+
+  #heroSection #slider {
+    height: 455px !important;
+    min-height: 455px !important;
+  }
+
+  #heroSection #slider > div {
+    height: 455px !important;
+    min-height: 455px !important;
+    max-height: 455px !important;
+  }
+
+  #heroSection .hero-image {
+    width: 100% !important;
+    height: 455px !important;
+    min-height: 455px !important;
+    max-height: 455px !important;
+
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+}
