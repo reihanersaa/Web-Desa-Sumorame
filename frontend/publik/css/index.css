@@ -270,20 +270,47 @@ body {
    layar (bukan elemen), potongan yang tampil di kedua
    jendela terasa berasal dari satu gambar yang sama & selaras,
    walau ukuran/posisi kotaknya beda. */
-.shared-window-bg {
+/* =====================================================
+   PARALLAX BACKGROUND (JELAJAH + STATISTIK)
+   =====================================================
+   Dulu efek ini dibuat pakai `background-attachment: fixed`
+   di elemen section langsung -> berat, karena browser harus
+   me-repaint seluruh background tiap frame scroll.
+
+   Sekarang background dipindah ke layer terpisah (.parallax-bg)
+   yang digeser pakai `transform: translate3d()` lewat JS
+   (lihat index.js). transform di-composite oleh GPU, jadi jauh
+   lebih ringan daripada repaint background biasa.
+
+   Elemen pembungkus (panel JELAJAH & section STATISTIK) sudah
+   punya `relative overflow-hidden` dari class Tailwind di HTML,
+   jadi layer ini otomatis "terpotong" rapi sesuai bentuk kotaknya. */
+.parallax-bg {
+  position: absolute;
+  /* Dibuat lebih tinggi dari kontainer supaya ada ruang gerak
+     saat digeser transform, tanpa muncul celah kosong di tepi. */
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 140%;
+
   background-image: url("../../img/BalaiDesa.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-attachment: fixed;
+
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
 }
 
-/* Sebagian browser mobile (terutama iOS Safari lama) mengabaikan
-   background-attachment: fixed dan otomatis kembali ke "scroll".
-   Ini aman: gambar tetap tampil benar di tiap jendela, hanya efek
-   "menyatu saat discroll"-nya yang hilang di device tsb. */
+/* Pengguna yang memilih "reduced motion" tidak perlu digerakkan;
+   background tetap tampil, hanya efek parallax-nya dimatikan
+   (ditangani lewat JS dengan mengecek prefers-reduced-motion). */
 @media (prefers-reduced-motion: reduce) {
-  .shared-window-bg {
-    background-attachment: scroll;
+  .parallax-bg {
+    top: 0;
+    height: 100%;
+    transform: none !important;
   }
 }
