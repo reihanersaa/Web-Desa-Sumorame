@@ -41,6 +41,24 @@ burgerBtn.addEventListener('click', () => {
     jadwalIcon.classList.toggle('rotate-180');
   });
 
+  // ================= DROPDOWN KELOLA WEBSITE (CMS) =================
+  const cmsToggle = document.getElementById('cmsToggle');
+  const cmsMenu = document.getElementById('cmsMenu');
+  const cmsIcon = document.getElementById('cmsIcon');
+
+  cmsToggle.addEventListener('click', () => {
+    if (cmsMenu.classList.contains('max-h-0')) {
+      cmsMenu.classList.remove('max-h-0', 'opacity-0');
+      // Menggunakan max-h-40 agar sama persis dengan jadwalMenu
+      cmsMenu.classList.add('max-h-40', 'opacity-100'); 
+    } else {
+      cmsMenu.classList.remove('max-h-40', 'opacity-100');
+      cmsMenu.classList.add('max-h-0', 'opacity-0');
+    }
+
+    cmsIcon.classList.toggle('rotate-180');
+  });
+
   overlay.addEventListener('click', () => {
     sidebar.classList.add('-translate-x-full');
     overlay.classList.add('hidden');
@@ -159,3 +177,4 @@ burgerBtn.addEventListener('click', () => {
       }, 300);
     });
   });
+  

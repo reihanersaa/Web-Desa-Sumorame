@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS Profil | Website Desa Tawangsari</title>
+  <link rel="icon" href="../img/logo.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/DashboardAdmin.css">
+</head>
+
+<body class="bg-gray-200">
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 h-16 bg-white border-b flex z-50">
+  <div id="headerLeft" class="w-64 bg-white flex items-center px-4 border-r transition-all duration-300">
+    <img src="../img/logo2.png" class="h-20 object-contain" />
+  </div>
+  <div class="flex-1 flex items-center justify-between px-4">
+    <div class="flex items-center">
+      <button id="burgerBtn" class="mr-4"><span class="material-symbols-outlined">menu</span></button>
+      <h1 class="font-semibold text-lg">Kelola Beranda</h1>
+    </div>
+    <a href="LoginAdmin.html" class="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition">
+      <span class="material-symbols-outlined text-base">logout</span><span>Logout</span>
+    </a>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside id="sidebar" class="fixed top-16 left-0 w-64 h-[calc(100%-4rem)] bg-black text-white p-4 transition-all duration-300 -translate-x-full md:translate-x-0">
+  <nav class="space-y-2 text-sm">
+    <a href="DashboardAdmin.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">home</span><span class="menu-text">Dashboard</span>
+    </a>
+
+    <!-- Dropdown Permohonan -->   
+    <div>
+      <button id="jadwalToggle" class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+        <span class="flex items-center"><span class="material-symbols-outlined mr-3">article_person</span><span class="menu-text">Permohonan</span></span>
+        <span id="jadwalIcon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+      </button>
+      <div id="jadwalMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+        <a href="Pengaduan.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Aduan
+          </a>
+          <a href="SuratMenyurat.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Surat Menyurat
+          </a>
+          <a href="Informasi.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Informasi
+          </a>
+      </div>
+    </div>
+
+    <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">linked_camera</span>
+      <span class="menu-text">Publikasi</span>
+    </a>
+
+    <!-- Dropdown CMS (DIBUAT TERBUKA & HIGHLIGHT) -->
+    <div>
+      <button id="cmsToggle" class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+        <span class="flex items-center"><span class="material-symbols-outlined mr-3">web</span><span class="menu-text">Kelola Website</span></span>
+        <span id="cmsIcon" class="material-symbols-outlined text-sm transition-transform rotate-180">expand_more</span>
+      </button>
+
+      <div id="cmsMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-40 opacity-100 transition-all duration-300 ease-in-out">
+        <a href="CmsProfil.html" class="flex items-center gap-2 p-2 text-white bg-gray-700 translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Profil & Hero
+        </a>
+        
+        <a href="CmsProduk.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Produk Unggulan
+        </a>
+      </div>
+    </div>
+  </nav>
+</aside>
+
+<!-- OVERLAY MOBILE -->
+<div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"></div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent" class="pt-16 md:pl-64 transition-all duration-300 min-h-screen flex flex-col">
+  <main class="flex-1 p-6 pb-20">
+
+    <!-- HEADER HALAMAN -->
+    <div class="mb-6 fade-up">
+      <h2 class="text-2xl font-bold text-gray-800">Kelola Profil & Hero Beranda</h2>
+      <p class="text-sm text-gray-500">Perbarui gambar slider, informasi Kepala Desa, kata sambutan, dan arah kebijakan desa.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-md max-w-4xl fade-up delay-1">
+      <form id="formProfilDesa" class="space-y-6">
+        
+        <!-- AREA KELOLA CAROUSEL HERO -->
+        <div class="p-5 border-2 border-gray-100 rounded-xl bg-gray-50 mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-3">
+              <div>
+                <h3 class="text-lg font-bold text-gray-800">Slider / Hero Beranda</h3>
+                <p class="text-xs text-gray-500">Kelola gambar banner ukuran besar yang bergeser di halaman utama.</p>
+              </div>
+              <button type="button" id="btnTambahCarousel" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-semibold flex items-center gap-1 transition shadow-sm">
+                <span class="material-symbols-outlined text-sm">add</span> Tambah Gambar
+              </button>
+            </div>
+      
+            <!-- Wadah Daftar Carousel -->
+            <div id="wadahCarousel" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <!-- Item Carousel Default -->
+              <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-200 relative group carousel-item">
+                <!-- Area Preview Gambar -->
+                <div class="w-full h-32 bg-gray-100 rounded mb-3 overflow-hidden flex items-center justify-center border border-gray-200 relative">
+                   <img src="../img/hero-default.jpg" alt="Preview Carousel" class="w-full h-full object-cover preview-img">
+                   <span class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded backdrop-blur-sm">Slide 1</span>
+                </div>
+                <!-- Area Aksi (Upload & Hapus) -->
+                <div class="flex items-center justify-between gap-2">
+                  <input type="file" accept="image/png, image/jpeg, image/webp" class="input-carousel-file w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
+                  <button type="button" class="btn-hapus-carousel shrink-0 text-red-500 hover:text-red-700 p-1.5 bg-red-50 hover:bg-red-100 rounded transition" title="Hapus Gambar">
+                    <span class="material-symbols-outlined text-lg">delete</span>
+                  </button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+        <!-- Area Foto Kades -->
+        <div class="flex flex-col sm:flex-row gap-6 items-start">
+          <div class="w-full sm:w-1/3">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Foto Kepala Desa</label>
+            <div class="w-full h-48 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden mb-2 relative group">
+              <img id="previewFoto" src="../img/default-avatar.png" alt="Preview" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="text-white text-xs font-semibold">Pilih Foto Baru</span>
+              </div>
+            </div>
+            <input type="file" id="inputFotoKades" accept="image/png, image/jpeg, image/webp" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+            <p class="text-xs text-gray-400 mt-1">Format: JPG/PNG/WebP. Maks: 2MB.</p>
+          </div>
+
+          <!-- Area Input Teks -->
+          <div class="w-full sm:w-2/3 space-y-4">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Kepala Desa</label>
+              <input type="text" id="namaKades" placeholder="Contoh: ROCHMANU" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Teks Sambutan</label>
+              <textarea id="teksSambutan" rows="5" placeholder="Tuliskan kata sambutan Kepala Desa..." required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-gray-200">
+
+        <!-- Area Visi & Misi -->
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Visi Desa</label>
+            <textarea id="visiDesa" rows="2" placeholder="Contoh: Mewujudkan Desa Sumorame yang Mandiri, Sejahtera, dan Berbudaya" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Misi Desa</label>
+            <p class="text-xs text-gray-500 mb-2">Pisahkan setiap poin misi dengan menekan tombol <b>Enter</b> (baris baru).</p>
+            <textarea id="misiDesa" rows="5" placeholder="1. Meningkatkan pelayanan publik yang prima&#10;2. Membangun infrastruktur desa" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition"></textarea>
+          </div>
+        </div>
+
+        <!-- Tombol Simpan -->
+        <div class="flex justify-end pt-4 border-t border-gray-200 mt-6">
+          <button type="submit" id="btnSimpanProfil" class="bg-gray-800 hover:bg-black text-white font-bold py-2.5 px-6 rounded-md transition duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl mt-4">
+            <span class="material-symbols-outlined text-sm">save</span> Simpan Perubahan
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<!-- SCRIPT UTAMA DASHBOARD -->
+<script src="js/DashboardAdmin.js"></script>
+
+<!-- SCRIPT KHUSUS KELOLA PROFIL & CAROUSEL -->
+<script src="js/CmsProfil.js"></script>
+
+</body>
+</html>
