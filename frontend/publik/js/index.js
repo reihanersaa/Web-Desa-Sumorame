@@ -296,58 +296,134 @@ modal.addEventListener("click", (e) => {
   }
 });
 
-// === HERO SLIDER ===
+// ==========================================
+// HERO SLIDER
+// ==========================================
+
 const slider = document.getElementById("slider");
 const slides = document.querySelectorAll("#slider > div");
+const nextButton = document.getElementById("next");
+const prevButton = document.getElementById("prev");
 
 let index = 0;
-let total = slides.length;
+const total = slides.length;
 
-// fungsi geser
+let autoSlide;
+
+// ==========================================
+// FUNGSI MENAMPILKAN SLIDE
+// ==========================================
+
 function showSlide(i) {
-  index = (i + total) % total;
-  slider.style.transform = `translateX(-${index * 100}%)`;
+    index = (i + total) % total;
+
+    slider.style.transform = `translateX(-${index * 100}%)`;
 }
 
-// tombol manual
-document.getElementById("next").onclick = () => showSlide(index + 1);
-document.getElementById("prev").onclick = () => showSlide(index - 1);
 
+// ==========================================
 // AUTO SLIDE
-let autoSlide = setInterval(() => {
-  showSlide(index + 1);
-}, 4000);
+// ==========================================
 
-// STOP kalau hover (desktop)
-slider.addEventListener("mouseenter", () => clearInterval(autoSlide));
-slider.addEventListener("mouseleave", () => {
-  autoSlide = setInterval(() => showSlide(index + 1), 4000);
+function startAutoSlide() {
+    clearInterval(autoSlide);
+
+    autoSlide = setInterval(() => {
+        showSlide(index + 1);
+    }, 4000);
+}
+
+function stopAutoSlide() {
+    clearInterval(autoSlide);
+}
+
+
+// ==========================================
+// TOMBOL NEXT
+// ==========================================
+
+nextButton.addEventListener("click", () => {
+    showSlide(index + 1);
+
+    // Reset timer setelah klik
+    startAutoSlide();
 });
 
+
+// ==========================================
+// TOMBOL PREV
+// ==========================================
+
+prevButton.addEventListener("click", () => {
+    showSlide(index - 1);
+
+    // Reset timer setelah klik
+    startAutoSlide();
+});
+
+
+// ==========================================
+// HOVER DESKTOP
+// ==========================================
+
+slider.addEventListener("mouseenter", () => {
+    stopAutoSlide();
+});
+
+slider.addEventListener("mouseleave", () => {
+    startAutoSlide();
+});
+
+
+// ==========================================
 // SWIPE MOBILE
+// ==========================================
+
 let startX = 0;
+let endX = 0;
 
 slider.addEventListener(
-  "touchstart",
-  (e) => {
-    startX = e.touches[0].clientX;
-  },
-  { passive: true }
+    "touchstart",
+    (e) => {
+        startX = e.touches[0].clientX;
+
+        // Berhenti sementara ketika disentuh
+        stopAutoSlide();
+    },
+    { passive: true }
 );
+
 
 slider.addEventListener(
-  "touchend",
-  (e) => {
-    let endX = e.changedTouches[0].clientX;
+    "touchend",
+    (e) => {
+        endX = e.changedTouches[0].clientX;
 
-    if (startX - endX > 50) {
-      showSlide(index + 1);
-    } else if (endX - startX > 50) {
-      showSlide(index - 1);
-    }
-  },
-  { passive: true }
+        const difference = startX - endX;
+
+        // Swipe ke kiri
+        if (difference > 50) {
+            showSlide(index + 1);
+        }
+
+        // Swipe ke kanan
+        else if (difference < -50) {
+            showSlide(index - 1);
+        }
+
+        // Jalankan kembali auto slide
+        startAutoSlide();
+    },
+    { passive: true }
 );
+
+
+// ==========================================
+// INISIALISASI
+// ==========================================
+
+showSlide(0);
+startAutoSlide();
 
 // === CONTROL KEYBOARD ===
 document.addEventListener("keydown", (e) => {

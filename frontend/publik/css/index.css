@@ -196,67 +196,132 @@ body {
   color: #1f2937;
 }
 
-/* =====================================================
-   FIX HERO - HILANGKAN ELIPS / BENTUK PUTIH
-   ===================================================== */
+/* =========================================
+   HERO SLIDER
+========================================= */
 
-#hero {
-  position: relative !important;
-  width: 100% !important;
-  overflow: hidden !important;
-  border-radius: 0 !important;
-  isolation: isolate !important;
+#heroSection {
+    position: relative !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    border-radius: 0 !important;
+    isolation: isolate !important;
+
+    /* Desktop */
+    height: 700px;
 }
 
-/* Tidak boleh ada pseudo element di Hero */
-#hero::before,
-#hero::after,
-#hero #slider::before,
-#hero #slider::after,
-#hero #slider > div::before,
-#hero #slider > div::after {
-  content: none !important;
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
+
+/* =========================================
+   SLIDER
+========================================= */
+
+#heroSection #slider {
+    position: relative !important;
+    display: flex !important;
+    width: 100% !important;
+    height: 100% !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
-/* Slider */
-#hero #slider {
-  position: relative !important;
-  display: flex !important;
-  width: 100% !important;
-  height: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
+
+/* =========================================
+   SLIDE
+========================================= */
+
+#heroSection #slider > div {
+    position: relative !important;
+
+    min-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    overflow: hidden !important;
 }
 
-/* Slide */
-#hero #slider > div {
-  position: relative !important;
-  min-width: 100% !important;
-  width: 100% !important;
-  height: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: hidden !important;
+
+/* =========================================
+   GAMBAR
+========================================= */
+
+#heroSection .hero-image {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+
+    background: transparent !important;
 }
 
-/* Gambar */
-#hero .hero-image {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
+#heroSection {
+    touch-action: pan-y;
+}
 
-  object-fit: cover !important;
-  object-position: center !important;
+#heroSection #slider {
+    will-change: transform;
+}
 
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1024px) {
+
+    #heroSection {
+        height: 500px;
+    }
+
+}
+
+
+/* =========================================
+   HANDPHONE
+========================================= */
+
+@media (max-width: 768px) {
+
+    #heroSection {
+        height: 360px;
+    }
+
+    #heroSection .hero-image {
+        object-position: center center !important;
+    }
+
+}
+
+
+/* =========================================
+   HANDPHONE KECIL
+========================================= */
+
+@media (max-width: 480px) {
+
+    #heroSection {
+        height: 260px;
+    }
+
+    #heroSection .hero-image {
+        object-position: center center !important;
+    }
+
 }
 
 /* =====================================================
