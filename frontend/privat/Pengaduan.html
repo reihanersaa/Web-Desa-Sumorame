@@ -51,42 +51,65 @@
       <span class="menu-text">Dashboard</span>
     </a>
 
-      <!-- Dropdown Menu-->   
+      <a href="DashboardAdmin.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">home</span>
+      <span class="menu-text">Dashboard</span>
+    </a>
+
+    <a href="SuratMenyurat.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">mail</span>
+      <span class="menu-text">Surat Menyurat</span>
+    </a>
+    
+    <a href="Pengaduan.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">report</span>
+      <span class="menu-text">Aduan</span>
+    </a>
+
+    <a href="Kelembagaan.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">groups</span>
+      <span class="menu-text">Lembaga</span>
+    </a>
+
+    <!-- Dropdown Menu-->   
       <div>
-        <button id="pemohonToggle"
+        <button id="permohonanToggle"
           class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
 
           <span class="flex items-center">
             <span class="material-symbols-outlined mr-3">article_person</span>
-            <span class="menu-text">Permohonan</span>
+            <span class="menu-text">Publikasi</span>
           </span>
 
-          <span id="pemohonIcon" class="material-symbols-outlined text-sm transition-transform">
+          <span id="permohonanIcon" class="material-symbols-outlined text-sm transition-transform">
             expand_more
           </span>
         </button>
 
         <!-- Submenu -->
-        <div id="pemohonMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
-          <a href="#" class="flex items-center gap-2 p-2 text-gray-300 bg-gray-700 hover:translate-x-1 transition-all rounded">
+        <div id="permohonanMenu" class="ml-6 mt-1 space-y-1 hidden">
+          <a href="#" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
             <span class="material-symbols-outlined text-xs">chevron_right</span>
-            Aduan
+            Publikasi Kegiatan
           </a>
-          <a href="SuratMenyurat.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <a href="PublikasiProfile.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
             <span class="material-symbols-outlined text-xs">chevron_right</span>
-            Surat Menyurat
+            Profil Desa
           </a>
-          <a href="Informasi.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <a href="PublikasiPPID.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            PPID
+          </a>
+          <a href="PublikasiInformasi.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
             <span class="material-symbols-outlined text-xs">chevron_right</span>
             Informasi
           </a>
+          <a href="PublikasiProduk.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Produk
+          </a>
         </div>
       </div>
-
-    <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">linked_camera</span>
-      <span class="menu-text">Publikasi</span>
-    </a>
   </nav>
 </aside>
 
