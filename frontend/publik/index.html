@@ -6,21 +6,12 @@
     <title>Profil Desa | Website Desa Sumorame</title>
     <link rel="icon" href="../img/logo.png" type="image/png" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="css/index.css" />
 
     <!-- Tailwind Config -->
@@ -53,20 +44,13 @@
   <body class="bg-surface font-body text-on-surface">
     <!-- HEADER -->
     <header
-      class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md"
-    >
+      id="mainHeader" class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md">
       <div
-        class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16"
-      >
+        class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
         <!-- Logo -->
         <div class="flex items-center gap-3">
           <div class="logo">
-            <img
-              src="../img/logo.png"
-              alt="Logo Desa Digital"
-              width="40"
-              height="36"
-            />
+            <img src="../img/logo.png" alt="Logo Desa Digital" width="40" height="36"/>
           </div>
           <h1 class="font-headline text-xl font-bold text-emerald-900">
             Desa Sumorame
@@ -81,48 +65,30 @@
           <a href="PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a href="Lembaga.html" class="nav-item relative px-5 font-bold"
-            >Lembaga</a
-          >
+          <a href="Lembaga.html" class="nav-item relative px-5 font-bold">Lembaga</a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a href="Informasi.html" class="nav-item relative px-5 font-bold"
-            >Informasi</a
-          >
+          <a href="Informasi.html" class="nav-item relative px-5 font-bold">Informasi</a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a
-            href="AdminP.html"
-            class="nav-item relative px-5 font-bold text-green-800"
-            >Administrasi Persuratan</a
-          >
+          <a href="AdminP.html" class="nav-item relative px-5 font-bold text-green-800">Administrasi Persuratan</a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a href="Aduan.html" class="nav-item relative px-5 font-bold"
-            >Aduan</a
-          >
+          <a href="Aduan.html" class="nav-item relative px-5 font-bold">Aduan</a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a href="Publikasi.html" class="nav-item relative px-5 font-bold"
-            >Publikasi</a
-          >
+          <a href="Publikasi.html" class="nav-item relative px-5 font-bold">Publikasi</a>
         </nav>
 
         <!-- LOGOUT -->
-        <a
-          href="login.html"
-          class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition"
-        >
+        <a href="login.html" class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition">
           <span class="material-symbols-outlined text-2xl">logout</span>
         </a>
 
         <!-- Right Section -->
         <div class="flex items-center gap-4">
           <!-- Hamburger (Mobile Only) -->
-          <button
-            id="menuBtn"
-            class="md:hidden material-symbols-outlined text-emerald-900 text-3xl"
-          >
+          <button id="menuBtn" class="md:hidden material-symbols-outlined text-emerald-900 text-3xl">
             menu
           </button>
         </div>
@@ -130,61 +96,20 @@
     </header>
 
     <!-- MOBILE MENU -->
-    <div
-      id="mobileMenu"
-      class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300"
-    >
-      <a
-        href="#"
-        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        >Profile Desa</a
-      >
-      <a
-        href="PPID.html"
-        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        >PPID</a
-      >
-      <a
-        href="Lembaga.html"
-        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        >Lembaga</a
-      >
-      <a
-        href="Informasi.html"
-        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        >Informasi</a
-      >
-      <a
-        href="AdminP.html"
-        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        >Administrasi Persuratan</a
-      >
-      <a
-        href="Aduan.html"
-        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        >Aduan</a
-      >
-      <a
-        href="Publikasi.html"
-        class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        >Publikasi</a
-      >
-      <a
-        href="login.html"
-        class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        >Log Out</a
-      >
+    <div id="mobileMenu" class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300">
+      <a href="#" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Profile Desa</a>
+      <a href="PPID.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">PPID</a>
+      <a href="Lembaga.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Lembaga</a>
+      <a href="Informasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Informasi</a>
+      <a href="AdminP.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Administrasi Persuratan</a>
+      <a href="Aduan.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Aduan</a>
+      <a href="Publikasi.html" class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition">Publikasi</a>
+      <a href="login.html" class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition">Log Out</a>
     </div>
 
     <!-- HERO -->
-    <section
-      id="hero"
-      class="relative overflow-hidden bg-primary aspect-[16/9] mt-16"
-    >
-      <div
-        id="slider"
-        class="flex transition-transform duration-700 ease-in-out h-full"
-      >
+    <section id="heroSection" class="relative overflow-hidden bg-primary h-[700px] flex items-center">
+      <div id="slider" class="flex transition-transform duration-700 ease-in-out h-full">
         <div class="min-w-full relative h-full">
           <img src="../img/Panggilan.png" alt="Hero" class="hero-image" />
         </div>
@@ -202,17 +127,11 @@
         </div>
       </div>
 
-      <button
-        id="prev"
-        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded z-20"
-      >
+      <button id="prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded z-20">
         ❮
       </button>
 
-      <button
-        id="next"
-        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded z-20"
-      >
+      <button id="next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded z-20">
         ❯
       </button>
     </section>
@@ -222,26 +141,20 @@
       <section id="asal-usul" class="bg-[#EEEEEE] py-20">
         <div class="max-w-6xl mx-auto px-6">
           <!-- GRID UTAMA -->
-          <div
-            class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start"
-          >
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start">
             <!-- ================================= -->
             <!-- KOLOM KIRI : ASAL USUL DESA -->
             <!-- ================================= -->
             <div class="lg:col-span-2">
               <!-- Judul -->
-              <h2
-                class="font-poppins text-2xl md:text-3xl font-bold text-[#063b27] mb-7"
-              >
+              <h2 class="font-poppins text-2xl md:text-3xl font-bold text-[#063b27] mb-7">
                 Asal Usul Desa
               </h2>
 
               <!-- Deskripsi -->
               <div class="text-[15px] leading-[1.7] text-gray-800 text-justify">
                 <p class="mb-5">
-                  <span
-                    class="float-left text-5xl leading-[0.8] mr-1 text-[#063b27]"
-                  >
+                  <span class="float-left text-5xl leading-[0.8] mr-1 text-[#063b27]">
                     D
                   </span>
                   esa Sumorame merupakan salah satu desa yang berada di
@@ -352,23 +265,15 @@
             <!-- KOLOM KANAN : CARD DESA -->
             <!-- ================================= -->
             <div class="lg:col-span-1">
-              <div
-                class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-7 w-full"
-              >
+              <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-7 w-full">
                 <!-- Judul -->
-                <h3
-                  class="font-poppins text-center text-xl md:text-2xl font-medium text-[#063b27]"
-                >
+                <h3 class="font-poppins text-center text-xl md:text-2xl font-medium text-[#063b27]">
                   Desa Sumorame
                 </h3>
 
                 <!-- Logo Desa -->
                 <div class="flex justify-center mt-4 mb-7">
-                  <img
-                    src="../img/logo-desa.png"
-                    alt="Logo Desa Sumorame"
-                    class="w-24 h-24 object-contain"
-                  />
+                  <img src="../img/logo-desa.png" alt="Logo Desa Sumorame" class="w-24 h-24 object-contain"/>
                 </div>
 
 
@@ -376,19 +281,8 @@
                 <div class="space-y-4 mb-6">
                   <!-- Tanggal Berdiri -->
                   <div class="flex items-center gap-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-5 h-5 text-[#0b5c3b] shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M8 7V3m8 4V3m-9 8h10M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#0b5c3b] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
                     </svg>
 
                     <p class="text-sm text-gray-600">
@@ -399,19 +293,8 @@
 
                   <!-- Luas Wilayah -->
                   <div class="flex items-center gap-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-5 h-5 text-[#0b5c3b] shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M4 20L20 4M4 4h6M4 4v6M20 20h-6M20 20v-6"
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#0b5c3b] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 20L20 4M4 4h6M4 4v6M20 20h-6M20 20v-6"/>
                     </svg>
 
                     <p class="text-sm text-gray-600">
@@ -436,9 +319,7 @@
                 <!-- PETA WILAYAH -->
                 <!-- ================================= -->
 
-                <div
-                    class="h-36 md:h-40 bg-[#e5e3df] rounded-xl flex flex-col items-center justify-center"
-                >
+                <div class="h-36 md:h-40 bg-[#e5e3df] rounded-xl flex flex-col items-center justify-center">
 
                     <div class="h-36 md:h-40 rounded-xl overflow-hidden shadow-sm">
 
@@ -461,33 +342,20 @@
         </div>
       </section>
 
-      <section
-        id="sambutan"
-        class="mt-16 mb-16 max-w-4xl mx-auto flex flex-col md:flex-row items-stretch gap-6"
-      >
+      <section id="sambutan" class="mt-16 mb-16 max-w-4xl mx-auto flex flex-col md:flex-row items-stretch gap-6">
         <!-- CARD FOTO (dari bawah) -->
-        <div
-          class="sambutan-item opacity-0 translate-y-16 transition-all duration-700 bg-white shadow-md rounded-xl p-4 w-full max-w-xs mx-auto md:mx-0 md:w-80 text-center flex flex-col"
-        >
-          <img
-            src="../img/rochmanu-red.jpg"
-            alt="Kepala Desa"
-            class="rounded-lg mb-3 w-full h-96 object-cover object-top hover:scale-105 transition duration-300"
-          />
+        <div class="sambutan-item opacity-0 translate-y-16 transition-all duration-700 bg-white shadow-md rounded-xl p-4 w-full max-w-xs mx-auto md:mx-0 md:w-80 text-center flex flex-col">
+          <img src="../img/rochmanu-red.jpg" alt="Kepala Desa" class="rounded-lg mb-3 w-full h-96 object-cover object-top hover:scale-105 transition duration-300"/>
           <h4 class="font-semibold text-base">ROCHMANU</h4>
         </div>
 
         <!-- TEXT AREA -->
         <div class="flex-1 flex flex-col gap-3">
-          <h3
-            class="font-poppins sambutan-item opacity-0 scale-90 transition-all duration-700 delay-200 text-xl md:text-2xl font-bold text-primary text-center"
-          >
+          <h3 class="font-poppins sambutan-item opacity-0 scale-90 transition-all duration-700 delay-200 text-xl md:text-2xl font-bold text-primary text-center">
             Sambutan Kepala Desa Sumorame
           </h3>
 
-          <p
-            class="sambutan-item opacity-0 translate-x-16 transition-all duration-700 delay-300 text-base md:text-lg text-gray-600 leading-8 text-justify"
-          >
+          <p class="sambutan-item opacity-0 translate-x-16 transition-all duration-700 delay-300 text-base md:text-lg text-gray-600 leading-8 text-justify">
             Assalamu’alaikum warahmatullahi wabarakatuh, Salam sejahtera bagi
             kita semua. Dengan penuh rasa syukur, saya menyambut seluruh warga
             dan pengunjung di website resmi Desa Digital. Website ini diharapkan
@@ -510,16 +378,11 @@
             <div class="parallax-bg" data-parallax-speed="0.25"></div>
 
             <!-- Overlay biru -->
-            <div
-              class="absolute inset-0 bg-gradient-to-b from-cyan-600/80 via-blue-900/40 to-blue-950/90"
-            ></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-cyan-600/80 via-blue-900/40 to-blue-950/90"></div>
 
             <!-- Tulisan -->
             <div class="relative z-20 h-full flex items-center justify-center">
-              <h2
-                id="jelajahTitle"
-                class="font-poppins text-3xl font-extrabold text-white"
-              >
+              <h2 id="jelajahTitle" class="font-poppins text-3xl font-extrabold text-white">
                 JELAJAH
               </h2>
             </div>
@@ -535,8 +398,7 @@
                 <img
                   src="../img/statistik.png"
                   alt="Statistik"
-                  class="menu-icon"
-                />
+                  class="menu-icon"/>
 
                 <span>Statistik</span>
               </a>
@@ -546,8 +408,7 @@
                 <img
                   src="../img/pemerintah.png"
                   alt="Pemerintah"
-                  class="menu-icon"
-                />
+                  class="menu-icon"/>
 
                 <span>Pemerintah</span>
               </a>
@@ -557,8 +418,7 @@
                 <img
                   src="../img/pembangunan.png"
                   alt="Pembangunan"
-                  class="menu-icon"
-                />
+                  class="menu-icon"/>
 
                 <span>Pembangunan</span>
               </a>
@@ -580,8 +440,7 @@
                 <img
                   src="../img/PengaduanIcn.png"
                   alt="Pengaduan"
-                  class="menu-icon"
-                />
+                  class="menu-icon"/>
 
                 <span>Pengaduan</span>
               </a>
@@ -591,8 +450,7 @@
                 <img
                   src="../img/Peraturan.png"
                   alt="Peraturan"
-                  class="menu-icon"
-                />
+                  class="menu-icon"/>
 
                 <span>Peraturan</span>
               </a>
@@ -609,8 +467,7 @@
                 <img
                   src="../img/Info Publik.png"
                   alt="Info Publik"
-                  class="menu-icon"
-                />
+                  class="menu-icon"/>
                 <span>Info Publik</span>
               </a>
 
@@ -619,8 +476,7 @@
                 <img
                   src="../img/inventaris.png"
                   alt="Inventaris"
-                  class="menu-icon"
-                />
+                  class="menu-icon"/>
 
                 <span>Inventaris</span>
               </a>
@@ -630,8 +486,7 @@
                 <img
                   src="../img/Galeri_Foto.png"
                   alt="Galeri Foto"
-                  class="menu-icon"
-                />
+                  class="menu-icon"/>
 
                 <span>Galeri Foto</span>
               </a>
@@ -654,20 +509,13 @@
         <div class="parallax-bg" data-parallax-speed="0.25"></div>
 
         <!-- Overlay warna -->
-        <div
-          class="absolute inset-0 z-[1] bg-gradient-to-r from-green-800/50 via-gray-500/50 to-teal-800/50"
-        ></div>
+        <div class="absolute inset-0 z-[1] bg-gradient-to-r from-green-800/50 via-gray-500/50 to-teal-800/50"> </div>
         <!-- Judul -->
-        <h2
-          id="teks-animasi"
-          class="relative z-10 font-poppins text-4xl font-extrabold text-center text-white mb-2 tracking-wider"
-        >
+        <h2 id="teks-animasi" class="relative z-10 font-poppins text-4xl font-extrabold text-center text-white mb-2 tracking-wider">
           STATISTIK DESA
         </h2>
 
-        <h3
-          class="relative z-10 font-poppins text-1xl font-bold text-center text-white mb-10"
-        >
+        <h3 class="relative z-10 font-poppins text-1xl font-bold text-center text-white mb-10">
           DATA POPULASI PPID DESA SUMORAME, KECAMATAN CANDI, DESA SIDOARJO
         </h3>
 
@@ -676,17 +524,12 @@
           <!-- 4 CARD DALAM SATU BARIS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Laki-Laki -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                 <img
                   src="../img/laki-laki.png"
                   class="w-12 h-12 object-contain"
-                  alt="Laki-laki"
-                />
+                  alt="Laki-laki" />
               </div>
 
               <div>
@@ -701,17 +544,12 @@
             </div>
 
             <!-- Perempuan -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                 <img
                   src="../img/perempuan.png"
                   class="w-12 h-12 object-contain"
-                  alt="Perempuan"
-                />
+                  alt="Perempuan"/>
               </div>
 
               <div>
@@ -726,17 +564,12 @@
             </div>
 
             <!-- Total Penduduk -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                 <img
                   src="../img/total.png"
                   class="w-12 h-12 object-contain"
-                  alt="Total Penduduk"
-                />
+                  alt="Total Penduduk"/>
               </div>
 
               <div>
@@ -751,17 +584,12 @@
             </div>
 
             <!-- Total Dusun -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                 <img
                   src="../img/dusun.png"
                   class="w-12 h-12 object-contain"
-                  alt="Total Dusun"
-                />
+                  alt="Total Dusun"/>
               </div>
 
               <div>
@@ -781,49 +609,34 @@
       <!-- BERITA TERKINI -->
       <section id="berita" class="mb-16">
         <!-- Judul -->
-        <h1
-          class="font-poppins berita-item opacity-0 -translate-y-10 transition-all duration-700 text-[#006633] text-xl md:text-2xl lg:text-3xl font-black capitalize text-center mb-6"
-        >
+        <h1 class="font-poppins berita-item opacity-0 -translate-y-10 transition-all duration-700 text-[#006633] text-xl md:text-2xl lg:text-3xl font-black capitalize text-center mb-6">
           Berita Terkini
         </h1>
 
-        <div
-          class="berita-item opacity-0 translate-y-10 transition-all duration-700 delay-200 max-w-4xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-md min-h-[220px]"
-        >
+        <div class="berita-item opacity-0 translate-y-10 transition-all duration-700 delay-200 max-w-4xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-md min-h-[220px]">
           <!-- Kiri (Isi dari kiri) -->
-          <div
-            class="berita-item opacity-0 -translate-x-16 transition-all duration-700 delay-300 bg-yellow-400 p-4 flex-1 flex flex-col justify-center"
-          >
+          <div class="berita-item opacity-0 -translate-x-16 transition-all duration-700 delay-300 bg-yellow-400 p-4 flex-1 flex flex-col justify-center">
             <p class="text-lg font-bold text-gray-800 mb-3">
               Dukungan Pendidikan bagi Siswa Miskin Berprestasi. Diikuti oleh
               105 siswa miskin/berprestasi. Siswa mendapat bingkisan berisi alat
               tulis dan buku, yang diserahkan oleh Bapak Kepala desa.
             </p>
-            <a
-              href="Informasi.html"
-              class="text-sm font-semibold text-green-900 hover:underline"
-            >
+            <a href="Informasi.html" class="text-sm font-semibold text-green-900 hover:underline">
               Lebih Lanjut
             </a>
           </div>
 
           <!-- Kanan (Gambar dari kanan) -->
-          <div
-            class="berita-item opacity-0 translate-x-16 transition-all duration-700 delay-500 flex-1"
-          >
+          <div class="berita-item opacity-0 translate-x-16 transition-all duration-700 delay-500 flex-1">
             <img
               src="../img/kegiatan.jpg"
               alt="Berita"
-              class="w-full h-full object-cover"
-            />
+              class="w-full h-full object-cover"/>
           </div>
         </div>
 
         <div class="text-center mt-5">
-          <a
-            href="Informasi.html"
-            class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out hover:bg-green-800 hover:scale-110 hover:-translate-y-1 hover:shadow-2xl active:scale-95"
-          >
+          <a href="Informasi.html" class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out hover:bg-green-800 hover:scale-110 hover:-translate-y-1 hover:shadow-2xl active:scale-95">
             Selengkapnya
           </a>
         </div>
@@ -832,9 +645,7 @@
       <!-- VISI MISI -->
       <section id="visimisi" class="grid md:grid-cols-2 gap-6 mb-16">
         <!-- VISI (dari kiri) -->
-        <div
-          class="visi-item opacity-0 -translate-x-16 transition-all duration-700 bg-green-800 text-white p-6 rounded-xl hover:scale-105 transition duration-300"
-        >
+        <div class="visi-item opacity-0 -translate-x-16 transition-all duration-700 bg-green-800 text-white p-6 rounded-xl hover:scale-105 transition duration-300">
           <h3 class="text-xl font-bold mb-2">Visi</h3>
           <p>
             "Terwujudnya Desa Sumorame yang Makmur dan Unggul melalui
@@ -844,9 +655,7 @@
           </p>
         </div>
         <!-- MISI (dari kanan) -->
-        <div
-          class="visi-item opacity-0 translate-x-16 transition-all duration-700 delay-200 bg-yellow-400 p-6 rounded-xl hover:scale-105 transition duration-300"
-        >
+        <div class="visi-item opacity-0 translate-x-16 transition-all duration-700 delay-200 bg-yellow-400 p-6 rounded-xl hover:scale-105 transition duration-300">
           <h3 class="text-xl font-bold mb-2">Misi</h3>
           <ul class="list-disc ml-5">
             <li>
@@ -885,55 +694,37 @@
       <!-- PRODUK UNGGULAN -->
       <section id="produk" class="py-16">
         <!-- Judul -->
-        <h2
-          class="font-poppins text-4xl font-extrabold text-center text-green-800 mb-10"
-        >
+        <h2 class="font-poppins text-4xl font-extrabold text-center text-green-800 mb-10">
           Produk Unggulan
         </h2>
 
         <div class="max-w-[840px] mx-auto">
           <!-- Produk -->
-          <div
-            class="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center"
-          >
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
             <!-- Produk 1 -->
-            <a
-              href="#"
-              class="produk-item relative group w-64 h-[220px] rounded-xl overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700 ease-out"
-            >
+            <a href="#" class="produk-item relative group w-64 h-[220px] rounded-xl overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700 ease-out">
               <!-- Gambar -->
               <img src="../img/coklat.jpg" class="w-full h-full object-cover" />
 
               <!-- Overlay -->
-              <div
-                class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition"
-              ></div>
+              <div class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition"></div>
 
               <!-- Judul -->
               <div class="absolute left-4 bottom-20 text-white z-10"></div>
 
               <!-- Footer Hover -->
-              <div
-                class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
-              >
+              <div class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                 <div class="flex justify-between items-center">
-                  <button
-                    class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm"
-                  >
+                  <button class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm">
                     Detail
                   </button>
 
-                  <button
-                    class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1"
-                  >
+                  <button class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1">
                     👁
-
                     <span>52</span>
                   </button>
 
-                  <button
-                    class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm"
-                  >
+                  <button class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
                     Beli
                   </button>
                 </div>
@@ -941,42 +732,29 @@
             </a>
 
             <!-- Produk 2 -->
-            <a
-              href="#"
-              class="produk-item relative group w-64 h-[220px] rounded-xl overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700 ease-out"
-            >
+            <a href="#" class="produk-item relative group w-64 h-[220px] rounded-xl overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700 ease-out">
               <!-- Gambar -->
               <img src="../img/kopi.jpg" class="w-full h-full object-cover" />
 
               <!-- Overlay -->
-              <div
-                class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition"
-              ></div>
+              <div class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition"></div>
 
               <!-- Judul -->
               <div class="absolute left-4 bottom-20 text-white z-10"></div>
 
               <!-- Footer Hover -->
-              <div
-                class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
-              >
+              <div class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                 <div class="flex justify-between items-center">
-                  <button
-                    class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm"
-                  >
+                  <button class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm">
                     Detail
                   </button>
 
-                  <button
-                    class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1"
-                  >
+                  <button class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1">
                     👁
                     <span>30</span>
                   </button>
 
-                  <button
-                    class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm"
-                  >
+                  <buttonclass="bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
                     Beli
                   </button>
                 </div>
@@ -989,37 +767,27 @@
               class="produk-item relative group w-72 h-[330px] rounded-xl overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700 ease-out"
             >
               <!-- Gambar -->
-              <img src="../img/nangka.jpg" class="w-full h-full object-cover" />
+              <img src="../img/nangka.jpg" class="w-full h-full object-cover"/>
 
               <!-- Overlay -->
-              <div
-                class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition duration-300"
-              ></div>
+              <div class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition duration-300"></div>
 
               <!-- Judul -->
               <div class="absolute left-4 bottom-20 text-white z-10"></div>
 
               <!-- Footer Hover -->
-              <div
-                class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
-              >
+              <div class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                 <div class="flex justify-between items-center">
-                  <button
-                    class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm"
-                  >
+                  <button class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm">
                     Detail
                   </button>
 
-                  <button
-                    class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1"
-                  >
+                  <button class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1">
                     👁
                     <span>15</span>
                   </button>
 
-                  <button
-                    class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm"
-                  >
+                  <button class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
                     Beli
                   </button>
                 </div>
@@ -1030,61 +798,38 @@
 
         <!-- Tombol -->
         <div class="text-center mt-10">
-          <a
-            href="Produk.html"
-            id="btnProduk"
-            class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out"
-          >
+          <a href="Produk.html" id="btnProduk" class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out">
             Selengkapnya
           </a>
         </div>
       </section>
 
       <!-- MODAL -->
-      <div
-        id=""
-        class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden"
-      >
-        <div
-          id=""
-          class="relative w-[90%] max-w-6xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col"
-        >
+      <div id="modal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden">
+        <div id=" class="relative w-[90%] max-w-6xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col">
           <!-- Tombol X -->
-          <button
-            onclick=""
-            class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
-          >
+          <button onclick="" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md">
             ✕
           </button>
 
           <!-- CONTENT (SCROLLABLE) -->
           <div class="overflow-y-auto p-6 md:p-8">
             <!-- JUDUL -->
-            <h2
-              class="text-lg md:text-xl font-semibold text-green-800 mb-4 text-left w-full"
-            >
+            <h2 class="text-lg md:text-xl font-semibold text-green-800 mb-4 text-left w-full">
               Pengumuman Pelayanan
             </h2>
 
-            <p
-              class="text-sm md:text-[13px] font-normal text-black -mt-2 mb-3 text-left w-full"
-            >
+            <p class="text-sm md:text-[13px] font-normal text-black -mt-2 mb-3 text-left w-full">
               Informasi Dan Pengumuman Pelayanan Kantor Desa Sumorame
             </p>
 
             <!-- GAMBAR -->
-            <img
-              src="../img/Pengumuman.png"
-              class="w-full max-h-[580px] object-cover rounded-xl shadow-lg mb-5 mx-auto"
-            />
+            <img src="../img/Pengumuman.png" class="w-full max-h-[580px] object-cover rounded-xl shadow-lg mb-5 mx-auto"/>
           </div>
 
           <!-- FOOTER (TOMBOL STICKY) -->
           <div class="p-4 border-t bg-white flex justify-center">
-            <a
-              href="PPID.html"
-              class="block w-full max-w-[1030px] text-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
-            >
+            <a href="PPID.html" class="block w-full max-w-[1030px] text-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition">
               LIHAT PENGUMUMAN
             </a>
           </div>
@@ -1092,68 +837,61 @@
       </div>
 
       <!-- MODAL Fleksible -->
-<div
-  id="myModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div id="myModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
 
-  <div id="modalBox" 
-  class="relative bg-white rounded-2xl shadow-2xl
-         w-fit
-         max-w-[700px]
-         max-h-[95vh]
-         flex flex-col overflow-hidden">
+            <div id="modalBox" class="relative bg-white rounded-2xl shadow-2xl w-fit max-w-[700px] max-h-[95vh] flex flex-col overflow-hidden">
+              <!-- Tombol X -->
+                    <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md">
+                      ✕
+                    </button>
 
-    <!-- Tombol X -->
-          <button
-            onclick="closeModal()"
-            class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
-          >
-            ✕
-          </button>
+              <!-- HEADER -->
+              <div class="p-6 border-b">
+                <h2 class="text-xl font-semibold text-green-800">
+                  Pengumuman Pelayanan
+                </h2>
 
-    <!-- HEADER -->
-    <div class="p-6 border-b">
-      <h2 class="text-xl font-semibold text-green-800">
-        Pengumuman Pelayanan
-      </h2>
+                <p class="text-sm text-gray-600 mt-1">
+                  Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
+                </p>
+              </div>
 
-      <p class="text-sm text-gray-600 mt-1">
-        Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
-      </p>
-    </div>
+              <!-- BODY -->
+              <div class="flex-1 overflow-y-auto p-6 flex justify-center">
+                <img src="../img/Dirgahayu.png" class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg">
+              </div>
 
-    <!-- BODY -->
-    <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-      <img
-          src="../img/Dirgahayu.png"
-          class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg">
-    </div>
+              <!-- FOOTER -->
+              <div class="p-4 border-t bg-white">
+                <a href="PPID.html" class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+                  LIHAT PENGUMUMAN
+                </a>
+              </div>
 
-    <!-- FOOTER -->
-    <div class="p-4 border-t bg-white">
-      <a
-        href="PPID.html"
-        class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">
-        LIHAT PENGUMUMAN
-      </a>
-    </div>
+            </div>
 
-  </div>
-
-</div>
+          </div>
         </div>
         </div>
       </div>
     </main>
 
-    <footer
-      id="footer"
-      class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700"
-    >
+    <!-- Scroll To Top -->
+        <button id="scrollTopBtn"
+            class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800
+                  text-white rounded-full shadow-lg flex items-center justify-center
+                  opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+
+            <span class="material-symbols-outlined">
+                keyboard_arrow_up
+            </span>
+
+        </button>
+
+    <footer id="footer" class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700">
       <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
         <!-- Logo & Nama -->
-        <div
-          class="footer-item opacity-0 translate-y-6 transition-all duration-700"
-        >
+        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
           <img src="../img/logo.png" alt="Logo Desa" class="w-16 mb-3" />
           <h3 class="text-lg font-bold">Desa Sumorame</h3>
           <p class="text-sm text-gray-300">
@@ -1162,22 +900,14 @@
         </div>
 
         <!-- Kontak -->
-        <div
-          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200"
-        >
+        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200">
           <!-- Judul -->
-          <h4
-            class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold"
-          >
+          <h4 class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold">
             Kontak
           </h4>
           <!-- Alamat (dari kiri) -->
-          <p
-            class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300"
-          >
-            <span class="material-symbols-outlined text-lg mt-[2px]"
-              >location_on</span
-            >
+          <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300">
+            <span class="material-symbols-outlined text-lg mt-[2px]">location_on</span>
             <span>
               Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten
               Sidoarjo, Jawa Timur 61271
@@ -1191,54 +921,26 @@
             0812-3456-7890 (Hanya Menerima Pengaduan).
           </p>
 
-          <p
-            class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300"
-          >
+          <p class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300">
             <span class="material-symbols-outlined text-lg">mail</span>
             PemdesSumorame@gmail.com
           </p>
         </div>
 
         <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
-        <div
-          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300"
-        >
+        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300">
           <h4 class="font-semibold mb-3">Ikuti Kami</h4>
           <div class="flex gap-4 items-center">
-            <a
-              href="https://www.tiktok.com/search?q=pemdes%20sumorame&t=1785759591160"
-              target="_blank"
-              class="hover:scale-125 transition duration-300"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg"
-                class="w-6 h-6 invert"
-                alt="TikTok"
-              />
+            <a href="https://www.tiktok.com/search?q=pemdes%20sumorame&t=1785759591160" target="_blank" class="hover:scale-125 transition duration-300">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" class="w-6 h-6 invert" alt="TikTok"/>
             </a>
 
-            <a
-              href="https://www.instagram.com/pemdes_sumorame02/"
-              target="_blank"
-              class="hover:scale-125 transition duration-300"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
-                class="w-6 h-6 invert"
-                alt="Instagram"
-              />
+            <a href="https://www.instagram.com/pemdes_sumorame02/" target="_blank" class="hover:scale-125 transition duration-300">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" class="w-6 h-6 invert" alt="Instagram"/>
             </a>
 
-            <a
-              href="https://www.youtube.com/@pemdes.sumorame"
-              target="_blank"
-              class="hover:scale-125 transition duration-300"
-            >
-              <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"
-                class="w-6 h-6 invert"
-                alt="YouTube"
-              />
+            <a href="https://www.youtube.com/@pemdes.sumorame" target="_blank" class="hover:scale-125 transition duration-300">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" class="w-6 h-6 invert" alt="YouTube"/>
             </a>
           </div>
         </div>
