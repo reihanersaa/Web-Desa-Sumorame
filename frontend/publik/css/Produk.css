@@ -52,38 +52,207 @@ body {
 /* ==========================
    PRODUK CARD
 ========================== */
+
 .produk-item {
+  position: relative;
+  height: 260px;
   opacity: 0;
   transform: translateY(64px);
+
+  overflow: hidden;
+  border-radius: 10px;
+
   transition:
     opacity 0.8s ease,
     transform 0.8s ease,
     box-shadow 0.35s ease;
 }
 
-/* ketika muncul dari javascript */
+/* Card muncul dari bawah */
 .produk-item.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* hover hanya mengatur shadow
-   tidak mengubah transform */
+/* Hover card */
 .produk-item:hover {
-  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
 }
 
 /* ==========================
    GAMBAR PRODUK
 ========================== */
+
+.produk-item > div:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Gambar memenuhi seluruh card */
 .produk-item img {
-  transition: transform 0.5s ease;
+  display: block;
+
+  width: 100%;
+  height: 100% !important;
+
+  object-fit: cover;
+
+  transform: scale(1);
+  transition: transform 0.6s ease;
 }
 
+/* Sedikit zoom ketika hover */
 .produk-item:hover img {
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
+/* ==========================
+   PANEL INFORMASI KUNING
+========================== */
+
+.produk-info {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  /*
+    Panel dimulai dari bawah.
+    100% = seluruh panel berada di luar card.
+  */
+  transform: translateY(100%);
+
+  /*
+    Kuning sedikit transparan
+  */
+  background: rgba(250, 204, 21, 0.68) !important;
+
+  padding: 16px 12px;
+
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+  z-index: 5;
+}
+
+/* Panel naik ketika hover */
+.produk-item:hover .produk-info {
+  transform: translateY(0);
+}
+
+/* ==========================
+   NAMA PRODUK
+========================== */
+
+.produk-nama {
+  opacity: 0;
+  transform: translateY(20px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+/* Nama muncul setelah panel mulai naik */
+.produk-item:hover .produk-nama {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.12s;
+}
+
+/* ==========================
+   HARGA
+========================== */
+
+.produk-harga {
+  opacity: 0;
+  transform: translateY(20px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.produk-item:hover .produk-harga {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.18s;
+}
+
+/* ==========================
+   NAMA PENJUAL
+========================== */
+
+.produk-info span {
+  opacity: 0;
+  transform: translateY(20px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.produk-item:hover .produk-info span {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.22s;
+}
+
+/* ==========================
+   BUTTON BELI
+========================== */
+
+.produk-info .btn-beli {
+  opacity: 0;
+  transform: translateY(25px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.produk-item:hover .produk-info .btn-beli {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.28s;
+}
+
+/* Hover tombol beli */
+.btn-beli:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .produk-item {
+    height: 280px;
+  }
+
+  /*
+    Pada perangkat mobile,
+    informasi langsung terlihat.
+  */
+  .produk-info {
+    transform: translateY(0);
+  }
+
+  .produk-nama,
+  .produk-harga,
+  .produk-info span,
+  .produk-info .btn-beli {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* ==========================
    SEARCH
 ========================== */

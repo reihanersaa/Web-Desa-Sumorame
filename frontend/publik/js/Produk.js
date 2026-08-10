@@ -484,7 +484,6 @@ function renderProduk() {
 // ======================================================
 // BUAT CARD PRODUK DINAMIS
 // ======================================================
-
 function buatCardProduk(item) {
   const card = document.createElement("div");
 
@@ -495,64 +494,57 @@ function buatCardProduk(item) {
 
   card.innerHTML = `
 
-        <div class="overflow-hidden">
+    <!-- GAMBAR -->
+    <div class="overflow-hidden">
 
-            <img
-                src="${item.gambar}"
-                alt="${escapeHTML(item.nama)}"
-                class="w-full h-32 object-cover
-                       transition duration-500
-                       group-hover:scale-110"
-            >
+      <img
+        src="${item.gambar}"
+        alt="${escapeHTML(item.nama)}"
+        class="w-full h-full object-cover"
+      >
 
-        </div>
+    </div>
 
+    <!-- INFORMASI -->
+    <div class="produk-info bg-yellow-400/85 px-3 py-2">
 
-        <div class="bg-yellow-400 px-3 py-2">
+      <!-- NAMA -->
+      <h3 class="produk-nama font-bold text-lg">
+        ${escapeHTML(item.nama)}
+      </h3>
 
-            <h3 class="font-bold text-lg">
+      <div
+        class="flex justify-between items-center mt-2"
+      >
 
-                ${escapeHTML(item.nama)}
+        <!-- HARGA -->
+        <p
+          class="produk-harga text-2xl font-bold text-green-800"
+        >
+          ${formatRupiah(item.harga)}
+        </p>
 
-            </h3>
+        <!-- PENJUAL -->
+        <span class="text-sm text-gray-700">
+          ${escapeHTML(item.penjual)}
+        </span>
 
+      </div>
 
-            <div
-                class="flex justify-between
-                       items-center mt-2"
-            >
+      <!-- BELI -->
+      <button
+        type="button"
+        class="btn-beli mt-2 w-full
+               bg-green-700 text-white
+               py-2 rounded-md
+               hover:bg-green-800
+               transition"
+      >
+        Beli
+      </button>
 
-                <p
-                    class="text-2xl font-bold
-                           text-green-800"
-                >
-                    ${formatRupiah(item.harga)}
-                </p>
-
-
-                <span
-                    class="text-sm text-gray-700"
-                >
-                    ${escapeHTML(item.penjual)}
-                </span>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="btn-beli mt-2 w-full
-                       bg-green-700 text-white
-                       py-2 rounded-md
-                       hover:bg-green-800
-                       transition"
-            >
-                Beli
-            </button>
-
-        </div>
-
-    `;
+    </div>
+  `;
 
   return card;
 }

@@ -244,29 +244,46 @@
       >
         <!-- Produk 1 -->
         <div
-          class="produk-item group w-[280px] bg-white rounded-md overflow-hidden shadow-lg"
+          class="produk-item group w-full bg-white rounded-md overflow-hidden shadow-lg"
         >
+          <!-- GAMBAR -->
           <div class="overflow-hidden">
             <img
               src="../img/nangka.jpg"
-              class="w-full h-32 object-cover transition duration-500 group-hover:scale-110"
+              alt="Keripik Nanas"
+              class="w-full h-full object-cover"
             />
           </div>
 
-          <div class="bg-yellow-400 px-3 py-2">
-            <h3 class="font-bold text-lg">Keripik Nanas</h3>
+          <!-- INFORMASI -->
+          <div class="produk-info bg-yellow-400/85 px-3 py-2">
+
+            <!-- NAMA PRODUK -->
+            <h3 class="produk-nama font-bold text-lg">
+              Keripik Nanas
+            </h3>
 
             <div class="flex justify-between items-center mt-2">
-              <p class="text-2xl font-bold text-green-800">Rp15.000</p>
 
-              <span class="text-sm text-gray-700"> Bpk. Agus </span>
+              <!-- HARGA -->
+              <p class="produk-harga text-2xl font-bold text-green-800">
+                Rp15.000
+              </p>
+
+              <!-- PENJUAL -->
+              <span class="text-sm text-gray-700">
+                Bpk. Agus
+              </span>
+
             </div>
 
             <button
+              type="button"
               class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition"
             >
               Beli
             </button>
+
           </div>
         </div>
 
@@ -277,24 +294,36 @@
           <div class="overflow-hidden">
             <img
               src="../img/kopi.jpg"
-              class="w-full h-32 object-cover transition duration-500 group-hover:scale-110"
+              alt="Kopi Robusta Premium"
+              class="w-full h-full object-cover"
             />
           </div>
 
-          <div class="bg-yellow-400 px-3 py-2">
-            <h3 class="font-bold text-lg">Kopi Robusta Premium</h3>
+          <div class="produk-info bg-yellow-400/85 px-3 py-2">
+
+            <h3 class="produk-nama font-bold text-lg">
+              Kopi Robusta Premium
+            </h3>
 
             <div class="flex justify-between items-center mt-2">
-              <p class="text-2xl font-bold text-green-800">Rp30.000</p>
 
-              <span class="text-sm text-gray-700"> Ibu Lastri </span>
+              <p class="produk-harga text-2xl font-bold text-green-800">
+                Rp30.000
+              </p>
+
+              <span class="text-sm text-gray-700">
+                Ibu Lastri
+              </span>
+
             </div>
 
             <button
+              type="button"
               class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition"
             >
               Beli
             </button>
+
           </div>
         </div>
 
@@ -305,24 +334,36 @@
           <div class="overflow-hidden">
             <img
               src="../img/coklat.jpg"
-              class="w-full h-32 object-cover transition duration-500 group-hover:scale-110"
+              alt="Minuman Coklat"
+              class="w-full h-full object-cover"
             />
           </div>
 
-          <div class="bg-yellow-400 px-3 py-2">
-            <h3 class="font-bold text-lg">Minuman Coklat</h3>
+          <div class="produk-info bg-yellow-400/85 px-3 py-2">
+
+            <h3 class="produk-nama font-bold text-lg">
+              Minuman Coklat
+            </h3>
 
             <div class="flex justify-between items-center mt-2">
-              <p class="text-2xl font-bold text-green-800">Rp35.000</p>
 
-              <span class="text-sm text-gray-700"> Bpk. Yusron </span>
+              <p class="produk-harga text-2xl font-bold text-green-800">
+                Rp35.000
+              </p>
+
+              <span class="text-sm text-gray-700">
+                Bpk. Yusron
+              </span>
+
             </div>
 
             <button
+              type="button"
               class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition"
             >
               Beli
             </button>
+
           </div>
         </div>
       </section>
@@ -450,7 +491,7 @@
               type="submit"
               class="flex-1 py-3 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg transition"
             >
-              Tambahkan Produk
+              Ajukan Produk
             </button>
           </div>
         </form>
