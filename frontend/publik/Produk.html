@@ -1,125 +1,205 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Produk | Website Desa Sumorame</title>
-  <link rel="icon" href="../img/logo.png" type="image/png">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <link rel="stylesheet" href="css/Produk.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Produk | Website Desa Sumorame</title>
+    <link rel="icon" href="../img/logo.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="css/Produk.css" />
 
-  <!-- Tailwind Config -->
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            primary: "#004b24",
-            "primary-container": "#006633",
-            secondary: "#745b00",
-            "secondary-container": "#fecb00",
-            background: "#fbf9f8",
-            surface: "#fbf9f8",
-            "on-surface": "#1b1c1c",
-            "on-surface-variant": "#3f4940"
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#004b24",
+              "primary-container": "#006633",
+              secondary: "#745b00",
+              "secondary-container": "#fecb00",
+              background: "#fbf9f8",
+              surface: "#fbf9f8",
+              "on-surface": "#1b1c1c",
+              "on-surface-variant": "#3f4940",
+            },
+            fontFamily: {
+              headline: ["Plus Jakarta Sans"],
+              body: ["Inter"],
+              label: ["Work Sans"],
+            },
           },
-          fontFamily: {
-            headline: ["Plus Jakarta Sans"],
-            body: ["Inter"],
-            label: ["Work Sans"]
-          }
-        }
-      }
-    };
-  </script>
-</head>
+        },
+      };
+    </script>
+  </head>
 
-<body class="bg-surface font-body text-on-surface">
-
-  <!-- HEADER -->
-  <header class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md">
-    <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
-
-      <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <div class="logo">
-          <img src="../img/logo.png" alt="Logo Desa Digital" width="40" height="36">
+  <body class="bg-surface font-body text-on-surface">
+    <!-- HEADER -->
+    <header
+      class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md"
+    >
+      <div
+        class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16"
+      >
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div class="logo">
+            <img
+              src="../img/logo.png"
+              alt="Logo Desa Digital"
+              width="40"
+              height="36"
+            />
+          </div>
+          <h1 class="font-headline text-xl font-bold text-emerald-900">
+            Desa Sumorame
+          </h1>
         </div>
-        <h1 class="font-headline text-xl font-bold text-emerald-900">Desa Sumorame</h1>
+
+        <!-- NAVBAR -->
+        <nav class="hidden md:flex items-center font-medium text-green-900">
+          <a href="index.html" class="nav-item relative px-5 font-bold"
+            >Profile Desa</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="Lembaga.html" class="nav-item relative px-5 font-bold"
+            >Lembaga</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="Informasi.html" class="nav-item relative px-5 font-bold"
+            >Informasi</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a
+            href="AdminP.html"
+            class="nav-item relative px-5 font-bold text-green-800"
+            >Administrasi Persuratan</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="Aduan.html" class="nav-item relative px-5 font-bold"
+            >Aduan</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="Publikasi.html" class="nav-item relative px-5 font-bold"
+            >Publikasi</a
+          >
+        </nav>
+
+        <!-- Logout -->
+        <a
+          href="login.html"
+          class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition"
+        >
+          <span class="material-symbols-outlined">logout</span>
+        </a>
+
+        <!-- Right Section -->
+        <div class="flex items-center gap-4">
+          <!-- Hamburger (Mobile Only) -->
+          <button
+            id="menuBtn"
+            class="md:hidden material-symbols-outlined text-emerald-900 text-3xl"
+          >
+            menu
+          </button>
+        </div>
       </div>
+    </header>
 
-      <!-- NAVBAR -->
-      <nav class="hidden md:flex items-center font-medium text-green-900">
-        <a href="index.html" class="nav-item relative px-5 font-bold">Profile Desa</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Lembaga.html" class="nav-item relative px-5 font-bold">Lembaga</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Informasi.html" class="nav-item relative px-5 font-bold">Informasi</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="AdminP.html" class="nav-item relative px-5 font-bold text-green-800">Administrasi Persuratan</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Aduan.html" class="nav-item relative px-5 font-bold">Aduan</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Publikasi.html" class="nav-item relative px-5 font-bold">Publikasi</a>
-      </nav>
-
-      <!-- Logout -->
-      <a href="login.html" class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition">
-        <span class="material-symbols-outlined">logout</span>
-      </a>
-
-      <!-- Right Section -->
-      <div class="flex items-center gap-4">
-
-        <!-- Hamburger (Mobile Only) -->
-        <button id="menuBtn" class="md:hidden material-symbols-outlined text-emerald-900 text-3xl">
-          menu
-        </button>
-      </div>
+    <!-- MOBILE MENU -->
+    <div
+      id="mobileMenu"
+      class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300"
+    >
+      <a
+        href="index.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Profile Desa</a
+      >
+      <a
+        href="PPID.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >PPID</a
+      >
+      <a
+        href="Lembaga.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Lembaga</a
+      >
+      <a
+        href="Informasi.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Informasi</a
+      >
+      <a
+        href="AdminP.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Administrasi Persuratan</a
+      >
+      <a
+        href="Aduan.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Aduan</a
+      >
+      <a
+        href="Publikasi.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Publikasi</a
+      >
+      <a
+        href="login.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Log Out</a
+      >
     </div>
-  </header>
 
-  <!-- MOBILE MENU -->
-  <div id="mobileMenu" class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300">
-    <a href="index.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Profile Desa</a>
-    <a href="PPID.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">PPID</a>
-    <a href="Lembaga.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Lembaga</a>
-    <a href="Informasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Informasi</a>
-    <a href="AdminP.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Administrasi Persuratan</a>
-    <a href="Aduan.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Aduan</a>
-    <a href="Publikasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Publikasi</a>
-    <a href="login.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Log Out</a>
-  </div>
-
-  <!-- HERO -->
-    <section class="relative overflow-hidden bg-primary h-[700px] flex items-center">
-      <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80" class="absolute inset-0 w-full h-full object-cover opacity-50">
+    <!-- HERO -->
+    <section
+      class="relative overflow-hidden bg-primary h-[700px] flex items-center"
+    >
+      <img
+        src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80"
+        class="absolute inset-0 w-full h-full object-cover opacity-50"
+      />
 
       <div class="relative z-10 px-8 max-w-7xl mx-auto pt-20">
-
         <!-- Judul -->
-        <h2 class="hero-item opacity-0 -translate-x-16 transition-all duration-700 text-5xl font-bold text-white mb-4">
+        <h2
+          class="hero-item opacity-0 -translate-x-16 transition-all duration-700 text-5xl font-bold text-white mb-4"
+        >
           Produk Unggulan Desa Sumorame
         </h2>
 
         <!-- Deskripsi -->
-        <p class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80">
+        <p
+          class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80"
+        >
           Selamat Datang Di Desa Sumorame.
         </p>
       </div>
@@ -127,240 +207,358 @@
 
     <!-- MAIN CONTENT -->
     <main class="pt-16 max-w-7xl mx-auto px-6">
+      <!-- Tombol Pasarkan Produk -->
+      <div class="flex justify-center mb-10">
+        <button
+          id="btnProduk"
+          type="button"
+          class="font-poppins btn-pasarkan inline-flex items-center gap-3 bg-yellow-400 hover:bg-yellow-500 text-green-900 font-bold px-8 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+        >
+          <span class="material-symbols-outlined"> shopping_cart </span>
 
-        <!-- Tombol Pasarkan Produk -->
-        <div class="flex justify-center mb-10">
+          Pasarkan Produk Anda
+        </button>
+      </div>
 
-            <a href="#"
-                id="btnProduk"
-                class="font-poppins btn-pasarkan inline-flex items-center gap-3
-                bg-yellow-400 hover:bg-yellow-500
-                text-green-900 font-bold
-                px-8 py-4 rounded-xl
-                shadow-lg
-                transition-all duration-300
-                hover:scale-105 hover:-translate-y-1">
+      <!-- Search -->
+      <div class="flex justify-center mb-10">
+        <div class="relative w-full max-w-xs">
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl z-10"
+          >
+            search
+          </span>
 
-                <span class="material-symbols-outlined">
-                    shopping_cart
-                </span>
+          <input
+            type="text"
+            placeholder="Cari Produk..."
+            class="w-full pl-10 pr-3 py-3 rounded-lg border text-sm bg-gray-100 border border-gray-200 transition-all duration-300 focus:bg-white focus:ring-2 focus:ring-green-700 focus:outline-none shadow-sm"
+          />
+        </div>
+      </div>
 
-                Pasarkan Produk Anda
+      <!-- Produk -->
+      <section
+        id="produk"
+        class="max-w-[900px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        <!-- Produk 1 -->
+        <div
+          class="produk-item group w-[280px] bg-white rounded-md overflow-hidden shadow-lg"
+        >
+          <div class="overflow-hidden">
+            <img
+              src="../img/nangka.jpg"
+              class="w-full h-32 object-cover transition duration-500 group-hover:scale-110"
+            />
+          </div>
 
+          <div class="bg-yellow-400 px-3 py-2">
+            <h3 class="font-bold text-lg">Keripik Nanas</h3>
+
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-2xl font-bold text-green-800">Rp15.000</p>
+
+              <span class="text-sm text-gray-700"> Bpk. Agus </span>
+            </div>
+
+            <button
+              class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition"
+            >
+              Beli
+            </button>
+          </div>
+        </div>
+
+        <!-- Produk 2 -->
+        <div
+          class="produk-item group w-full bg-white rounded-md overflow-hidden shadow-lg"
+        >
+          <div class="overflow-hidden">
+            <img
+              src="../img/kopi.jpg"
+              class="w-full h-32 object-cover transition duration-500 group-hover:scale-110"
+            />
+          </div>
+
+          <div class="bg-yellow-400 px-3 py-2">
+            <h3 class="font-bold text-lg">Kopi Robusta Premium</h3>
+
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-2xl font-bold text-green-800">Rp30.000</p>
+
+              <span class="text-sm text-gray-700"> Ibu Lastri </span>
+            </div>
+
+            <button
+              class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition"
+            >
+              Beli
+            </button>
+          </div>
+        </div>
+
+        <!-- Produk 3 -->
+        <div
+          class="produk-item group w-full bg-white rounded-md overflow-hidden shadow-lg"
+        >
+          <div class="overflow-hidden">
+            <img
+              src="../img/coklat.jpg"
+              class="w-full h-32 object-cover transition duration-500 group-hover:scale-110"
+            />
+          </div>
+
+          <div class="bg-yellow-400 px-3 py-2">
+            <h3 class="font-bold text-lg">Minuman Coklat</h3>
+
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-2xl font-bold text-green-800">Rp35.000</p>
+
+              <span class="text-sm text-gray-700"> Bpk. Yusron </span>
+            </div>
+
+            <button
+              class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition"
+            >
+              Beli
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- ========================================= -->
+    <!-- MODAL PASARKAN PRODUK -->
+    <!-- ========================================= -->
+
+    <div
+      id="produkModal"
+      class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+    >
+      <div
+        id="produkModalContent"
+        class="w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 relative transform scale-95 opacity-0 transition-all duration-300"
+      >
+        <!-- Tombol Close -->
+        <button
+          id="closeProdukModal"
+          type="button"
+          class="absolute right-4 top-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-600 transition"
+        >
+          <span class="material-symbols-outlined"> close </span>
+        </button>
+
+        <!-- Judul -->
+        <div class="mb-6">
+          <h2 class="font-poppins text-2xl font-bold text-green-900">
+            Pasarkan Produk Anda
+          </h2>
+
+          <p class="text-sm text-gray-500 mt-1">
+            Isi informasi produk yang ingin dipasarkan.
+          </p>
+        </div>
+
+        <!-- FORM -->
+        <form id="formProduk">
+          <!-- Nama Produk -->
+          <div class="mb-4">
+            <label
+              for="namaProduk"
+              class="block text-sm font-semibold text-gray-700 mb-1"
+            >
+              Nama Produk
+            </label>
+
+            <input
+              type="text"
+              id="namaProduk"
+              required
+              placeholder="Contoh: Keripik Pisang"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
+
+          <!-- Harga -->
+          <div class="mb-4">
+            <label
+              for="hargaProduk"
+              class="block text-sm font-semibold text-gray-700 mb-1"
+            >
+              Harga
+            </label>
+
+            <input
+              type="number"
+              id="hargaProduk"
+              required
+              min="0"
+              placeholder="Contoh: 15000"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
+
+          <!-- Nama Penjual -->
+          <div class="mb-4">
+            <label
+              for="penjualProduk"
+              class="block text-sm font-semibold text-gray-700 mb-1"
+            >
+              Nama Penjual
+            </label>
+
+            <input
+              type="text"
+              id="penjualProduk"
+              required
+              placeholder="Contoh: Bpk. Agus"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
+
+          <!-- Gambar -->
+          <div class="mb-6">
+            <label
+              for="gambarProduk"
+              class="block text-sm font-semibold text-gray-700 mb-1"
+            >
+              Gambar Produk
+            </label>
+
+            <input
+              type="file"
+              id="gambarProduk"
+              accept="image/*"
+              required
+              class="w-full px-3 py-3 border border-gray-300 rounded-lg text-sm"
+            />
+
+            <p class="text-xs text-gray-400 mt-1">Format JPG, PNG, WEBP.</p>
+          </div>
+
+          <!-- BUTTON -->
+          <div class="flex gap-3">
+            <button
+              type="button"
+              id="cancelProduk"
+              class="flex-1 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
+            >
+              Batal
+            </button>
+
+            <button
+              type="submit"
+              class="flex-1 py-3 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg transition"
+            >
+              Tambahkan Produk
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- FOOTER -->
+    <footer
+      id="footer"
+      class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700"
+    >
+      <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+        <!-- Logo & Nama -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700"
+        >
+          <img src="../img/logo.png" alt="Logo Desa" class="w-16 mb-3" />
+          <h3 class="text-lg font-bold">Desa Sumorame</h3>
+          <p class="text-sm text-gray-300">Makmur dan Unggul.</p>
+        </div>
+
+        <!-- Kontak -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200"
+        >
+          <!-- Judul -->
+          <h4
+            class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold"
+          >
+            Kontak
+          </h4>
+          <!-- Alamat (dari kiri) -->
+          <p
+            class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg mt-[2px]"
+              >location_on</span
+            >
+            <span>
+              Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten
+              Sidoarjo, Jawa Timur 61271
+            </span>
+          </p>
+
+          <p
+            class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg">call</span>
+            0812-3456-7890 (Hanya Menerima Pengaduan).
+          </p>
+
+          <p
+            class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg">mail</span>
+            PemdesSumorame@gmail.com
+          </p>
+        </div>
+
+        <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300"
+        >
+          <h4 class="font-semibold mb-3">Ikuti Kami</h4>
+          <div class="flex gap-4 items-center">
+            <a
+              href="https://www.tiktok.com/search?q=pemdes%20sumorame&t=1785759591160"
+              target="_blank"
+              class="hover:scale-125 transition duration-300"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg"
+                class="w-6 h-6 invert"
+                alt="TikTok"
+              />
             </a>
 
-        </div>
+            <a
+              href="https://www.instagram.com/pemdes_sumorame02/"
+              target="_blank"
+              class="hover:scale-125 transition duration-300"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
+                class="w-6 h-6 invert"
+                alt="Instagram"
+              />
+            </a>
 
-        <!-- Search -->
-        <div class="flex justify-center mb-10">
-
-            <div class="relative w-full max-w-xs">
-
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl z-10">
-                    search
-                </span>
-
-                <input
-                    type="text"
-                    placeholder="Cari Produk..."
-                    class="w-full pl-10 pr-3 py-3
-                    rounded-lg border
-                    text-sm
-                    bg-gray-100
-                    border border-gray-200
-                    transition-all duration-300
-                    focus:bg-white
-                    focus:ring-2 focus:ring-green-700
-                    focus:outline-none shadow-sm">
-
-            </div>
-
-        </div>
-
-        <!-- Produk -->
-        <section id="produk" class="max-w-[900px] max-auto grid grid-cols-3 gap-4">
-
-            <!-- Produk 1 -->
-            <div class="produk-item group w-[280px] bg-white rounded-md overflow-hidden shadow-lg">
-
-                <div class="overflow-hidden">
-
-                    <img src="../img/nangka.jpg"
-                        class="w-full h-32 object-cover transition duration-500 group-hover:scale-110">
-
-                </div>
-
-                <div class="bg-yellow-400 px-3 py-2">
-
-                    <h3 class="font-bold text-lg">
-                        Keripik Nanas
-                    </h3>
-
-                    <div class="flex justify-between items-center mt-2">
-
-                        <p class="text-2xl font-bold text-green-800">
-                            Rp15.000
-                        </p>
-
-                        <span class="text-sm text-gray-700">
-                            Bpk. Agus
-                        </span>
-
-                    </div>
-
-                    <button
-                        class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition">
-                        Beli
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- Produk 2 -->
-            <div class="produk-item group w-[280px] bg-white rounded-md overflow-hidden shadow-lg translate-x-4">
-
-                <div class="overflow-hidden">
-
-                    <img src="../img/kopi.jpg"
-                        class="w-full h-32 object-cover transition duration-500 group-hover:scale-110">
-
-                </div>
-
-                <div class="bg-yellow-400 px-3 py-2">
-
-                    <h3 class="font-bold text-lg">
-                        Kopi Robusta Premium
-                    </h3>
-
-                    <div class="flex justify-between items-center mt-2">
-
-                        <p class="text-2xl font-bold text-green-800">
-                            Rp30.000
-                        </p>
-
-                        <span class="text-sm text-gray-700">
-                            Ibu Lastri
-                        </span>
-
-                    </div>
-
-                    <button
-                        class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition">
-                        Beli
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- Produk 3 -->
-            <div class="produk-item group w-[280px] bg-white rounded-md overflow-hidden shadow-lg translate-x-8">
-
-                <div class="overflow-hidden">
-
-                    <img src="../img/coklat.jpg"
-                        class="w-full h-32 object-cover transition duration-500 group-hover:scale-110">
-
-                </div>
-
-                <div class="bg-yellow-400 px-3 py-2">
-
-                    <h3 class="font-bold text-lg">
-                        Minuman Coklat
-                    </h3>
-
-                    <div class="flex justify-between items-center mt-2">
-
-                        <p class="text-2xl font-bold text-green-800">
-                            Rp35.000
-                        </p>
-
-                        <span class="text-sm text-gray-700">
-                            Bpk. Yusron
-                        </span>
-
-                    </div>
-
-                    <button
-                        class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition">
-                        Beli
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-  <!-- FOOTER -->
-  <footer id="footer" class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-          <!-- Logo & Nama -->
-          <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
-            <img src="../img/logo.png" alt="Logo Desa" class="w-16 mb-3">
-            <h3 class="text-lg font-bold">Desa Sumorame</h3>
-            <p class="text-sm text-gray-300">
-              Makmur dan Unggul.
-            </p>
-          </div>
-
-      <!-- Kontak -->
-          <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200">
-              <!-- Judul -->
-              <h4 class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold">
-                Kontak
-              </h4>
-              <!-- Alamat (dari kiri) -->
-              <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg mt-[2px]">location_on</span>
-                <span>
-                  Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271
-                </span>
-              </p>
-
-              <p class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg">call</span>
-                0812-3456-7890 (Hanya Menerima Pengaduan).
-              </p>
-
-              <p class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg">mail</span>
-                PemdesSumorame@gmail.com
-              </p>
-          </div>
-
-      <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
-        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300">
-            <h4 class="font-semibold mb-3">Ikuti Kami</h4>
-          <div class="flex gap-4 items-center">
-
-              <a href="https://www.tiktok.com/search?q=pemdes%20sumorame&t=1785759591160" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" 
-                    class="w-6 h-6 invert" alt="TikTok">
-              </a>
-
-              <a href="https://www.instagram.com/pemdes_sumorame02/" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" 
-                    class="w-6 h-6 invert" alt="Instagram">
-              </a>
-
-              <a href="https://www.youtube.com/@pemdes.sumorame" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" 
-                    class="w-6 h-6 invert" alt="YouTube">
-              </a>
+            <a
+              href="https://www.youtube.com/@pemdes.sumorame"
+              target="_blank"
+              class="hover:scale-125 transition duration-300"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"
+                class="w-6 h-6 invert"
+                alt="YouTube"
+              />
+            </a>
           </div>
         </div>
       </div>
 
-    <div class="text-center mt-6 text-sm text-gray-400">
-      ©2026 Intalasi Teknologi Dan Informasi, Kantor Desa Sumorame.
-    </div>
-  </footer>
+      <div class="text-center mt-6 text-sm text-gray-400">
+        ©2026 Intalasi Teknologi Dan Informasi, Kantor Desa Sumorame.
+      </div>
+    </footer>
 
-  <script src="js/Produk.js"></script>
-</body>
+    <script src="js/Produk.js"></script>
+  </body>
 </html>
