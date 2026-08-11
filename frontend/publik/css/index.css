@@ -196,132 +196,67 @@ body {
   color: #1f2937;
 }
 
-/* =========================================
-   HERO SLIDER
-========================================= */
+/* =====================================================
+   FIX HERO - HILANGKAN ELIPS / BENTUK PUTIH
+   ===================================================== */
 
-#heroSection {
-    position: relative !important;
-    width: 100% !important;
-    overflow: hidden !important;
-    border-radius: 0 !important;
-    isolation: isolate !important;
-
-    /* Desktop */
-    height: 700px;
+#hero {
+  position: relative !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  isolation: isolate !important;
 }
 
-
-/* =========================================
-   SLIDER
-========================================= */
-
-#heroSection #slider {
-    position: relative !important;
-    display: flex !important;
-    width: 100% !important;
-    height: 100% !important;
-
-    padding: 0 !important;
-    margin: 0 !important;
+/* Tidak boleh ada pseudo element di Hero */
+#hero::before,
+#hero::after,
+#hero #slider::before,
+#hero #slider::after,
+#hero #slider > div::before,
+#hero #slider > div::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
-
-/* =========================================
-   SLIDE
-========================================= */
-
-#heroSection #slider > div {
-    position: relative !important;
-
-    min-width: 100% !important;
-    width: 100% !important;
-    height: 100% !important;
-
-    padding: 0 !important;
-    margin: 0 !important;
-
-    overflow: hidden !important;
+/* Slider */
+#hero #slider {
+  position: relative !important;
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-
-/* =========================================
-   GAMBAR
-========================================= */
-
-#heroSection .hero-image {
-    display: block !important;
-
-    width: 100% !important;
-    height: 100% !important;
-
-    max-width: none !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    object-fit: cover !important;
-    object-position: center !important;
-
-    border: 0 !important;
-    border-radius: 0 !important;
-
-    background: transparent !important;
+/* Slide */
+#hero #slider > div {
+  position: relative !important;
+  min-width: 100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
 }
 
-#heroSection {
-    touch-action: pan-y;
-}
+/* Gambar */
+#hero .hero-image {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 
-#heroSection #slider {
-    will-change: transform;
-}
+  object-fit: cover !important;
+  object-position: center !important;
 
-
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 1024px) {
-
-    #heroSection {
-        height: 500px;
-    }
-
-}
-
-
-/* =========================================
-   HANDPHONE
-========================================= */
-
-@media (max-width: 768px) {
-
-    #heroSection {
-        height: 360px;
-    }
-
-    #heroSection .hero-image {
-        object-position: center center !important;
-    }
-
-}
-
-
-/* =========================================
-   HANDPHONE KECIL
-========================================= */
-
-@media (max-width: 480px) {
-
-    #heroSection {
-        height: 260px;
-    }
-
-    #heroSection .hero-image {
-        object-position: center center !important;
-    }
-
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
 }
 
 /* =====================================================
@@ -335,47 +270,57 @@ body {
    layar (bukan elemen), potongan yang tampil di kedua
    jendela terasa berasal dari satu gambar yang sama & selaras,
    walau ukuran/posisi kotaknya beda. */
-/* =====================================================
-   PARALLAX BACKGROUND (JELAJAH + STATISTIK)
-   =====================================================
-   Dulu efek ini dibuat pakai `background-attachment: fixed`
-   di elemen section langsung -> berat, karena browser harus
-   me-repaint seluruh background tiap frame scroll.
-
-   Sekarang background dipindah ke layer terpisah (.parallax-bg)
-   yang digeser pakai `transform: translate3d()` lewat JS
-   (lihat index.js). transform di-composite oleh GPU, jadi jauh
-   lebih ringan daripada repaint background biasa.
-
-   Elemen pembungkus (panel JELAJAH & section STATISTIK) sudah
-   punya `relative overflow-hidden` dari class Tailwind di HTML,
-   jadi layer ini otomatis "terpotong" rapi sesuai bentuk kotaknya. */
-.parallax-bg {
-  position: absolute;
-  /* Dibuat lebih tinggi dari kontainer supaya ada ruang gerak
-     saat digeser transform, tanpa muncul celah kosong di tepi. */
-  top: -20%;
-  left: 0;
-  width: 100%;
-  height: 140%;
-
+.shared-window-bg {
   background-image: url("../../img/BalaiDesa.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  pointer-events: none;
+  background-attachment: fixed;
 }
 
-/* Pengguna yang memilih "reduced motion" tidak perlu digerakkan;
-   background tetap tampil, hanya efek parallax-nya dimatikan
-   (ditangani lewat JS dengan mengecek prefers-reduced-motion). */
-@media (prefers-reduced-motion: reduce) {
-  .parallax-bg {
-    top: 0;
-    height: 100%;
-    transform: none !important;
-  }
+/* Setiap huruf */
+
+.jelajah-letter {
+  display: inline-block;
+
+  position: relative;
+
+  opacity: 0;
+
+  will-change: transform, opacity;
 }
+
+/* ==========================
+      SCROLL TO TOP
+    ========================== */
+
+    #scrollTopBtn{
+        transform: translateY(20px);
+    }
+
+    #scrollTopBtn.show{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    #scrollTopBtn:hover{
+        box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+
+    /* HEADER SCROLL */
+    #mainHeader {
+      transition: transform 0.3s ease;
+    }
+
+    #mainHeader.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    #heroSection {
+      transition: margin-top 0.3s ease;
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
+    }

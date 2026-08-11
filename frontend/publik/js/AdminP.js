@@ -20,39 +20,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnLogin = document.getElementById("btnLogin");
   const closeLoginModal = document.getElementById("closeLoginModal");
 
-  // ================= SET DEFAULT LOGIN =================
-
-  if (!localStorage.getItem("login")) {
-    localStorage.setItem("login", "false");
-  }
-
-
-  // ================= TAMPILKAN MODAL LOGIN =================
-
-  function tampilkanLoginModal() {
-
-    loginModal.classList.remove(
-      "opacity-0",
-      "pointer-events-none"
-    );
-
-    loginBox.classList.remove("scale-95");
-
-    loginBox.classList.add("scale-100");
-  }
-
-
-  // ================= LOGIN =================
-
   btnLogin.addEventListener("click", () => {
+    // simulasi login
+    localStorage.setItem("login", "true");
 
-    /*
-      Jika login.html adalah halaman login
-      yang sebenarnya, arahkan ke sana.
-    */
+    // ambil jenis yang tadi dipilih
+    const jenis = localStorage.getItem("jenisDipilih");
 
-    window.location.href = "login.html";
+    // tutup modal
+    tutupLoginModal();
 
+    // langsung lanjut buka form
+    if (jenis) tampilForm(jenis);
+  });
+
+  function tutupLoginModal() {
+    loginModal.classList.add("opacity-0", "pointer-events-none");
+    loginBox.classList.remove("scale-100");
+    loginBox.classList.add("scale-95");
+  }
+
+  closeLoginModal.addEventListener("click", tutupLoginModal);
+
+  loginModal.addEventListener("click", (e) => {
+    if (e.target === loginModal) tutupLoginModal();
   });
 
   // ================= NAVBAR MOBILE =================
