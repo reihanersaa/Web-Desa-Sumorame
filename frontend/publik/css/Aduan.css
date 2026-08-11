@@ -116,3 +116,18 @@
         .text-justify {
         text-align: justify;
     }
+
+    #heroSection {
+      height: 400px !important;
+      transition: margin-top 0.3s ease;
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
+
+    @media (min-width: 768px) {
+      #heroSection {
+        height: 500px !important;
+      }
+    }
