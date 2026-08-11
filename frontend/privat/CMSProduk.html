@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS Produk Unggulan | Website Desa Tawangsari</title>
+  <link rel="icon" href="../img/logo.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/DashboardAdmin.css">
+</head>
+
+<body class="bg-gray-200 font-['Poppins']">
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 h-16 bg-white border-b flex z-50">
+  <div id="headerLeft" class="w-64 bg-white flex items-center px-4 border-r transition-all duration-300">
+    <img src="../img/logo2.png" class="h-20 object-contain" />
+  </div>
+  <div class="flex-1 flex items-center justify-between px-4">
+    <div class="flex items-center">
+      <button id="burgerBtn" class="mr-4"><span class="material-symbols-outlined">menu</span></button>
+      <h1 class="font-semibold text-lg">Kelola Beranda</h1>
+    </div>
+    <a href="LoginAdmin.html" class="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition">
+      <span class="material-symbols-outlined text-base">logout</span><span>Logout</span>
+    </a>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside id="sidebar" class="fixed top-16 left-0 w-64 h-[calc(100%-4rem)] bg-black text-white p-4 transition-all duration-300 -translate-x-full md:translate-x-0">
+  <nav class="space-y-2 text-sm">
+
+    <a href="DashboardAdmin.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">home</span><span class="menu-text">Dashboard</span>
+    </a>
+
+    <a href="Pengaduan.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">campaign</span><span class="menu-text">Aduan</span>
+    </a>
+
+    <a href="SuratMenyurat.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">mail</span><span class="menu-text">Surat Menyurat</span>
+    </a>
+
+    <a href="Kelembagaan.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">groups</span><span class="menu-text">Kelembagaan Desa</span>
+    </a>
+
+    <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">linked_camera</span><span class="menu-text">Publikasi</span>
+    </a>
+
+    <!-- Kelola Website (Dropdown Terbuka Permanen & Highlight pada Produk) -->
+    <div>
+      <button id="cmsToggle" class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+        <span class="flex items-center">
+          <span class="material-symbols-outlined mr-3">web</span><span class="menu-text">Kelola Website</span>
+        </span>
+        <span id="cmsIcon" class="material-symbols-outlined text-sm transition-transform rotate-180">expand_more</span>
+      </button>
+
+      <div id="cmsMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-40 opacity-100 transition-all duration-300 ease-in-out">
+        <a href="CmsProfil.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span> Profil & Hero
+        </a>
+        
+        <!-- INI MENU YANG HIGHLIGHT (Produk Unggulan) -->
+        <a href="CmsProduk.html" class="flex items-center gap-2 p-2 text-white bg-gray-700 translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span> Produk Unggulan
+        </a>
+      </div>
+    </div>
+    
+  </nav>
+</aside>
+
+<!-- OVERLAY MOBILE -->
+<div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"></div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent" class="pt-16 md:pl-64 transition-all duration-300 min-h-screen flex flex-col">
+  <main class="flex-1 p-6 pb-20">
+
+    <!-- HEADER HALAMAN -->
+    <div class="mb-6 fade-up flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Katalog Produk Unggulan</h2>
+        <p class="text-sm text-gray-500">Kelola daftar etalase produk UMKM warga desa yang tampil di halaman utama.</p>
+      </div>
+      <button id="btnTambahProduk" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-5 rounded-md transition shadow flex items-center gap-2 shrink-0">
+        <span class="material-symbols-outlined text-sm">add</span> Tambah Produk
+      </button>
+    </div>
+
+    <!-- TABEL DATA PRODUK -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden fade-up delay-1">
+      <div class="bg-black text-white px-6 py-3">
+        <h3 class="text-sm font-semibold">Daftar Produk UMKM Desa</h3>
+      </div>
+      
+      <div class="overflow-x-auto p-4">
+        <table class="w-full text-sm border-collapse border border-gray-200">
+          <thead class="bg-gray-100 text-gray-700">
+            <tr>
+              <th class="px-4 py-3 text-center border w-12">No</th>
+              <th class="px-4 py-3 text-left border w-24">Foto</th>
+              <th class="px-4 py-3 text-left border">Nama Produk</th>
+              <th class="px-4 py-3 text-left border">Harga</th>
+              <th class="px-4 py-3 text-left border">Penjual & Kontak</th>
+              <th class="px-4 py-3 text-center border w-28">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Contoh Data 1 -->
+            <tr class="hover:bg-blue-50 transition-all duration-200">
+              <td class="px-4 py-3 text-center border">1</td>
+              <td class="px-4 py-3 text-center border">
+                <img src="../img/produk1.jpg" alt="Foto" class="w-16 h-16 object-cover rounded shadow-sm mx-auto bg-gray-200">
+              </td>
+              <td class="px-4 py-3 font-semibold text-gray-800 border">Keripik Tempe Sagu</td>
+              <td class="px-4 py-3 text-green-600 font-bold border">Rp 15.000</td>
+              <td class="px-4 py-3 border">
+                <div class="flex flex-col">
+                  <span class="font-semibold">Ibu Siti (08123456789)</span>
+                  <span class="text-xs text-gray-500">RT 02 RW 01, Dusun Krajan</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-center border">
+                <div class="inline-flex gap-1">
+                  <button class="bg-blue-500 hover:bg-blue-600 text-white p-1.5 rounded transition" title="Edit">
+                    <span class="material-symbols-outlined text-sm">edit</span>
+                  </button>
+                  <button class="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition" title="Hapus">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL TAMBAH/EDIT PRODUK -->
+<!-- ========================================== -->
+<div id="modalProduk" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-[60] flex items-center justify-center opacity-0 transition-opacity duration-300 ease-out p-4">
+  <div id="modalProdukBox" class="bg-white w-full max-w-3xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col transform scale-90 opacity-0 transition-all duration-300 ease-out">
+    
+    <!-- Header Modal -->
+    <div class="flex justify-between items-center px-6 py-4 bg-gray-800 text-white rounded-t-2xl">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined">storefront</span>
+        <h2 class="text-lg font-semibold" id="modalTitle">Form Produk UMKM</h2>
+      </div>
+      <button id="btnCloseModal" class="hover:text-red-400 transition">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- Body Modal (Form) -->
+    <div class="p-6 overflow-y-auto flex-1 bg-gray-50">
+      <form id="formProduk" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Sisi Kiri: Foto Produk -->
+        <div class="flex flex-col">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Foto Produk</label>
+          <div class="w-full h-48 bg-white border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden mb-3 relative group shadow-sm">
+            <span class="text-gray-400 text-xs font-semibold empty-text">Preview Foto Produk</span>
+            <img id="previewFotoProduk" src="" alt="Preview" class="hidden w-full h-full object-cover">
+          </div>
+          <input type="file" id="inputFotoProduk" accept="image/png, image/jpeg, image/webp" required
+            class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+          <p class="text-xs text-gray-400 mt-2">Format: JPG/PNG. Disarankan rasio 1:1 (Kotak).</p>
+        </div>
+
+        <!-- Sisi Kanan: Input Teks -->
+        <div class="space-y-4">
+          <!-- 1. Nama Produk -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Produk</label>
+            <input type="text" id="namaProduk" placeholder="Contoh: Keripik Tempe" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+          </div>
+
+          <!-- 2. Harga -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Harga (Rp)</label>
+            <input type="number" id="hargaProduk" placeholder="Contoh: 15000" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+          </div>
+
+          <!-- 3. Nama Penjual -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Penjual / Toko</label>
+            <input type="text" id="namaPenjual" placeholder="Contoh: Ibu Siti" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+          </div>
+
+          <!-- 4. No HP Penjual -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">No. WhatsApp (Awali dengan 62)</label>
+            <input type="number" id="noHpPenjual" placeholder="Contoh: 628123456789" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+          </div>
+        </div>
+
+        <!-- Bawah (Membentang Penuh): Alamat -->
+        <div class="md:col-span-2">
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Alamat Penjual</label>
+          <textarea id="alamatPenjual" rows="2" placeholder="Contoh: RT 02 RW 01, Dusun Krajan (Dekat Balai Desa)" required
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer Modal -->
+    <div class="px-6 py-4 border-t flex justify-end gap-3 bg-white rounded-b-2xl">
+      <button id="btnBatal" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold transition">Batal</button>
+      <button type="submit" form="formProduk" class="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-2 transition shadow">
+        <span class="material-symbols-outlined text-sm">save</span> Simpan Produk
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- SCRIPT PENGATUR SIDEBAR -->
+<script src="js/DashboardAdmin.js"></script>
+
+<!-- SCRIPT KHUSUS KELOLA PRODUK (DIPISAH NANTI) -->
+<script src="js/CmsProduk.js"></script>
+
+</body>
+</html>

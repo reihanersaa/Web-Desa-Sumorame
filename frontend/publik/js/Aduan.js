@@ -177,40 +177,30 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // ================= LOGIN MODAL =================
-  const loginModal = document.getElementById("loginModal");
-  const loginBox = document.getElementById("loginBox");
+  // ================= MODAL LOGIN WAJIB =================
+  const modal = document.getElementById("loginModal");
+  const box = document.getElementById("modalBox");
   const btnLogin = document.getElementById("btnLogin");
-  const closeLoginModal = document.getElementById("closeLoginModal");
 
-  // ================= SET DEFAULT LOGIN =================
-
+  // 🚨 LANGSUNG CEK LOGIN SAAT MASUK HALAMAN
   if (!localStorage.getItem("login")) {
-    localStorage.setItem("login", "false");
+    modal.classList.remove("opacity-0", "pointer-events-none");
+    box.classList.remove("scale-95");
+    box.classList.add("scale-100");
   }
 
-
-  // ================= TAMPILKAN MODAL LOGIN =================
-
-  function tampilkanLoginModal() {
-
-    loginModal.classList.remove(
-      "opacity-0",
-      "pointer-events-none"
-    );
-
-    loginBox.classList.remove("scale-95");
-
-    loginBox.classList.add("scale-100");
-  }
-
-
-  // ================= LOGIN =================
-
+  // tombol login → redirect
   btnLogin.addEventListener("click", () => {
-
     window.location.href = "login.html";
+  });
 
+  // klik luar modal
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.add("opacity-0", "pointer-events-none");
+      box.classList.remove("scale-100");
+      box.classList.add("scale-95");
+    }
   });
 
   // ================= FORM ADUAN =================
