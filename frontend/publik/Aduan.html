@@ -41,54 +41,67 @@
 <body class="bg-surface font-body text-on-surface">
 
   <!-- HEADER -->
-  <header id="mainHeader" class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md">
-    <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
-
-      <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <div class="logo">
-          <img src="../img/logo.png" alt="Logo Desa Digital" width="40" height="36">
-        </div>
-        <h1 class="font-headline text-xl font-bold text-emerald-900">Desa Sumorame</h1>
-      </div>
-
-      <!-- NAVBAR -->
-      <nav class="hidden md:flex items-center font-medium text-green-900">
-        <a href="index.html" class="nav-item relative px-5 font-bold">Profile Desa</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Lembaga.html" class="nav-item relative px-5 font-bold">Lembaga</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Informasi.html" class="nav-item relative px-5 font-bold">Informasi</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="AdminP.html" class="nav-item relative px-5 font-bold text-green-800">Administrasi Persuratan</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Aduan.html" class="nav-item relative px-5 font-bold">Aduan</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Publikasi.html" class="nav-item relative px-5 font-bold">Publikasi</a>
-      </nav>
-
-      <!-- Logout -->
-      <a href="login.html" class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition">
-        <span class="material-symbols-outlined">logout</span>
-      </a>
-
-      <!-- Right Section -->
-      <div class="flex items-center gap-4">
-
-        <!-- Hamburger (Mobile Only) -->
-        <button id="menuBtn" class="md:hidden material-symbols-outlined text-emerald-900 text-3xl">
-          menu
-        </button>
-      </div>
+  <header class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md" id="mainHeader">
+   <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
+    <!-- Logo -->
+    <div class="flex items-center gap-3">
+     <div class="logo">
+      <img alt="Logo Desa Digital" height="36" src="../img/logo.png" width="40"/>
+     </div>
+     <h1 class="font-headline text-xl font-bold text-emerald-900">
+      Desa Sumorame
+     </h1>
     </div>
+    <!-- Menu -->
+    <nav class="hidden md:flex items-center font-medium text-green-900">
+     <a class="nav-item relative px-5 font-bold" href="index.html">
+      Profile Desa
+     </a>
+     <div class="h-5 w-[1px] bg-gray-400">
+     </div>
+     <a class="nav-item relative px-5 font-bold" href="PPID.html">
+      PPID
+     </a>
+     <div class="h-5 w-[1px] bg-gray-400">
+     </div>
+     <a class="nav-item relative px-5 font-bold" href="Lembaga.html">
+      Lembaga
+     </a>
+     <div class="h-5 w-[1px] bg-gray-400">
+     </div>
+     <a class="nav-item relative px-5 font-bold" href="Informasi.html">
+      Informasi
+     </a>
+     <div class="h-5 w-[1px] bg-gray-400">
+     </div>
+     <a class="nav-item relative px-5 font-bold text-green-800" href="AdminP.html">
+      Administrasi Persuratan
+     </a>
+     <div class="h-5 w-[1px] bg-gray-400">
+     </div>
+     <a class="nav-item relative px-5 font-bold" href="Aduan.html">
+      Aduan
+     </a>
+     <div class="h-5 w-[1px] bg-gray-400">
+     </div>
+     <a class="nav-item relative px-5 font-bold" href="Publikasi.html">
+      Publikasi
+     </a>
+    </nav>
+    <!-- LOGOUT -->
+    <a class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition" href="login.html">
+     <span class="material-symbols-outlined text-2xl">
+      logout
+     </span>
+    </a>
+    <!-- Right Section -->
+    <div class="flex items-center gap-4">
+     <!-- Hamburger (Mobile Only) -->
+     <button class="md:hidden material-symbols-outlined text-emerald-900 text-3xl" id="menuBtn">
+      menu
+     </button>
+    </div>
+   </div>
   </header>
 
   <!-- MOBILE MENU -->
@@ -98,7 +111,7 @@
     <a href="Lembaga.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Lembaga</a>
     <a href="Informasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Informasi</a>
     <a href="AdminP.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Administrasi Persuratan</a>
-    <a href="#" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Aduan</a>
+    <a href="Aduan.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Aduan</a>
     <a href="Publikasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Publikasi</a>
     <a href="login.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Log Out</a>
   </div>

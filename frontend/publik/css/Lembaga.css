@@ -1,58 +1,79 @@
 .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
-    }
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
 
-    body {
-      min-height: max(884px, 100dvh);
-    }
+body {
+  min-height: max(884px, 100dvh);
+}
 
-    .nav-item {
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.4s ease;
-    }
+.nav-item {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+}
 
-    .nav-item::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -5px;
-      width: 0%;
-      height: 2px;
-      background: #006633;
-      transition: 0.3s;
-    }
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background: #006633;
+  transition: 0.3s;
+}
 
-    .nav-item:hover::after {
-      width: 100%;
-    }
+.nav-item:hover::after {
+  width: 100%;
+}
 
-    /* ==========================
+/* ==========================
       SCROLL TO TOP
     ========================== */
 
-    #scrollTopBtn{
-        transform: translateY(20px);
-    }
+#scrollTopBtn {
+  transform: translateY(20px);
+}
 
-    #scrollTopBtn.show{
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
+#scrollTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
-    #scrollTopBtn:hover{
-        box-shadow: 0 10px 25px rgba(0,0,0,.25);
-    }
+#scrollTopBtn:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
 
-    /* HEADER SCROLL */
-    #mainHeader {
-      transition: transform 0.3s ease;
-    }
+/* HEADER SCROLL */
+#mainHeader {
+  transition: transform 0.3s ease;
+}
 
-    #mainHeader.header-hidden {
-      transform: translateY(-100%);
-    }
+#mainHeader.header-hidden {
+  transform: translateY(-100%);
+}
+
+#heroSection {
+  transition: margin-top 0.3s ease;
+}
+
+#heroSection.hero-top {
+  margin-top: 0;
+}
+
+/* HEADER SCROLL */
+#mainHeader {
+  transition: transform 0.3s ease;
+}
+
+#mainHeader.header-hidden {
+  transform: translateY(-100%);
+}
 
     #heroSection.hero-top {
       margin-top: 0;
