@@ -69,21 +69,24 @@ body {
           SCROLL TO TOP
     ========================== */
 
-#scrollTopBtn {
-  transform: translateY(20px);
-}
+    #scrollTopBtn{
+        transform: translateY(20px);
+    }
 
-#scrollTopBtn.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
+    #scrollTopBtn.show{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
 
-#scrollTopBtn:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-}
+    #scrollTopBtn:hover{
+        box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> develop
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -153,6 +156,7 @@ body {
         height: 500px !important;
       }
     }
+<<<<<<< HEAD
 =======
 @keyframes fadeInUp {
   from {
@@ -165,3 +169,5 @@ body {
   }
 }
 >>>>>>> b93bd44e99bf9f2095b41b9e5d54576e1594185b
+=======
+>>>>>>> develop

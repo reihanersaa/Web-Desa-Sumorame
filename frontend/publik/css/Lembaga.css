@@ -59,6 +59,26 @@ body {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+#heroSection {
+  transition: margin-top 0.3s ease;
+}
+
+#heroSection.hero-top {
+  margin-top: 0;
+}
+
+/* HEADER SCROLL */
+#mainHeader {
+  transition: transform 0.3s ease;
+}
+
+#mainHeader.header-hidden {
+  transform: translateY(-100%);
+}
+
+>>>>>>> develop
     #heroSection.hero-top {
       margin-top: 0;
     }
@@ -121,6 +141,7 @@ body {
         height: 500px !important;
       }
     }
+<<<<<<< HEAD
 =======
 #heroSection {
   transition: margin-top 0.3s ease;
@@ -147,3 +168,5 @@ body {
   margin-top: 0;
 }
 >>>>>>> b93bd44e99bf9f2095b41b9e5d54576e1594185b
+=======
+>>>>>>> develop

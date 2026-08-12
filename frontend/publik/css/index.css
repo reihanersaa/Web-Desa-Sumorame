@@ -327,6 +327,7 @@ body {
   pointer-events: none;
 }
 
+<<<<<<< HEAD
 /* Pengguna yang memilih "reduced motion" tidak perlu digerakkan;
    background tetap tampil, hanya efek parallax-nya dimatikan
    (ditangani lewat JS dengan mengecek prefers-reduced-motion). */
@@ -339,6 +340,8 @@ body {
 }
 <<<<<<< HEAD
 
+=======
+>>>>>>> develop
 /* ==========================
       SCROLL TO TOP
     ========================== */
@@ -384,5 +387,18 @@ body {
         height: 500px !important;
       }
     }
+<<<<<<< HEAD
 =======
 >>>>>>> b93bd44e99bf9f2095b41b9e5d54576e1594185b
+=======
+/* Pengguna yang memilih "reduced motion" tidak perlu digerakkan;
+   background tetap tampil, hanya efek parallax-nya dimatikan
+   (ditangani lewat JS dengan mengecek prefers-reduced-motion). */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-bg {
+    top: 0;
+    height: 100%;
+    transform: none !important;
+  }
+}
+>>>>>>> develop
