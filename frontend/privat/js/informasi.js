@@ -1,4 +1,30 @@
+// sidebar
+const burgerBtn = document.getElementById('burgerBtn');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const mainContent = document.getElementById('mainContent');
+const headerLeft = document.getElementById('headerLeft');
 
+burgerBtn.addEventListener('click', () => {
+
+  if (window.innerWidth < 768) {
+    sidebar.classList.toggle('-translate-x-full');
+    overlay.classList.toggle('hidden');
+  } else {
+    sidebar.classList.toggle('w-64');
+    sidebar.classList.toggle('w-20');
+
+    headerLeft.classList.toggle('w-64');
+    headerLeft.classList.toggle('w-20');
+
+    mainContent.classList.toggle('md:pl-64');
+    mainContent.classList.toggle('md:pl-20');
+
+    document.querySelectorAll('.menu-text').forEach(el => {
+      el.classList.toggle('hidden');
+    });
+  }
+});
 
 flatpickr("#tanggalTanggapan", {
   dateFormat: "Y-m-d", // format: 2026-04-24
@@ -24,7 +50,37 @@ flatpickr("#tanggalTanggapan", {
     pemohonIcon.classList.toggle('rotate-180');
   });
 
+  overlay.addEventListener('click', () => {
+    sidebar.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+  });
 
+  // ================= MODAL TAMBAH =================
+    const modalTambah = document.getElementById('modalTambah');
+    const modalTambahBox = document.getElementById('modalTambahBox');
+
+    document.getElementById('btnTambah').onclick = () => {
+      modalTambah.classList.remove('hidden');
+
+      // kondisi awal animasi
+      modalTambah.classList.add('opacity-0');
+      modalTambahBox.classList.add('scale-90', 'opacity-0');
+
+      requestAnimationFrame(() => {
+        modalTambah.classList.remove('opacity-0');
+
+        modalTambahBox.classList.remove('scale-90', 'opacity-0');
+        modalTambahBox.classList.add('scale-100', 'opacity-100');
+      });
+    };
+
+    document.getElementById('closeTambah').onclick = () => {
+      closeModalFunc(modalTambah, modalTambahBox);
+    };
+
+    document.getElementById('btnCloseTambah').onclick = () => {
+      closeModalFunc(modalTambah, modalTambahBox);
+    };
 
   // ================= VIEW MODAL =================
   const modal = document.getElementById('modalView');
@@ -131,6 +187,91 @@ flatpickr("#tanggalTanggapan", {
       });
     });
   });
+
+  // ================= OUTSIDE CLICK =================
+  function enableOutsideClick(modal, box) {
+    modal.addEventListener('click', (e) => {
+      if (!box.contains(e.target)) {
+        closeModalFunc(modal, box);
+      }
+    });
+  }
+
+  // 🔥 TARUH DI SINI (SETELAH DECLARE)
+  enableOutsideClick(modalTambah, modalTambahBox);
+  enableOutsideClick(modalView, modalBox);
+  enableOutsideClick(modalEdit, modalEditBox);
+
+  // ================= SIMPAN TAMBAH =================
+  document.getElementById('btnSimpanTambah').onclick = () => {
+
+  const judul = document.querySelector('#modalTambah input[type="text"]').value.trim();
+  const isi = document.querySelector('#modalTambah textarea').value.trim();
+  const tanggal = document.getElementById('tanggalTambah').value;
+  const gambar = document.querySelector('#modalTambah input[type="file"]').files[0];
+
+  let kosong = [];
+
+  if (!judul) kosong.push("Judul");
+  if (!isi) kosong.push("Isi Kegiatan");
+  if (!tanggal) kosong.push("Tanggal");
+  if (!gambar) kosong.push("Gambar");
+
+  // VALIDASI
+  if (kosong.length > 0) {
+    Swal.fire({
+      title: "Form Belum Lengkap ⚠️",
+      html: `
+        <div style="text-align:center;">
+          <p>Data berikut masih kosong:</p>
+          <ul style="list-style-position: inside;">
+            ${kosong.map(i => `<li>${i}</li>`).join("")}
+          </ul>
+        </div>
+      `,
+      icon: "warning",
+      confirmButtonColor: "#f59e0b",
+      background: "#fffbeb",
+      color: "#92400e"
+    });
+    return;
+  }
+
+    // KONFIRMASI
+    Swal.fire({
+      title: "Konfirmasi Data",
+      icon: "question",
+      html: `
+        <p><b>Judul:</b><br>${judul}</p>
+        <p><b>Isi:</b><br>${isi}</p>
+        <p><b>Tanggal:</b><br>${tanggal}</p>
+        <p><b>Gambar:</b><br>${gambar.name}</p>
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Ya, simpan",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#3b82f6",
+      cancelButtonColor: "#6b7280",
+      background: "#eff6ff",
+      color: "#1e3a8a"
+  }).then(result => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Berhasil 🎉",
+        text: "Data berhasil ditambahkan",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+        background: "#f0fff4",
+        color: "#166534"
+      });
+
+      setTimeout(() => {
+        closeModalFunc(modalTambah, modalTambahBox);
+      }, 1500);
+    }
+  });
+};
 
   // ================= SWEET ALERT EDIT =================
   document.querySelectorAll('.btnSimpan').forEach(btn => {
