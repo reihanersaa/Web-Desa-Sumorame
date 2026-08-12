@@ -196,6 +196,22 @@ body {
   color: #1f2937;
 }
 
+/* HEADER SCROLL */
+#mainHeader {
+  transition: transform 0.3s ease;
+}
+
+#mainHeader.header-hidden {
+  transform: translateY(-100%);
+}
+
+#heroSection {
+  transition: margin-top 0.3s ease;
+}
+
+#heroSection.hero-top {
+  margin-top: 0;
+}
 /* =====================================================
    FIX HERO - HILANGKAN ELIPS / BENTUK PUTIH
    ===================================================== */
@@ -221,37 +237,44 @@ body {
   height: 0 !important;
 }
 
-/* Slider */
-#hero #slider {
+/* Slider - tingginya mengikuti gambar (auto), bukan gambar yang
+   dipaksa mengikuti tinggi slider */
+#heroSection #slider {
   position: relative !important;
   display: flex !important;
+  align-items: flex-start !important;
   width: 100% !important;
-  height: 100% !important;
+  height: auto !important;
   padding: 0 !important;
   margin: 0 !important;
 }
 
-/* Slide */
-#hero #slider > div {
+/* Slide - lebar penuh 100%, tinggi auto mengikuti gambar di dalamnya */
+#heroSection #slider > div {
   position: relative !important;
   min-width: 100% !important;
   width: 100% !important;
-  height: 100% !important;
+  height: auto !important;
   padding: 0 !important;
   margin: 0 !important;
   overflow: hidden !important;
+  background-color: #006633 !important; /* hijau telur asin - selaras warna brand */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-/* Gambar */
-#hero .hero-image {
+/* Gambar: lebar penuh, tinggi menyesuaikan rasio asli gambar (auto),
+   sehingga tinggi hero otomatis mengikuti ukuran gambar itu sendiri. */
+#heroSection .hero-image {
   display: block !important;
   width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
+  height: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
   padding: 0 !important;
 
-  object-fit: cover !important;
+  object-fit: contain !important;
   object-position: center !important;
 
   border: 0 !important;
