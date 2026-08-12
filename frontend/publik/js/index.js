@@ -30,6 +30,25 @@ document.addEventListener("click", (e) => {
   }
 });
 
+const mainHeader = document.getElementById("mainHeader");
+const heroSection = document.getElementById("heroSection");
+
+window.addEventListener("scroll", function () {
+  if (window.scrollY <= 0) {
+    // Navbar hilang
+    mainHeader.classList.add("header-hidden");
+
+    // Hero langsung naik menutup celah
+    heroSection.classList.add("hero-top");
+  } else {
+    // Navbar muncul
+    mainHeader.classList.remove("header-hidden");
+
+    // Hero kembali ke posisi normal
+    heroSection.classList.remove("hero-top");
+  }
+});
+
 // =====================================================
 // HELPER: Reveal-on-scroll pakai IntersectionObserver
 // =====================================================
@@ -44,7 +63,13 @@ document.addEventListener("click", (e) => {
 //   scroll -> inilah penyebab utama scroll terasa patah-patah.
 // IntersectionObserver hanya memberi tahu browser sekali saat elemen
 // benar-benar masuk/keluar viewport, tanpa perlu polling tiap scroll.
-function revealOnScroll(target, items, removeClasses, staggerMs = 200, onEach = null) {
+function revealOnScroll(
+  target,
+  items,
+  removeClasses,
+  staggerMs = 200,
+  onEach = null,
+) {
   if (!target) return;
 
   const observer = new IntersectionObserver(
@@ -62,7 +87,7 @@ function revealOnScroll(target, items, removeClasses, staggerMs = 200, onEach = 
         obs.unobserve(target); // hanya jalan sekali
       });
     },
-    { threshold: 0.15, rootMargin: "0px 0px -100px 0px" }
+    { threshold: 0.15, rootMargin: "0px 0px -100px 0px" },
   );
 
   observer.observe(target);
@@ -78,8 +103,14 @@ revealOnScroll(footer, footerItems, ["opacity-0", "translate-y-6"], 200);
 revealOnScroll(
   footer,
   kontakItems,
-  ["opacity-0", "-translate-y-6", "-translate-x-10", "translate-x-10", "translate-y-10"],
-  200
+  [
+    "opacity-0",
+    "-translate-y-6",
+    "-translate-x-10",
+    "translate-x-10",
+    "translate-y-10",
+  ],
+  200,
 );
 
 // ===== Animasi Sambutan Kepala Desa =====
@@ -90,7 +121,7 @@ revealOnScroll(
   sambutan,
   sambutanItems,
   ["opacity-0", "translate-y-16", "translate-x-16", "scale-90"],
-  200
+  200,
 );
 
 // === Animasi Header ===
@@ -135,15 +166,26 @@ const beritaItems = berita.querySelectorAll(".berita-item");
 revealOnScroll(
   berita,
   beritaItems,
-  ["opacity-0", "-translate-y-10", "translate-y-10", "-translate-x-16", "translate-x-16"],
-  150
+  [
+    "opacity-0",
+    "-translate-y-10",
+    "translate-y-10",
+    "-translate-x-16",
+    "translate-x-16",
+  ],
+  150,
 );
 
 // === Animasi Visi Dan Misi ===
 const visimisi = document.getElementById("visimisi");
 const visiItems = visimisi.querySelectorAll(".visi-item");
 
-revealOnScroll(visimisi, visiItems, ["opacity-0", "-translate-x-16", "translate-x-16"], 200);
+revealOnScroll(
+  visimisi,
+  visiItems,
+  ["opacity-0", "-translate-x-16", "translate-x-16"],
+  200,
+);
 
 // === Animasi Produk Unggulan ===
 const produk = document.getElementById("produk");
@@ -279,7 +321,7 @@ slider.addEventListener(
   (e) => {
     startX = e.touches[0].clientX;
   },
-  { passive: true }
+  { passive: true },
 );
 
 slider.addEventListener(
@@ -293,7 +335,7 @@ slider.addEventListener(
       showSlide(index - 1);
     }
   },
-  { passive: true }
+  { passive: true },
 );
 
 // === CONTROL KEYBOARD ===
@@ -354,9 +396,17 @@ function animateCounter(counter) {
 
 const statistik = document.getElementById("statistik");
 
-revealOnScroll(statistik, statCards, ["opacity-0", "translate-y-10"], 200, (card) => {
-  card.querySelectorAll(".counter").forEach((counter) => animateCounter(counter));
-});
+revealOnScroll(
+  statistik,
+  statCards,
+  ["opacity-0", "translate-y-10"],
+  200,
+  (card) => {
+    card
+      .querySelectorAll(".counter")
+      .forEach((counter) => animateCounter(counter));
+  },
+);
 
 // =====================================================
 // PARALLAX BACKGROUND (JELAJAH + STATISTIK)
@@ -374,7 +424,7 @@ revealOnScroll(statistik, statCards, ["opacity-0", "translate-y-10"], 200, (card
   if (!parallaxEls.length) return;
 
   const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
+    "(prefers-reduced-motion: reduce)",
   ).matches;
   if (prefersReducedMotion) return; // biarkan CSS yang menonaktifkan gerak
 
@@ -422,7 +472,7 @@ revealOnScroll(statistik, statCards, ["opacity-0", "translate-y-10"], 200, (card
         window.removeEventListener("scroll", onScroll);
       }
     },
-    { rootMargin: "150px 0px 150px 0px" }
+    { rootMargin: "150px 0px 150px 0px" },
   );
 
   parallaxEls.forEach((el) => io.observe(el));

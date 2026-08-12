@@ -1,222 +1,427 @@
 /* ==========================
    FONT
 ========================== */
-body{
-    font-family:'Inter',sans-serif;
-    scroll-behavior:smooth;
-    overflow-x:hidden;
+body {
+  font-family: "Inter", sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 .font-poppins {
-        font-family: 'Poppins', sans-serif;
-    }
+  font-family: "Poppins", sans-serif;
+}
 
 /* ==========================
    NAVBAR
 ========================== */
-.nav-item{
-    position:relative;
-    opacity:0;
-    transform:translateY(-20px);
-    transition:opacity .4s ease, transform .4s ease;
+.nav-item {
+  position: relative;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
-.nav-item::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    bottom:-6px;
-    width:0%;
-    height:3px;
-    background:#15803d;
-    transition:.3s;
-    transform:translateX(-50%);
-    border-radius:20px;
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 0%;
+  height: 3px;
+  background: #15803d;
+  transition: 0.3s;
+  transform: translateX(-50%);
+  border-radius: 20px;
 }
 
-.nav-item:hover::after{
-    width:70%;
+.nav-item:hover::after {
+  width: 70%;
 }
 
 /* ==========================
    HERO
 ========================== */
-.hero-item{
-    transition:
-    opacity .8s ease,
-    transform .8s ease;
+.hero-item {
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 /* ==========================
    PRODUK CARD
 ========================== */
-.produk-item{
-    opacity:0;
-    transform:translateY(64px);
-    transition:
-    opacity .8s ease,
-    transform .8s ease,
-    box-shadow .35s ease;
+
+.produk-item {
+  position: relative;
+  height: 260px;
+  opacity: 0;
+  transform: translateY(64px);
+
+  overflow: hidden;
+  border-radius: 10px;
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease,
+    box-shadow 0.35s ease;
 }
 
-/* ketika muncul dari javascript */
-.produk-item.show{
-    opacity:1;
-    transform:translateY(0);
+/* Card muncul dari bawah */
+.produk-item.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* hover hanya mengatur shadow
-   tidak mengubah transform */
-.produk-item:hover{
-    box-shadow:
-    0 20px 35px rgba(0,0,0,.18);
+/* Hover card */
+.produk-item:hover {
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
 }
 
 /* ==========================
    GAMBAR PRODUK
 ========================== */
-.produk-item img{
-    transition:transform .5s ease;
+
+.produk-item > div:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.produk-item:hover img{
-    transform:scale(1.08);
+/* Gambar memenuhi seluruh card */
+.produk-item img {
+  display: block;
+
+  width: 100%;
+  height: 100% !important;
+
+  object-fit: cover;
+
+  transform: scale(1);
+  transition: transform 0.6s ease;
+}
+
+/* Sedikit zoom ketika hover */
+.produk-item:hover img {
+  transform: scale(1.05);
 }
 
 /* ==========================
-   SEARCH
+   PANEL INFORMASI KUNING
 ========================== */
-input[type="text"]{
-    transition:
-    transform .3s ease,
-    box-shadow .3s ease;
+
+.produk-info {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  /*
+    Panel dimulai dari bawah.
+    100% = seluruh panel berada di luar card.
+  */
+  transform: translateY(100%);
+
+  /*
+    Kuning sedikit transparan
+  */
+  background: rgba(250, 204, 21, 0.68) !important;
+
+  padding: 16px 12px;
+
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+  z-index: 5;
 }
 
-input[type="text"]:focus{
-    transform:scale(1.02);
-    box-shadow:
-    0 0 0 3px rgba(21,128,61,.2);
+/* Panel naik ketika hover */
+.produk-item:hover .produk-info {
+  transform: translateY(0);
 }
 
 /* ==========================
-   BUTTON PASARKAN
+   NAMA PRODUK
 ========================== */
-.btn-pasarkan{
-    transition:
-    transform .35s ease,
-    box-shadow .35s ease;
+
+.produk-nama {
+  opacity: 0;
+  transform: translateY(20px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
 }
 
-.btn-pasarkan:hover{
-    transform:
-    translateY(-5px)
-    scale(1.04);
-    box-shadow:
-    0 15px 30px rgba(0,0,0,.18);
+/* Nama muncul setelah panel mulai naik */
+.produk-item:hover .produk-nama {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.12s;
+}
+
+/* ==========================
+   HARGA
+========================== */
+
+.produk-harga {
+  opacity: 0;
+  transform: translateY(20px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.produk-item:hover .produk-harga {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.18s;
+}
+
+/* ==========================
+   NAMA PENJUAL
+========================== */
+
+.produk-info span {
+  opacity: 0;
+  transform: translateY(20px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.produk-item:hover .produk-info span {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.22s;
 }
 
 /* ==========================
    BUTTON BELI
 ========================== */
-.btn-beli{
-    transition:
-    transform .3s ease,
-    box-shadow .3s ease;
+
+.produk-info .btn-beli {
+  opacity: 0;
+  transform: translateY(25px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.btn-beli:hover{
-    transform:translateY(-2px);
-    box-shadow:
-    0 10px 20px rgba(0,0,0,.2);
+.produk-item:hover .produk-info .btn-beli {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.28s;
+}
+
+/* Hover tombol beli */
+.btn-beli:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .produk-item {
+    height: 280px;
+  }
+
+  /*
+    Pada perangkat mobile,
+    informasi langsung terlihat.
+  */
+  .produk-info {
+    transform: translateY(0);
+  }
+
+  .produk-nama,
+  .produk-harga,
+  .produk-info span,
+  .produk-info .btn-beli {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ==========================
+   SEARCH
+========================== */
+input[type="text"] {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.2);
+}
+
+/* ==========================
+   BUTTON PASARKAN
+========================== */
+.btn-pasarkan {
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.btn-pasarkan:hover {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* ==========================
+   BUTTON BELI
+========================== */
+.btn-beli {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.btn-beli:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* ==========================
    FOOTER
 ========================== */
-.footer-item{
-    transition:
-    opacity .8s ease,
-    transform .8s ease;
+.footer-item {
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
-.kontak-item{
-    transition:
-    opacity .8s ease,
-    transform .8s ease;
+.kontak-item {
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 /* ==========================
    PULSE BUTTON
 ========================== */
-.pulse-button{
-    animation:pulse .8s infinite;
+.pulse-button {
+  animation: pulse 0.8s infinite;
 }
 
-@keyframes pulse{
-0%{
-transform:scale(1);
-}
-50%{
-transform:scale(1.08);
-}
-100%{
-transform:scale(1);
-}
-
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* ==========================
    SCROLLBAR
 ========================== */
-::-webkit-scrollbar{
-    width:10px;
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-::-webkit-scrollbar-track{
-    background:#f3f4f6;
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
 }
 
-::-webkit-scrollbar-thumb{
-    background:#15803d;
-    border-radius:20px;
+::-webkit-scrollbar-thumb {
+  background: #15803d;
+  border-radius: 20px;
 }
 
-::-webkit-scrollbar-thumb:hover{
-    background:#166534;
+::-webkit-scrollbar-thumb:hover {
+  background: #166534;
 }
 
 /* ==========================
    ANIMASI FADE
 ========================== */
-.fade-up{
-    opacity:0;
-    transform:translateY(50px);
-    transition:
-    opacity .8s ease,
-    transform .8s ease;
+.fade-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
-.fade-up.show{
-    opacity:1;
-    transform:translateY(0);
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ==========================
    MOBILE
 ========================== */
-@media(max-width:768px){
-.hero-item h2{
-    font-size:34px;
-}
-.produk-item{
-    margin:auto;
-}
+@media (max-width: 768px) {
+  .hero-item h2 {
+    font-size: 34px;
+  }
+  .produk-item {
+    margin: auto;
+  }
 }
 
-@media(max-width:640px){
-.hero-item{
-
-    text-align:center;
-
+@media (max-width: 640px) {
+  .hero-item {
+    text-align: center;
+  }
 }
+
+/* ==========================================
+   MODAL PRODUK
+========================================== */
+
+#produkModal {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#produkModal.modal-show {
+  opacity: 1;
+}
+
+#produkModal.modal-show #produkModalContent {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ==========================================
+   PREVIEW GAMBAR
+========================================== */
+
+.preview-produk {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* ==========================================
+   RESPONSIVE PRODUK
+========================================== */
+
+@media (max-width: 768px) {
+  #produk {
+    grid-template-columns: 1fr;
+  }
+
+  #produk .produk-item {
+    width: 100%;
+  }
 }
