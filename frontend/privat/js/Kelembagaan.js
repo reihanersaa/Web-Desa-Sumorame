@@ -163,44 +163,14 @@ flatpickr("#tanggalTanggapan", {
 
   // ================= SWEET ALERT EDIT =================
   document.querySelectorAll('.btnSimpan').forEach(btn => {
+
     btn.addEventListener('click', () => {
-
-      const petugas = document.getElementById('namaPetugas').value.trim();
-      const tanggal = document.getElementById('tanggalTanggapan').value.trim();
-
-      let kosong = [];
-
-      if (!petugas) kosong.push("Hari");
-      if (!tanggal) kosong.push("Jam Pelayanan");
-
-      // ================= VALIDASI =================
-      if (kosong.length > 0) {
-        Swal.fire({
-          title: "Form Belum Lengkap ⚠️",
-          html: `
-            <div style="text-align:center;">
-              <p>Data berikut masih kosong:</p>
-              <ul style="list-style-position: inside;">
-                ${kosong.map(i => `<li>${i}</li>`).join("")}
-              </ul>
-            </div>
-          `,
-          icon: "warning",
-          confirmButtonColor: "#f59e0b",
-          background: "#fffbeb",
-          color: "#92400e"
-        });
-        return;
-      }
 
       // ================= KONFIRMASI =================
       Swal.fire({
-        title: "Konfirmasi Data",
+        title: "Konfirmasi Perubahan",
+        text: "Apakah Anda yakin ingin memperbarui data ini?",
         icon: "question",
-        html: `
-          <p><b>Nama Petugas:</b><br>${petugas}</p>
-          <p><b>Tanggal Tanggapan:</b><br>${tanggal}</p>
-        `,
         showCancelButton: true,
         confirmButtonText: "Ya, simpan",
         cancelButtonText: "Batal",
@@ -209,6 +179,7 @@ flatpickr("#tanggalTanggapan", {
         background: "#eff6ff",
         color: "#1e3a8a"
       }).then((result) => {
+
         if (result.isConfirmed) {
 
           Swal.fire({
@@ -224,10 +195,13 @@ flatpickr("#tanggalTanggapan", {
           setTimeout(() => {
             closeModalFunc(modalEdit, modalEditBox);
           }, 2000);
+
         }
+
       });
 
     });
+
   });
 
   const table = document.querySelector("tbody");

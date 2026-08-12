@@ -177,30 +177,40 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // ================= MODAL LOGIN WAJIB =================
-  const modal = document.getElementById("loginModal");
-  const box = document.getElementById("modalBox");
+  // ================= LOGIN MODAL =================
+  const loginModal = document.getElementById("loginModal");
+  const loginBox = document.getElementById("loginBox");
   const btnLogin = document.getElementById("btnLogin");
+  const closeLoginModal = document.getElementById("closeLoginModal");
 
-  // 🚨 LANGSUNG CEK LOGIN SAAT MASUK HALAMAN
+  // ================= SET DEFAULT LOGIN =================
+
   if (!localStorage.getItem("login")) {
-    modal.classList.remove("opacity-0", "pointer-events-none");
-    box.classList.remove("scale-95");
-    box.classList.add("scale-100");
+    localStorage.setItem("login", "false");
   }
 
-  // tombol login → redirect
-  btnLogin.addEventListener("click", () => {
-    window.location.href = "login.html";
-  });
 
-  // klik luar modal
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.classList.add("opacity-0", "pointer-events-none");
-      box.classList.remove("scale-100");
-      box.classList.add("scale-95");
-    }
+  // ================= TAMPILKAN MODAL LOGIN =================
+
+  function tampilkanLoginModal() {
+
+    loginModal.classList.remove(
+      "opacity-0",
+      "pointer-events-none"
+    );
+
+    loginBox.classList.remove("scale-95");
+
+    loginBox.classList.add("scale-100");
+  }
+
+
+  // ================= LOGIN =================
+
+  btnLogin.addEventListener("click", () => {
+
+    window.location.href = "login.html";
+
   });
 
   // ================= FORM ADUAN =================
@@ -434,4 +444,65 @@ document.addEventListener("DOMContentLoaded", function() {
       inputs.forEach(el => el.disabled = false);
     }
   }
+
+  // ===============================
+  // HEADER HILANG HANYA DI PALING ATAS
+  // ===============================
+
+  const mainHeader = document.getElementById("mainHeader");
+  const heroSection = document.getElementById("heroSection");
+
+  window.addEventListener("scroll", function () {
+
+      if (window.scrollY <= 0) {
+
+          // Navbar hilang
+          mainHeader.classList.add("header-hidden");
+
+          // Hero langsung naik menutup celah
+          heroSection.classList.add("hero-top");
+
+      } else {
+
+          // Navbar muncul
+          mainHeader.classList.remove("header-hidden");
+
+          // Hero kembali ke posisi normal
+          heroSection.classList.remove("hero-top");
+      }
+
+  });
+
+  // ======================
+  // SCROLL TO TOP
+  // ======================
+
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+  // Tampilkan tombol saat scroll
+  window.addEventListener("scroll", () => {
+
+      if (window.scrollY > 300) {
+
+          scrollTopBtn.classList.add("show");
+
+      } else {
+
+          scrollTopBtn.classList.remove("show");
+
+      }
+
+  });
+
+  // Klik tombol
+  scrollTopBtn.addEventListener("click", () => {
+
+      window.scrollTo({
+
+          top: 0,
+          behavior: "smooth"
+
+      });
+
+  });
 });

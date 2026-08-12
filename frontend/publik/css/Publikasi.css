@@ -90,6 +90,16 @@
     }
 
     /* ==========================
+      HERO KHUSUS TAMPILAN HP
+    ========================== */
+
+    @media (max-width: 639px) {
+      #heroSection {
+        height: 455px !important;
+      }
+    }
+
+    /* ==========================
       SCROLL TO TOP
     ========================== */
 
@@ -105,4 +115,21 @@
 
     #scrollTopBtn:hover{
         box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+
+    /* HEADER SCROLL */
+    #mainHeader {
+      transition: transform 0.3s ease;
+    }
+
+    #mainHeader.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    #heroSection {
+      transition: margin-top 0.3s ease;
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
     }

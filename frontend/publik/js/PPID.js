@@ -83,6 +83,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }, i * 200);
   });
 
+  // ===============================
+  // HEADER HILANG HANYA DI PALING ATAS
+  // ===============================
+
+  const mainHeader = document.getElementById("mainHeader");
+  const heroSection = document.getElementById("heroSection");
+
+  window.addEventListener("scroll", function () {
+
+      if (window.scrollY <= 0) {
+
+          // Navbar hilang
+          mainHeader.classList.add("header-hidden");
+
+          // Hero langsung naik menutup celah
+          heroSection.classList.add("hero-top");
+
+      } else {
+
+          // Navbar muncul
+          mainHeader.classList.remove("header-hidden");
+
+          // Hero kembali ke posisi normal
+          heroSection.classList.remove("hero-top");
+      }
+
+  });
+
   // =============================
   // SCROLL ANIMATION (FOOTER + KONTAK)
   // =============================
@@ -273,7 +301,7 @@ function goToSlide(index) {
   container.style.transform = `translateX(-${index * 100}%)`;
 }
 
-// ======================
+    // ======================
     // SCROLL TO TOP
     // ======================
 

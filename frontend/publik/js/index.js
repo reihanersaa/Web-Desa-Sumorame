@@ -30,44 +30,68 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// ===== Animasi Footer =====
+// =====================================================
+// HELPER: Reveal-on-scroll pakai IntersectionObserver
+// =====================================================
+// Kenapa diganti dari `window.addEventListener("scroll", ...)`:
+// - listener scroll lama memanggil getBoundingClientRect() di SETIAP
+//   event scroll (bisa puluhan kali/detik) -> memaksa browser
+//   menghitung ulang layout berkali-kali (layout thrashing) -> berat.
+// - beberapa section (footer, sambutan, berita, visimisi, kontak)
+//   tidak punya flag "sudah dianimasikan", jadi selama section itu
+//   masih kelihatan di layar, setiap event scroll membuat setTimeout
+//   BARU untuk semua item di dalamnya -> ribuan timer menumpuk saat
+//   scroll -> inilah penyebab utama scroll terasa patah-patah.
+// IntersectionObserver hanya memberi tahu browser sekali saat elemen
+// benar-benar masuk/keluar viewport, tanpa perlu polling tiap scroll.
+function revealOnScroll(target, items, removeClasses, staggerMs = 200, onEach = null) {
+  if (!target) return;
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        items.forEach((item, i) => {
+          setTimeout(() => {
+            item.classList.remove(...removeClasses);
+            if (onEach) onEach(item);
+          }, i * staggerMs);
+        });
+
+        obs.unobserve(target); // hanya jalan sekali
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -100px 0px" }
+  );
+
+  observer.observe(target);
+}
+
+// ===== Animasi Footer (+ Kontak) =====
 const footer = document.getElementById("footer");
 const footerItems = document.querySelectorAll(".footer-item");
+const kontakItems = document.querySelectorAll(".kontak-item");
 
-window.addEventListener("scroll", () => {
-  const trigger = window.innerHeight;
-
-  if (footer.getBoundingClientRect().top < trigger - 100) {
-    footer.classList.remove("opacity-0", "translate-y-10");
-
-    footerItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.remove("opacity-0", "translate-y-6");
-      }, i * 200);
-    });
-  }
-});
+revealOnScroll(footer, [footer], ["opacity-0", "translate-y-10"]);
+revealOnScroll(footer, footerItems, ["opacity-0", "translate-y-6"], 200);
+revealOnScroll(
+  footer,
+  kontakItems,
+  ["opacity-0", "-translate-y-6", "-translate-x-10", "translate-x-10", "translate-y-10"],
+  200
+);
 
 // ===== Animasi Sambutan Kepala Desa =====
 const sambutan = document.getElementById("sambutan");
 const sambutanItems = sambutan.querySelectorAll(".sambutan-item");
 
-window.addEventListener("scroll", () => {
-  const trigger = window.innerHeight;
-
-  if (sambutan.getBoundingClientRect().top < trigger - 100) {
-    sambutanItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.remove(
-          "opacity-0",
-          "translate-y-16",
-          "translate-x-16",
-          "scale-90",
-        );
-      }, i * 200);
-    });
-  }
-});
+revealOnScroll(
+  sambutan,
+  sambutanItems,
+  ["opacity-0", "translate-y-16", "translate-x-16", "scale-90"],
+  200
+);
 
 // === Animasi Header ===
 const heroItems = document.querySelectorAll(".hero-item");
@@ -80,37 +104,26 @@ window.addEventListener("load", () => {
   });
 });
 
-// === Animasi  Statistik Desa ===
+// === Animasi Statistik Desa (teks huruf per huruf) ===
 document.addEventListener("DOMContentLoaded", function () {
-  // 1. Ambil elemen target
   const element = document.getElementById("teks-animasi");
-
-  // 2. Ambil teks asli di dalamnya dan hapus spasi berlebih di awal/akhir
   const text = element.innerText.trim();
-
-  // 3. Kosongkan isi HTML agar bisa diisi ulang dengan huruf yang sudah dipisah
   element.innerHTML = "";
 
-  // 4. Jeda waktu putaran antar huruf (dalam detik)
   const delayGap = 0.15;
 
-  // 5. Pecah teks menjadi array huruf, lalu proses satu per satu
   text.split("").forEach((char, index) => {
     const span = document.createElement("span");
 
     if (char === " ") {
-      // Jika karakter adalah spasi, jangan dianimasikan, cukup beri jarak
       span.innerHTML = "&nbsp;";
       span.className = "inline-block w-3";
     } else {
-      // Jika karakter adalah huruf, masukkan teks dan kelas animasinya
       span.innerText = char;
       span.className = "animate-flip-y";
-      // Atur delay animasi agar bergantian
       span.style.animationDelay = `${index * delayGap}s`;
     }
 
-    // Masukkan kembali <span> ke dalam <h2>
     element.appendChild(span);
   });
 });
@@ -119,64 +132,24 @@ document.addEventListener("DOMContentLoaded", function () {
 const berita = document.getElementById("berita");
 const beritaItems = berita.querySelectorAll(".berita-item");
 
-window.addEventListener("scroll", () => {
-  const trigger = window.innerHeight;
-
-  if (berita.getBoundingClientRect().top < trigger - 100) {
-    beritaItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.remove(
-          "opacity-0",
-          "-translate-y-10",
-          "translate-y-10",
-          "-translate-x-16",
-          "translate-x-16",
-        );
-      }, i * 150);
-    });
-  }
-});
+revealOnScroll(
+  berita,
+  beritaItems,
+  ["opacity-0", "-translate-y-10", "translate-y-10", "-translate-x-16", "translate-x-16"],
+  150
+);
 
 // === Animasi Visi Dan Misi ===
 const visimisi = document.getElementById("visimisi");
 const visiItems = visimisi.querySelectorAll(".visi-item");
 
-window.addEventListener("scroll", () => {
-  const trigger = window.innerHeight;
-
-  if (visimisi.getBoundingClientRect().top < trigger - 100) {
-    visiItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.remove("opacity-0", "-translate-x-16", "translate-x-16");
-      }, i * 200);
-    });
-  }
-});
+revealOnScroll(visimisi, visiItems, ["opacity-0", "-translate-x-16", "translate-x-16"], 200);
 
 // === Animasi Produk Unggulan ===
 const produk = document.getElementById("produk");
 const produkItems = produk.querySelectorAll(".produk-item");
 
-let produkAnimated = false;
-
-function showProduk() {
-  if (produkAnimated) return;
-
-  const trigger = window.innerHeight;
-
-  if (produk.getBoundingClientRect().top < trigger - 100) {
-    produkAnimated = true;
-
-    produkItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.remove("opacity-0", "translate-y-16");
-      }, i * 200);
-    });
-  }
-}
-
-window.addEventListener("load", showProduk);
-window.addEventListener("scroll", showProduk);
+revealOnScroll(produk, produkItems, ["opacity-0", "translate-y-16"], 200);
 
 // === Animasi Navbar ===
 const navItems = document.querySelectorAll(".nav-item");
@@ -188,27 +161,6 @@ window.addEventListener("load", () => {
       item.style.transform = "translateY(0)";
     }, i * 100);
   });
-});
-
-// === Animasi Kontak ===
-const kontakItems = document.querySelectorAll(".kontak-item");
-
-window.addEventListener("scroll", () => {
-  const trigger = window.innerHeight;
-
-  if (footer.getBoundingClientRect().top < trigger - 100) {
-    kontakItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.remove(
-          "opacity-0",
-          "-translate-y-6",
-          "-translate-x-10",
-          "translate-x-10",
-          "translate-y-10",
-        );
-      }, i * 200);
-    });
-  }
 });
 
 // === Animasi Suara Untuk Navbar ===
@@ -230,6 +182,59 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// ===============================
+    // HEADER HILANG HANYA DI PALING ATAS
+    // ===============================
+
+    const mainHeader = document.getElementById("mainHeader");
+    const heroSection = document.getElementById("heroSection");
+
+    window.addEventListener("scroll", function () {
+
+        if (window.scrollY <= 0) {
+
+            // Navbar hilang
+            mainHeader.classList.add("header-hidden");
+
+            // Hero langsung naik menutup celah
+            heroSection.classList.add("hero-top");
+
+        } else {
+
+            // Navbar muncul
+            mainHeader.classList.remove("header-hidden");
+
+            // Hero kembali ke posisi normal
+            heroSection.classList.remove("hero-top");
+        }
+
+    });
+
+    // ======================
+    // SCROLL TO TOP
+    // ======================
+
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("scroll", () => {
+
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.add("show");
+        } else {
+            scrollTopBtn.classList.remove("show");
+        }
+
+    });
+
+    scrollTopBtn.addEventListener("click", () => {
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    });
 
 // === ANIMASI CARD PUBLIKASI (SCROLL REVEAL + STAGGER) ===
 document.addEventListener("DOMContentLoaded", () => {
@@ -291,50 +296,134 @@ modal.addEventListener("click", (e) => {
   }
 });
 
-// === HERO SLIDER ===
+// ==========================================
+// HERO SLIDER
+// ==========================================
+
 const slider = document.getElementById("slider");
 const slides = document.querySelectorAll("#slider > div");
+const nextButton = document.getElementById("next");
+const prevButton = document.getElementById("prev");
 
 let index = 0;
-let total = slides.length;
+const total = slides.length;
 
-// fungsi geser
+let autoSlide;
+
+// ==========================================
+// FUNGSI MENAMPILKAN SLIDE
+// ==========================================
+
 function showSlide(i) {
-  index = (i + total) % total;
-  slider.style.transform = `translateX(-${index * 100}%)`;
+    index = (i + total) % total;
+
+    slider.style.transform = `translateX(-${index * 100}%)`;
 }
 
-// tombol manual
-document.getElementById("next").onclick = () => showSlide(index + 1);
-document.getElementById("prev").onclick = () => showSlide(index - 1);
 
+// ==========================================
 // AUTO SLIDE
-let autoSlide = setInterval(() => {
-  showSlide(index + 1);
-}, 4000);
+// ==========================================
 
-// STOP kalau hover (desktop)
-slider.addEventListener("mouseenter", () => clearInterval(autoSlide));
-slider.addEventListener("mouseleave", () => {
-  autoSlide = setInterval(() => showSlide(index + 1), 4000);
-});
+function startAutoSlide() {
+    clearInterval(autoSlide);
 
-// SWIPE MOBILE
-let startX = 0;
+    autoSlide = setInterval(() => {
+        showSlide(index + 1);
+    }, 4000);
+}
 
-slider.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-});
+function stopAutoSlide() {
+    clearInterval(autoSlide);
+}
 
-slider.addEventListener("touchend", (e) => {
-  let endX = e.changedTouches[0].clientX;
 
-  if (startX - endX > 50) {
+// ==========================================
+// TOMBOL NEXT
+// ==========================================
+
+nextButton.addEventListener("click", () => {
     showSlide(index + 1);
-  } else if (endX - startX > 50) {
-    showSlide(index - 1);
-  }
+
+    // Reset timer setelah klik
+    startAutoSlide();
 });
+
+
+// ==========================================
+// TOMBOL PREV
+// ==========================================
+
+prevButton.addEventListener("click", () => {
+    showSlide(index - 1);
+
+    // Reset timer setelah klik
+    startAutoSlide();
+});
+
+
+// ==========================================
+// HOVER DESKTOP
+// ==========================================
+
+slider.addEventListener("mouseenter", () => {
+    stopAutoSlide();
+});
+
+slider.addEventListener("mouseleave", () => {
+    startAutoSlide();
+});
+
+
+// ==========================================
+// SWIPE MOBILE
+// ==========================================
+
+let startX = 0;
+let endX = 0;
+
+slider.addEventListener(
+    "touchstart",
+    (e) => {
+        startX = e.touches[0].clientX;
+
+        // Berhenti sementara ketika disentuh
+        stopAutoSlide();
+    },
+    { passive: true }
+);
+
+
+slider.addEventListener(
+    "touchend",
+    (e) => {
+        endX = e.changedTouches[0].clientX;
+
+        const difference = startX - endX;
+
+        // Swipe ke kiri
+        if (difference > 50) {
+            showSlide(index + 1);
+        }
+
+        // Swipe ke kanan
+        else if (difference < -50) {
+            showSlide(index - 1);
+        }
+
+        // Jalankan kembali auto slide
+        startAutoSlide();
+    },
+    { passive: true }
+);
+
+
+// ==========================================
+// INISIALISASI
+// ==========================================
+
+showSlide(0);
+startAutoSlide();
 
 // === CONTROL KEYBOARD ===
 document.addEventListener("keydown", (e) => {
@@ -368,7 +457,6 @@ btnProduk.addEventListener("mouseleave", () => {
 // ======================
 
 const statCards = document.querySelectorAll(".stat-card");
-let statistikAnimated = false;
 
 function animateCounter(counter) {
   const target = parseInt(counter.dataset.target);
@@ -393,237 +481,78 @@ function animateCounter(counter) {
   update();
 }
 
-function showStatistik() {
-  if (statistikAnimated) return;
+const statistik = document.getElementById("statistik");
 
-  const statistik = document.getElementById("statistik");
+revealOnScroll(statistik, statCards, ["opacity-0", "translate-y-10"], 200, (card) => {
+  card.querySelectorAll(".counter").forEach((counter) => animateCounter(counter));
+});
 
-  if (statistik.getBoundingClientRect().top < window.innerHeight - 100) {
-    statistikAnimated = true;
+// =====================================================
+// PARALLAX BACKGROUND (JELAJAH + STATISTIK)
+// =====================================================
+// Prinsip performa:
+// 1. Gerakkan background pakai `transform` (translate3d), BUKAN
+//    `background-position`/`background-attachment: fixed` -> transform
+//    di-composite GPU, tidak memicu repaint/layout.
+// 2. Listener scroll hanya AKTIF selagi elemen parallax terlihat di
+//    layar (dikontrol via IntersectionObserver), bukan selalu nyala.
+// 3. Perhitungan posisi dibungkus requestAnimationFrame supaya
+//    maksimal 1x update per frame, tidak numpuk seperti masalah lama.
+(function initParallax() {
+  const parallaxEls = document.querySelectorAll(".parallax-bg");
+  if (!parallaxEls.length) return;
 
-    statCards.forEach((card, index) => {
-      setTimeout(() => {
-        card.classList.remove("opacity-0", "translate-y-10");
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  if (prefersReducedMotion) return; // biarkan CSS yang menonaktifkan gerak
 
-        card.querySelectorAll(".counter").forEach((counter) => {
-          animateCounter(counter);
-        });
-      }, index * 200);
+  const activeEls = new Set();
+  let ticking = false;
+
+  function updateParallax() {
+    const viewportCenter = window.innerHeight / 2;
+
+    activeEls.forEach((bg) => {
+      const wrap = bg.parentElement;
+      const rect = wrap.getBoundingClientRect();
+      const speed = parseFloat(bg.dataset.parallaxSpeed || "0.25");
+      const elCenter = rect.top + rect.height / 2;
+      const offset = (viewportCenter - elCenter) * speed;
+
+      bg.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
     });
+
+    ticking = false;
   }
-}
 
-window.addEventListener("load", showStatistik);
-window.addEventListener("scroll", showStatistik);
-
-document.addEventListener("DOMContentLoaded", () => {
-  const title = document.getElementById("jelajahTitle");
-  const section = document.getElementById("jelajah");
-
-  if (!title || !section) return;
-
-  /* =========================================
-     KONFIGURASI
-  ========================================= */
-
-  // Jarak antar huruf mulai bergoyang
-  const letterDelay = 150;
-
-  // Kecepatan goyangan
-  const swaySpeed = 0.0018;
-
-  // Besar goyangan
-  const swayAmount = 3;
-
-  /* =========================================
-     SIMPAN TEXT ASLI
-  ========================================= */
-
-  const text = title.textContent.trim();
-
-  /* =========================================
-     BUAT SPAN SETIAP HURUF
-  ========================================= */
-
-  title.textContent = "";
-
-  const letters = [];
-
-  [...text].forEach((character, index) => {
-    const span = document.createElement("span");
-
-    span.classList.add("jelajah-letter");
-
-    span.textContent = character;
-
-    title.appendChild(span);
-
-    letters.push({
-      element: span,
-
-      index: index,
-
-      /*
-        Setiap huruf memiliki
-        kecepatan sedikit berbeda.
-      */
-
-      swayTime: Math.random() * Math.PI * 2,
-
-      swaySpeed: swaySpeed + Math.random() * 0.0005,
-
-      swayAmount: swayAmount + Math.random() * 1.5,
-
-      startTime: 0,
-    });
-  });
-
-  /* =========================================
-     STATUS ANIMASI
-  ========================================= */
-
-  let animationStarted = false;
-
-  /* =========================================
-     LOOP ANIMASI
-  ========================================= */
-
-  function animate(currentTime) {
-    if (!animationStarted) {
-      requestAnimationFrame(animate);
-
-      return;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
     }
-
-    letters.forEach((letter) => {
-      const element = letter.element;
-
-      /* =====================================
-         TUNGGU GILIRAN HURUF
-      ===================================== */
-
-      if (currentTime < letter.startTime) {
-        element.style.opacity = "0";
-
-        return;
-      }
-
-      /* =====================================
-         FADE IN
-      ===================================== */
-
-      element.style.opacity = "1";
-
-      /* =====================================
-         GOYANG
-      ===================================== */
-
-      letter.swayTime += letter.swaySpeed * 16;
-
-      /*
-        Gerakan kiri-kanan
-      */
-
-      const sway = Math.sin(letter.swayTime) * letter.swayAmount;
-
-      /*
-        Sedikit rotasi supaya
-        terlihat seperti benar-benar
-        bergoyang.
-      */
-
-      const rotation = sway * 1.3;
-
-      element.style.transform = `
-        translateX(${sway}px)
-        rotate(${rotation}deg)
-        `;
-    });
-
-    requestAnimationFrame(animate);
   }
 
-  /* =========================================
-     INTERSECTION OBSERVER
-  ========================================= */
-
-  const observer = new IntersectionObserver(
+  const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        /*
-            JELAJAH sudah terlihat
-          */
-
-        if (entry.isIntersecting && !animationStarted) {
-          animationStarted = true;
-
-          const startTime = performance.now();
-
-          /*
-              Huruf mulai bergoyang
-              satu per satu.
-            */
-
-          letters.forEach((letter, index) => {
-            letter.startTime = startTime + index * letterDelay;
-          });
-
-          /*
-              Observer dihentikan
-              karena animasi cukup
-              dijalankan sekali.
-            */
-
-          observer.unobserve(section);
+        if (entry.isIntersecting) {
+          activeEls.add(entry.target);
+        } else {
+          activeEls.delete(entry.target);
         }
       });
-    },
 
-    {
-      /*
-          Animasi mulai ketika
-          30% section terlihat.
-        */
-
-      threshold: 0.3,
+      // hanya dengarkan scroll saat minimal 1 elemen parallax terlihat
+      if (activeEls.size > 0) {
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+      } else {
+        window.removeEventListener("scroll", onScroll);
+      }
     },
+    { rootMargin: "150px 0px 150px 0px" }
   );
 
-  /* =========================================
-     AKTIFKAN OBSERVER
-  ========================================= */
-
-  observer.observe(section);
-
-  /* =========================================
-     MULAI ANIMATION LOOP
-  ========================================= */
-
-    // === Smooth Scrolling untuk Menu Jelajah ===
-document.querySelectorAll('.menu-card[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault(); // Mencegah lompatan kasar bawaan HTML
-    
-    const targetId = this.getAttribute('href');
-    const targetSection = document.querySelector(targetId);
-    
-    if (targetSection) {
-      // Menghitung jarak offset agar tidak tertutup header yang fixed
-      // Angka 90 adalah perkiraan tinggi header ditambah sedikit ruang ekstra
-      const headerOffset = 90; 
-      const elementPosition = targetSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      // Eksekusi gulir halus
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
-  });
-});
-
-    window.addEventListener("load", showStatistik);
-    window.addEventListener("scroll", showStatistik);
-  requestAnimationFrame(animate);
-});
+  parallaxEls.forEach((el) => io.observe(el));
+})();
