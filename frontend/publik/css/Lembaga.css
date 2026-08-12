@@ -75,10 +75,65 @@ body {
   transform: translateY(-100%);
 }
 
-#heroSection {
-  transition: margin-top 0.3s ease;
-}
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
 
-#heroSection.hero-top {
-  margin-top: 0;
-}
+    .hero-title{
+        display: inline-block;
+        white-space: nowrap;
+        animation: slideLoop 8s ease-in-out infinite;
+    }
+
+    /* Masuk → Diam 3 detik → Keluar → Ulang */
+    @keyframes slideLoop{
+
+        /* Mulai di luar kanan */
+        0%{
+            opacity: 0;
+            transform: translateX(120%);
+        }
+
+        /* Masuk */
+        15%{
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Diam sekitar 3 detik */
+        55%{
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Keluar ke kiri */
+        75%{
+            opacity: 0;
+            transform: translateX(-180%);
+        }
+
+        /* Tetap di luar kiri sebelum reset */
+        100%{
+            opacity: 0;
+            transform: translateX(-180%);
+        }
+    }
+
+        .text-justify {
+        text-align: justify;
+    }
+
+    #heroSection {
+      height: 400px !important;
+      transition: margin-top 0.3s ease;
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
+
+    @media (min-width: 768px) {
+      #heroSection {
+        height: 500px !important;
+      }
+    }
