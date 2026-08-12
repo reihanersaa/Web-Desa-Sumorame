@@ -196,132 +196,90 @@ body {
   color: #1f2937;
 }
 
-/* =========================================
-   HERO SLIDER
-========================================= */
+/* HEADER SCROLL */
+#mainHeader {
+  transition: transform 0.3s ease;
+}
+
+#mainHeader.header-hidden {
+  transform: translateY(-100%);
+}
 
 #heroSection {
-    position: relative !important;
-    width: 100% !important;
-    overflow: hidden !important;
-    border-radius: 0 !important;
-    isolation: isolate !important;
-
-    /* Desktop */
-    height: 700px;
+  transition: margin-top 0.3s ease;
 }
 
+#heroSection.hero-top {
+  margin-top: 0;
+}
+/* =====================================================
+   FIX HERO - HILANGKAN ELIPS / BENTUK PUTIH
+   ===================================================== */
 
-/* =========================================
-   SLIDER
-========================================= */
+#hero {
+  position: relative !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  isolation: isolate !important;
+}
 
+/* Tidak boleh ada pseudo element di Hero */
+#hero::before,
+#hero::after,
+#hero #slider::before,
+#hero #slider::after,
+#hero #slider > div::before,
+#hero #slider > div::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Slider - tingginya mengikuti gambar (auto), bukan gambar yang
+   dipaksa mengikuti tinggi slider */
 #heroSection #slider {
-    position: relative !important;
-    display: flex !important;
-    width: 100% !important;
-    height: 100% !important;
-
-    padding: 0 !important;
-    margin: 0 !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-
-/* =========================================
-   SLIDE
-========================================= */
-
+/* Slide - lebar penuh 100%, tinggi auto mengikuti gambar di dalamnya */
 #heroSection #slider > div {
-    position: relative !important;
-
-    min-width: 100% !important;
-    width: 100% !important;
-    height: 100% !important;
-
-    padding: 0 !important;
-    margin: 0 !important;
-
-    overflow: hidden !important;
+  position: relative !important;
+  min-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background-color: #006633 !important; /* hijau telur asin - selaras warna brand */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-
-/* =========================================
-   GAMBAR
-========================================= */
-
+/* Gambar: lebar penuh, tinggi menyesuaikan rasio asli gambar (auto),
+   sehingga tinggi hero otomatis mengikuti ukuran gambar itu sendiri. */
 #heroSection .hero-image {
-    display: block !important;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
 
-    width: 100% !important;
-    height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
 
-    max-width: none !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    object-fit: cover !important;
-    object-position: center !important;
-
-    border: 0 !important;
-    border-radius: 0 !important;
-
-    background: transparent !important;
-}
-
-#heroSection {
-    touch-action: pan-y;
-}
-
-#heroSection #slider {
-    will-change: transform;
-}
-
-
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 1024px) {
-
-    #heroSection {
-        height: 500px;
-    }
-
-}
-
-
-/* =========================================
-   HANDPHONE
-========================================= */
-
-@media (max-width: 768px) {
-
-    #heroSection {
-        height: 360px;
-    }
-
-    #heroSection .hero-image {
-        object-position: center center !important;
-    }
-
-}
-
-
-/* =========================================
-   HANDPHONE KECIL
-========================================= */
-
-@media (max-width: 480px) {
-
-    #heroSection {
-        height: 260px;
-    }
-
-    #heroSection .hero-image {
-        object-position: center center !important;
-    }
-
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
 }
 
 /* =====================================================

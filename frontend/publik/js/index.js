@@ -30,6 +30,25 @@ document.addEventListener("click", (e) => {
   }
 });
 
+const mainHeader = document.getElementById("mainHeader");
+const heroSection = document.getElementById("heroSection");
+
+window.addEventListener("scroll", function () {
+  if (window.scrollY <= 0) {
+    // Navbar hilang
+    mainHeader.classList.add("header-hidden");
+
+    // Hero langsung naik menutup celah
+    heroSection.classList.add("hero-top");
+  } else {
+    // Navbar muncul
+    mainHeader.classList.remove("header-hidden");
+
+    // Hero kembali ke posisi normal
+    heroSection.classList.remove("hero-top");
+  }
+});
+
 // =====================================================
 // HELPER: Reveal-on-scroll pakai IntersectionObserver
 // =====================================================
@@ -44,7 +63,13 @@ document.addEventListener("click", (e) => {
 //   scroll -> inilah penyebab utama scroll terasa patah-patah.
 // IntersectionObserver hanya memberi tahu browser sekali saat elemen
 // benar-benar masuk/keluar viewport, tanpa perlu polling tiap scroll.
-function revealOnScroll(target, items, removeClasses, staggerMs = 200, onEach = null) {
+function revealOnScroll(
+  target,
+  items,
+  removeClasses,
+  staggerMs = 200,
+  onEach = null,
+) {
   if (!target) return;
 
   const observer = new IntersectionObserver(
@@ -62,7 +87,7 @@ function revealOnScroll(target, items, removeClasses, staggerMs = 200, onEach = 
         obs.unobserve(target); // hanya jalan sekali
       });
     },
-    { threshold: 0.15, rootMargin: "0px 0px -100px 0px" }
+    { threshold: 0.15, rootMargin: "0px 0px -100px 0px" },
   );
 
   observer.observe(target);
@@ -78,8 +103,14 @@ revealOnScroll(footer, footerItems, ["opacity-0", "translate-y-6"], 200);
 revealOnScroll(
   footer,
   kontakItems,
-  ["opacity-0", "-translate-y-6", "-translate-x-10", "translate-x-10", "translate-y-10"],
-  200
+  [
+    "opacity-0",
+    "-translate-y-6",
+    "-translate-x-10",
+    "translate-x-10",
+    "translate-y-10",
+  ],
+  200,
 );
 
 // ===== Animasi Sambutan Kepala Desa =====
@@ -90,7 +121,7 @@ revealOnScroll(
   sambutan,
   sambutanItems,
   ["opacity-0", "translate-y-16", "translate-x-16", "scale-90"],
-  200
+  200,
 );
 
 // === Animasi Header ===
@@ -135,15 +166,26 @@ const beritaItems = berita.querySelectorAll(".berita-item");
 revealOnScroll(
   berita,
   beritaItems,
-  ["opacity-0", "-translate-y-10", "translate-y-10", "-translate-x-16", "translate-x-16"],
-  150
+  [
+    "opacity-0",
+    "-translate-y-10",
+    "translate-y-10",
+    "-translate-x-16",
+    "translate-x-16",
+  ],
+  150,
 );
 
 // === Animasi Visi Dan Misi ===
 const visimisi = document.getElementById("visimisi");
 const visiItems = visimisi.querySelectorAll(".visi-item");
 
-revealOnScroll(visimisi, visiItems, ["opacity-0", "-translate-x-16", "translate-x-16"], 200);
+revealOnScroll(
+  visimisi,
+  visiItems,
+  ["opacity-0", "-translate-x-16", "translate-x-16"],
+  200,
+);
 
 // === Animasi Produk Unggulan ===
 const produk = document.getElementById("produk");
@@ -182,59 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
-// ===============================
-    // HEADER HILANG HANYA DI PALING ATAS
-    // ===============================
-
-    const mainHeader = document.getElementById("mainHeader");
-    const heroSection = document.getElementById("heroSection");
-
-    window.addEventListener("scroll", function () {
-
-        if (window.scrollY <= 0) {
-
-            // Navbar hilang
-            mainHeader.classList.add("header-hidden");
-
-            // Hero langsung naik menutup celah
-            heroSection.classList.add("hero-top");
-
-        } else {
-
-            // Navbar muncul
-            mainHeader.classList.remove("header-hidden");
-
-            // Hero kembali ke posisi normal
-            heroSection.classList.remove("hero-top");
-        }
-
-    });
-
-    // ======================
-    // SCROLL TO TOP
-    // ======================
-
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
-
-    window.addEventListener("scroll", () => {
-
-        if (window.scrollY > 300) {
-            scrollTopBtn.classList.add("show");
-        } else {
-            scrollTopBtn.classList.remove("show");
-        }
-
-    });
-
-    scrollTopBtn.addEventListener("click", () => {
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    });
 
 // === ANIMASI CARD PUBLIKASI (SCROLL REVEAL + STAGGER) ===
 document.addEventListener("DOMContentLoaded", () => {
@@ -296,134 +285,58 @@ modal.addEventListener("click", (e) => {
   }
 });
 
-// ==========================================
-// HERO SLIDER
-// ==========================================
-
+// === HERO SLIDER ===
 const slider = document.getElementById("slider");
 const slides = document.querySelectorAll("#slider > div");
-const nextButton = document.getElementById("next");
-const prevButton = document.getElementById("prev");
 
 let index = 0;
-const total = slides.length;
+let total = slides.length;
 
-let autoSlide;
-
-// ==========================================
-// FUNGSI MENAMPILKAN SLIDE
-// ==========================================
-
+// fungsi geser
 function showSlide(i) {
-    index = (i + total) % total;
-
-    slider.style.transform = `translateX(-${index * 100}%)`;
+  index = (i + total) % total;
+  slider.style.transform = `translateX(-${index * 100}%)`;
 }
 
+// tombol manual
+document.getElementById("next").onclick = () => showSlide(index + 1);
+document.getElementById("prev").onclick = () => showSlide(index - 1);
 
-// ==========================================
 // AUTO SLIDE
-// ==========================================
+let autoSlide = setInterval(() => {
+  showSlide(index + 1);
+}, 4000);
 
-function startAutoSlide() {
-    clearInterval(autoSlide);
-
-    autoSlide = setInterval(() => {
-        showSlide(index + 1);
-    }, 4000);
-}
-
-function stopAutoSlide() {
-    clearInterval(autoSlide);
-}
-
-
-// ==========================================
-// TOMBOL NEXT
-// ==========================================
-
-nextButton.addEventListener("click", () => {
-    showSlide(index + 1);
-
-    // Reset timer setelah klik
-    startAutoSlide();
-});
-
-
-// ==========================================
-// TOMBOL PREV
-// ==========================================
-
-prevButton.addEventListener("click", () => {
-    showSlide(index - 1);
-
-    // Reset timer setelah klik
-    startAutoSlide();
-});
-
-
-// ==========================================
-// HOVER DESKTOP
-// ==========================================
-
-slider.addEventListener("mouseenter", () => {
-    stopAutoSlide();
-});
-
+// STOP kalau hover (desktop)
+slider.addEventListener("mouseenter", () => clearInterval(autoSlide));
 slider.addEventListener("mouseleave", () => {
-    startAutoSlide();
+  autoSlide = setInterval(() => showSlide(index + 1), 4000);
 });
 
-
-// ==========================================
 // SWIPE MOBILE
-// ==========================================
-
 let startX = 0;
-let endX = 0;
 
 slider.addEventListener(
-    "touchstart",
-    (e) => {
-        startX = e.touches[0].clientX;
-
-        // Berhenti sementara ketika disentuh
-        stopAutoSlide();
-    },
-    { passive: true }
+  "touchstart",
+  (e) => {
+    startX = e.touches[0].clientX;
+  },
+  { passive: true },
 );
-
 
 slider.addEventListener(
-    "touchend",
-    (e) => {
-        endX = e.changedTouches[0].clientX;
+  "touchend",
+  (e) => {
+    let endX = e.changedTouches[0].clientX;
 
-        const difference = startX - endX;
-
-        // Swipe ke kiri
-        if (difference > 50) {
-            showSlide(index + 1);
-        }
-
-        // Swipe ke kanan
-        else if (difference < -50) {
-            showSlide(index - 1);
-        }
-
-        // Jalankan kembali auto slide
-        startAutoSlide();
-    },
-    { passive: true }
+    if (startX - endX > 50) {
+      showSlide(index + 1);
+    } else if (endX - startX > 50) {
+      showSlide(index - 1);
+    }
+  },
+  { passive: true },
 );
-
-
-// ==========================================
-// INISIALISASI
-// ==========================================
-
-showSlide(0);
-startAutoSlide();
 
 // === CONTROL KEYBOARD ===
 document.addEventListener("keydown", (e) => {
@@ -483,9 +396,17 @@ function animateCounter(counter) {
 
 const statistik = document.getElementById("statistik");
 
-revealOnScroll(statistik, statCards, ["opacity-0", "translate-y-10"], 200, (card) => {
-  card.querySelectorAll(".counter").forEach((counter) => animateCounter(counter));
-});
+revealOnScroll(
+  statistik,
+  statCards,
+  ["opacity-0", "translate-y-10"],
+  200,
+  (card) => {
+    card
+      .querySelectorAll(".counter")
+      .forEach((counter) => animateCounter(counter));
+  },
+);
 
 // =====================================================
 // PARALLAX BACKGROUND (JELAJAH + STATISTIK)
@@ -503,7 +424,7 @@ revealOnScroll(statistik, statCards, ["opacity-0", "translate-y-10"], 200, (card
   if (!parallaxEls.length) return;
 
   const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
+    "(prefers-reduced-motion: reduce)",
   ).matches;
   if (prefersReducedMotion) return; // biarkan CSS yang menonaktifkan gerak
 
@@ -551,7 +472,7 @@ revealOnScroll(statistik, statCards, ["opacity-0", "translate-y-10"], 200, (card
         window.removeEventListener("scroll", onScroll);
       }
     },
-    { rootMargin: "150px 0px 150px 0px" }
+    { rootMargin: "150px 0px 150px 0px" },
   );
 
   parallaxEls.forEach((el) => io.observe(el));

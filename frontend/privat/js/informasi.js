@@ -1,3 +1,31 @@
+// sidebar
+const burgerBtn = document.getElementById('burgerBtn');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const mainContent = document.getElementById('mainContent');
+const headerLeft = document.getElementById('headerLeft');
+
+burgerBtn.addEventListener('click', () => {
+
+  if (window.innerWidth < 768) {
+    sidebar.classList.toggle('-translate-x-full');
+    overlay.classList.toggle('hidden');
+  } else {
+    sidebar.classList.toggle('w-64');
+    sidebar.classList.toggle('w-20');
+
+    headerLeft.classList.toggle('w-64');
+    headerLeft.classList.toggle('w-20');
+
+    mainContent.classList.toggle('md:pl-64');
+    mainContent.classList.toggle('md:pl-20');
+
+    document.querySelectorAll('.menu-text').forEach(el => {
+      el.classList.toggle('hidden');
+    });
+  }
+});
+
 flatpickr("#tanggalTanggapan", {
   dateFormat: "Y-m-d", // format: 2026-04-24
   altInput: true,
@@ -22,6 +50,10 @@ flatpickr("#tanggalTanggapan", {
     pemohonIcon.classList.toggle('rotate-180');
   });
 
+  overlay.addEventListener('click', () => {
+    sidebar.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+  });
 
   // ================= VIEW MODAL =================
   const modal = document.getElementById('modalView');
@@ -37,7 +69,7 @@ flatpickr("#tanggalTanggapan", {
   const closeEdit = document.getElementById('closeEdit');
   const btnCloseEdit = document.getElementById('btnCloseEdit');
 
-  // ================= OPEN VIEW ==================
+  // ================= OPEN VIEW =================
   document.querySelectorAll('.btnView').forEach(btn => {
     btn.addEventListener('click', () => {
 
@@ -70,13 +102,41 @@ flatpickr("#tanggalTanggapan", {
       });
     });
   });
-  
+
+  // ================= CLOSE FUNCTION =================
+  function closeModalFunc(modal, box) {
+    modal.classList.add('opacity-0');
+    box.classList.remove('scale-100', 'opacity-100');
+    box.classList.add('scale-90', 'opacity-0');
+
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 300);
+  }
+
+  // ================= CLOSE VIEW =================
+  closeModal.onclick = () => closeModalFunc(modal, modalBox);
+  btnClose2.onclick = () => closeModalFunc(modal, modalBox);
+
+  // ================= CLOSE EDIT =================
+  closeEdit.onclick = () => closeModalFunc(modalEdit, modalEditBox);
+  btnCloseEdit.onclick = () => closeModalFunc(modalEdit, modalEditBox);
+
+  // ================= CLICK OUTSIDE =================
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModalFunc(modal, modalBox);
+  });
+
+  modalEdit.addEventListener('click', (e) => {
+    if (e.target === modalEdit) closeModalFunc(modalEdit, modalEditBox);
+  });
+
   // ================= SWEET ALERT DELETE =================
   document.querySelectorAll('.btnCancelDelete').forEach(btn => {
     btn.addEventListener('click', () => {
       Swal.fire({
         title: "Yakin hapus?",
-        text: "Data aduan akan dihapus permanen!",
+        text: "Data administrasi akan dihapus permanen!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Ya, hapus",
@@ -103,21 +163,18 @@ flatpickr("#tanggalTanggapan", {
 
   // ================= SWEET ALERT EDIT =================
   document.querySelectorAll('.btnSimpan').forEach(btn => {
-  btn.addEventListener('click', () => {
+    btn.addEventListener('click', () => {
 
-    const tanggapan = document.getElementById('tanggapan').value.trim();
-    const tanggal = document.getElementById('tanggalTanggapan').value.trim();
-    const gambar = document.getElementById('uploadGambar').files[0];
-    const file = document.getElementById('uploadFile').files[0];
+      const petugas = document.getElementById('namaPetugas').value.trim();
+      const tanggal = document.getElementById('tanggalTanggapan').value.trim();
 
-    let kosong = [];
+      let kosong = [];
 
-    if (!tanggapan) kosong.push("Tanggapan");
-    if (!tanggal) kosong.push("Tanggal Tanggapan");
-    if (!gambar && !file) kosong.push("Upload (Gambar/File)");
+      if (!petugas) kosong.push("Hari");
+      if (!tanggal) kosong.push("Jam Pelayanan");
 
-    // ================= VALIDASI =================
-    if (kosong.length > 0) {
+      // ================= VALIDASI =================
+      if (kosong.length > 0) {
         Swal.fire({
           title: "Form Belum Lengkap ⚠️",
           html: `
@@ -136,21 +193,13 @@ flatpickr("#tanggalTanggapan", {
         return;
       }
 
-    // ================= NAMA FILE =================
-    const namaGambar = gambar ? gambar.name : "Tidak ada";
-    const namaFile = file ? file.name : "Tidak ada";
-
-    // ================= KONFIRMASI =================
-    Swal.fire({
+      // ================= KONFIRMASI =================
+      Swal.fire({
         title: "Konfirmasi Data",
         icon: "question",
         html: `
-          <p><b>Tanggapan:</b><br>${tanggapan}</p>
+          <p><b>Nama Petugas:</b><br>${petugas}</p>
           <p><b>Tanggal Tanggapan:</b><br>${tanggal}</p>
-          <p><b>Lampiran:</b><br>
-            ${gambar ? "📷 " + namaGambar : ""}
-            ${file ? "<br>📄 " + namaFile : ""}
-          </p>
         `,
         showCancelButton: true,
         confirmButtonText: "Ya, simpan",
@@ -181,34 +230,6 @@ flatpickr("#tanggalTanggapan", {
     });
   });
 
-  // ================= CLOSE FUNCTION =================
-  function closeModalFunc(modal, box) {
-    modal.classList.add('opacity-0');
-    box.classList.remove('scale-100', 'opacity-100');
-    box.classList.add('scale-90', 'opacity-0');
-
-    setTimeout(() => {
-      modal.classList.add('hidden');
-    }, 300);
-  }
-
-  // ================= CLOSE VIEW =================
-  closeModal.onclick = () => closeModalFunc(modal, modalBox);
-  btnClose2.onclick = () => closeModalFunc(modal, modalBox);
-
-  // ================= CLOSE EDIT =================
-  closeEdit.onclick = () => closeModalFunc(modalEdit, modalEditBox);
-  btnCloseEdit.onclick = () => closeModalFunc(modalEdit, modalEditBox);
-
-  // ================= CLICK OUTSIDE =================
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModalFunc(modal, modalBox);
-  });
-
-  modalEdit.addEventListener('click', (e) => {
-    if (e.target === modalEdit) closeModalFunc(modalEdit, modalEditBox);
-  });
-
   const table = document.querySelector("tbody");
   const rows = Array.from(table.querySelectorAll("tr"));
 
@@ -216,24 +237,27 @@ flatpickr("#tanggalTanggapan", {
   const entriesSelect = document.getElementById("entriesSelect");
   const tableInfo = document.getElementById("tableInfo");
 
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
   let currentPage = 1;
   let rowsPerPage = parseInt(entriesSelect.value);
 
-  // FILTER SEARCH
+  // SEARCH
   searchInput.addEventListener("input", () => {
     currentPage = 1;
     renderTable();
   });
 
-  // CHANGE ENTRIES
+  // SHOW ENTRIESS
   entriesSelect.addEventListener("change", () => {
     rowsPerPage = parseInt(entriesSelect.value);
     currentPage = 1;
     renderTable();
   });
 
-  // RENDER TABLE
-  function renderTable() {
+    // RENDER
+    function renderTable() {
     const keyword = searchInput.value.toLowerCase();
 
     const filtered = rows.filter(row =>
@@ -244,7 +268,7 @@ flatpickr("#tanggalTanggapan", {
     const start = (currentPage - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    // sembunyikan semua
+    // sembunyikan semuaa
     rows.forEach(row => row.style.display = "none");
 
     // tampilkan sesuai page
@@ -252,20 +276,20 @@ flatpickr("#tanggalTanggapan", {
       row.style.display = "";
     });
 
-    // update info
+    // update infoo
     tableInfo.innerText =
       `Showing ${start + 1} to ${Math.min(end, total)} of ${total} entries`;
   }
 
   // PAGINATION
-  document.getElementById("prevBtn").addEventListener("click", () => {
+  prevBtn.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
       renderTable();
     }
   });
 
-  document.getElementById("nextBtn").addEventListener("click", () => {
+  nextBtn.addEventListener("click", () => {
     const keyword = searchInput.value.toLowerCase();
     const total = rows.filter(row =>
       row.innerText.toLowerCase().includes(keyword)
@@ -277,5 +301,5 @@ flatpickr("#tanggalTanggapan", {
     }
   });
 
-  // INITT
+  // INIT
   renderTable();

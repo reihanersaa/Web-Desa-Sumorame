@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Informasi Admin | Website Desa Sumorame</title>
+  <title>Informasi Admin | Website Desa Tawangsari</title>
   <link rel="icon" href="../img/logo.png" type="image/png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" href="css/DashboardAdmin.css">
+  <link rel="stylesheet" href="css/informasi.css">
 
 </head>
 
@@ -29,7 +29,7 @@
       <button id="burgerBtn" class="mr-4">
         <span class="material-symbols-outlined">menu</span>
       </button>
-      <h1 class="font-semibold text-lg">Badan Kelembagaan Desa</h1>
+      <h1 class="font-semibold text-lg">Informasi Pelayanan</h1>
     </div>
 
     <a href="LoginAdmin.html" 
@@ -40,69 +40,53 @@
   </div>
 </header>
 
+<!-- SIDEBAR -->
 <aside id="sidebar"
   class="fixed top-16 left-0 w-64 h-[calc(100%-4rem)] bg-black text-white p-4 transition-all duration-300 -translate-x-full md:translate-x-0">
 
   <nav class="space-y-2 text-sm">
 
-    <!-- Dashboard (Aktif) -->
     <a href="DashboardAdmin.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
       <span class="material-symbols-outlined mr-3">home</span>
       <span class="menu-text">Dashboard</span>
     </a>
 
-  
+      <!-- Dropdown Menu-->   
+      <div>
+        <button id="pemohonToggle"
+          class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
 
-    <!-- Aduan -->
-    <a href="Pengaduan.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">campaign</span>
-      <span class="menu-text">Aduan</span>
-    </a>
+          <span class="flex items-center">
+            <span class="material-symbols-outlined mr-3">article_person</span>
+            <span class="menu-text">Permohonan</span>
+          </span>
 
-    <!-- Surat Menyurat -->
-    <a href="SuratMenyurat.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">mail</span>
-      <span class="menu-text">Surat Menyurat</span>
-    </a>
+          <span id="pemohonIcon" class="material-symbols-outlined text-sm transition-transform">
+            expand_more
+          </span>
+        </button>
 
-    <!-- Kelembagaan Desa -->
-    <a href="Kelembagaan.html" class="flex items-center p-2 bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">groups</span>
-      <span class="menu-text">Kelembagaan Desa</span>
-    </a>
+        <!-- Submenu -->
+        <div id="pemohonMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+          <a href="Pengaduan.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Aduan
+          </a>
+          <a href="SuratMenyurat.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Surat Menyurat
+          </a>
+          <a href="#" class="flex items-center gap-2 p-2 text-gray-300 bg-gray-700 hover:translate-x-1 transition-all rounded">
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            Informasi
+          </a>
+        </div>
+      </div>
 
-    <!-- Publikasi -->
     <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
       <span class="material-symbols-outlined mr-3">linked_camera</span>
       <span class="menu-text">Publikasi</span>
     </a>
-
-    <!-- Kelola Website (Dropdown) -->
-    <div>
-      <button id="cmsToggle"
-        class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-        <span class="flex items-center">
-          <span class="material-symbols-outlined mr-3">web</span>
-          <span class="menu-text">Kelola Website</span>
-        </span>
-        <span id="cmsIcon" class="material-symbols-outlined text-sm transition-transform">
-          expand_more
-        </span>
-      </button>
-
-      <!-- Submenu Kelola Website -->
-      <div id="cmsMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
-        <a href="CmsProfil.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Profil & Hero
-        </a>
-        <a href="CmsProduk.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Produk Unggulan
-        </a>
-      </div>
-    </div>
-    
   </nav>
 </aside>
 
@@ -120,7 +104,7 @@
       <!-- HEADER -->
       <div class="bg-black text-white px-6 py-3">
         <h3 class="text-sm font-semibold">
-          Pengeditan Badan Kelembagaan Desa
+          Pengeditan Informasi Pelayanan
         </h3>
       </div>
 
@@ -153,9 +137,9 @@
           <thead class="bg-gray-100 text-gray-700">
             <tr class="fade-up" style="animation-delay: 0.3s">
               <th class="px-4 py-3 text-center border">No</th>
-              <th class="px-4 py-3 text-center border">Nama</th>
-              <th class="px-4 py-3 text-center border">Pengertian</th>
-              <th class="px-4 py-3 text-center border">Tugas</th>
+              <th class="px-4 py-3 text-center border">Hari</th>
+              <th class="px-4 py-3 text-center border">Jam Pelayanan</th>
+              <th class="px-4 py-3 text-center border">Jam Istirahat</th>
               <th class="px-4 py-3 text-center border">Action</th>
             </tr>
           </thead>
@@ -163,9 +147,9 @@
           <tbody>
             <tr class="hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer">
               <td class="px-4 py-3 text-center border">1</td>
-              <td class="px-4 py-3 text-center border">Lembaga Pemberdayaan Masyarakat</td>
-              <td class="px-4 py-3 text-center border">Lembaga Pemberdayaan Masyarakat (LPM).....</td>
-              <td class="px-4 py-3 text-center border">Menyusun rencana pembangunan......</td>
+              <td class="px-4 py-3 text-center border">Senin - Kamis</td>
+              <td class="px-4 py-3 text-center border">07.30 - 15.00</td>
+              <td class="px-4 py-3 text-center border">12.00 - 13.00</td>
               <td class="px-4 py-3 text-center border">
                 <div class="inline-flex gap-0 overflow-hidden rounded-lg">
                   <button class="btnView bg-purple-500 hover:bg-purple-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
@@ -180,6 +164,28 @@
                     <span class="material-symbols-outlined text-sm">delete</span>
                   </button>
                 </div>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer">
+              <td class="px-4 py-3 text-center border">2</td>
+              <td class="px-4 py-3 text-center border">Jum'at</td>
+              <td class="px-4 py-3 text-center border">07.30 - 14.00</td>
+              <td class="px-4 py-3 text-center border">11:20 - 12:30</td>
+              <td class="px-4 py-3 text-center border">
+                <div class="inline-flex gap-0 overflow-hidden rounded-lg">
+                  <button class="btnView bg-purple-500 hover:bg-purple-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
+                    <span class="material-symbols-outlined text-sm">visibility</span>
+                  </button>
+
+                  <button class="btnEdit bg-green-500 hover:bg-green-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
+                    <span class="material-symbols-outlined text-sm">edit_document</span>
+                  </button>
+
+                  <button class="btnCancelDelete bg-red-500 hover:bg-red-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                  </button>
+                </div>  
               </td>
             </tr>
           </tbody>
@@ -229,7 +235,7 @@
       
       <div class="flex items-center gap-3">
         <span class="material-symbols-outlined text-3xl">description</span>
-        <h2 class="text-lg font-semibold">Detail Kelembagaan</h2>
+        <h2 class="text-lg font-semibold">Detail Aduan</h2>
       </div>
 
       <button id="closeModal" class="hover:scale-110 transition">
@@ -244,46 +250,18 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
         <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Nama</p>
-          <p class="font-semibold text-gray-800">Lembaga Pemberdayaan Masyarakat</p>
+          <p class="text-xs text-gray-500 mb-1">Hari</p>
+          <p class="font-semibold text-gray-800">Senin - Kamis</p>
         </div>
 
         <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Pengertian</p>
-          <p class="font-semibold text-gray-800">Lembaga Pemberdayaan Masyarakat (LPM) adalah organisasi yang dibentuk untuk memberdayakan masyarakat di tingkat desa. LPM dibentuk atas prakarsa masyarakat.</p>
+          <p class="text-xs text-gray-500 mb-1">Jam Pelayanan</p>
+          <p class="font-semibold text-gray-800">07.30 - 15.00</p>
         </div>
 
         <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Tugas</p>
-          <p class="font-semibold text-gray-800">Menyusun rencana pembangunan secara partisipatif Menggerakkan swadaya gotong royong masyarakat Melaksanakan dan mengendalikan pembangunan Menampung dan menyalurkan aspirasi masyarakat dalam pembangunan Meningkatkan kualitas dan percepatan pelayanan pemerintah kepada masyarakat Mengembangkan kemitraan.</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Tujuan</p>
-          <p class="font-semibold text-gray-800">Menciptakan masyarakat yang mandiri dan berdaya saing Meningkatkan partisipasi dan pelayanan penyelenggaraan masyarakat desa Ikut serta dalam perencanaan, pelaksanaan, dan pembangunan yang dilakukan oleh Pemerintah Desa.</p>
-        </div>
-
-        <!-- PREVIEW GAMBAR -->
-        <div class="bg-white p-5 rounded-lg shadow">
-          <p class="text-sm text-gray-500 mb-3">Foto Bukti</p>
-
-          <img src="../img/Kegiatan6.png" class="rounded-lg w-full object-cover border">
-        </div>
-
-        <!-- PREVIEW FILE -->
-        <div class="bg-white p-5 rounded-lg shadow">
-          <p class="text-sm text-gray-500 mb-3">Lampiran File</p>
-
-          <div class="flex items-center justify-between border rounded-lg p-3">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-red-500">picture_as_pdf</span>
-              <span class="text-sm">dokumen-aduan.pdf</span>
-            </div>
-
-            <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
-              Lihat
-            </button>
-          </div>
+          <p class="text-xs text-gray-500 mb-1">Jam Istirahat</p>
+          <p class="font-semibold text-gray-800">12.00 - 13.00</p>
         </div>
       </div>
     </div>
@@ -312,7 +290,7 @@
   
       <div class="flex items-center gap-3">
         <span class="material-symbols-outlined text-3xl">edit_document</span>
-        <h2 class="text-lg font-semibold">Edit Kelembagaan</h2>
+        <h2 class="text-lg font-semibold">Edit Aduan</h2>
       </div>
 
       <button id="closeEdit" class="hover:scale-110 transition">
@@ -324,57 +302,21 @@
     <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-4">
 
       <div>
-        <label class="text-sm text-gray-600">Nama</label>
-        <input type="text" id="nama" value="Lembaga Pemberdayaan Masyarakat"
+        <label class="text-sm text-gray-600">Hari</label>
+        <input type="text" id="hari" value="Senin - Kamis"
           class="w-full border rounded px-3 py-2 mt-1 bg-gray-100">
       </div>
 
       <div>
-      <label class="text-sm text-gray-600">Pengertian</label>
-
-      <textarea
-        id="Pengertian"
-        rows="5"
-        class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 resize-none"
-      >Lembaga Pemberdayaan Masyarakat (LPM) adalah organisasi yang dibentuk untuk memberdayakan masyarakat di tingkat desa. LPM dibentuk atas prakarsa masyarakat.</textarea>
-    </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Tugas</label>
-        <textarea
-          id="Tugas"
-          rows="6"
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 resize-y"
-        >Menyusun rencana pembangunan secara partisipatif Menggerakkan swadaya gotong royong masyarakat Melaksanakan dan mengendalikan pembangunan Menampung dan menyalurkan aspirasi masyarakat dalam pembangunan Meningkatkan kualitas dan percepatan pelayanan pemerintah kepada masyarakat Mengembangkan kemitraan.</textarea>
+        <label class="text-sm text-gray-600">Jam Pelayanan</label>
+        <input type="text" id="jamPelayanan" value="07.30 - 15.00"
+          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100">
       </div>
 
       <div>
-        <label class="text-sm text-gray-600">Tujuan</label>
-        <textarea
-          id="Tujuan"
-          rows="6"
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 resize-y"
-        >Menciptakan masyarakat yang mandiri dan berdaya saing Meningkatkan partisipasi dan pelayanan penyelenggaraan masyarakat desa Ikut serta dalam perencanaan, pelaksanaan, dan pembangunan yang dilakukan oleh Pemerintah Desa.</textarea>
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Upload Gambar</label>
-        <input type="file" id="uploadGambar" class="w-full mt-1" accept="image/png, image/jpeg">
-
-        <p class="text-xs text-gray-500 mt-1 flex items-center gap-1 leading-relaxed">
-          <span class="material-symbols-outlined text-sm">info</span>
-          Format: JPG, PNG. Maksimal ukuran 2MB.
-        </p>
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Upload File</label>
-        <input type="file" id="uploadFile" class="w-full mt-1" accept="application/pdf">
-
-        <p class="text-xs text-gray-500 mt-1 flex items-center gap-1 leading-relaxed">
-          <span class="material-symbols-outlined text-sm">info</span>
-          Format: PDF, DOC, DOCX. Maksimal ukuran 5MB.
-        </p>
+        <label class="text-sm text-gray-600">Jam Istirahat</label>
+        <input type="text" id="jamIstirahat" value="12.00 - 13.00"
+          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100">
       </div>
     </div>
 
@@ -393,8 +335,7 @@
   </div>
 </div>
 
-
-<script src="js/DashboardAdmin.js"></script>
+<script src="js/informasi.js"></script>
 
 </body>
 </html>
