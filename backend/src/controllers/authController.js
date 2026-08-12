@@ -7,7 +7,7 @@ const registerWarga = async (req, res) => {
     const {
       nik,
       no_kk,
-      nama,
+      nama_lengkap,
       email,
       no_hp,
       provinsi,
@@ -19,7 +19,14 @@ const registerWarga = async (req, res) => {
     } = req.body;
 
     // 1. Validasi Kelengkapan Field
-    if (!nik || !no_kk || !nama || !email || !password || !confirm_password) {
+    if (
+      !nik ||
+      !no_kk ||
+      !nama_lengkap ||
+      !email ||
+      !password ||
+      !confirm_password
+    ) {
       return res.status(400).json({
         success: false,
         message: "Mohon lengkapi seluruh field yang wajib diisi.",
@@ -44,7 +51,7 @@ const registerWarga = async (req, res) => {
 
     // 4. Cek Pendaftaran Ganda (NIK / Email)
     const { data: existingUser, error: checkError } = await supabase
-      .from("warga")
+      .from("users")
       .select("nik, email")
       .or(`nik.eq.${nik},email.eq.${email}`)
       .maybeSingle();
@@ -63,12 +70,12 @@ const registerWarga = async (req, res) => {
 
     // 6. Insert Data ke Supabase
     const { data, error: insertError } = await supabase
-      .from("warga")
+      .from("users")
       .insert([
         {
           nik,
           no_kk,
-          nama,
+          nama_lengkap,
           email,
           no_hp,
           provinsi,
@@ -78,7 +85,7 @@ const registerWarga = async (req, res) => {
           password: hashedPassword,
         },
       ])
-      .select("id, nik, nama, email")
+      .select("id, nik, nama_lengkap, email")
       .single();
 
     if (insertError) throw insertError;
@@ -101,33 +108,32 @@ module.exports = { registerWarga };
 
 const loginWarga = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { nik, password } = req.body;
 
-    // 1. Cek apakah email dan password diisi
-    if (!email || !password) {
+    // 1. Validasi NIK dan password wajib diisi
+    if (!nik || !password) {
       return res.status(400).json({
         success: false,
-        message: "Email dan password wajib diisi!",
+        message: "NIK dan password wajib diisi!",
       });
     }
 
-    // 2. Cari user berdasarkan email di database
+    // 2. Cari user di database berdasarkan NIK
     const { data: user, error } = await supabase
       .from("users")
       .select("*")
-      .eq("email", email)
+      .eq("nik", nik)
       .single();
 
     if (error || !user) {
       return res.status(401).json({
         success: false,
-        message: "Email tidak ditemukan atau salah.",
+        message: "NIK tidak ditemukan atau salah.",
       });
     }
 
-    // 3. Cocokkan password yang diketik dengan yang ada di database
+    // 3. Cocokkan password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
-
     if (!isPasswordMatch) {
       return res.status(401).json({
         success: false,
@@ -135,27 +141,27 @@ const loginWarga = async (req, res) => {
       });
     }
 
-    // 4. Buat Tiket VIP (Token JWT)
+    // 4. Buat Token JWT (Mencakup ID, NIK, dan Role)
     const token = jwt.sign(
       {
         id: user.id,
-        email: user.email,
+        nik: user.nik,
         role: user.role,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }, // Tiket hangus dalam 1 hari
+      { expiresIn: "1d" },
     );
 
-    // 5. Kirim balasan sukses beserta token
+    // 5. Kirim balasan beserta role (warga / admin)
     return res.status(200).json({
       success: true,
       message: "Login berhasil!",
       token: token,
       data: {
         id: user.id,
+        nik: user.nik,
         nama_lengkap: user.nama_lengkap,
-        email: user.email,
-        role: user.role,
+        role: user.role, // Frontend akan baca ini: 'warga' atau 'admin'
       },
     });
   } catch (error) {
