@@ -106,6 +106,8 @@ const registerWarga = async (req, res) => {
 
 module.exports = { registerWarga };
 
+//logika login warga
+
 const loginWarga = async (req, res) => {
   try {
     const { nik, password } = req.body;
@@ -173,4 +175,78 @@ const loginWarga = async (req, res) => {
   }
 };
 
-module.exports = { registerWarga, loginWarga };
+//logika login admin
+
+const loginAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body; // Admin login menggunakan Email
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email dan password admin wajib diisi!",
+      });
+    }
+
+    // Cari user berdasarkan email
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (error || !user) {
+      return res.status(401).json({
+        success: false,
+        message: "Akun admin tidak ditemukan.",
+      });
+    }
+
+    // CEK KHUSUS: Pastikan role-nya adalah 'admin'
+    if (user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Akses ditolak. Akun ini bukan akun Admin!",
+      });
+    }
+
+    // Cek password
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Password admin salah.",
+      });
+    }
+
+    // Buat Token JWT khusus Admin
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" },
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login Admin berhasil!",
+      token: token,
+      data: {
+        id: user.id,
+        nama_lengkap: user.nama_lengkap,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Login Admin Error:", error.message);
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: "Terjadi kesalahan internal pada server.",
+      });
+  }
+};
+
+// Sertakan loginAdmin di exports
+module.exports = { registerWarga, loginWarga, loginAdmin };
