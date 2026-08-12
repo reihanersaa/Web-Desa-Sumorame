@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
-
+document.addEventListener("DOMContentLoaded", function () {
   tampilkanAduan();
   cekStatusForm();
   // ================= NAVBAR MOBILE =================
@@ -22,7 +21,11 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   document.addEventListener("click", (e) => {
-    if (isOpen && !mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+    if (
+      isOpen &&
+      !mobileMenu.contains(e.target) &&
+      !menuBtn.contains(e.target)
+    ) {
       mobileMenu.classList.add("max-h-0", "opacity-0");
       mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
       menuBtn.textContent = "menu";
@@ -77,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
             "-translate-y-6",
             "-translate-x-10",
             "translate-x-10",
-            "translate-y-10"
+            "translate-y-10",
           );
         }, i * 200);
       });
@@ -85,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // ================= SUARA NAVBAR =================
-  navItems.forEach(item => {
+  navItems.forEach((item) => {
     item.addEventListener("mouseenter", () => {
       const text = item.textContent.trim();
       if (!text) return;
@@ -112,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // ================= VALIDASI FILE =================
   const fileUpload = document.getElementById("fileUpload");
 
-  fileUpload.addEventListener("change", function() {
+  fileUpload.addEventListener("change", function () {
     const file = this.files[0];
     if (!file) return;
 
@@ -134,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // ================= PREVIEW IMAGE =================
   const preview = document.getElementById("previewImage");
 
-  fileUpload.addEventListener("change", function() {
+  fileUpload.addEventListener("change", function () {
     const file = this.files[0];
     if (!file) return;
 
@@ -152,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       preview.src = e.target.result;
       preview.classList.remove("hidden");
     };
@@ -163,13 +166,16 @@ document.addEventListener("DOMContentLoaded", function() {
   const cards = document.querySelectorAll(".pub-card");
 
   if (cards.length > 0) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("show");
-        }
-      });
-    }, { threshold: 0.2 });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
+        });
+      },
+      { threshold: 0.2 },
+    );
 
     cards.forEach((card, i) => {
       observer.observe(card);
@@ -206,80 +212,82 @@ document.addEventListener("DOMContentLoaded", function() {
   // ================= FORM ADUAN =================
   const formAduan = document.getElementById("formAduan");
 
-  formAduan.addEventListener("submit", function(e) {
-  e.preventDefault();
+  formAduan.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  // 🔥 CEK LOGIN
-  if (!localStorage.getItem("login")) {
-    modal.classList.remove("opacity-0", "pointer-events-none");
-    return;
-  }
+    // 🔥 CEK LOGIN
+    if (!localStorage.getItem("login")) {
+      modal.classList.remove("opacity-0", "pointer-events-none");
+      return;
+    }
 
-  const nama = document.getElementById("nama").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const judul = document.getElementById("judul").value.trim();
-  const isi = document.getElementById("isi").value.trim();
-  const bukti = document.getElementById("fileUpload").files[0];
+    const nama = document.getElementById("nama").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const judul = document.getElementById("judul").value.trim();
+    const isi = document.getElementById("isi").value.trim();
+    const bukti = document.getElementById("fileUpload").files[0];
 
-  // ================= VALIDASI KOSONG =================
-  let kosong = [];
+    // ================= VALIDASI KOSONG =================
+    let kosong = [];
 
-  document.querySelectorAll("#formAduan input, #formAduan textarea").forEach(el => {
-    el.classList.remove("border-red-500");
-  });
+    document
+      .querySelectorAll("#formAduan input, #formAduan textarea")
+      .forEach((el) => {
+        el.classList.remove("border-red-500");
+      });
 
-  if (!nama) {
-    kosong.push("Nama");
-    document.getElementById("nama").classList.add("border-red-500");
-  }
+    if (!nama) {
+      kosong.push("Nama");
+      document.getElementById("nama").classList.add("border-red-500");
+    }
 
-  if (!email) {
-    kosong.push("Email");
-    document.getElementById("email").classList.add("border-red-500");
-  }
+    if (!email) {
+      kosong.push("Email");
+      document.getElementById("email").classList.add("border-red-500");
+    }
 
-  if (!judul) {
-    kosong.push("Judul Aduan");
-    document.getElementById("judul").classList.add("border-red-500");
-  }
+    if (!judul) {
+      kosong.push("Judul Aduan");
+      document.getElementById("judul").classList.add("border-red-500");
+    }
 
-  if (!isi) {
-    kosong.push("Isi Aduan");
-    document.getElementById("isi").classList.add("border-red-500");
-  }
+    if (!isi) {
+      kosong.push("Isi Aduan");
+      document.getElementById("isi").classList.add("border-red-500");
+    }
 
-  if (!bukti) {
-    kosong.push("Bukti Aduan");
-    document.getElementById("fileUpload").classList.add("border-red-500");
-  }
+    if (!bukti) {
+      kosong.push("Bukti Aduan");
+      document.getElementById("fileUpload").classList.add("border-red-500");
+    }
 
-  if (kosong.length > 0) {
-    Swal.fire({
-    title: "Form Belum Lengkap ⚠️",
-    html: `
+    if (kosong.length > 0) {
+      Swal.fire({
+        title: "Form Belum Lengkap ⚠️",
+        html: `
       <div style="text-align:center;">
         <p style="margin-bottom:8px;">
           Kolom berikut masih kosong:
         </p>
 
         <ul style="list-style-position: inside; padding:0; margin:0;">
-          ${kosong.map(item => `<li>${item}</li>`).join("")}
+          ${kosong.map((item) => `<li>${item}</li>`).join("")}
         </ul>
       </div>
     `,
-    icon: "warning",
-    background: "#f0fff4",
-    color: "#2e7d32",
-    confirmButtonColor: "#2e7d32"
-  });
+        icon: "warning",
+        background: "#f0fff4",
+        color: "#2e7d32",
+        confirmButtonColor: "#2e7d32",
+      });
 
-    return;
-  }
+      return;
+    }
 
-  // ================= KONFIRMASI DATA =================
-  Swal.fire({
-    title: "Konfirmasi Aduan ❓",
-    html: `
+    // ================= KONFIRMASI DATA =================
+    Swal.fire({
+      title: "Konfirmasi Aduan ❓",
+      html: `
       <div style="text-align:left;font-size:13px;color:#2e7d32">
         <b>Nama:</b> ${nama}<br>
         <b>Email:</b> ${email}<br>
@@ -288,59 +296,55 @@ document.addEventListener("DOMContentLoaded", function() {
       </div>
       <br><b>Apakah data sudah benar?</b>
     `,
-    icon: "question",
-    background: "#f0fff4",
-    color: "#2e7d32",
-    showCancelButton: true,
-    confirmButtonText: "Ya, Kirim",
-    cancelButtonText: "Batal",
-    confirmButtonColor: "#2e7d32",
-    cancelButtonColor: "#d33"
-  }).then((result) => {
+      icon: "question",
+      background: "#f0fff4",
+      color: "#2e7d32",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Kirim",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#2e7d32",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // ================= SIMPAN DATA =================
+        let dataAduan = JSON.parse(localStorage.getItem("aduan")) || [];
 
-    if (result.isConfirmed) {
+        dataAduan.push({
+          nama,
+          email,
+          judul,
+          isi,
+          status: "Diproses",
+          tanggal: new Date().toLocaleString(),
+        });
 
-      // ================= SIMPAN DATA =================
-      let dataAduan = JSON.parse(localStorage.getItem("aduan")) || [];
+        localStorage.setItem("aduan", JSON.stringify(dataAduan));
 
-      dataAduan.push({
-        nama,
-        email,
-        judul,
-        isi,
-        status: "Diproses",
-        tanggal: new Date().toLocaleString()
-      });
+        // ================= ALERT BERHASIL =================
+        Swal.fire({
+          title: "Berhasil 🎉",
+          text: "Aduan Anda telah dikirim",
+          icon: "success",
+          background: "#f0fff4",
+          color: "#2e7d32",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+        });
 
-      localStorage.setItem("aduan", JSON.stringify(dataAduan));
+        // RESET FORM
+        formAduan.reset();
 
-      // ================= ALERT BERHASIL =================
-      Swal.fire({
-        title: "Berhasil 🎉",
-        text: "Aduan Anda telah dikirim",
-        icon: "success",
-        background: "#f0fff4",
-        color: "#2e7d32",
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true
-      });
-
-      // RESET FORM
-      formAduan.reset();
-
-      setTimeout(() => {
-        tampilkanAduan();
-        cekStatusForm();
-      }, 2000);
-
-    }
+        setTimeout(() => {
+          tampilkanAduan();
+          cekStatusForm();
+        }, 2000);
+      }
+    });
   });
 
-});
-
-    // ================= TAMPILKAN ADUAN =================
-    function tampilkanAduan() {
+  // ================= TAMPILKAN ADUAN =================
+  function tampilkanAduan() {
     const container = document.getElementById("trackAduan");
     const list = document.getElementById("listAduan");
 
@@ -352,13 +356,15 @@ document.addEventListener("DOMContentLoaded", function() {
     list.innerHTML = "";
 
     data.reverse().forEach((item, i) => {
-      const icon = item.status === "Selesai"
-        ? `<span class="material-symbols-outlined text-green-600">check_circle</span>`
-        : `<span class="material-symbols-outlined text-yellow-500">hourglass_top</span>`;
+      const icon =
+        item.status === "Selesai"
+          ? `<span class="material-symbols-outlined text-green-600">check_circle</span>`
+          : `<span class="material-symbols-outlined text-yellow-500">hourglass_top</span>`;
 
-      const statusColor = item.status === "Selesai"
-        ? "bg-green-200 text-green-800"
-        : "bg-yellow-200 text-yellow-800";
+      const statusColor =
+        item.status === "Selesai"
+          ? "bg-green-200 text-green-800"
+          : "bg-yellow-200 text-yellow-800";
 
       list.innerHTML += `
         <div class="bg-gray-100 p-4 rounded-lg shadow opacity-0 translate-y-6 transition-all duration-700"
@@ -397,8 +403,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-    // ================= UBAH STATUS ADUAN =================
-    function ubahStatus(index) {
+  // ================= UBAH STATUS ADUAN =================
+  function ubahStatus(index) {
     let data = JSON.parse(localStorage.getItem("aduan")) || [];
 
     data[index].status = "Selesai";
@@ -409,29 +415,28 @@ document.addEventListener("DOMContentLoaded", function() {
     cekStatusForm(); // ⬅️ update kondisi form
   }
 
-    // ================= CEK STATUS ADUAN =================
-    function cekStatusForm() {
+  // ================= CEK STATUS ADUAN =================
+  function cekStatusForm() {
     const data = JSON.parse(localStorage.getItem("aduan")) || [];
 
     const form = document.getElementById("formAduan");
     const inputs = form.querySelectorAll("input, textarea, button");
 
     // cek apakah ada aduan yang masih diproses
-    const adaDiproses = data.some(item => item.status === "Diproses");
+    const adaDiproses = data.some((item) => item.status === "Diproses");
 
     if (adaDiproses) {
       // FORM DIKUNCI
-      inputs.forEach(el => el.disabled = true);
+      inputs.forEach((el) => (el.disabled = true));
 
       Swal.fire({
         title: "Aduan Sedang Diproses",
         text: "Anda tidak bisa mengirim aduan baru sebelum aduan sebelumnya selesai.",
-        icon: "warning"
+        icon: "warning",
       });
-
     } else {
       // FORM AKTIF
-      inputs.forEach(el => el.disabled = false);
+      inputs.forEach((el) => (el.disabled = false));
     }
   }
 
@@ -443,25 +448,21 @@ document.addEventListener("DOMContentLoaded", function() {
   const heroSection = document.getElementById("heroSection");
 
   window.addEventListener("scroll", function () {
+    if (window.scrollY <= 0) {
+      // Navbar hilang
+      mainHeader.classList.add("header-hidden");
 
-      if (window.scrollY <= 0) {
+      // Hero langsung naik menutup celah
+      heroSection.classList.add("hero-top");
+    } else {
+      // Navbar muncul
+      mainHeader.classList.remove("header-hidden");
 
-          // Navbar hilang
-          mainHeader.classList.add("header-hidden");
-
-          // Hero langsung naik menutup celah
-          heroSection.classList.add("hero-top");
-
-      } else {
-
-          // Navbar muncul
-          mainHeader.classList.remove("header-hidden");
-
-          // Hero kembali ke posisi normal
-          heroSection.classList.remove("hero-top");
-      }
-
+      // Hero kembali ke posisi normal
+      heroSection.classList.remove("hero-top");
+    }
   });
+  
 
   // ======================
   // SCROLL TO TOP
@@ -471,28 +472,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Tampilkan tombol saat scroll
   window.addEventListener("scroll", () => {
-
-      if (window.scrollY > 300) {
-
-          scrollTopBtn.classList.add("show");
-
-      } else {
-
-          scrollTopBtn.classList.remove("show");
-
-      }
-
+    if (window.scrollY > 300) {
+      scrollTopBtn.classList.add("show");
+    } else {
+      scrollTopBtn.classList.remove("show");
+    }
   });
 
   // Klik tombol
   scrollTopBtn.addEventListener("click", () => {
-
-      window.scrollTo({
-
-          top: 0,
-          behavior: "smooth"
-
-      });
-
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   });
 });

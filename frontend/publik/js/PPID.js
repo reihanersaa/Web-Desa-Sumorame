@@ -1,36 +1,37 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   // =============================
   // ANIMASI CARD + MAP + BANNER
   // =============================
-  const cards = document.querySelectorAll('.ppid-menu, .ppid-card, .map-card');
-  const banners = document.querySelectorAll('.banner-item');
+  const cards = document.querySelectorAll(".ppid-menu, .ppid-card, .map-card");
+  const banners = document.querySelectorAll(".banner-item");
 
-  const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove("opacity-0", "translate-y-10");
+          entry.target.classList.add("opacity-100", "translate-y-0");
 
-      entry.target.classList.remove('opacity-0', 'translate-y-10');
-      entry.target.classList.add('opacity-100', 'translate-y-0');
+          if (entry.target.classList.contains("map-card")) {
+            banners.forEach((b, i) => {
+              setTimeout(() => {
+                b.classList.remove("opacity-0", "translate-y-4");
+                b.classList.add("opacity-100", "translate-y-0");
+              }, i * 150);
+            });
+          }
 
-      if (entry.target.classList.contains('map-card')) {
-        banners.forEach((b, i) => {
-          setTimeout(() => {
-            b.classList.remove('opacity-0', 'translate-y-4');
-            b.classList.add('opacity-100', 'translate-y-0');
-          }, i * 150);
-        });
-      }
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0,
+      rootMargin: "0px 0px -100px 0px", // 🔥 ini kunci
+    },
+  );
 
-      observer.unobserve(entry.target);
-    }
-  });
-}, { 
-  threshold: 0,
-  rootMargin: "0px 0px -100px 0px" // 🔥 ini kunci
-});
-
-  cards.forEach(card => observer.observe(card));
+  cards.forEach((card) => observer.observe(card));
 
   // =============================
   // NAVBAR MOBILE
@@ -52,7 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("click", (e) => {
-    if (isOpen && !mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+    if (
+      isOpen &&
+      !mobileMenu.contains(e.target) &&
+      !menuBtn.contains(e.target)
+    ) {
       mobileMenu.classList.add("max-h-0", "opacity-0");
       mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
       menuBtn.textContent = "menu";
@@ -91,24 +96,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const heroSection = document.getElementById("heroSection");
 
   window.addEventListener("scroll", function () {
+    if (window.scrollY <= 0) {
+      // Navbar hilang
+      mainHeader.classList.add("header-hidden");
 
-      if (window.scrollY <= 0) {
+      // Hero langsung naik menutup celah
+      heroSection.classList.add("hero-top");
+    } else {
+      // Navbar muncul
+      mainHeader.classList.remove("header-hidden");
 
-          // Navbar hilang
-          mainHeader.classList.add("header-hidden");
-
-          // Hero langsung naik menutup celah
-          heroSection.classList.add("hero-top");
-
-      } else {
-
-          // Navbar muncul
-          mainHeader.classList.remove("header-hidden");
-
-          // Hero kembali ke posisi normal
-          heroSection.classList.remove("hero-top");
-      }
-
+      // Hero kembali ke posisi normal
+      heroSection.classList.remove("hero-top");
+    }
   });
 
   // =============================
@@ -122,7 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const trigger = window.innerHeight;
 
     if (footer.getBoundingClientRect().top < trigger - 100) {
-
       footer.classList.remove("opacity-0", "translate-y-10");
 
       footerItems.forEach((item, i) => {
@@ -138,18 +137,17 @@ document.addEventListener("DOMContentLoaded", () => {
             "-translate-y-6",
             "-translate-x-10",
             "translate-x-10",
-            "translate-y-10"
+            "translate-y-10",
           );
         }, i * 200);
       });
-
     }
   });
 
   // =============================
   // SOUND NAVBAR (FIXED - NO DUPLICATE)
   // =============================
-  navItems.forEach(item => {
+  navItems.forEach((item) => {
     item.addEventListener("mouseenter", () => {
       const text = item.textContent.trim();
       if (!text) return;
@@ -161,85 +159,84 @@ document.addEventListener("DOMContentLoaded", () => {
       window.speechSynthesis.speak(speech);
     });
   });
-
 });
-  // =============================
-  // MODAL TIME LINE
-  // =============================
-  const modal = document.getElementById("modalTimeline");
-  const modalBox = document.getElementById("modalBox");
+// =============================
+// MODAL TIME LINE
+// =============================
+const modal = document.getElementById("modalTimeline");
+const modalBox = document.getElementById("modalBox");
 
-  function openModal() {
-    modal.classList.remove("hidden");
+function openModal() {
+  modal.classList.remove("hidden");
 
-    modal.classList.add("opacity-0");
-    modalBox.classList.add("scale-90", "opacity-0");
+  modal.classList.add("opacity-0");
+  modalBox.classList.add("scale-90", "opacity-0");
 
-    requestAnimationFrame(() => {
-      modal.classList.remove("opacity-0");
-      modalBox.classList.remove("scale-90", "opacity-0");
-      modalBox.classList.add("scale-100", "opacity-100");
-    });
-  }
-
-  function closeModal() {
-    modal.classList.add("opacity-0");
-    modalBox.classList.remove("scale-100", "opacity-100");
-    modalBox.classList.add("scale-90", "opacity-0");
-
-    setTimeout(() => {
-      modal.classList.add("hidden");
-    }, 300);
-  }
-
-  // klik luar
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
+  requestAnimationFrame(() => {
+    modal.classList.remove("opacity-0");
+    modalBox.classList.remove("scale-90", "opacity-0");
+    modalBox.classList.add("scale-100", "opacity-100");
   });
+}
 
-    // =============================
-    // MODAL PENGUMUMAN
-    // =============================
-    function openModalPengumuman() {
-    const modal = document.getElementById("modalPengumuman");
-    const box = document.getElementById("modalBoxPengumuman");
+function closeModal() {
+  modal.classList.add("opacity-0");
+  modalBox.classList.remove("scale-100", "opacity-100");
+  modalBox.classList.add("scale-90", "opacity-0");
 
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 300);
+}
 
-    // reset dulu
-    modal.classList.add("opacity-0");
-    box.classList.add("scale-90", "opacity-0");
+// klik luar
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) closeModal();
+});
 
-    requestAnimationFrame(() => {
-      modal.classList.remove("opacity-0");
-      box.classList.remove("scale-90", "opacity-0");
-      box.classList.add("scale-100", "opacity-100");
-    });
-  }
+// =============================
+// MODAL PENGUMUMAN
+// =============================
+function openModalPengumuman() {
+  const modal = document.getElementById("modalPengumuman");
+  const box = document.getElementById("modalBoxPengumuman");
 
-  function closeModalPengumuman() {
-    const modal = document.getElementById("modalPengumuman");
-    const box = document.getElementById("modalBoxPengumuman");
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
 
-    modal.classList.add("opacity-0");
-    box.classList.remove("scale-100", "opacity-100");
-    box.classList.add("scale-90", "opacity-0");
+  // reset dulu
+  modal.classList.add("opacity-0");
+  box.classList.add("scale-90", "opacity-0");
 
-    setTimeout(() => {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }, 300);
-  }
-
-  // klik luar
-  const modalPengumuman = document.getElementById("modalPengumuman");
-
-  modalPengumuman.addEventListener("click", (e) => {
-    if (e.target === modalPengumuman) closeModalPengumuman();
+  requestAnimationFrame(() => {
+    modal.classList.remove("opacity-0");
+    box.classList.remove("scale-90", "opacity-0");
+    box.classList.add("scale-100", "opacity-100");
   });
+}
 
-  function ripple(e) {
+function closeModalPengumuman() {
+  const modal = document.getElementById("modalPengumuman");
+  const box = document.getElementById("modalBoxPengumuman");
+
+  modal.classList.add("opacity-0");
+  box.classList.remove("scale-100", "opacity-100");
+  box.classList.add("scale-90", "opacity-0");
+
+  setTimeout(() => {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }, 300);
+}
+
+// klik luar
+const modalPengumuman = document.getElementById("modalPengumuman");
+
+modalPengumuman.addEventListener("click", (e) => {
+  if (e.target === modalPengumuman) closeModalPengumuman();
+});
+
+function ripple(e) {
   const button = e.currentTarget;
 
   const circle = document.createElement("span");
@@ -257,10 +254,10 @@ document.addEventListener("DOMContentLoaded", () => {
   button.appendChild(circle);
 }
 
-  // =============================
-  // MODAL LAYANAN INFORMASI
-  // =============================
-  function openModalLayanan() {
+// =============================
+// MODAL LAYANAN INFORMASI
+// =============================
+function openModalLayanan() {
   const modal = document.getElementById("modalLayanan");
   const box = document.getElementById("modalBoxLayanan");
 
@@ -292,7 +289,7 @@ function closeModalLayanan() {
 }
 
 // klik luar = close
-document.getElementById("modalLayanan").addEventListener("click", function(e) {
+document.getElementById("modalLayanan").addEventListener("click", function (e) {
   if (e.target === this) closeModalLayanan();
 });
 
@@ -301,27 +298,23 @@ function goToSlide(index) {
   container.style.transform = `translateX(-${index * 100}%)`;
 }
 
-    // ======================
-    // SCROLL TO TOP
-    // ======================
+// ======================
+// SCROLL TO TOP
+// ======================
 
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
+const scrollTopBtn = document.getElementById("scrollTopBtn");
 
-    window.addEventListener("scroll", () => {
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 300) {
+    scrollTopBtn.classList.add("show");
+  } else {
+    scrollTopBtn.classList.remove("show");
+  }
+});
 
-        if (window.scrollY > 300) {
-            scrollTopBtn.classList.add("show");
-        } else {
-            scrollTopBtn.classList.remove("show");
-        }
-
-    });
-
-    scrollTopBtn.addEventListener("click", () => {
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    });
+scrollTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+});

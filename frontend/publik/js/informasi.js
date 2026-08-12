@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   // ===============================
   // NAVBAR MOBILE
   // ===============================
@@ -23,14 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("click", (e) => {
-    if (isOpen && !mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+    if (
+      isOpen &&
+      !mobileMenu.contains(e.target) &&
+      !menuBtn.contains(e.target)
+    ) {
       mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
       mobileMenu.classList.add("max-h-0", "opacity-0");
       menuBtn.textContent = "menu";
       isOpen = false;
     }
   });
-
 
   // ===============================
   // ANIMASI NAVBAR
@@ -62,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", animasiCard);
   animasiCard();
 
-
   // ===============================
   // ANIMASI ARTIKEL
   // ===============================
@@ -83,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", animasiArtikel);
 
-
   // ===============================
   // ANIMASI TERKINI (🔥 FIX UTAMA)
   // ===============================
@@ -95,11 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 200);
 
   items.forEach((item, i) => {
-    setTimeout(() => {
-      item.classList.remove("opacity-0", "translate-x-10");
-    }, 400 + (i * 120));
+    setTimeout(
+      () => {
+        item.classList.remove("opacity-0", "translate-x-10");
+      },
+      400 + i * 120,
+    );
   });
-
 
   // ===============================
   // TAB TERKINI / KATEGORI
@@ -112,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (btnKategori) {
     btnTerkini.addEventListener("click", () => {
-
       contentKategori.classList.add("opacity-0", "translate-x-10");
 
       setTimeout(() => {
@@ -123,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
           contentTerkini.classList.remove("opacity-0", "-translate-x-10");
           contentTerkini.classList.add("opacity-100", "translate-x-0");
         }, 50);
-
       }, 300);
 
       btnTerkini.classList.add("bg-yellow-400", "text-white");
@@ -132,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     btnKategori.addEventListener("click", () => {
-
       contentTerkini.classList.add("opacity-0", "-translate-x-10");
 
       setTimeout(() => {
@@ -143,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
           contentKategori.classList.remove("opacity-0", "translate-x-10");
           contentKategori.classList.add("opacity-100", "translate-x-0");
         }, 50);
-
       }, 300);
 
       btnKategori.classList.add("bg-yellow-400", "text-white");
@@ -151,7 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
       btnTerkini.classList.add("text-green-700");
     });
   }
-
 
   // ===============================
   // ANIMASI FOOTER + KONTAK
@@ -179,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "-translate-y-6",
             "-translate-x-10",
             "translate-x-10",
-            "translate-y-10"
+            "translate-y-10",
           );
         }, i * 200);
       });
@@ -188,11 +185,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", animasiFooter);
 
-
   // ===============================
   // SUARA NAVBAR (TIDAK DOBEL)
   // ===============================
-  navItems.forEach(item => {
+  navItems.forEach((item) => {
     item.addEventListener("mouseenter", () => {
       const text = item.textContent.trim();
       if (!text) return;
@@ -208,29 +204,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   // HEADER HILANG HANYA DI PALING ATAS
   // ===============================
-
   const mainHeader = document.getElementById("mainHeader");
   const heroSection = document.getElementById("heroSection");
 
   window.addEventListener("scroll", function () {
+    if (window.scrollY <= 0) {
+      // Navbar hilang
+      mainHeader.classList.add("header-hidden");
 
-      if (window.scrollY <= 0) {
+      // Hero langsung naik menutup celah
+      heroSection.classList.add("hero-top");
+    } else {
+      // Navbar muncul
+      mainHeader.classList.remove("header-hidden");
 
-          // Navbar hilang
-          mainHeader.classList.add("header-hidden");
-
-          // Hero langsung naik menutup celah
-          heroSection.classList.add("hero-top");
-
-      } else {
-
-          // Navbar muncul
-          mainHeader.classList.remove("header-hidden");
-
-          // Hero kembali ke posisi normal
-          heroSection.classList.remove("hero-top");
-      }
-
+      // Hero kembali ke posisi normal
+      heroSection.classList.remove("hero-top");
+    }
   });
 
   // ======================
@@ -241,44 +231,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Tampilkan tombol saat scroll
   window.addEventListener("scroll", () => {
-
-      if (window.scrollY > 300) {
-
-          scrollTopBtn.classList.add("show");
-
-      } else {
-
-          scrollTopBtn.classList.remove("show");
-
-      }
-
+    if (window.scrollY > 300) {
+      scrollTopBtn.classList.add("show");
+    } else {
+      scrollTopBtn.classList.remove("show");
+    }
   });
 
   // Klik tombol
   scrollTopBtn.addEventListener("click", () => {
-
-      window.scrollTo({
-
-          top: 0,
-          behavior: "smooth"
-
-      });
-
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   });
-
 
   // ===============================
   // ANIMASI PUBLIKASI (INTERSECTION)
   // ===============================
   const cards = document.querySelectorAll(".pub-card");
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-      }
-    });
-  }, { threshold: 0.2 });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+        }
+      });
+    },
+    { threshold: 0.2 },
+  );
 
   cards.forEach((card, i) => {
     observer.observe(card);
@@ -295,43 +277,39 @@ document.addEventListener("DOMContentLoaded", () => {
   judul.innerHTML = "";
 
   // Membuat setiap huruf menjadi span
-  teks.split("").forEach(huruf => {
+  teks.split("").forEach((huruf) => {
+    const span = document.createElement("span");
 
-      const span = document.createElement("span");
+    span.className = "letter";
+    span.innerHTML = huruf === " " ? "&nbsp;" : huruf;
 
-      span.className = "letter";
-      span.innerHTML = huruf === " " ? "&nbsp;" : huruf;
-
-      judul.appendChild(span);
-
+    judul.appendChild(span);
   });
 
   const letters = document.querySelectorAll("#judulBerita .letter");
 
   function animasiHuruf() {
+    letters.forEach((letter, index) => {
+      setTimeout(() => {
+        letter.style.animation = "flipLetter 0.7s ease";
 
-      letters.forEach((letter, index) => {
-
-          setTimeout(() => {
-
-              letter.style.animation = "flipLetter 0.7s ease";
-
-              // Reset agar bisa diputar lagi
-              letter.addEventListener("animationend", () => {
-                  letter.style.animation = "";
-              }, { once: true });
-
-          }, index * 120);
-
-      });
-
+        // Reset agar bisa diputar lagi
+        letter.addEventListener(
+          "animationend",
+          () => {
+            letter.style.animation = "";
+          },
+          { once: true },
+        );
+      }, index * 120);
+    });
   }
 
   // Jalankan pertama kali
   animasiHuruf();
 
   // Hitung total durasi animasi
-  const totalDurasi = (letters.length * 120) + 3000;
+  const totalDurasi = letters.length * 120 + 3000;
 
   // Loop terus
   setInterval(animasiHuruf, totalDurasi);
@@ -346,5 +324,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }, i * 200);
     });
   });
-
 });
