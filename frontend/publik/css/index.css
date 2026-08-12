@@ -321,6 +321,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+<<<<<<< HEAD
 
   will-change: transform;
   transform: translate3d(0, 0, 0);
@@ -337,3 +338,66 @@ body {
     transform: none !important;
   }
 }
+=======
+
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
+}
+
+/* ==========================
+      SCROLL TO TOP
+    ========================== */
+
+    #scrollTopBtn{
+        transform: translateY(20px);
+    }
+
+    #scrollTopBtn.show{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    #scrollTopBtn:hover{
+        box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+
+    /* HEADER SCROLL */
+    #mainHeader {
+      transition: transform 0.3s ease;
+    }
+
+    #mainHeader.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
+
+    #heroSection {
+      height: 400px !important;
+      transition: margin-top 0.3s ease;
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
+
+    @media (min-width: 768px) {
+      #heroSection {
+        height: 500px !important;
+      }
+    }
+/* Pengguna yang memilih "reduced motion" tidak perlu digerakkan;
+   background tetap tampil, hanya efek parallax-nya dimatikan
+   (ditangani lewat JS dengan mengecek prefers-reduced-motion). */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-bg {
+    top: 0;
+    height: 100%;
+    transform: none !important;
+  }
+}
+>>>>>>> d189447369794cf22806ecfb4a7eee0621942e46

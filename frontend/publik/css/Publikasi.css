@@ -122,6 +122,7 @@ body {
   transform: translateY(-100%);
 }
 
+<<<<<<< HEAD
 #heroSection {
   transition: margin-top 0.3s ease;
 }
@@ -146,3 +147,23 @@ body {
 #heroSection.hero-top {
   margin-top: 0;
 }
+=======
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
+
+    #heroSection {
+      height: 400px !important;
+      transition: margin-top 0.3s ease;
+    }
+
+    #heroSection.hero-top {
+      margin-top: 0;
+    }
+
+    @media (min-width: 768px) {
+      #heroSection {
+        height: 500px !important;
+      }
+    }
+>>>>>>> d189447369794cf22806ecfb4a7eee0621942e46
