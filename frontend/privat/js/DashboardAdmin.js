@@ -41,9 +41,11 @@ if (cmsToggle && cmsMenu && cmsIcon) {
   cmsToggle.addEventListener('click', () => {
     if (cmsMenu.classList.contains('max-h-0')) {
       cmsMenu.classList.remove('max-h-0', 'opacity-0');
-      cmsMenu.classList.add('max-h-40', 'opacity-100'); 
+      // UBAH BAGIAN INI: Ganti max-h-40 menjadi max-h-96
+      cmsMenu.classList.add('max-h-96', 'opacity-100'); 
     } else {
-      cmsMenu.classList.remove('max-h-40', 'opacity-100');
+      // UBAH BAGIAN INI JUGA: Sesuaikan dengan yang di atas
+      cmsMenu.classList.remove('max-h-96', 'opacity-100');
       cmsMenu.classList.add('max-h-0', 'opacity-0');
     }
     cmsIcon.classList.toggle('rotate-180');

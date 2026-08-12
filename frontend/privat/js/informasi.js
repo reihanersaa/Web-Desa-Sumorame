@@ -1,30 +1,4 @@
-// sidebar
-const burgerBtn = document.getElementById('burgerBtn');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-const mainContent = document.getElementById('mainContent');
-const headerLeft = document.getElementById('headerLeft');
 
-burgerBtn.addEventListener('click', () => {
-
-  if (window.innerWidth < 768) {
-    sidebar.classList.toggle('-translate-x-full');
-    overlay.classList.toggle('hidden');
-  } else {
-    sidebar.classList.toggle('w-64');
-    sidebar.classList.toggle('w-20');
-
-    headerLeft.classList.toggle('w-64');
-    headerLeft.classList.toggle('w-20');
-
-    mainContent.classList.toggle('md:pl-64');
-    mainContent.classList.toggle('md:pl-20');
-
-    document.querySelectorAll('.menu-text').forEach(el => {
-      el.classList.toggle('hidden');
-    });
-  }
-});
 
 flatpickr("#tanggalTanggapan", {
   dateFormat: "Y-m-d", // format: 2026-04-24
@@ -50,10 +24,7 @@ flatpickr("#tanggalTanggapan", {
     pemohonIcon.classList.toggle('rotate-180');
   });
 
-  overlay.addEventListener('click', () => {
-    sidebar.classList.add('-translate-x-full');
-    overlay.classList.add('hidden');
-  });
+
 
   // ================= VIEW MODAL =================
   const modal = document.getElementById('modalView');
