@@ -69,95 +69,20 @@ body {
           SCROLL TO TOP
     ========================== */
 
-    #scrollTopBtn{
-        transform: translateY(20px);
-    }
+#scrollTopBtn {
+  transform: translateY(20px);
+}
 
-    #scrollTopBtn.show{
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
+#scrollTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
-    #scrollTopBtn:hover{
-        box-shadow: 0 10px 25px rgba(0,0,0,.25);
-    }
+#scrollTopBtn:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> develop
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .hero-title{
-        display: inline-block;
-        white-space: nowrap;
-        animation: slideLoop 8s ease-in-out infinite;
-    }
-
-    /* Masuk → Diam 3 detik → Keluar → Ulang */
-    @keyframes slideLoop{
-
-        /* Mulai di luar kanan */
-        0%{
-            opacity: 0;
-            transform: translateX(120%);
-        }
-
-        /* Masuk */
-        15%{
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* Diam sekitar 3 detik */
-        55%{
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* Keluar ke kiri */
-        75%{
-            opacity: 0;
-            transform: translateX(-180%);
-        }
-
-        /* Tetap di luar kiri sebelum reset */
-        100%{
-            opacity: 0;
-            transform: translateX(-180%);
-        }
-    }
-
-        .text-justify {
-        text-align: justify;
-    }
-
-    #heroSection {
-      height: 400px !important;
-      transition: margin-top 0.3s ease;
-    }
-
-    #heroSection.hero-top {
-      margin-top: 0;
-    }
-
-    @media (min-width: 768px) {
-      #heroSection {
-        height: 500px !important;
-      }
-    }
-<<<<<<< HEAD
-=======
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -168,6 +93,3 @@ body {
     transform: translateY(0);
   }
 }
->>>>>>> b93bd44e99bf9f2095b41b9e5d54576e1594185b
-=======
->>>>>>> develop
