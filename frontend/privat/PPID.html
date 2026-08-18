@@ -60,10 +60,43 @@
     </a>
 
     <!-- Surat Menyurat -->
-    <a href="SuratMenyurat.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">mail</span>
-      <span class="menu-text">Surat Menyurat</span>
-    </a>
+    <div>
+      <button id="suratToggle"
+        class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+        <span class="flex items-center">
+          <span class="material-symbols-outlined mr-3">mail</span>
+          <span class="menu-text">Surat Menyurat</span>
+        </span>
+        <!-- UBAH ID DI SINI -->
+        <span id="suratIcon" class="material-symbols-outlined text-sm transition-transform">
+          expand_more
+        </span>
+      </button>
+
+      <!-- Submenu Kelola Surat Menyurat -->
+      <div id="suratMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+        <a href="SKD.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Domisili
+        </a>
+
+        <a href="SKK.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Kehilangan
+        </a>
+
+        <a href="SKT.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Tanah
+        </a>
+
+        <a href="SKTM.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Tidak Mampu
+        </a>
+
+      </div>
+    </div>
 
     <!-- Publikasi -->
     <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
@@ -85,7 +118,7 @@
       </button>
 
       <!-- Submenu Kelola Website -->
-      <div id="cmsMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+      <div id="cmsMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-96 opacity-100 transition-all duration-300 ease-in-out">
         <a href="CmsProfil.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
           <span class="material-symbols-outlined text-xs">chevron_right</span>
           Profil & Hero
@@ -117,5 +150,175 @@
     
   </nav>
 </aside>
+
+<!-- OVERLAY -->
+<div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"></div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent" class="pt-16 md:pl-64 transition-all duration-300 min-h-screen flex flex-col">
+  <main class="flex-1 p-6 pb-20 fade-up">
+
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Kelola PPID</h2>
+      <p class="text-sm text-gray-500">Kelola Struktur Organisasi dan Daftar Informasi Publik (PDF).</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- ========================================== -->
+      <!-- BAGIAN 1: PROFILE PPID (STRUKTUR GAMBAR)   -->
+      <!-- ========================================== -->
+      <div class="lg:col-span-1 bg-white rounded-xl shadow-md p-6 h-fit border-t-4 border-green-500">
+        <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-green-600">account_tree</span> Profile PPID
+        </h3>
+        
+        <div class="mb-4">
+          <p class="text-xs text-gray-500 mb-2">Preview Struktur Organisasi Saat Ini:</p>
+          <div class="w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50 relative group">
+            <img id="previewStruktur" src="../img/default-struktur.png" alt="Struktur Organisasi" class="w-full h-full object-contain">
+          </div>
+        </div>
+
+        <input type="file" id="inputStruktur" accept="image/png, image/jpeg, image/webp" 
+          class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 mb-2">
+        <p class="text-xs text-gray-400 mb-5">Format: JPG, PNG. Maksimal 2MB.</p>
+
+        <button id="btnSimpanStruktur" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-4 rounded-md transition shadow flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">save</span> Simpan Gambar
+        </button>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- BAGIAN 2: DAFTAR INFORMASI (FILE PDF)      -->
+      <!-- ========================================== -->
+      <div class="lg:col-span-2 bg-white rounded-xl shadow-md overflow-hidden border-t-4 border-blue-500">
+        
+        <div class="p-5 border-b flex justify-between items-center bg-gray-50">
+          <h3 class="font-bold text-lg flex items-center gap-2">
+            <span class="material-symbols-outlined text-blue-600">folder_open</span> Daftar Informasi Publik
+          </h3>
+          <button id="btnTambahPDF" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition shadow flex items-center gap-2 text-sm">
+            <span class="material-symbols-outlined text-sm">add</span> Tambah File PDF
+          </button>
+        </div>
+
+        <div class="p-5">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+              <thead class="bg-gray-100 text-gray-700 border-b-2 border-gray-200">
+                <tr>
+                  <th class="px-4 py-3 text-left w-12">No</th>
+                  <th class="px-4 py-3 text-left">Nama Laporan</th>
+                  <th class="px-4 py-3 text-center w-24">Ukuran</th>
+                  <th class="px-4 py-3 text-center w-32">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Contoh Data 1 -->
+                <tr class="hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                  <td class="px-4 py-4 text-left font-medium">1</td>
+                  <td class="px-4 py-4 font-semibold text-gray-800 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-red-500 text-3xl">picture_as_pdf</span> 
+                    Laporan Pelayanan Informasi Publik Tahun 2024
+                  </td>
+                  <td class="px-4 py-4 text-center text-gray-500">4 MB</td>
+                  <td class="px-4 py-4 text-center">
+                    <div class="inline-flex gap-2">
+                      <button class="bg-purple-500 hover:bg-purple-600 text-white p-1.5 rounded transition shadow-sm" title="Lihat/Download PDF">
+                        <span class="material-symbols-outlined text-sm">visibility</span>
+                      </button>
+                      <button class="btnHapusPDF bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition shadow-sm" title="Hapus PDF">
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Contoh Data 2 -->
+                <tr class="hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                  <td class="px-4 py-4 text-left font-medium">2</td>
+                  <td class="px-4 py-4 font-semibold text-gray-800 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-red-500 text-3xl">picture_as_pdf</span> 
+                    Laporan Pelayanan Informasi Publik Tahun 2025
+                  </td>
+                  <td class="px-4 py-4 text-center text-gray-500">2.4 MB</td>
+                  <td class="px-4 py-4 text-center">
+                    <div class="inline-flex gap-2">
+                      <button class="bg-purple-500 hover:bg-purple-600 text-white p-1.5 rounded transition shadow-sm" title="Lihat/Download PDF">
+                        <span class="material-symbols-outlined text-sm">visibility</span>
+                      </button>
+                      <button class="btnHapusPDF bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition shadow-sm" title="Hapus PDF">
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="text-center p-4 border-t bg-white">
+    <p class="text-sm font-bold text-gray-500">@ 2026 Instalasi Teknologi Dan Informasi, Kantor Desa Tawangsari.</p>
+  </footer>
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL TAMBAH FILE PDF                      -->
+<!-- ========================================== -->
+<div id="modalTambahPDF" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center opacity-0 transition-opacity duration-300 ease-out p-4">
+  <div id="modalPDFBox" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col transform scale-90 opacity-0 transition-all duration-300 ease-out">
+    
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-6 py-4 bg-blue-600 text-white rounded-t-2xl">
+      <h2 class="text-lg font-semibold flex items-center gap-2">
+        <span class="material-symbols-outlined">upload_file</span> Upload Laporan PDF
+      </h2>
+      <button id="closeModalPDF" class="hover:text-red-300 transition">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Laporan / Informasi</label>
+        <input type="text" id="judulPDF" placeholder="Contoh: Laporan Keuangan 2026" 
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Pilih File PDF</label>
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition">
+          <span class="material-symbols-outlined text-4xl text-red-500 mb-2">picture_as_pdf</span>
+          <input type="file" id="inputFilePDF" accept="application/pdf" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 w-full cursor-pointer">
+        </div>
+        <p class="text-xs text-gray-400 mt-2 text-center">Format wajib .PDF. Maksimal ukuran file 10MB.</p>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="px-6 py-4 border-t flex justify-end gap-3 bg-gray-50 rounded-b-2xl">
+      <button id="btnBatalPDF" class="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold transition">Batal</button>
+      <button id="btnSimpanPDF" class="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-2 transition shadow">
+        <span class="material-symbols-outlined text-sm">cloud_upload</span> Upload
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- SCRIPT -->
+<script src="js/DashboardAdmin.js"></script>
+<script src="js/PPID.js"></script>
+
+</body>
+</html>
 
 <script src="js/DashboardAdmin.js"></script>

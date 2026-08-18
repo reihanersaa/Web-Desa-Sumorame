@@ -24,6 +24,27 @@ if (burgerBtn && sidebar && overlay && mainContent && headerLeft) {
   });
 }
 
+// ================= DROPDOWN SURAT MENYURAT =================
+const suratToggle = document.getElementById('suratToggle');
+const suratMenu = document.getElementById('suratMenu');
+const suratIcon = document.getElementById('suratIcon');
+
+if (suratToggle && suratMenu && suratIcon) {
+  suratToggle.addEventListener('click', () => {
+    if (suratMenu.classList.contains('max-h-0')) {
+      // Buka dropdown
+      suratMenu.classList.remove('max-h-0', 'opacity-0');
+      suratMenu.classList.add('max-h-96', 'opacity-100'); 
+    } else {
+      // Tutup dropdown
+      suratMenu.classList.remove('max-h-96', 'opacity-100');
+      suratMenu.classList.add('max-h-0', 'opacity-0');
+    }
+    // Putar ikon panah
+    suratIcon.classList.toggle('rotate-180');
+  });
+}
+
 if (overlay && sidebar) {
   overlay.addEventListener('click', () => {
     sidebar.classList.add('-translate-x-full');

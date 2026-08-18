@@ -5,23 +5,6 @@ flatpickr("#tanggalTanggapan", {
   allowInput: true
 });
 
-  // Dropdown Sidebar
-  const pemohonToggle = document.getElementById('pemohonToggle');
-  const pemohonMenu = document.getElementById('pemohonMenu');
-  const pemohonIcon = document.getElementById('pemohonIcon');
-
-  pemohonToggle.addEventListener('click', () => {
-    if (pemohonMenu.classList.contains('max-h-0')) {
-      pemohonMenu.classList.remove('max-h-0', 'opacity-0');
-      pemohonMenu.classList.add('max-h-40', 'opacity-100');
-    } else {
-      pemohonMenu.classList.remove('max-h-40', 'opacity-100');
-      pemohonMenu.classList.add('max-h-0', 'opacity-0');
-    }
-
-    pemohonIcon.classList.toggle('rotate-180');
-  });
-
 
   // ================= VIEW MODAL =================
   const modal = document.getElementById('modalView');
