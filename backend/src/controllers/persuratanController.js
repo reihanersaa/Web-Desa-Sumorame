@@ -2,44 +2,52 @@ const supabase = require("../config/supabase");
 
 const ajukanSurat = async (req, res) => {
   try {
-    // 1. Tangkap data dari frontend
-    const { user_id, jenis_surat, data_form } = req.body;
+    // 1. Ambil ID dari token Satpam (verifyToken), BUKAN dari req.body!
+    const created_by = req.user.id;
 
-    // 2. Validasi input dasar
-    if (!user_id || !jenis_surat || !data_form) {
+    // 2. Tangkap data dari frontend
+    const { judul_surat, jenis_surat, data_form } = req.body;
+
+    // 3. Validasi input dasar
+    if (!judul_surat || !jenis_surat || !data_form) {
       return res.status(400).json({
         success: false,
         message:
-          "Data tidak lengkap. user_id, jenis_surat, dan data_form wajib diisi.",
+          "Data tidak lengkap. judul_surat, jenis_surat, dan data_form wajib diisi.",
       });
     }
 
-    // 3. Masukkan ke database Supabase
+    // 4. Generate tanggal hari ini otomatis (format YYYY-MM-DD)
+    const tanggal_surat = new Date().toISOString().split("T")[0];
+
+    // 5. Masukkan ke database Supabase
     const { data, error } = await supabase
-      .from("persuratan")
+      .from("surat") // Disesuaikan dengan ERD
       .insert([
         {
-          user_id: user_id,
+          created_by: created_by, // Disesuaikan dengan ERD
+          judul_surat: judul_surat,
           jenis_surat: jenis_surat, // contoh: "SKTM" atau "DOMISILI"
-          data_form: data_form, // Ini "kardus" yang berisi detail spesifik formnya
-          status: "pending", // Otomatis pending saat baru diajukan
+          tanggal_surat: tanggal_surat, // Wajib ada sesuai ERD
+          data_form: data_form, // Bentuknya JSON object
+          status: "draft", // Otomatis draft saat baru diajukan
         },
       ])
       .select();
 
     if (error) throw error;
 
-    // 4. Beri respon sukses ke Frontend
+    // 6. Beri respon sukses ke Frontend
     return res.status(201).json({
       success: true,
       message: "Surat berhasil diajukan dan sedang diproses.",
-      data: data,
+      data: data[0],
     });
   } catch (error) {
     console.error("Error Pengajuan Surat:", error.message);
     return res.status(500).json({
       success: false,
-      message: "Terjadi kesalahan pada server.",
+      message: "Terjadi kesalahan pada server saat mengajukan surat.",
     });
   }
 };
