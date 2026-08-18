@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Surat Keterangan Domisili | Website Desa Tawangsari</title>
+  <link rel="icon" href="../img/logo.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="css/Pengaduan.css">
+
+</head>
+
+<body class="bg-gray-200">
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 h-16 bg-white border-b flex z-50">
+  <div id="headerLeft"
+    class="w-64 bg-white flex items-center px-4 border-r transition-all duration-300">
+    <img src="../img/logo2.png" class="h-20 object-contain" />
+  </div>
+
+  <div class="flex-1 flex items-center justify-between px-4">
+    <div class="flex items-center">
+      <button id="burgerBtn" class="mr-4">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <h1 class="font-semibold text-lg">Surat Keterangan Domisili</h1>
+    </div>
+
+    <a href="LoginAdmin.html" 
+      class="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition">
+      <span class="material-symbols-outlined text-base">logout</span>
+      <span>Logout</span>
+    </a>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside id="sidebar"
+  class="fixed top-16 left-0 w-64 h-[calc(100%-4rem)] bg-black text-white p-4 transition-all duration-300 -translate-x-full md:translate-x-0">
+
+  <nav class="space-y-2 text-sm">
+
+    <!-- Dashboard (Aktif) -->
+    <a href="DashboardAdmin.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">home</span>
+      <span class="menu-text">Dashboard</span>
+    </a>
+
+    <!-- Aduan -->
+    <a href="Pengaduan.html" class="flex items-center p-2 hover:bg-gray-700 translate-x-1 hover:transition-all rounded">
+      <span class="material-symbols-outlined mr-3">campaign</span>
+      <span class="menu-text">Aduan</span>
+    </a>
+
+    <!-- Surat Menyurat -->
+    <div>
+      <button id="suratToggle"
+        class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+        <span class="flex items-center">
+          <span class="material-symbols-outlined mr-3">mail</span>
+          <span class="menu-text">Surat Menyurat</span>
+        </span>
+        <!-- UBAH ID DI SINI -->
+        <span id="suratIcon" class="material-symbols-outlined text-sm transition-transform rotate-180">
+          expand_more
+        </span>
+      </button>
+
+      <!-- Submenu Kelola Surat Menyurat -->
+      <div id="suratMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-96 opacity-100 transition-all duration-300 ease-in-out">
+        <a href="SKD.html" class="flex items-center gap-2 p-2 text-gray-300 bg-gray-700 translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Domisili
+        </a>
+
+        <a href="SKK.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Kehilangan
+        </a>
+
+        <a href="SKT.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Tanah
+        </a>
+
+        <a href="SKTM.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Tidak Mampu
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Publikasi -->
+    <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+      <span class="material-symbols-outlined mr-3">linked_camera</span>
+      <span class="menu-text">Publikasi</span>
+    </a>
+
+    <!-- Kelola Website (Dropdown) -->
+    <div>
+      <button id="cmsToggle"
+        class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+        <span class="flex items-center">
+          <span class="material-symbols-outlined mr-3">web</span>
+          <span class="menu-text">Kelola Website</span>
+        </span>
+        <span id="cmsIcon" class="material-symbols-outlined text-sm transition-transform">
+          expand_more
+        </span>
+      </button>
+
+      <!-- Submenu Kelola Website -->
+      <div id="cmsMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+        <a href="CmsProfil.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Profil & Hero
+        </a>
+
+        <a href="CmsProduk.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Produk Unggulan
+        </a>
+
+        <a href="Kelembagaan.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Kelembagaan
+        </a>
+
+        <a href="PPID.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          PPID
+        </a>
+
+        <a href="Informasi.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Informasi
+        </a>
+
+      </div>
+    </div>
+    
+  </nav>
+</aside>
+
+<!-- OVERLAY -->
+<div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"></div>
+
+<!-- MAIN -->
+ <div id="mainContent" class="pt-16 md:pl-64 transition-all duration-300 min-h-screen flex flex-col">
+  <main class="flex-1 p-6 pb-20 fade-up">
+    
+    <div class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+      <!-- HEADER TABEL -->
+      <div class="bg-black text-white px-6 py-3 flex justify-between items-center">
+        <h3 class="text-sm font-semibold">Data Permohonan Surat Keterangan Domisili</h3>
+      </div>
+
+      <!-- CONTROL TABLE -->
+      <div class="flex flex-col md:flex-row justify-between items-center p-4 gap-3 border-b">
+        <div class="flex items-center gap-2 text-sm">
+          <span>Show</span>
+          <select id="entriesSelect" class="border rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 outline-none">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+          </select>
+          <span>entries</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm">
+          <span>Search:</span>
+          <input type="text" id="searchInput" class="border rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" placeholder="Cari pemohon...">
+        </div>
+      </div>
+
+      <!-- TABEL DATA -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead class="bg-gray-100 text-gray-700 border-b-2">
+            <tr>
+              <th class="px-4 py-3 text-center border-r">No</th>
+              <th class="px-4 py-3 text-left border-r">NIK</th>
+              <th class="px-4 py-3 text-left border-r">Nama Pemohon</th>
+              <th class="px-4 py-3 text-center border-r">Tanggal Pengajuan</th>
+              <th class="px-4 py-3 text-center border-r">Status</th>
+              <th class="px-4 py-3 text-center w-32">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hover:bg-blue-50 transition-colors border-b">
+              <td class="px-4 py-3 text-center border-r">1</td>
+              <td class="px-4 py-3 font-medium border-r">3515135552450008</td>
+              <td class="px-4 py-3 font-semibold text-gray-800 border-r">Budi Santoso</td>
+              <td class="px-4 py-3 text-center border-r">18-08-2026</td>
+              <td class="px-4 py-3 text-center border-r">
+                <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-bold">Menunggu</span>
+              </td>
+              <td class="px-4 py-3 text-center">
+                <div class="inline-flex gap-1">
+                  <button class="btnView bg-purple-500 hover:bg-purple-600 text-white p-1.5 rounded transition shadow-sm" title="Lihat Detail">
+                    <span class="material-symbols-outlined text-sm">visibility</span>
+                  </button>
+                  <button class="btnEdit bg-green-500 hover:bg-green-600 text-white p-1.5 rounded transition shadow-sm" title="Proses Surat">
+                    <span class="material-symbols-outlined text-sm">edit_document</span>
+                  </button>
+                  <button class="btnDelete bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition shadow-sm" title="Hapus">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="flex justify-between items-center p-4 text-sm bg-gray-50 border-t">
+        <div id="tableInfo">Showing 1 to 1 of 1 entries</div>
+        <div class="flex gap-1">
+          <button id="prevBtn" class="px-3 py-1 border rounded bg-white hover:bg-gray-100 transition">Previous</button>
+          <button id="nextBtn" class="px-3 py-1 border rounded bg-white hover:bg-gray-100 transition">Next</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ================= MODAL VIEW ================= -->
+<div id="modalView" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center opacity-0 transition-opacity duration-300 ease-out p-4">
+  <div id="modalBox" class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-90 opacity-0 transition-all duration-300 ease-out">
+    <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white">
+      <h2 class="text-lg font-semibold flex items-center gap-2"><span class="material-symbols-outlined">description</span> Detail Pemohon (Domisili)</h2>
+      <button id="closeModal" class="hover:text-red-300 transition"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    
+    <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Fields generated based on frontend inputs -->
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">NIK</p><p class="font-semibold text-gray-800">3515135552450008</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Nama Lengkap</p><p class="font-semibold text-gray-800">Budi Santoso</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Tempat Lahir</p><p class="font-semibold text-gray-800">Surabaya</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Tanggal Lahir</p><p class="font-semibold text-gray-800">1995-05-12</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Agama</p><p class="font-semibold text-gray-800">Islam</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Jenis Kelamin</p><p class="font-semibold text-gray-800">Laki-laki</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Status Nikah</p><p class="font-semibold text-gray-800">Belum Kawin</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Kewarganegaraan</p><p class="font-semibold text-gray-800">WNI</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Pekerjaan</p><p class="font-semibold text-gray-800">Karyawan Swasta</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100"><p class="text-xs text-gray-500 mb-1">Nomor HP</p><p class="font-semibold text-gray-800">081234567890</p></div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 md:col-span-2 lg:col-span-2"><p class="text-xs text-gray-500 mb-1">Email</p><p class="font-semibold text-gray-800">budi.santoso@email.com</p></div>
+      </div>
+      <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+        <p class="text-sm text-gray-500 mb-2">Alamat Lengkap</p>
+        <p class="text-gray-800 font-semibold leading-relaxed">Jl. Raya Tawangsari No. 45, RT 02 RW 01, Desa Tawangsari, Kec. Taman, Kab. Sidoarjo.</p>
+      </div>
+    </div>
+    
+    <div class="px-6 py-4 border-t flex justify-end gap-3 bg-white">
+      <button id="btnCloseView" class="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-700 text-white font-medium transition">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL EDIT / PROSES ================= -->
+<div id="modalEdit" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center opacity-0 transition-opacity duration-300 ease-out p-4">
+  <div id="modalEditBox" class="bg-white w-full max-w-md rounded-2xl shadow-2xl flex flex-col transform scale-90 opacity-0 transition-all duration-300 ease-out">
+    <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-t-2xl">
+      <h2 class="text-lg font-semibold flex items-center gap-2"><span class="material-symbols-outlined">edit_document</span> Proses Surat Domisili</h2>
+      <button id="closeEdit" class="hover:text-red-200 transition"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    
+    <div class="p-6 space-y-4 bg-gray-50">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Pemohon</label>
+        <input type="text" value="Budi Santoso" readonly class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-gray-600">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Ubah Status</label>
+        <select id="statusSurat" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none bg-white">
+          <option value="Menunggu">Menunggu</option>
+          <option value="Sedang Diproses">Sedang Diproses</option>
+          <option value="Selesai">Selesai (Siap Diambil)</option>
+          <option value="Ditolak">Ditolak</option>
+        </select>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Catatan Admin (Opsional)</label>
+        <textarea id="catatanAdmin" rows="3" placeholder="Misal: Harap bawa fotokopi KTP saat pengambilan surat." class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"></textarea>
+      </div>
+    </div>
+    
+    <div class="px-6 py-4 border-t flex justify-end gap-3 bg-white rounded-b-2xl">
+      <button id="btnBatalEdit" class="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold transition">Batal</button>
+      <button id="btnSimpanStatus" class="px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-bold transition shadow flex items-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/SKD.js"></script>
+<script src="js/DashboardAdmin.js"></script>
+<script src="js/Pengaduan.js"></script>
+
+
+</body>
+</html>

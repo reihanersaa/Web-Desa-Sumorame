@@ -59,16 +59,43 @@
     </a>
 
     <!-- Surat Menyurat -->
-    <a href="SuratMenyurat.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">mail</span>
-      <span class="menu-text">Surat Menyurat</span>
-    </a>
+    <div>
+      <button id="suratToggle"
+        class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+        <span class="flex items-center">
+          <span class="material-symbols-outlined mr-3">mail</span>
+          <span class="menu-text">Surat Menyurat</span>
+        </span>
+        <!-- UBAH ID DI SINI -->
+        <span id="suratIcon" class="material-symbols-outlined text-sm transition-transform">
+          expand_more
+        </span>
+      </button>
 
-    <!-- Kelembagaan Desa -->
-    <a href="Kelembagaan.html" class="flex items-center p-2 bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">groups</span>
-      <span class="menu-text">Kelembagaan Desa</span>
-    </a>
+      <!-- Submenu Kelola Surat Menyurat -->
+      <div id="suratMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+        <a href="SKD.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Domisili
+        </a>
+
+        <a href="SKK.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Kehilangan
+        </a>
+
+        <a href="SKT.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Tanah
+        </a>
+
+        <a href="SKTM.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Surat Keterangan Tidak Mampu
+        </a>
+
+      </div>
+    </div>
 
     <!-- Publikasi -->
     <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
@@ -77,8 +104,10 @@
     </a>
 
     <!-- Kelola Website (Dropdown) -->
+    <!-- Kelola Website (Dropdown) -->
     <div>
-      <button id="pemohonToggle"
+      <!-- 1. UBAH ID TOMBOL MENJADI cmsToggle -->
+      <button id="cmsToggle"
         class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
         <span class="flex items-center">
           <span class="material-symbols-outlined mr-3">web</span>
@@ -89,17 +118,29 @@
         </span>
       </button>
 
-      <!-- Submenu Kelola Website -->
-      <div id="pemohonMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
+      <!-- 2. UBAH ID WADAH MENJADI cmsMenu -->
+      <div id="cmsMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-96 opacity-100 transition-all duration-300 ease-in-out">
         <a href="CmsProfil.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
           <span class="material-symbols-outlined text-xs">chevron_right</span>
           Profil & Hero
         </a>
+
         <a href="CmsProduk.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
           <span class="material-symbols-outlined text-xs">chevron_right</span>
           Produk Unggulan
         </a>
-        <a href="#" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+
+        <a href="Kelembagaan.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          Kelembagaan
+        </a>
+
+        <a href="PPID.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
+          <span class="material-symbols-outlined text-xs">chevron_right</span>
+          PPID
+        </a>
+
+        <a href="Informasi.html" class="flex items-center gap-2 p-2 text-gray-300 bg-gray-700 translate-x-1 transition-all rounded">
           <span class="material-symbols-outlined text-xs">chevron_right</span>
           Informasi
         </a>
@@ -451,6 +492,8 @@
   </div>
 </div>
 
+
+<script src="js/DashboardAdmin.js"></script>
 <script src="js/informasi.js"></script>
 
 </body>
