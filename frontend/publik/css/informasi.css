@@ -103,59 +103,112 @@ body {
           SCROLL TO TOP
     ========================== */
 
-    #scrollTopBtn{
-        transform: translateY(20px);
-    }
+#scrollTopBtn {
+  transform: translateY(20px);
+}
 
-    #scrollTopBtn.show{
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
+#scrollTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
-    #scrollTopBtn:hover{
-        box-shadow: 0 10px 25px rgba(0,0,0,.25);
-    }
+#scrollTopBtn:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
 
-    /* HEADER SCROLL */
-    #mainHeader {
-      transition: transform 0.3s ease;
-    }
+/* HEADER SCROLL */
+#mainHeader {
+  transition: transform 0.3s ease;
+}
 
-    #mainHeader.header-hidden {
-      transform: translateY(-100%);
-    }
+#mainHeader.header-hidden {
+  transform: translateY(-100%);
+}
 
-    #heroSection.hero-top {
-      margin-top: 0;
-    }
+#heroSection.hero-top {
+  margin-top: 0;
+}
 
-    #heroSection {
-      height: 400px !important;
-      transition: margin-top 0.3s ease;
-    }
+#heroSection {
+  height: 400px !important;
+  transition: margin-top 0.3s ease;
+}
 
-    #heroSection.hero-top {
-      margin-top: 0;
-    }
+#heroSection.hero-top {
+  margin-top: 0;
+}
 
-    @media (min-width: 768px) {
-      #heroSection {
-        height: 500px !important;
-      }
-    }
+@media (min-width: 768px) {
+  #heroSection {
+    height: 500px !important;
+  }
+}
 
-    /* Animasi flip */
-    @keyframes flipLetter {
-        0% {
-            transform: rotateY(0deg);
-        }
+/* Animasi flip */
+@keyframes flipLetter {
+  0% {
+    transform: rotateY(0deg);
+  }
 
-        50% {
-            transform: rotateY(180deg);
-        }
+  50% {
+    transform: rotateY(180deg);
+  }
 
-    100% {
-        transform: rotateY(360deg);
-    }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+#scrollTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#scrollTopBtn:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* HEADER SCROLL */
+#mainHeader {
+  transition: transform 0.3s ease;
+}
+
+#mainHeader.header-hidden {
+  transform: translateY(-100%);
+}
+
+#heroSection.hero-top {
+  margin-top: 0;
+}
+
+#heroSection {
+  height: 400px !important;
+  transition: margin-top 0.3s ease;
+}
+
+#heroSection.hero-top {
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  #heroSection {
+    height: 500px !important;
+  }
+}
+
+/* Animasi flip */
+@keyframes flipLetter {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  50% {
+    transform: rotateY(180deg);
+  }
+
+  100% {
+    transform: rotateY(360deg);
+  }
 }

@@ -106,6 +106,8 @@ const registerWarga = async (req, res) => {
 
 module.exports = { registerWarga };
 
+//logika login warga
+
 const loginWarga = async (req, res) => {
   try {
     const { nik, password } = req.body;
@@ -173,4 +175,77 @@ const loginWarga = async (req, res) => {
   }
 };
 
-module.exports = { registerWarga, loginWarga };
+// logika login admin (Menggunakan NIK & Password)
+const loginAdmin = async (req, res) => {
+  try {
+    const { nik, password } = req.body; // Sekarang ambil NIK & Password dari frontend
+
+    // 1. Validasi input
+    if (!nik || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "NIK dan password admin wajib diisi!",
+      });
+    }
+
+    // 2. Cari user berdasarkan NIK
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("nik", nik)
+      .single();
+
+    if (error || !user) {
+      return res.status(401).json({
+        success: false,
+        message: "Akun admin tidak ditemukan atau NIK salah.",
+      });
+    }
+
+    // 3. CEK KHUSUS: Pastikan role-nya adalah 'admin'
+    if (user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Akses ditolak. NIK ini terdaftar sebagai Warga, bukan Admin!",
+      });
+    }
+
+    // 4. Cek password
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Password admin salah.",
+      });
+    }
+
+    // 5. Buat Token JWT khusus Admin
+    const token = jwt.sign(
+      { id: user.id, nik: user.nik, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" },
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login Admin berhasil!",
+      token: token,
+      data: {
+        id: user.id,
+        nik: user.nik,
+        nama_lengkap: user.nama_lengkap,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Login Admin Error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan internal pada server.",
+    });
+  }
+};
+
+// Sertakan loginAdmin di exports
+module.exports = { registerWarga, loginWarga, loginAdmin };
