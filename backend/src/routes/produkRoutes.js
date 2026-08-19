@@ -7,6 +7,12 @@ const { verifyToken } = require("../middleware/authMiddleware");
 // Tampilkan produk approved di website
 router.get("/publik/produk", produkController.getProdukPublik);
 
+// Endpoint untuk ambil Top 3 (Taruh DI ATAS route /publik/produk/:id/view agar tidak bentrok)
+router.get("/publik/produk/top", produkController.getTop3Produk);
+
+// Endpoint saat tombol Detail diklik FE (nambah angka view)
+router.post("/publik/produk/:id/view", produkController.tambahViewProduk);
+
 // Warga submit produk baru (bisa dipasang verifyToken jika warga wajib login dahulu)
 router.post("/publik/produk", produkController.ajukanProduk);
 
