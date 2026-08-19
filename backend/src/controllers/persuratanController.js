@@ -2,13 +2,9 @@ const supabase = require("../config/supabase");
 
 const ajukanSurat = async (req, res) => {
   try {
-    // 1. Ambil ID dari token Satpam (verifyToken), BUKAN dari req.body!
     const created_by = req.user.id;
-
-    // 2. Tangkap data dari frontend
     const { judul_surat, jenis_surat, data_form } = req.body;
 
-    // 3. Validasi input dasar
     if (!judul_surat || !jenis_surat || !data_form) {
       return res.status(400).json({
         success: false,
@@ -17,39 +13,82 @@ const ajukanSurat = async (req, res) => {
       });
     }
 
-    // 4. Generate tanggal hari ini otomatis (format YYYY-MM-DD)
     const tanggal_surat = new Date().toISOString().split("T")[0];
 
-    // 5. Masukkan ke database Supabase
     const { data, error } = await supabase
-      .from("surat") // Disesuaikan dengan ERD
+      .from("surat")
       .insert([
         {
-          created_by: created_by, // Disesuaikan dengan ERD
+          created_by: created_by,
           judul_surat: judul_surat,
-          jenis_surat: jenis_surat, // contoh: "SKTM" atau "DOMISILI"
-          tanggal_surat: tanggal_surat, // Wajib ada sesuai ERD
-          data_form: data_form, // Bentuknya JSON object
-          status: "draft", // Otomatis draft saat baru diajukan
+          jenis_surat: jenis_surat,
+          tanggal_surat: tanggal_surat,
+          data_form: data_form,
+          status: "draft",
         },
       ])
       .select();
 
     if (error) throw error;
-
-    // 6. Beri respon sukses ke Frontend
     return res.status(201).json({
       success: true,
-      message: "Surat berhasil diajukan dan sedang diproses.",
+      message: "Surat berhasil diajukan.",
       data: data[0],
     });
   } catch (error) {
-    console.error("Error Pengajuan Surat:", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Terjadi kesalahan pada server saat mengajukan surat.",
-    });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-module.exports = { ajukanSurat };
+// --- TAMBAHAN BARU UNTUK ADMIN CMS ---
+
+const getSemuaSurat = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ success: false, message: "Akses ditolak! Khusus admin." });
+    }
+
+    const { data, error } = await supabase
+      .from("surat")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return res.status(200).json({ success: true, data });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateStatusSurat = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ success: false, message: "Akses ditolak! Khusus admin." });
+    }
+
+    const { id } = req.params;
+    const { status } = req.body; // Terima "disetujui" atau "ditolak"
+
+    const { data, error } = await supabase
+      .from("surat")
+      .update({ status })
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+    return res.status(200).json({
+      success: true,
+      message: `Surat berhasil ${status}`,
+      data: data[0],
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// WAJIB DI-EXPORT SEMUANYA
+module.exports = { ajukanSurat, getSemuaSurat, updateStatusSurat };

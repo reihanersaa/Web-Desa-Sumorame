@@ -2,7 +2,7 @@ const supabase = require("../config/supabase");
 
 const buatAduan = async (req, res) => {
   try {
-    const user_id = req.user.id; // Diambil otomatis dari token login warga
+    const user_id = req.user.id;
     const {
       nama_pelapor,
       email_pelapor,
@@ -12,21 +12,20 @@ const buatAduan = async (req, res) => {
     } = req.body;
 
     if (!judul_aduan || !isi_aduan) {
-      return res.status(400).json({
-        success: false,
-        message: "Judul dan isi aduan wajib diisi!",
-      });
+      return res
+        .status(400)
+        .json({ success: false, message: "Judul dan isi aduan wajib diisi!" });
     }
 
     const { data, error } = await supabase
       .from("aduan")
       .insert([
         {
-          user_id: user_id,
-          nama_pelapor: nama_pelapor,
-          email_pelapor: email_pelapor,
-          judul_aduan: judul_aduan,
-          isi_aduan: isi_aduan,
+          user_id,
+          nama_pelapor,
+          email_pelapor,
+          judul_aduan,
+          isi_aduan,
           file_bukti_url: file_bukti_url || null,
           status: "pending",
         },
@@ -34,19 +33,64 @@ const buatAduan = async (req, res) => {
       .select();
 
     if (error) throw error;
-
-    return res.status(201).json({
-      success: true,
-      message: "Aduan berhasil dikirim!",
-      data: data[0],
-    });
+    return res
+      .status(201)
+      .json({
+        success: true,
+        message: "Aduan berhasil dikirim!",
+        data: data[0],
+      });
   } catch (error) {
-    console.error("Error Aduan:", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Terjadi kesalahan pada server saat mengirim aduan.",
-    });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-module.exports = { buatAduan };
+// --- TAMBAHAN BARU UNTUK ADMIN CMS ---
+
+const getSemuaAduan = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ success: false, message: "Khusus Admin!" });
+    }
+
+    const { data, error } = await supabase
+      .from("aduan")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return res.status(200).json({ success: true, data });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateStatusAduan = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ success: false, message: "Khusus Admin!" });
+    }
+
+    const { id } = req.params;
+    const { status } = req.body; // Terima "diproses" atau "selesai"
+
+    const { data, error } = await supabase
+      .from("aduan")
+      .update({ status })
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: `Status aduan jadi ${status}`,
+        data: data[0],
+      });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { buatAduan, getSemuaAduan, updateStatusAduan };
