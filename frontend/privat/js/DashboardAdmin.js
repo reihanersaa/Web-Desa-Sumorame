@@ -4,12 +4,90 @@ const overlay = document.getElementById('overlay');
 const mainContent = document.getElementById('mainContent');
 const headerLeft = document.getElementById('headerLeft');
 
+// ================= DAFTAR SEMUA SUBMENU (DIKELOLA OTOMATIS) =================
+const submenus = [
+  {
+    toggle: document.getElementById('suratToggle'),
+    menu: document.getElementById('suratMenu'),
+    icon: document.getElementById('suratIcon')
+  },
+  {
+    toggle: document.getElementById('cmsToggle'),
+    menu: document.getElementById('cmsMenu'),
+    icon: document.getElementById('cmsIcon')
+  }
+];
+
+function isSubmenuOpen({ menu }) {
+  return !!menu && menu.classList.contains('opacity-100');
+}
+
+function openSubmenu({ menu, icon }) {
+  if (!menu) return;
+  menu.classList.remove('max-h-0', 'opacity-0');
+  menu.classList.add('max-h-96', 'opacity-100');
+  if (icon) icon.classList.add('rotate-180');
+}
+
+function closeSubmenu({ menu, icon }) {
+  if (!menu) return;
+  menu.classList.remove('max-h-96', 'opacity-100');
+  menu.classList.add('max-h-0', 'opacity-0');
+  if (icon) icon.classList.remove('rotate-180');
+}
+
+function toggleSubmenu(item) {
+  if (isSubmenuOpen(item)) {
+    closeSubmenu(item);
+  } else {
+    openSubmenu(item);
+  }
+}
+
+// Ingat submenu mana saja yang terbuka sebelum sidebar ditutup/collapse,
+// supaya bisa dibuka otomatis lagi saat sidebar dibuka.
+let lastOpenSubmenus = [];
+
+function collapseAllSubmenus() {
+  lastOpenSubmenus = submenus.filter(isSubmenuOpen).map(s => s.menu && s.menu.id);
+  submenus.forEach(closeSubmenu);
+}
+
+function restoreSubmenus() {
+  submenus.forEach(item => {
+    if (item.menu && lastOpenSubmenus.includes(item.menu.id)) {
+      openSubmenu(item);
+    }
+  });
+}
+
+// Pasang klik manual untuk tiap submenu (Surat Menyurat & Kelola Website)
+submenus.forEach(item => {
+  if (item.toggle && item.menu && item.icon) {
+    item.toggle.addEventListener('click', () => toggleSubmenu(item));
+  }
+});
+
+// ================= BURGER: BUKA/TUTUP SIDEBAR =================
 if (burgerBtn && sidebar && overlay && mainContent && headerLeft) {
   burgerBtn.addEventListener('click', () => {
     if (window.innerWidth < 768) {
+      // Mode mobile: sidebar disembunyikan/ditampilkan via translate
+      const sedangTertutup = sidebar.classList.contains('-translate-x-full');
       sidebar.classList.toggle('-translate-x-full');
       overlay.classList.toggle('hidden');
+
+      if (sedangTertutup) {
+        // Baru saja dibuka -> pulihkan submenu yang sebelumnya terbuka
+        restoreSubmenus();
+      } else {
+        // Baru saja ditutup -> tutup semua submenu
+        collapseAllSubmenus();
+      }
     } else {
+      // Mode desktop: sidebar collapse jadi mode ikon saja (w-20)
+      const sedangTerbuka = sidebar.classList.contains('w-64');
+
       sidebar.classList.toggle('w-64');
       sidebar.classList.toggle('w-20');
       headerLeft.classList.toggle('w-64');
@@ -20,28 +98,15 @@ if (burgerBtn && sidebar && overlay && mainContent && headerLeft) {
       document.querySelectorAll('.menu-text').forEach(el => {
         el.classList.toggle('hidden');
       });
-    }
-  });
-}
 
-// ================= DROPDOWN SURAT MENYURAT =================
-const suratToggle = document.getElementById('suratToggle');
-const suratMenu = document.getElementById('suratMenu');
-const suratIcon = document.getElementById('suratIcon');
-
-if (suratToggle && suratMenu && suratIcon) {
-  suratToggle.addEventListener('click', () => {
-    if (suratMenu.classList.contains('max-h-0')) {
-      // Buka dropdown
-      suratMenu.classList.remove('max-h-0', 'opacity-0');
-      suratMenu.classList.add('max-h-96', 'opacity-100'); 
-    } else {
-      // Tutup dropdown
-      suratMenu.classList.remove('max-h-96', 'opacity-100');
-      suratMenu.classList.add('max-h-0', 'opacity-0');
+      if (sedangTerbuka) {
+        // Baru saja di-collapse -> tutup semua submenu (teksnya toh disembunyikan)
+        collapseAllSubmenus();
+      } else {
+        // Baru saja dibuka kembali -> pulihkan submenu yang sebelumnya terbuka
+        restoreSubmenus();
+      }
     }
-    // Putar ikon panah
-    suratIcon.classList.toggle('rotate-180');
   });
 }
 
@@ -49,27 +114,8 @@ if (overlay && sidebar) {
   overlay.addEventListener('click', () => {
     sidebar.classList.add('-translate-x-full');
     overlay.classList.add('hidden');
-  });
-}
-
-// ================= DROPDOWN KELOLA WEBSITE =================
-const cmsToggle = document.getElementById('cmsToggle');
-const cmsMenu = document.getElementById('cmsMenu');
-const cmsIcon = document.getElementById('cmsIcon');
-
-// Pengecekan if: Kode ini hanya jalan jika tombol cmsToggle ada di halaman
-if (cmsToggle && cmsMenu && cmsIcon) {
-  cmsToggle.addEventListener('click', () => {
-    if (cmsMenu.classList.contains('max-h-0')) {
-      cmsMenu.classList.remove('max-h-0', 'opacity-0');
-      // UBAH BAGIAN INI: Ganti max-h-40 menjadi max-h-96
-      cmsMenu.classList.add('max-h-96', 'opacity-100'); 
-    } else {
-      // UBAH BAGIAN INI JUGA: Sesuaikan dengan yang di atas
-      cmsMenu.classList.remove('max-h-96', 'opacity-100');
-      cmsMenu.classList.add('max-h-0', 'opacity-0');
-    }
-    cmsIcon.classList.toggle('rotate-180');
+    // Sidebar mobile ditutup lewat overlay -> tutup semua submenu juga
+    collapseAllSubmenus();
   });
 }
 

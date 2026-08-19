@@ -1,5 +1,58 @@
+// ================= SIDEBAR =================
+const burgerBtn = document.getElementById('burgerBtn');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const mainContent = document.getElementById('mainContent');
+const headerLeft = document.getElementById('headerLeft');
+
+// ================= FUNGSI TUTUP DROPDOWN =================
+function closeSidebarDropdowns() {
+
+  // Tutup Surat Menyurat
+  suratMenu.classList.remove('max-h-96', 'opacity-100');
+  suratMenu.classList.add('max-h-0', 'opacity-0');
+
+  suratIcon.classList.remove('rotate-180');
 
 
+  // Tutup Kelola Website
+  cmsMenu.classList.remove('max-h-96', 'opacity-100');
+  cmsMenu.classList.add('max-h-0', 'opacity-0');
+
+  cmsIcon.classList.remove('rotate-180');
+}
+
+
+// ================= BURGER BUTTON =================
+burgerBtn.addEventListener('click', () => {
+
+  // Tutup semua dropdown terlebih dahulu
+  closeSidebarDropdowns();
+
+
+  // ================= MOBILE =================
+  if (window.innerWidth < 768) {
+
+    sidebar.classList.toggle('-translate-x-full');
+    overlay.classList.toggle('hidden');
+
+  } 
+  
+  // ================= DESKTOP =================
+  else {
+
+    sidebar.classList.toggle('w-64');
+    sidebar.classList.toggle('w-20');
+
+    headerLeft.classList.toggle('w-64');
+    headerLeft.classList.toggle('w-20');
+
+    mainContent.classList.toggle('md:pl-64');
+    mainContent.classList.toggle('md:pl-20');
+
+  }
+
+});
 
 flatpickr("#tanggalTanggapan", {
   dateFormat: "Y-m-d", // format: 2026-04-24
@@ -8,21 +61,38 @@ flatpickr("#tanggalTanggapan", {
   allowInput: true
 });
 
-  // Dropdown Sidebar
-  const pemohonToggle = document.getElementById('pemohonToggle');
-  const pemohonMenu = document.getElementById('pemohonMenu');
-  const pemohonIcon = document.getElementById('pemohonIcon');
+  // ================= DROPDOWN SUB MENU =================
+  const suratToggle = document.getElementById('suratToggle');
+  const suratMenu = document.getElementById('suratMenu');
+  const suratIcon = document.getElementById('suratIcon');
 
-  pemohonToggle.addEventListener('click', () => {
-    if (pemohonMenu.classList.contains('max-h-0')) {
-      pemohonMenu.classList.remove('max-h-0', 'opacity-0');
-      pemohonMenu.classList.add('max-h-40', 'opacity-100');
+  suratToggle.addEventListener('click', () => {
+    if (suratMenu.classList.contains('max-h-0')) {
+      suratMenu.classList.remove('max-h-0', 'opacity-0');
+      suratMenu.classList.add('max-h-96', 'opacity-100');
     } else {
-      pemohonMenu.classList.remove('max-h-40', 'opacity-100');
-      pemohonMenu.classList.add('max-h-0', 'opacity-0');
+      suratMenu.classList.remove('max-h-96', 'opacity-100');
+      suratMenu.classList.add('max-h-0', 'opacity-0');
     }
 
-    pemohonIcon.classList.toggle('rotate-180');
+    suratIcon.classList.toggle('rotate-180');
+  });
+
+  // ================= DROPDOWN SUB MENU 2 =================
+  const cmsToggle = document.getElementById('cmsToggle');
+  const cmsMenu = document.getElementById('cmsMenu');
+  const cmsIcon = document.getElementById('cmsIcon');
+
+  cmsToggle.addEventListener('click', () => {
+    if (cmsMenu.classList.contains('max-h-0')) {
+      cmsMenu.classList.remove('max-h-0', 'opacity-0');
+      cmsMenu.classList.add('max-h-96', 'opacity-100');
+    } else {
+      cmsMenu.classList.remove('max-h-96', 'opacity-100');
+      cmsMenu.classList.add('max-h-0', 'opacity-0');
+    }
+
+    cmsIcon.classList.toggle('rotate-180');
   });
 
   // ================= VIEW MODAL =================
