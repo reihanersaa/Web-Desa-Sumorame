@@ -1,10 +1,19 @@
 const supabase = require("../config/supabase");
 
 // 1. Fungsi POST Warga
+// 1. Fungsi POST Warga
 const buatAduan = async (req, res) => {
   try {
     const user_id = req.user.id; 
-    const { nama_pelapor, email_pelapor, judul_aduan, isi_aduan } = req.body; 
+    
+    // 🚨 1. Tambahkan no_wa saat menangkap req.body
+    const { 
+      nama_pelapor, 
+      email_pelapor, 
+      no_wa, 
+      judul_aduan, 
+      isi_aduan 
+    } = req.body; 
     
     const fileBukti = req.file; 
 
@@ -39,6 +48,7 @@ const buatAduan = async (req, res) => {
           user_id: user_id,
           nama_pelapor: nama_pelapor,
           email_pelapor: email_pelapor,
+          no_wa: no_wa, // 🚨 2. Pastikan no_wa ikut disimpan ke database Supabase
           judul_aduan: judul_aduan,
           isi_aduan: isi_aduan,
           file_bukti_url: file_bukti_url, 

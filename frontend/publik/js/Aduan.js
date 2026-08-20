@@ -228,6 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const nama = document.getElementById("nama").value.trim();
     const email = document.getElementById("email").value.trim();
+    const no_wa = document.getElementById("no_wa").value.trim();
     const judul = document.getElementById("judul").value.trim();
     const isi = document.getElementById("isi").value.trim();
     const bukti = document.getElementById("fileUpload").files[0];
@@ -241,6 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!nama) { kosong.push("Nama"); document.getElementById("nama").classList.add("border-red-500"); }
     if (!email) { kosong.push("Email"); document.getElementById("email").classList.add("border-red-500"); }
+    if (!no_wa) { kosong.push("No. WhatsApp"); document.getElementById("no_wa").classList.add("border-red-500"); }
     if (!judul) { kosong.push("Judul Aduan"); document.getElementById("judul").classList.add("border-red-500"); }
     if (!isi) { kosong.push("Isi Aduan"); document.getElementById("isi").classList.add("border-red-500"); }
     if (!bukti) { kosong.push("Bukti Aduan"); document.getElementById("fileUpload").classList.add("border-red-500"); }
@@ -271,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <div style="text-align:left;font-size:13px;color:#2e7d32">
         <b>Nama:</b> ${nama}<br>
         <b>Email:</b> ${email}<br>
+        <b>No. WhatsApp:</b> ${no_wa}<br>
         <b>Judul:</b> ${judul}<br>
         <b>Isi:</b> ${isi}
       </div>
@@ -301,6 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const formData = new FormData();
           formData.append("nama_pelapor", nama);
           formData.append("email_pelapor", email);
+          formData.append("no_wa", no_wa);
           formData.append("judul_aduan", judul);
           formData.append("isi_aduan", isi);
           formData.append("file_bukti", bukti);

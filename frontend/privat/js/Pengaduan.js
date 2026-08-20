@@ -317,6 +317,31 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("modalEditBox"),
           );
           fetchDataAduan(); // Muat ulang tabel
+
+          // ==========================================
+          // 🚀 EKSEKUSI LINK WA.ME (OPSI A)
+          // ==========================================
+          const aduan = globalDataAduan.find(item => item.id === aduanIdYangDiedit);
+          
+          if (aduan && aduan.no_wa) {
+            let noWaAsli = aduan.no_wa.trim();
+            
+            // Konversi nomor: Jika diawali '0', ubah menjadi '62'
+            if (noWaAsli.startsWith('0')) {
+              noWaAsli = '62' + noWaAsli.substring(1);
+            }
+            
+            // Susun teks pesan yang rapi
+            const pesanWA = `Halo *${aduan.nama_pelapor}*,\n\nLaporan Anda mengenai *"${aduan.judul_aduan}"* telah selesai ditindaklanjuti oleh Pemerintah Desa Tawangsari.\n\n*Tanggapan Admin:*\n"${tanggapan}"\n\nTerima kasih atas partisipasi Anda. 🙏`;
+            
+            // Buka tab WhatsApp
+            const linkWA = `https://wa.me/${noWaAsli}?text=${encodeURIComponent(pesanWA)}`;
+            window.open(linkWA, '_blank');
+          } else {
+            console.log("Nomor WA pelapor tidak tersedia.");
+          }
+          // ==========================================
+
         } catch (error) {
           console.error("Error:", error);
           Swal.fire("Gagal!", error.message, "error");
