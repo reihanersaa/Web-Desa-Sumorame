@@ -131,15 +131,18 @@ body { font-family: 'Poppins', sans-serif; }
       transform: translateX(6px);
     }
 
-    .nav-submenu.opacity-100 a {
+    /* Animasi stagger item submenu HANYA main saat submenu baru saja
+       dibuka lewat klik manual (class ditambahkan oleh JS), bukan saat
+       submenu memang default terbuka sejak HTML/reload halaman. */
+    .nav-submenu.submenu-just-opened a {
       animation: subItemIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
     }
 
-    .nav-submenu.opacity-100 a:nth-child(1) { animation-delay: 0.05s; }
-    .nav-submenu.opacity-100 a:nth-child(2) { animation-delay: 0.10s; }
-    .nav-submenu.opacity-100 a:nth-child(3) { animation-delay: 0.15s; }
-    .nav-submenu.opacity-100 a:nth-child(4) { animation-delay: 0.20s; }
-    .nav-submenu.opacity-100 a:nth-child(5) { animation-delay: 0.25s; }
+    .nav-submenu.submenu-just-opened a:nth-child(1) { animation-delay: 0.05s; }
+    .nav-submenu.submenu-just-opened a:nth-child(2) { animation-delay: 0.10s; }
+    .nav-submenu.submenu-just-opened a:nth-child(3) { animation-delay: 0.15s; }
+    .nav-submenu.submenu-just-opened a:nth-child(4) { animation-delay: 0.20s; }
+    .nav-submenu.submenu-just-opened a:nth-child(5) { animation-delay: 0.25s; }
 
     @keyframes subItemIn {
       from { opacity: 0; transform: translateX(-8px); }
