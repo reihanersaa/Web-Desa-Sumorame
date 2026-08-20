@@ -1,240 +1,172 @@
-$(document).ready(function(){
-
-  $('.select2').select2({
-    placeholder: "Pilih Data",
-    allowClear: true
+$(document).ready(function () {
+  // Inisialisasi Select2 agar dropdownnya rapi sesuai HTML
+  $(".select2").select2({
+    width: "100%",
   });
 
-  const prov = $("#provinsi");
-  const kab = $("#kabupaten");
-  const kec = $("#kecamatan");
-  const kel = $("#kelurahan");
+  const apiBase = "https://www.emsifa.com/api-wilayah-indonesia/api/";
 
-  /* FUNCTION SET NO OPTIONS */
-  function setNoOptions(select, text = "No options"){
-    select.empty().append(`<option value="">${text}</option>`).trigger('change');
-  }
-
-  /* DEFAULT STATE */
-  setNoOptions(kab);
-  setNoOptions(kec);
-  setNoOptions(kel);
-
-  /* LOAD PROVINSI */
-  $.get("https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json", function(data){
-    prov.append('<option value=""></option>');
-    data.forEach(item=>{
-      prov.append(`<option value="${item.id}">${item.name}</option>`);
-    });
-  });
-
-  /* PROVINSI CHANGE */
-  prov.on("change", function(){
-
-    setNoOptions(kab);
-    setNoOptions(kec);
-    setNoOptions(kel);
-
-    if(!this.value) return;
-
-    $.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${this.value}.json`, function(data){
-      kab.empty().append('<option value=""></option>');
-      data.forEach(item=>{
-        kab.append(`<option value="${item.id}">${item.name}</option>`);
+  // 1. Load Data Provinsi Pertama Kali
+  fetch(apiBase + "provinces.json")
+    .then((response) => response.json())
+    .then((provinces) => {
+      let options = '<option value="">-- Pilih Provinsi --</option>';
+      provinces.forEach((prov) => {
+        options += `<option value="${prov.id}">${prov.name}</option>`;
       });
+      $("#provinsi").html(options).trigger("change");
     });
-  });
 
-  /* KAB CHANGE */
-  kab.on("change", function(){
+  // 2. Load Kabupaten saat Provinsi dipilih
+  $("#provinsi").on("change", function () {
+    let idProv = $(this).val();
 
-    setNoOptions(kec);
-    setNoOptions(kel);
+    // Reset dropdown di bawahnya saat provinsi diganti
+    $("#kabupaten")
+      .html('<option value="">Loading...</option>')
+      .trigger("change");
+    $("#kecamatan")
+      .html('<option value="">-- Pilih Kecamatan --</option>')
+      .trigger("change");
+    $("#kelurahan").html('<option value="">-- Pilih Kelurahan --</option>');
 
-    if(!this.value) return;
-
-    $.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${this.value}.json`, function(data){
-      kec.empty().append('<option value=""></option>');
-      data.forEach(item=>{
-        kec.append(`<option value="${item.id}">${item.name}</option>`);
-      });
-    });
-  });
-
-  /* KEC CHANGE */
-  kec.on("change", function(){
-
-    setNoOptions(kel);
-
-    if(!this.value) return;
-
-    $.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${this.value}.json`, function(data){
-      kel.empty().append('<option value=""></option>');
-      data.forEach(item=>{
-        kel.append(`<option value="${item.id}">${item.name}</option>`);
-      });
-    });
-  });
-
-    // TOGGLE PASSWORD
-    $(".toggle-password").click(function () {
-    const input = $($(this).attr("toggle"));
-
-    if (input.attr("type") === "password") {
-      input.attr("type", "text");
-      $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+    if (idProv) {
+      fetch(apiBase + `regencies/${idProv}.json`)
+        .then((response) => response.json())
+        .then((regencies) => {
+          let options = '<option value="">-- Pilih Kab/Kota --</option>';
+          regencies.forEach((kab) => {
+            options += `<option value="${kab.id}">${kab.name}</option>`;
+          });
+          $("#kabupaten").html(options);
+        });
     } else {
-      input.attr("type", "password");
-      $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+      $("#kabupaten").html('<option value="">-- Pilih Kab/Kota --</option>');
     }
   });
 
-      // ================= VALIDASI REALTIME =================
-      // NIK & NO KK hanya angka + max 16 digit
-      $("#nik, #nokk").on("input", function(){
-        this.value = this.value.replace(/[^0-9]/g, '').slice(0,16);
-      });
+  // 3. Load Kecamatan saat Kabupaten dipilih
+  $("#kabupaten").on("change", function () {
+    let idKab = $(this).val();
 
-      // TELEPON hanya angka
-      $("#telepon").on("input", function(){
-        this.value = this.value.replace(/[^0-9]/g, '');
-      });
+    // Reset dropdown di bawahnya saat kabupaten diganti
+    $("#kecamatan")
+      .html('<option value="">Loading...</option>')
+      .trigger("change");
+    $("#kelurahan").html('<option value="">-- Pilih Kelurahan --</option>');
 
-      // NAMA hanya huruf
-      $("#nama").on("input", function(){
-        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
-      });
-
-      // VALIDASI EMAIL
-      function validEmail(email){
-        return email.includes("@") && email.includes(".com");
-      }
-
-      // ================= SUBMIT FORM =================
-      $("#form").submit(function(e){
-        e.preventDefault();
-
-        const nik = $("#nik").val().trim();
-        const nokk = $("#nokk").val().trim();
-        const nama = $("#nama").val().trim();
-        const email = $("#email").val().trim();
-        const telepon = $("#telepon").val().trim();
-        const password = $("#password").val();
-        const konfirmasi = $("#konfirm_password").val();
-
-        // CEK KOSONG
-        if(
-          !nik || !nokk || !nama || !email || !telepon || !password || !konfirmasi ||
-          !$("#provinsi").val() ||
-          !$("#kabupaten").val() ||
-          !$("#kecamatan").val() ||
-          !$("#kelurahan").val()
-        ){
-          Swal.fire({
-            title: "Peringatan ⚠️",
-            text: "Kolom tidak boleh kosong!",
-            icon: "warning",
-            background: "#f0fff4",
-            color: "#2e7d32",
-            confirmButtonColor: "#2e7d32"
+    if (idKab) {
+      fetch(apiBase + `districts/${idKab}.json`)
+        .then((response) => response.json())
+        .then((districts) => {
+          let options = '<option value="">-- Pilih Kecamatan --</option>';
+          districts.forEach((kec) => {
+            options += `<option value="${kec.id}">${kec.name}</option>`;
           });
-          return;
-        }
-
-        // VALIDASI PANJANG NIK & KK
-        if(nik.length !== 16 || nokk.length !== 16){
-          Swal.fire({
-            title: "Error",
-            text: "NIK dan No KK harus 16 digit!",
-            icon: "error",
-            background: "#fff5f5",
-            color: "#b91c1c",
-            confirmButtonColor: "#d33"
-          });
-          return;
-        }
-
-        // VALIDASI EMAIL
-        if(!validEmail(email)){
-          Swal.fire({
-            title: "Error",
-            text: "Email harus mengandung @ dan .com",
-            icon: "error",
-            background: "#fff5f5",
-            color: "#b91c1c",
-            confirmButtonColor: "#d33"
-          });
-          return;
-        }
-
-        // VALIDASI PASSWORD
-        if(password !== konfirmasi){
-          Swal.fire({
-            title: "Konfirmasi Password Salah ❌",
-            text: "Konfirmasi password harus sama dengan password",
-            icon: "error",
-            background: "#fff5f5",
-            color: "#b91c1c",
-            confirmButtonColor: "#d33"
-          });
-          return;
-        }
-
-        const provinsi = $("#provinsi option:selected").text();
-        const kabupaten = $("#kabupaten option:selected").text();
-        const kecamatan = $("#kecamatan option:selected").text();
-        const kelurahan = $("#kelurahan option:selected").text();
-
-        // ================= KONFIRMASI =================
-        Swal.fire({
-          title: "Konfirmasi Data ❓",
-          html: `
-            <div style="text-align:left;font-size:13px;color:#2e7d32">
-              <b>NIK:</b> ${nik}<br>
-              <b>No KK:</b> ${nokk}<br>
-              <b>Nama:</b> ${nama}<br>
-              <b>Email:</b> ${email}<br>
-              <b>Telepon:</b> ${telepon}<br><br>
-
-              <b>📍 Wilayah</b><br>
-              <b>Provinsi:</b> ${provinsi}<br>
-              <b>Kab/Kota:</b> ${kabupaten}<br>
-              <b>Kecamatan:</b> ${kecamatan}<br>
-              <b>Kelurahan:</b> ${kelurahan}
-            </div>
-            <br><b>Apakah data sudah benar?</b>
-          `,
-          icon: "question",
-          background: "#f0fff4",
-          color: "#2e7d32",
-          showCancelButton: true,
-          confirmButtonText: "Ya, Benar",
-          cancelButtonText: "Tidak",
-          confirmButtonColor: "#2e7d32",
-          cancelButtonColor: "#d33"
-        }).then((result) => {
-
-          if(result.isConfirmed){
-
-            Swal.fire({
-              title: "Berhasil 🎉",
-              text: "Selamat pendaftaran telah berhasil",
-              icon: "success",
-              background: "#f0fff4",
-              color: "#2e7d32",
-              showConfirmButton: false,
-              timer: 6000,
-              timerProgressBar: true
-            });
-
-            setTimeout(() => {
-              window.location.href = "login.html";
-            }, 6000);
-
-          }
-
+          $("#kecamatan").html(options);
         });
+    } else {
+      $("#kecamatan").html('<option value="">-- Pilih Kecamatan --</option>');
+    }
+  });
 
+  // 4. Load Kelurahan saat Kecamatan dipilih
+  $("#kecamatan").on("change", function () {
+    let idKec = $(this).val();
+    $("#kelurahan").html('<option value="">Loading...</option>');
+
+    if (idKec) {
+      fetch(apiBase + `villages/${idKec}.json`)
+        .then((response) => response.json())
+        .then((villages) => {
+          let options = '<option value="">-- Pilih Kelurahan --</option>';
+          villages.forEach((kel) => {
+            options += `<option value="${kel.id}">${kel.name}</option>`;
+          });
+          $("#kelurahan").html(options);
+        });
+    } else {
+      $("#kelurahan").html('<option value="">-- Pilih Kelurahan --</option>');
+    }
+  });
+
+  // Toggle lihat password (sesuai icon mata di HTML)
+  $(".toggle-password").click(function () {
+    $(this).toggleClass("fa-eye-slash fa-eye");
+    let input = $($(this).attr("toggle"));
+    if (input.attr("type") == "password") {
+      input.attr("type", "text");
+    } else {
+      input.attr("type", "password");
+    }
+  });
+});
+
+const formRegistrasi = document.getElementById("formRegistrasi");
+
+if (formRegistrasi) {
+  formRegistrasi.addEventListener("submit", async function (e) {
+    e.preventDefault(); // Mencegah form me-refresh halaman
+
+    // Ambil nilai teks (nama wilayah) dari dropdown API EMSIFA yang menggunakan Select2
+    const provinsi = $("#provinsi option:selected").text();
+    const kabupaten = $("#kabupaten option:selected").text();
+    const kecamatan = $("#kecamatan option:selected").text();
+    const kelurahan = $("#kelurahan option:selected").text();
+
+    // Ambil nilai input lainnya
+    const payload = {
+      nik: document.getElementById("nik").value,
+      no_kk: document.getElementById("no_kk").value,
+      nama_lengkap: document.getElementById("nama_lengkap").value,
+      email: document.getElementById("email").value,
+      no_hp: document.getElementById("no_hp").value,
+      password: document.getElementById("password").value,
+      confirm_password: document.getElementById("confirm_password").value,
+      provinsi: provinsi !== "-- Pilih Provinsi --" ? provinsi : "",
+      kabupaten: kabupaten !== "-- Pilih Kab/Kota --" ? kabupaten : "",
+      kecamatan: kecamatan !== "-- Pilih Kecamatan --" ? kecamatan : "",
+      kelurahan: kelurahan !== "-- Pilih Kelurahan --" ? kelurahan : "",
+    };
+
+    // Validasi ringan di sisi Frontend agar lebih cepat
+    if (payload.password !== payload.confirm_password) {
+      return Swal.fire("Gagal", "Konfirmasi password tidak cocok!", "error");
+    }
+    if (payload.nik.length !== 16 || payload.no_kk.length !== 16) {
+      return Swal.fire("Gagal", "NIK dan Nomor KK harus 16 digit!", "error");
+    }
+
+    try {
+      // PORT disamakan dengan backend (index.js -> PORT || 3000)
+      const response = await fetch("http://localhost:3000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        Swal.fire({
+          title: "Registrasi Berhasil! 🎉",
+          text: "Silakan login menggunakan NIK Anda.",
+          icon: "success",
+          showConfirmButton: true,
+        }).then(() => {
+          window.location.href = "Login.html"; // Arahkan ke halaman login warga
+        });
+      } else {
+        // Menampilkan pesan error dari Backend (misal NIK ganda)
+        Swal.fire("Registrasi Gagal", result.message, "warning");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      Swal.fire("Error", "Gagal terhubung ke server backend.", "error");
+    }
   });
+} else {
+  console.error(
+    'Form dengan id "formRegistrasi" tidak ditemukan di halaman ini.',
+  );
+}
