@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const modalEdit = document.getElementById('modalEdit');
     const modalEditBox = document.getElementById('modalEditBox');
-    const btnSimpanStatus = document.getElementById('btnSimpanStatus');
+    const btnEdit = document.getElementById('btnEdit');
 
     // Buka Modal Edit
     document.querySelectorAll('.btnEdit').forEach(btn => {
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', function() {
             Swal.fire({
                 title: "Yakin ingin menghapus?",
-                text: "Data permohonan domisili ini akan dihapus permanen!",
+                text: "Data permohonan Produk UMKM akan dihapus permanen!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#dc2626",
@@ -114,11 +114,224 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (result.isConfirmed) {
                     // TODO: Hubungkan ke Supabase (Delete Row)
                     this.closest('tr').remove();
-                    Swal.fire("Terhapus!", "Data berhasil dihapus dari sistem.", "success");
+                    Swal.fire("Terhapus!", "Data berhasil dihapus", "success");
                 }
             });
         });
     });
+
+    // ================= FUNGSI MODAL UMUM =================
+    function openModal(modal, box) {
+        modal.classList.remove('hidden');
+        modal.classList.add('opacity-0');
+
+        box.classList.remove('scale-100', 'opacity-100');
+        box.classList.add('scale-90', 'opacity-0');
+
+        requestAnimationFrame(() => {
+            modal.classList.remove('opacity-0');
+
+            box.classList.remove('scale-90', 'opacity-0');
+            box.classList.add('scale-100', 'opacity-100');
+        });
+    }
+
+    function closeModalFunc(modal, box) {
+        modal.classList.add('opacity-0');
+
+        box.classList.remove('scale-100', 'opacity-100');
+        box.classList.add('scale-90', 'opacity-0');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+
+
+    // ================= MODAL TAMBAH =================
+    const modalTambah = document.getElementById('modalTambah');
+    const modalTambahBox = document.getElementById('modalTambahBox');
+
+    document.getElementById('btnTambah').onclick = () =>
+    openModal(modalTambah, modalTambahBox);
+
+    document.getElementById('closeTambah').onclick = () =>
+    closeModalFunc(modalTambah, modalTambahBox);
+
+    document.getElementById('btnCloseTambah').onclick = () =>
+    closeModalFunc(modalTambah, modalTambahBox);
+
+    // ================= OUTSIDE CLICK =================
+    function enableOutsideClick(modal, box) {
+        modal.addEventListener('click', (e) => {
+        if (!box.contains(e.target)) {
+            closeModalFunc(modal, box);
+        }
+        });
+    }
+
+    // 🔥 TARUH DI SINI (SETELAH DECLARE)
+    enableOutsideClick(modalTambah, modalTambahBox);
+    enableOutsideClick(modalView, modalBox);
+    enableOutsideClick(modalEdit, modalEditBox);
+
+    // ================= SIMPAN TAMBAH =================
+document.getElementById('btnSimpanTambah').onclick = () => {
+
+    const inputs = modalTambah.querySelectorAll('input[type="text"]');
+
+    const nik = inputs[0].value.trim();
+    const namaProduk = inputs[1].value.trim();
+    const penjual = inputs[2].value.trim();
+    const harga = inputs[3].value.trim();
+    const email = inputs[4].value.trim();
+
+    const alamat = modalTambah.querySelector('textarea').value.trim();
+
+    const gambarInput = modalTambah.querySelector('input[type="file"]');
+    const gambar = gambarInput.files[0];
+
+    let kosong = [];
+
+    // ================= VALIDASI FORM =================
+    if (!nik) kosong.push("NIK");
+    if (!namaProduk) kosong.push("Nama Produk");
+    if (!penjual) kosong.push("Nama Penjual");
+    if (!harga) kosong.push("Harga");
+    if (!email) kosong.push("Email");
+    if (!alamat) kosong.push("Alamat");
+    if (!gambar) kosong.push("Gambar Produk");
+
+    if (kosong.length > 0) {
+
+        Swal.fire({
+            title: "Form Belum Lengkap ⚠️",
+            html: `
+                <div style="text-align:center;">
+                    <p>Data berikut masih kosong:</p>
+                    <ul style="list-style-position: inside;">
+                        ${kosong.map(item => `<li>${item}</li>`).join("")}
+                    </ul>
+                </div>
+            `,
+            icon: "warning",
+            confirmButtonColor: "#f59e0b",
+            background: "#fffbeb",
+            color: "#92400e"
+        });
+
+        return;
+    }
+
+
+    // ================= VALIDASI GAMBAR =================
+    const allowedTypes = ["image/jpeg", "image/png"];
+
+    if (!allowedTypes.includes(gambar.type)) {
+
+        Swal.fire({
+            title: "Format Gambar Tidak Sesuai",
+            text: "Gunakan gambar JPG atau PNG.",
+            icon: "warning",
+            confirmButtonColor: "#f59e0b"
+        });
+
+        return;
+    }
+
+
+    // Maksimal 2 MB
+    if (gambar.size > 2 * 1024 * 1024) {
+
+        Swal.fire({
+            title: "Ukuran Gambar Terlalu Besar",
+            text: "Ukuran gambar maksimal 2MB.",
+            icon: "warning",
+            confirmButtonColor: "#f59e0b"
+        });
+
+        return;
+    }
+
+
+    // ================= KONFIRMASI =================
+    Swal.fire({
+        title: "Konfirmasi Data",
+        icon: "question",
+
+        html: `
+            <div style="text-align:left;">
+                <p><b>NIK:</b><br>${nik}</p><br>
+
+                <p><b>Nama Produk:</b><br>${namaProduk}</p><br>
+
+                <p><b>Penjual:</b><br>${penjual}</p><br>
+
+                <p><b>Harga:</b><br>${harga}</p><br>
+
+                <p><b>Email:</b><br>${email}</p><br>
+
+                <p><b>Alamat:</b><br>${alamat}</p><br>
+
+                <p><b>Gambar:</b><br>${gambar.name}</p>
+            </div>
+        `,
+
+        showCancelButton: true,
+
+        confirmButtonText: "Ya, Simpan",
+        cancelButtonText: "Batal",
+
+        confirmButtonColor: "#3b82f6",
+        cancelButtonColor: "#6b7280",
+
+        background: "#eff6ff",
+        color: "#1e3a8a"
+
+    }).then(result => {
+
+        if (result.isConfirmed) {
+
+            // ==========================================
+            // NANTI DATA KE DATABASE / SUPABASE DI SINI
+            // ==========================================
+
+
+            Swal.fire({
+                title: "Berhasil 🎉",
+                text: "Produk berhasil ditambahkan",
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false,
+                background: "#f0fff4",
+                color: "#166534"
+            });
+
+
+            setTimeout(() => {
+
+                // Tutup modal
+                closeModalFunc(
+                    modalTambah,
+                    modalTambahBox
+                );
+
+                // Bersihkan form
+                inputs.forEach(input => {
+                    input.value = "";
+                });
+
+                modalTambah.querySelector('textarea').value = "";
+                gambarInput.value = "";
+
+            }, 1500);
+
+        }
+
+    });
+
+};
 
     // ==========================================
     // 4. LOGIKA PENCARIAN & PAGINATION (STATIS)
