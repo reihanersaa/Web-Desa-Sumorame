@@ -35,15 +35,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      form.addEventListener("submit", function(e) {
+      form.addEventListener("submit", async function(e) {
       e.preventDefault();
 
       const nip = document.getElementById("nip").value;
       const pass = document.getElementById("password").value;
 
-      if (nip === "admin" && pass === "123") {
+      try {
+        const response = await fetch(`${window.API_BASE_URL || "http://localhost:3000/api"}/auth/login-admin`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nik: nip.trim(), password: pass }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.message || "NIP atau password salah.");
 
         localStorage.setItem("login", "true");
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("admin", JSON.stringify(result.data));
 
         const redirectAduan = localStorage.getItem("redirectAduan");
 
@@ -65,10 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
 
-      } else {
+      } catch (error) {
           Swal.fire({
           title: "Login Gagal",
-          text: "NIP atau Password yang Anda masukkan salah",
+          text: error.message,
           icon: "error",
           confirmButtonText: "Coba Lagi",
           confirmButtonColor: "#d33",
