@@ -89,9 +89,13 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           // 2. LOGIKA REDIRECT
+          const redirectAfterLogin = localStorage.getItem("redirectAfterLogin");
           const redirectAduan = localStorage.getItem("redirectAduan");
 
-          if (redirectAduan) {
+          if (redirectAfterLogin) {
+            localStorage.removeItem("redirectAfterLogin");
+            window.location.href = redirectAfterLogin;
+          } else if (redirectAduan) {
             localStorage.removeItem("redirectAduan");
             window.location.href = "Aduan.html";
           } else {
@@ -106,8 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then(() => {
               // Jika role admin, arahkan ke DashboardAdmin.html, jika bukan ke index.html
               if (result.data?.role === "admin") {
-                window.location.href = "DashboardAdmin.html";
-              } else {
                 window.location.href = "index.html";
               }
             });
