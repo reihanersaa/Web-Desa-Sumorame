@@ -212,17 +212,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ================= FORM ADUAN =================
   const formAduan = document.getElementById("formAduan");
 
-  formAduan.addEventListener("submit", async function (e) {
+  formAduan.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // 1. CEK TOKEN LOGIN
-    // Pastikan "token" adalah nama key yang kamu gunakan saat menyimpan JWT di localStorage saat proses Login Warga
-    const token = localStorage.getItem("token"); 
-    
-    if (!token) {
+    // 🔥 CEK LOGIN
+    if (!localStorage.getItem("login")) {
       modal.classList.remove("opacity-0", "pointer-events-none");
-      box.classList.remove("scale-95");
-      box.classList.add("scale-100");
       return;
     }
 
@@ -235,32 +230,57 @@ document.addEventListener("DOMContentLoaded", function () {
     // ================= VALIDASI KOSONG =================
     let kosong = [];
 
-    document.querySelectorAll("#formAduan input, #formAduan textarea").forEach((el) => {
-      el.classList.remove("border-red-500");
-    });
+    document
+      .querySelectorAll("#formAduan input, #formAduan textarea")
+      .forEach((el) => {
+        el.classList.remove("border-red-500");
+      });
 
-    if (!nama) { kosong.push("Nama"); document.getElementById("nama").classList.add("border-red-500"); }
-    if (!email) { kosong.push("Email"); document.getElementById("email").classList.add("border-red-500"); }
-    if (!judul) { kosong.push("Judul Aduan"); document.getElementById("judul").classList.add("border-red-500"); }
-    if (!isi) { kosong.push("Isi Aduan"); document.getElementById("isi").classList.add("border-red-500"); }
-    if (!bukti) { kosong.push("Bukti Aduan"); document.getElementById("fileUpload").classList.add("border-red-500"); }
+    if (!nama) {
+      kosong.push("Nama");
+      document.getElementById("nama").classList.add("border-red-500");
+    }
+
+    if (!email) {
+      kosong.push("Email");
+      document.getElementById("email").classList.add("border-red-500");
+    }
+
+    if (!judul) {
+      kosong.push("Judul Aduan");
+      document.getElementById("judul").classList.add("border-red-500");
+    }
+
+    if (!isi) {
+      kosong.push("Isi Aduan");
+      document.getElementById("isi").classList.add("border-red-500");
+    }
+
+    if (!bukti) {
+      kosong.push("Bukti Aduan");
+      document.getElementById("fileUpload").classList.add("border-red-500");
+    }
 
     if (kosong.length > 0) {
       Swal.fire({
         title: "Form Belum Lengkap ⚠️",
         html: `
-          <div style="text-align:center;">
-            <p style="margin-bottom:8px;">Kolom berikut masih kosong:</p>
-            <ul style="list-style-position: inside; padding:0; margin:0;">
-              ${kosong.map((item) => `<li>${item}</li>`).join("")}
-            </ul>
-          </div>
-        `,
+      <div style="text-align:center;">
+        <p style="margin-bottom:8px;">
+          Kolom berikut masih kosong:
+        </p>
+
+        <ul style="list-style-position: inside; padding:0; margin:0;">
+          ${kosong.map((item) => `<li>${item}</li>`).join("")}
+        </ul>
+      </div>
+    `,
         icon: "warning",
         background: "#f0fff4",
         color: "#2e7d32",
         confirmButtonColor: "#2e7d32",
       });
+
       return;
     }
 
@@ -284,68 +304,41 @@ document.addEventListener("DOMContentLoaded", function () {
       cancelButtonText: "Batal",
       confirmButtonColor: "#2e7d32",
       cancelButtonColor: "#d33",
-    }).then(async (result) => {
-      
+    }).then((result) => {
       if (result.isConfirmed) {
-        
-        // Tampilkan efek loading
-        Swal.fire({
-          title: 'Mengirim Aduan...',
-          text: 'Mohon tunggu sebentar',
-          allowOutsideClick: false,
-          didOpen: () => { Swal.showLoading(); }
+        // ================= SIMPAN DATA =================
+        let dataAduan = JSON.parse(localStorage.getItem("aduan")) || [];
+
+        dataAduan.push({
+          nama,
+          email,
+          judul,
+          isi,
+          status: "Diproses",
+          tanggal: new Date().toLocaleString(),
         });
 
-        try {
-          // 2. BUNGKUS DATA KE FORMDATA
-          const formData = new FormData();
-          formData.append("nama_pelapor", nama);
-          formData.append("email_pelapor", email);
-          formData.append("judul_aduan", judul);
-          formData.append("isi_aduan", isi);
-          formData.append("file_bukti", bukti);
+        localStorage.setItem("aduan", JSON.stringify(dataAduan));
 
-          // 3. KIRIM KE BACKEND BESERTA TOKEN
-          const response = await fetch("http://localhost:3000/api/aduan", {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${token}` // Ini kuncinya agar lolos verifyToken
-            },
-            body: formData,
-          });
+        // ================= ALERT BERHASIL =================
+        Swal.fire({
+          title: "Berhasil 🎉",
+          text: "Aduan Anda telah dikirim",
+          icon: "success",
+          background: "#f0fff4",
+          color: "#2e7d32",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+        });
 
-          const resultData = await response.json();
+        // RESET FORM
+        formAduan.reset();
 
-          if (!response.ok) {
-            throw new Error(resultData.message || 'Gagal mengirim aduan ke server');
-          }
-
-          // 4. ALERT BERHASIL
-          Swal.fire({
-            title: "Berhasil 🎉",
-            text: "Aduan Anda telah dikirim",
-            icon: "success",
-            background: "#f0fff4",
-            color: "#2e7d32",
-            showConfirmButton: false,
-            timer: 2500,
-            timerProgressBar: true,
-          });
-
-          // Reset Form
-          formAduan.reset();
-          document.getElementById("previewImage").classList.add("hidden");
-          
-          // Kosongkan value file input secara manual
-          document.getElementById("fileUpload").value = "";
-
-          // Panggil fungsi untuk merender ulang daftar aduan di halaman warga jika ada
-          // tampilkanAduan(); 
-
-        } catch (error) {
-          console.error("Error submit aduan:", error);
-          Swal.fire("Gagal!", error.message, "error");
-        }
+        setTimeout(() => {
+          tampilkanAduan();
+          cekStatusForm();
+        }, 2000);
       }
     });
   });

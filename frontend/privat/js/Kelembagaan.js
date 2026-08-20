@@ -1,5 +1,8 @@
-
-
+// ================= SIDEBAR =================
+// Seluruh logika burger, buka/tutup sidebar, dan sub-menu (Surat Menyurat
+// & Kelola Website) kini ditangani sepenuhnya oleh js/DashboardAdmin.js
+// (dimuat sebelum file ini), supaya animasi & perilakunya konsisten
+// di semua halaman admin. Tidak ada lagi logika sidebar di file ini.
 
 flatpickr("#tanggalTanggapan", {
   dateFormat: "Y-m-d", // format: 2026-04-24
@@ -7,23 +10,6 @@ flatpickr("#tanggalTanggapan", {
   altFormat: "d F Y", // tampil: 24 April 2026
   allowInput: true
 });
-
-  // Dropdown Sidebar
-  const pemohonToggle = document.getElementById('pemohonToggle');
-  const pemohonMenu = document.getElementById('pemohonMenu');
-  const pemohonIcon = document.getElementById('pemohonIcon');
-
-  pemohonToggle.addEventListener('click', () => {
-    if (pemohonMenu.classList.contains('max-h-0')) {
-      pemohonMenu.classList.remove('max-h-0', 'opacity-0');
-      pemohonMenu.classList.add('max-h-40', 'opacity-100');
-    } else {
-      pemohonMenu.classList.remove('max-h-40', 'opacity-100');
-      pemohonMenu.classList.add('max-h-0', 'opacity-0');
-    }
-
-    pemohonIcon.classList.toggle('rotate-180');
-  });
 
   // ================= VIEW MODAL =================
   const modal = document.getElementById('modalView');

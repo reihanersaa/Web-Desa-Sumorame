@@ -1,12 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const {
+  buatAduan,
+  getSemuaAduan,
+  updateStatusAduan,
+} = require("../controllers/aduanController");
 const { verifyToken } = require("../middleware/authMiddleware");
-const { buatAduan, getSemuaAduan } = require("../controllers/aduanController");
 
-// Rute POST untuk warga mengirim aduan (sudah Anda miliki)
+// Route warga (Wajib login/pakai Token)
 router.post("/", verifyToken, buatAduan);
 
-// Rute GET BARU untuk admin menarik semua data aduan
-router.get("/", getSemuaAduan);
+// Route Admin CMS
+router.get("/admin", verifyToken, getSemuaAduan);
+router.put("/admin/:id/status", verifyToken, updateStatusAduan);
 
 module.exports = router;

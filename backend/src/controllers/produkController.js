@@ -1,13 +1,19 @@
 const supabase = require("../config/supabase");
 
 const produkController = {
-  // 1. [WARGA / PUBLIK] Ajukan Produk UMKM Baru
+  // 1. [PUBLIK] Warga mengajukan produk (UPDATE: Tambah Deskripsi)
   ajukanProduk: async (req, res) => {
     try {
-      const { nama_produk, harga, nama_penjual, kontak_penjual, gambar } =
-        req.body;
+      // Tambahkan 'deskripsi' di tangkapan body
+      const {
+        nama_produk,
+        deskripsi,
+        harga,
+        nama_penjual,
+        kontak_penjual,
+        gambar,
+      } = req.body;
 
-      // Validasi input
       if (
         !nama_produk ||
         !harga ||
@@ -15,11 +21,9 @@ const produkController = {
         !kontak_penjual ||
         !gambar
       ) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Semua kolom (nama produk, harga, nama penjual, kontak, gambar) wajib diisi!",
-        });
+        return res
+          .status(400)
+          .json({ success: false, message: "Kolom wajib belum diisi!" });
       }
 
       const { data, error } = await supabase
@@ -27,24 +31,70 @@ const produkController = {
         .insert([
           {
             nama_produk,
+            deskripsi,
             harga,
             nama_penjual,
             kontak_penjual,
             gambar,
-            status: "pending", // Otomatis pending
+            status: "pending",
           },
         ])
-        .select(); // Tambahkan .select() agar mengembalikan data yang baru dibuat
+        .select();
 
       if (error) throw error;
-
-      return res.status(201).json({
-        success: true,
-        message: "Produk berhasil diajukan dan menunggu persetujuan Admin.",
-        data: data[0],
-      });
+      return res
+        .status(201)
+        .json({
+          success: true,
+          message: "Produk berhasil diajukan.",
+          data: data[0],
+        });
     } catch (error) {
-      console.error("Error Ajukan Produk:", error.message);
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  },
+
+  // --- 2 FUNGSI BARU UNTUK FRONTEND ---
+
+  // [PUBLIK] Ambil 3 Produk Teratas berdasarkan view
+  getTop3Produk: async (req, res) => {
+    try {
+      const { data, error } = await supabase
+        .from("produk_unggulan")
+        .select("*")
+        .eq("status", "approved")
+        .order("dilihat", { ascending: false }) // Urutkan view terbanyak
+        .limit(3); // Batasi 3 data
+
+      if (error) throw error;
+      return res.status(200).json({ success: true, data });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  },
+
+  // [PUBLIK] Tambah angka view saat tombol "Detail" diklik
+  tambahViewProduk: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      // Ambil data view saat ini lewat fungsi RPC (Remote Procedure Call) atau cara manual (baca lalu tambah 1)
+      // Cara manual sederhana:
+      const { data: produk } = await supabase
+        .from("produk_unggulan")
+        .select("dilihat")
+        .eq("id", id)
+        .single();
+
+      const { data, error } = await supabase
+        .from("produk_unggulan")
+        .update({ dilihat: (produk.dilihat || 0) + 1 })
+        .eq("id", id)
+        .select();
+
+      if (error) throw error;
+      return res.status(200).json({ success: true, data: data[0] });
+    } catch (error) {
       return res.status(500).json({ success: false, message: error.message });
     }
   },

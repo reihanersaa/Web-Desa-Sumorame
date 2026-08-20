@@ -1,12 +1,8 @@
-// ================= DROPDOWN =================
-const permohonanToggle = document.getElementById('permohonanToggle');
-const permohonanMenu = document.getElementById('permohonanMenu');
-const permohonanIcon = document.getElementById('permohonanIcon');
-
-permohonanToggle.addEventListener('click', () => {
-  permohonanMenu.classList.toggle('hidden');
-  permohonanIcon.classList.toggle('rotate-180');
-});
+// ================= SIDEBAR =================
+// Logika burger, buka/tutup sidebar, dan sub-menu (Surat Menyurat &
+// Kelola Website) ditangani sepenuhnya oleh js/DashboardAdmin.js
+// (dimuat sebelum file ini), supaya animasi & perilakunya konsisten
+// di semua halaman admin.
 
 // ================= TABLE =================
 const table = document.querySelector("tbody");

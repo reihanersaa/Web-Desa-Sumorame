@@ -4,72 +4,125 @@ const overlay = document.getElementById('overlay');
 const mainContent = document.getElementById('mainContent');
 const headerLeft = document.getElementById('headerLeft');
 
-if (burgerBtn && sidebar && overlay && mainContent && headerLeft) {
-  burgerBtn.addEventListener('click', () => {
-    if (window.innerWidth < 768) {
-      sidebar.classList.toggle('-translate-x-full');
-      overlay.classList.toggle('hidden');
-    } else {
-      sidebar.classList.toggle('w-64');
-      sidebar.classList.toggle('w-20');
-      headerLeft.classList.toggle('w-64');
-      headerLeft.classList.toggle('w-20');
-      mainContent.classList.toggle('md:pl-64');
-      mainContent.classList.toggle('md:pl-20');
+// ================= DAFTAR SEMUA SUBMENU (DIKELOLA OTOMATIS) =================
+const submenus = [
+  {
+    toggle: document.getElementById('suratToggle'),
+    menu: document.getElementById('suratMenu'),
+    icon: document.getElementById('suratIcon')
+  },
+  {
+    toggle: document.getElementById('cmsToggle'),
+    menu: document.getElementById('cmsMenu'),
+    icon: document.getElementById('cmsIcon')
+  }
+];
 
-      document.querySelectorAll('.menu-text').forEach(el => {
-        el.classList.toggle('hidden');
-      });
-    }
-  });
+function isSubmenuOpen({ menu }) {
+  return !!menu && menu.classList.contains('opacity-100');
 }
 
-// ================= DROPDOWN SURAT MENYURAT =================
-const suratToggle = document.getElementById('suratToggle');
-const suratMenu = document.getElementById('suratMenu');
-const suratIcon = document.getElementById('suratIcon');
+function openSubmenu({ menu, icon }) {
+  if (!menu) return;
+  menu.classList.remove('max-h-0', 'opacity-0');
+  menu.classList.add('max-h-96', 'opacity-100');
+  if (icon) icon.classList.add('rotate-180');
+}
 
-if (suratToggle && suratMenu && suratIcon) {
-  suratToggle.addEventListener('click', () => {
-    if (suratMenu.classList.contains('max-h-0')) {
-      // Buka dropdown
-      suratMenu.classList.remove('max-h-0', 'opacity-0');
-      suratMenu.classList.add('max-h-96', 'opacity-100'); 
-    } else {
-      // Tutup dropdown
-      suratMenu.classList.remove('max-h-96', 'opacity-100');
-      suratMenu.classList.add('max-h-0', 'opacity-0');
+function closeSubmenu({ menu, icon }) {
+  if (!menu) return;
+  menu.classList.remove('max-h-96', 'opacity-100');
+  menu.classList.add('max-h-0', 'opacity-0');
+  if (icon) icon.classList.remove('rotate-180');
+}
+
+function toggleSubmenu(item) {
+  if (isSubmenuOpen(item)) {
+    closeSubmenu(item);
+  } else {
+    openSubmenu(item);
+  }
+}
+
+// Cek apakah sidebar sedang dalam kondisi TERBUKA (bukan tertutup/collapsed).
+// - Mobile: sidebar dianggap terbuka jika TIDAK memiliki class '-translate-x-full'.
+// - Desktop: sidebar dianggap terbuka jika memiliki class 'w-64' (bukan 'w-20').
+function isSidebarOpen() {
+  if (!sidebar) return true;
+  if (window.innerWidth < 768) {
+    return !sidebar.classList.contains('-translate-x-full');
+  }
+  return sidebar.classList.contains('w-64');
+}
+
+// Set kondisi sidebar secara eksplisit (true = buka, false = tutup),
+// menyesuaikan mode mobile atau desktop sesuai lebar layar saat ini.
+// Setiap kali sidebar berubah state, seluruh sub-menu dipaksa tertutup
+// terlebih dahulu (state bersih/standar) — pemanggil boleh membuka
+// sub-menu tertentu secara manual SETELAH memanggil fungsi ini.
+function setSidebarOpen(open) {
+  if (!sidebar) return;
+
+  if (window.innerWidth < 768) {
+    // Mode mobile
+    sidebar.classList.toggle('-translate-x-full', !open);
+    if (overlay) overlay.classList.toggle('hidden', !open);
+  } else {
+    // Mode desktop
+    sidebar.classList.toggle('w-64', open);
+    sidebar.classList.toggle('w-20', !open);
+    if (headerLeft) {
+      headerLeft.classList.toggle('w-64', open);
+      headerLeft.classList.toggle('w-20', !open);
     }
-    // Putar ikon panah
-    suratIcon.classList.toggle('rotate-180');
+    if (mainContent) {
+      mainContent.classList.toggle('md:pl-64', open);
+      mainContent.classList.toggle('md:pl-20', !open);
+    }
+    document.querySelectorAll('.menu-text').forEach(el => {
+      el.classList.toggle('hidden', !open);
+    });
+  }
+
+  collapseAllSubmenus();
+}
+
+// Sub-menu TIDAK pernah diingat/dipulihkan otomatis.
+// Setiap kali burger menu berpindah state (buka ATAUPUN tutup),
+// seluruh sub-menu dipaksa kembali ke kondisi tertutup/standar.
+// Sub-menu hanya bisa terbuka lagi jika pengguna mengkliknya secara manual.
+function collapseAllSubmenus() {
+  submenus.forEach(closeSubmenu);
+}
+
+// Pasang klik manual untuk tiap submenu (Surat Menyurat & Kelola Website)
+submenus.forEach(item => {
+  if (item.toggle && item.menu && item.icon) {
+    item.toggle.addEventListener('click', () => {
+      if (!isSidebarOpen()) {
+        // Fitur baru: klik sub-menu saat burger tertutup/collapsed
+        // akan otomatis membuka burger/tampilan menu terlebih dahulu,
+        // baru kemudian membuka sub-menu yang diklik.
+        setSidebarOpen(true);
+        openSubmenu(item);
+      } else {
+        // Sidebar sudah terbuka -> perilaku toggle manual biasa
+        toggleSubmenu(item);
+      }
+    });
+  }
+});
+
+// ================= BURGER: BUKA/TUTUP SIDEBAR =================
+if (burgerBtn && sidebar && overlay && mainContent && headerLeft) {
+  burgerBtn.addEventListener('click', () => {
+    setSidebarOpen(!isSidebarOpen());
   });
 }
 
 if (overlay && sidebar) {
   overlay.addEventListener('click', () => {
-    sidebar.classList.add('-translate-x-full');
-    overlay.classList.add('hidden');
-  });
-}
-
-// ================= DROPDOWN KELOLA WEBSITE =================
-const cmsToggle = document.getElementById('cmsToggle');
-const cmsMenu = document.getElementById('cmsMenu');
-const cmsIcon = document.getElementById('cmsIcon');
-
-// Pengecekan if: Kode ini hanya jalan jika tombol cmsToggle ada di halaman
-if (cmsToggle && cmsMenu && cmsIcon) {
-  cmsToggle.addEventListener('click', () => {
-    if (cmsMenu.classList.contains('max-h-0')) {
-      cmsMenu.classList.remove('max-h-0', 'opacity-0');
-      // UBAH BAGIAN INI: Ganti max-h-40 menjadi max-h-96
-      cmsMenu.classList.add('max-h-96', 'opacity-100'); 
-    } else {
-      // UBAH BAGIAN INI JUGA: Sesuaikan dengan yang di atas
-      cmsMenu.classList.remove('max-h-96', 'opacity-100');
-      cmsMenu.classList.add('max-h-0', 'opacity-0');
-    }
-    cmsIcon.classList.toggle('rotate-180');
+    setSidebarOpen(false);
   });
 }
 

@@ -83,7 +83,6 @@ const registerWarga = async (req, res) => {
           kecamatan,
           kelurahan,
           password: hashedPassword,
-          role: "warga",
         },
       ])
       .select("id, nik, nama_lengkap, email")
