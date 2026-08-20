@@ -27,11 +27,19 @@ function openSubmenu({ menu, icon }) {
   menu.classList.remove('max-h-0', 'opacity-0');
   menu.classList.add('max-h-96', 'opacity-100');
   if (icon) icon.classList.add('rotate-180');
+
+  // Tandai submenu ini sebagai "baru saja dibuka lewat klik manual",
+  // supaya animasi stagger item HANYA main saat toggle manual —
+  // bukan saat submenu memang sudah terbuka permanen sejak halaman dimuat
+  // (mis. saat reload halaman yang submenunya sengaja default terbuka).
+  menu.classList.remove('submenu-just-opened');
+  void menu.offsetWidth; // paksa reflow supaya animasi bisa diputar ulang
+  menu.classList.add('submenu-just-opened');
 }
 
 function closeSubmenu({ menu, icon }) {
   if (!menu) return;
-  menu.classList.remove('max-h-96', 'opacity-100');
+  menu.classList.remove('max-h-96', 'opacity-100', 'submenu-just-opened');
   menu.classList.add('max-h-0', 'opacity-0');
   if (icon) icon.classList.remove('rotate-180');
 }
@@ -44,78 +52,85 @@ function toggleSubmenu(item) {
   }
 }
 
-// Ingat submenu mana saja yang terbuka sebelum sidebar ditutup/collapse,
-// supaya bisa dibuka otomatis lagi saat sidebar dibuka.
-let lastOpenSubmenus = [];
-
-function collapseAllSubmenus() {
-  lastOpenSubmenus = submenus.filter(isSubmenuOpen).map(s => s.menu && s.menu.id);
-  submenus.forEach(closeSubmenu);
+// Cek apakah sidebar sedang dalam kondisi TERBUKA (bukan tertutup/collapsed).
+// - Mobile: sidebar dianggap terbuka jika TIDAK memiliki class '-translate-x-full'.
+// - Desktop: sidebar dianggap terbuka jika memiliki class 'w-64' (bukan 'w-20').
+function isSidebarOpen() {
+  if (!sidebar) return true;
+  if (window.innerWidth < 768) {
+    return !sidebar.classList.contains('-translate-x-full');
+  }
+  return sidebar.classList.contains('w-64');
 }
 
-function restoreSubmenus() {
-  submenus.forEach(item => {
-    if (item.menu && lastOpenSubmenus.includes(item.menu.id)) {
-      openSubmenu(item);
+// Set kondisi sidebar secara eksplisit (true = buka, false = tutup),
+// menyesuaikan mode mobile atau desktop sesuai lebar layar saat ini.
+// Setiap kali sidebar berubah state, seluruh sub-menu dipaksa tertutup
+// terlebih dahulu (state bersih/standar) — pemanggil boleh membuka
+// sub-menu tertentu secara manual SETELAH memanggil fungsi ini.
+function setSidebarOpen(open) {
+  if (!sidebar) return;
+
+  if (window.innerWidth < 768) {
+    // Mode mobile
+    sidebar.classList.toggle('-translate-x-full', !open);
+    if (overlay) overlay.classList.toggle('hidden', !open);
+  } else {
+    // Mode desktop
+    sidebar.classList.toggle('w-64', open);
+    sidebar.classList.toggle('w-20', !open);
+    if (headerLeft) {
+      headerLeft.classList.toggle('w-64', open);
+      headerLeft.classList.toggle('w-20', !open);
     }
-  });
+    if (mainContent) {
+      mainContent.classList.toggle('md:pl-64', open);
+      mainContent.classList.toggle('md:pl-20', !open);
+    }
+    document.querySelectorAll('.menu-text').forEach(el => {
+      el.classList.toggle('hidden', !open);
+    });
+  }
+
+  collapseAllSubmenus();
+}
+
+// Sub-menu TIDAK pernah diingat/dipulihkan otomatis.
+// Setiap kali burger menu berpindah state (buka ATAUPUN tutup),
+// seluruh sub-menu dipaksa kembali ke kondisi tertutup/standar.
+// Sub-menu hanya bisa terbuka lagi jika pengguna mengkliknya secara manual.
+function collapseAllSubmenus() {
+  submenus.forEach(closeSubmenu);
 }
 
 // Pasang klik manual untuk tiap submenu (Surat Menyurat & Kelola Website)
 submenus.forEach(item => {
   if (item.toggle && item.menu && item.icon) {
-    item.toggle.addEventListener('click', () => toggleSubmenu(item));
+    item.toggle.addEventListener('click', () => {
+      if (!isSidebarOpen()) {
+        // Fitur baru: klik sub-menu saat burger tertutup/collapsed
+        // akan otomatis membuka burger/tampilan menu terlebih dahulu,
+        // baru kemudian membuka sub-menu yang diklik.
+        setSidebarOpen(true);
+        openSubmenu(item);
+      } else {
+        // Sidebar sudah terbuka -> perilaku toggle manual biasa
+        toggleSubmenu(item);
+      }
+    });
   }
 });
 
 // ================= BURGER: BUKA/TUTUP SIDEBAR =================
 if (burgerBtn && sidebar && overlay && mainContent && headerLeft) {
   burgerBtn.addEventListener('click', () => {
-    if (window.innerWidth < 768) {
-      // Mode mobile: sidebar disembunyikan/ditampilkan via translate
-      const sedangTertutup = sidebar.classList.contains('-translate-x-full');
-      sidebar.classList.toggle('-translate-x-full');
-      overlay.classList.toggle('hidden');
-
-      if (sedangTertutup) {
-        // Baru saja dibuka -> pulihkan submenu yang sebelumnya terbuka
-        restoreSubmenus();
-      } else {
-        // Baru saja ditutup -> tutup semua submenu
-        collapseAllSubmenus();
-      }
-    } else {
-      // Mode desktop: sidebar collapse jadi mode ikon saja (w-20)
-      const sedangTerbuka = sidebar.classList.contains('w-64');
-
-      sidebar.classList.toggle('w-64');
-      sidebar.classList.toggle('w-20');
-      headerLeft.classList.toggle('w-64');
-      headerLeft.classList.toggle('w-20');
-      mainContent.classList.toggle('md:pl-64');
-      mainContent.classList.toggle('md:pl-20');
-
-      document.querySelectorAll('.menu-text').forEach(el => {
-        el.classList.toggle('hidden');
-      });
-
-      if (sedangTerbuka) {
-        // Baru saja di-collapse -> tutup semua submenu (teksnya toh disembunyikan)
-        collapseAllSubmenus();
-      } else {
-        // Baru saja dibuka kembali -> pulihkan submenu yang sebelumnya terbuka
-        restoreSubmenus();
-      }
-    }
+    setSidebarOpen(!isSidebarOpen());
   });
 }
 
 if (overlay && sidebar) {
   overlay.addEventListener('click', () => {
-    sidebar.classList.add('-translate-x-full');
-    overlay.classList.add('hidden');
-    // Sidebar mobile ditutup lewat overlay -> tutup semua submenu juga
-    collapseAllSubmenus();
+    setSidebarOpen(false);
   });
 }
 
