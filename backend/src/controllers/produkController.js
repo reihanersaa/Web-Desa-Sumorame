@@ -80,11 +80,15 @@ const produkController = {
 
       // Ambil data view saat ini lewat fungsi RPC (Remote Procedure Call) atau cara manual (baca lalu tambah 1)
       // Cara manual sederhana:
-      const { data: produk } = await supabase
+      const { data: produk, error: readError } = await supabase
         .from("produk_unggulan")
         .select("dilihat")
         .eq("id", id)
         .single();
+
+      if (readError || !produk) {
+        return res.status(404).json({ success: false, message: "Produk tidak ditemukan." });
+      }
 
       const { data, error } = await supabase
         .from("produk_unggulan")
