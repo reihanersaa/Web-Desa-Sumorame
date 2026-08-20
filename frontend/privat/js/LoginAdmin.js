@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     modal.classList.add("show");
   });
-  a;
+
   closeModal.addEventListener("click", function () {
     modal.classList.remove("show");
   });
