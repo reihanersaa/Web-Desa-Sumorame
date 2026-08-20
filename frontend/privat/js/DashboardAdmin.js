@@ -27,11 +27,19 @@ function openSubmenu({ menu, icon }) {
   menu.classList.remove('max-h-0', 'opacity-0');
   menu.classList.add('max-h-96', 'opacity-100');
   if (icon) icon.classList.add('rotate-180');
+
+  // Tandai submenu ini sebagai "baru saja dibuka lewat klik manual",
+  // supaya animasi stagger item HANYA main saat toggle manual —
+  // bukan saat submenu memang sudah terbuka permanen sejak halaman dimuat
+  // (mis. saat reload halaman yang submenunya sengaja default terbuka).
+  menu.classList.remove('submenu-just-opened');
+  void menu.offsetWidth; // paksa reflow supaya animasi bisa diputar ulang
+  menu.classList.add('submenu-just-opened');
 }
 
 function closeSubmenu({ menu, icon }) {
   if (!menu) return;
-  menu.classList.remove('max-h-96', 'opacity-100');
+  menu.classList.remove('max-h-96', 'opacity-100', 'submenu-just-opened');
   menu.classList.add('max-h-0', 'opacity-0');
   if (icon) icon.classList.remove('rotate-180');
 }

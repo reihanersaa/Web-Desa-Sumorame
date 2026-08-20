@@ -1,8 +1,4 @@
-// ================= SIDEBAR =================
-// Seluruh logika burger, buka/tutup sidebar, dan sub-menu (Surat Menyurat
-// & Kelola Website) kini ditangani sepenuhnya oleh js/DashboardAdmin.js
-// (dimuat sebelum file ini), supaya animasi & perilakunya konsisten
-// di semua halaman admin. Tidak ada lagi logika sidebar di file ini.
+
 
 flatpickr("#tanggalTanggapan", {
   dateFormat: "Y-m-d", // format: 2026-04-24
