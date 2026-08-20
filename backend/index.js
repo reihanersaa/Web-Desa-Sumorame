@@ -12,6 +12,8 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+// TAMBAHKAN BARIS INI: Agar form input biasa tidak undefined
+app.use(express.urlencoded({ extended: true })); 
 
 // Routes
 app.use("/api/auth", authRoutes);
