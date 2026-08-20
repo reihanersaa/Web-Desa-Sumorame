@@ -2,15 +2,14 @@ const supabase = require("../config/supabase");
 
 const buatAduan = async (req, res) => {
   try {
-    const user_id = req.user.id; // Diambil otomatis dari token login warga[cite: 19]
+    const user_id = req.user.id; // Diambil otomatis dari token login warga
     const {
       nama_pelapor,
       email_pelapor,
       judul_aduan,
       isi_aduan,
-    } = req.body; // file_bukti_url dihapus dari sini karena bentuknya masih file fisik[cite: 19]
-    
-    const fileBukti = req.file; // File yang ditangkap oleh multer
+      file_bukti_url,
+    } = req.body;
 
     if (!judul_aduan || !isi_aduan) {
       return res.status(400).json({
@@ -19,28 +18,6 @@ const buatAduan = async (req, res) => {
       });
     }
 
-    let file_bukti_url = null;
-
-    // 1. Jika warga melampirkan file, upload ke Supabase Storage terlebih dahulu
-    if (fileBukti) {
-      // Buat nama file unik (menghindari nama kembar)
-      const fileName = `aduan_${Date.now()}_${fileBukti.originalname.replace(/\s+/g, '_')}`;
-      
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("bukti_aduan") // Pastikan kamu sudah membuat bucket bernama 'bukti_aduan' di Supabase
-        .upload(fileName, fileBukti.buffer, { contentType: fileBukti.mimetype });
-
-      if (uploadError) throw uploadError;
-
-      // Dapatkan URL publik dari file yang baru saja diupload
-      const { data: publicUrlData } = supabase.storage
-        .from("bukti_aduan")
-        .getPublicUrl(fileName);
-        
-      file_bukti_url = publicUrlData.publicUrl;
-    }
-
-    // 2. Simpan semua data (termasuk URL file) ke database Supabase
     const { data, error } = await supabase
       .from("aduan")
       .insert([
@@ -50,8 +27,8 @@ const buatAduan = async (req, res) => {
           email_pelapor: email_pelapor,
           judul_aduan: judul_aduan,
           isi_aduan: isi_aduan,
-          file_bukti_url: file_bukti_url, // Masukkan URL yang didapat dari proses di atas
-          status: "Menunggu", // Diubah ke "Menunggu" agar sesuai dengan UI Frontend admin
+          file_bukti_url: file_bukti_url || null,
+          status: "pending",
         },
       ])
       .select();
@@ -72,30 +49,4 @@ const buatAduan = async (req, res) => {
   }
 };
 
-// Tambahkan fungsi ini di bawah fungsi buatAduan
-const getSemuaAduan = async (req, res) => {
-  try {
-    // Menarik seluruh data dari tabel 'aduan' di Supabase, 
-    // diurutkan dari yang terbaru (descending)
-    const { data, error } = await supabase
-      .from("aduan")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) throw error;
-
-    return res.status(200).json({
-      success: true,
-      data: data, // Data ini yang akan ditangkap oleh Pengaduan.js
-    });
-  } catch (error) {
-    console.error("Error Get Aduan:", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Terjadi kesalahan saat mengambil data aduan.",
-    });
-  }
-};
-
-// PASTIKAN ANDA MENGUBAH BARIS EXPORT DI PALING BAWAH MENJADI SEPERTI INI:
-module.exports = { buatAduan, getSemuaAduan };
+module.exports = { buatAduan };
