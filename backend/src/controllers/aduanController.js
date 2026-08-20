@@ -72,4 +72,30 @@ const buatAduan = async (req, res) => {
   }
 };
 
-module.exports = { buatAduan };
+// Tambahkan fungsi ini di bawah fungsi buatAduan
+const getSemuaAduan = async (req, res) => {
+  try {
+    // Menarik seluruh data dari tabel 'aduan' di Supabase, 
+    // diurutkan dari yang terbaru (descending)
+    const { data, error } = await supabase
+      .from("aduan")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return res.status(200).json({
+      success: true,
+      data: data, // Data ini yang akan ditangkap oleh Pengaduan.js
+    });
+  } catch (error) {
+    console.error("Error Get Aduan:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan saat mengambil data aduan.",
+    });
+  }
+};
+
+// PASTIKAN ANDA MENGUBAH BARIS EXPORT DI PALING BAWAH MENJADI SEPERTI INI:
+module.exports = { buatAduan, getSemuaAduan };

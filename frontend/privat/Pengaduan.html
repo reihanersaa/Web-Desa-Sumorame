@@ -262,48 +262,33 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <p class="text-xs text-gray-500 mb-1">Judul Aduan</p>
-          <p class="font-semibold text-gray-800">Pohon Tumbang</p>
+          <p id="viewJudul" class="font-semibold text-gray-800">-</p>
         </div>
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <p class="text-xs text-gray-500 mb-1">Nama Pelapor</p>
-          <p class="font-semibold text-gray-800">Yoga Dwi Febrian</p>
+          <p id="viewNama" class="font-semibold text-gray-800">-</p>
         </div>
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <p class="text-xs text-gray-500 mb-1">Email</p>
-          <p class="font-semibold text-gray-800">yoga@gmail.com</p>
+          <p id="viewEmail" class="font-semibold text-gray-800">-</p>
         </div>
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <p class="text-xs text-gray-500 mb-1">Tanggal</p>
-          <p class="font-semibold text-gray-800">2026-04-24</p>
+          <p id="viewTanggal" class="font-semibold text-gray-800">-</p>
         </div>
       </div>
 
       <!-- ISI ADUAN -->
       <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
         <p class="text-sm text-gray-500 mb-2 border-b pb-2">Isi Aduan</p>
-        <p class="text-gray-800 leading-relaxed">
-          Pohon tumbang di depan sdn tawangsari 1 menggangu mobilitas warga desa tawangsari.
-        </p>
+        <p id="viewIsi" class="text-gray-800 leading-relaxed">-</p>
       </div>
 
       <!-- PREVIEW GAMBAR -->
       <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
         <p class="text-sm text-gray-500 mb-3 border-b pb-2">Foto Bukti</p>
-        <img src="../img/default-struktur.png" class="rounded-lg w-full max-h-64 object-cover border bg-gray-100" alt="Foto Aduan">
+        <img id="viewGambar" src="" class="rounded-lg w-full max-h-64 object-cover border bg-gray-100" alt="Foto Aduan">
       </div>
-
-      <!-- PREVIEW FILE -->
-      <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
-        <p class="text-sm text-gray-500 mb-3 border-b pb-2">Lampiran File Tambahan</p>
-        <div class="flex items-center justify-between border rounded-lg p-3 bg-gray-50">
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-red-500">picture_as_pdf</span>
-            <span class="text-sm font-semibold text-gray-700">dokumen-aduan.pdf</span>
-          </div>
-          <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition">Lihat File</button>
-        </div>
-      </div>
-    </div>
 
     <!-- FOOTER -->
     <div class="px-6 py-4 border-t flex justify-end gap-3 bg-white">
@@ -334,23 +319,23 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="text-xs text-gray-600 font-semibold mb-1 block">Nama Pemohon</label>
-          <input type="text" value="Yoga Dwi Febrian" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
+          <input type="text" id="editNama" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
         </div>
         <div>
           <label class="text-xs text-gray-600 font-semibold mb-1 block">Alamat Email</label>
-          <input type="text" value="yoga@gmail.com" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
+          <input type="text" id="editEmail" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
         </div>
         <div>
           <label class="text-xs text-gray-600 font-semibold mb-1 block">Judul Aduan</label>
-          <input type="text" value="Pohon Tumbang" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
+          <input type="text" id="editJudul" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
         </div>
         <div>
           <label class="text-xs text-gray-600 font-semibold mb-1 block">Tanggal Aduan</label>
-          <input type="text" value="2026-04-24" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
+          <input type="text" id="editTanggal" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
         </div>
         <div class="md:col-span-2">
           <label class="text-xs text-gray-600 font-semibold mb-1 block">Isi Aduan</label>
-          <textarea rows="2" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">Pohon tumbang di jalan utama depan SDN Tawangsari 1</textarea>
+          <textarea id="editIsi" rows="2" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm"></textarea>
         </div>
       </div>
       
