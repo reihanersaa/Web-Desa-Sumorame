@@ -6,6 +6,7 @@ const suratRoutes = require("./src/routes/suratRoutes");
 const aduanRoutes = require("./src/routes/aduanRoutes");
 const produkRoutes = require("./src/routes/produkRoutes");
 const publikasiRoutes = require("./src/routes/publikasiRoutes");
+const kelembagaanRoutes = require("./src/routes/kelembagaanRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,7 +21,7 @@ app.use("/api/aduan", aduanRoutes);
 app.use("/api/surat", suratRoutes);
 app.use("/api", produkRoutes);
 app.use("/api/publikasi", publikasiRoutes);
-
+app.use("/api/kelembagaan", kelembagaanRoutes);
 // Root Check
 app.get("/", (req, res) => {
   res.json({ message: "API Service Desa Sumorame Active" });
