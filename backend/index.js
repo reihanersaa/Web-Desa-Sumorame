@@ -7,7 +7,8 @@ const aduanRoutes = require("./src/routes/aduanRoutes");
 const produkRoutes = require("./src/routes/produkRoutes");
 const publikasiRoutes = require("./src/routes/publikasiRoutes");
 const kelembagaanRoutes = require("./src/routes/kelembagaanRoutes");
-const informasiRoutes = require("./src/routes/informasiRoutes.js");
+const informasiRoutes = require("./src/routes/informasiRoutes");
+const ppidRoutes = require("./src/routes/ppidRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +25,7 @@ app.use("/api", produkRoutes);
 app.use("/api/publikasi", publikasiRoutes);
 app.use("/api/kelembagaan", kelembagaanRoutes);
 app.use("/api/informasi", informasiRoutes);
+app.use("/api/ppid", ppidRoutes);
 // Root Check
 app.get("/", (req, res) => {
   res.json({ message: "API Service Desa Sumorame Active" });
