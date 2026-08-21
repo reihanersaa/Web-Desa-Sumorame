@@ -294,48 +294,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="hover:bg-blue-50 transition-colors border-b">
-                  <td class="px-4 py-3 text-center border-r">1</td>
-                  <td class="px-4 py-3 font-medium border-r">
-                    3515135552450008
-                  </td>
-                  <td class="px-4 py-3 font-semibold text-gray-800 border-r">
-                    Budi Santoso
-                  </td>
-                  <td class="px-4 py-3 text-center border-r">18-08-2026</td>
-                  <td class="px-4 py-3 text-center border-r">
-                    <span
-                      class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-bold"
-                      >Menunggu</span
-                    >
-                  </td>
-                  <td class="px-4 py-3 text-center">
-                    <div class="inline-flex gap-1">
-                      <button
-                        class="btnView bg-purple-500 hover:bg-purple-600 text-white p-1.5 rounded transition shadow-sm"
-                        title="Lihat Detail"
-                      >
-                        <span class="material-symbols-outlined text-sm"
-                          >visibility</span
-                        >
-                      </button>
-                      <button
-                        class="btnEdit bg-green-500 hover:bg-green-600 text-white p-1.5 rounded transition shadow-sm"
-                        title="Proses Surat"
-                      >
-                        <span class="material-symbols-outlined text-sm"
-                          >edit_document</span
-                        >
-                      </button>
-                      <button
-                        class="btnDelete bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition shadow-sm"
-                        title="Hapus"
-                      >
-                        <span class="material-symbols-outlined text-sm"
-                          >delete</span
-                        >
-                      </button>
-                    </div>
+                <tr>
+                  <td colspan="6" class="px-4 py-6 text-center text-gray-400">
+                    Memuat data...
                   </td>
                 </tr>
               </tbody>
@@ -387,7 +348,10 @@
           </button>
         </div>
 
-        <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-6">
+        <div
+          class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-6"
+          id="modalBody"
+        >
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <!-- Fields generated based on frontend inputs -->
             <div
@@ -558,8 +522,10 @@
       </div>
     </div>
 
-    <script src="js/SKD.js"></script>
+    <script>
+      window.JENIS_SURAT = "domisili";
+    </script>
     <script src="js/DashboardAdmin.js"></script>
-    <script src="js/Pengaduan.js"></script>
+    <script src="js/CMSSurat.js"></script>
   </body>
 </html>

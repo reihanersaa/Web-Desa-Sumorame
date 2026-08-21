@@ -90,5 +90,28 @@ const updateStatusSurat = async (req, res) => {
   }
 };
 
+// [ADMIN CMS] Hapus data surat
+const hapusSurat = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ success: false, message: "Akses ditolak! Khusus admin." });
+    }
+
+    const { id } = req.params;
+
+    const { error } = await supabase.from("surat").delete().eq("id", id);
+
+    if (error) throw error;
+    return res.status(200).json({
+      success: true,
+      message: "Surat berhasil dihapus.",
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // WAJIB DI-EXPORT SEMUANYA
-module.exports = { ajukanSurat, getSemuaSurat, updateStatusSurat };
+module.exports = { ajukanSurat, getSemuaSurat, updateStatusSurat, hapusSurat };

@@ -163,9 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.tampilForm = function (jenis) {
     // 🔒 CEK LOGIN
+    currentJenis = jenis;
     if (localStorage.getItem("login") !== "true") {
       localStorage.setItem("jenisDipilih", jenis);
-      currentJenis = jenis; // simpen jenis surat aktif buat dipake pas submit
+      // simpen jenis surat aktif buat dipake pas submit
       setTimeout(() => {
         initDatePicker();
       }, 100);
