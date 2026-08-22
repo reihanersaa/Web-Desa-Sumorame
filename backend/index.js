@@ -16,7 +16,9 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+// Gambar produk dikirim sebagai data URL. Base64 menambah ukuran sekitar 33%,
+// jadi sediakan ruang yang cukup untuk batas file 2 MB di frontend.
+app.use(express.json({ limit: "3mb" }));
 
 // Routes
 app.use("/api/auth", authRoutes);
