@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("modalProduk");
   const modalBox = document.getElementById("modalProdukBox");
   const token = localStorage.getItem("token");
+  const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
   let products = [];
 
   const escapeHTML = (value = "") => {
@@ -83,6 +84,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("inputFotoProduk")?.addEventListener("change", (event) => {
     const file = event.target.files[0];
     if (!file) return;
+    if (!file.type.startsWith("image/") || file.size > MAX_IMAGE_SIZE) {
+      event.target.value = "";
+      const preview = document.getElementById("previewFotoProduk");
+      preview.src = "";
+      preview.classList.add("hidden");
+      return Swal.fire("Foto tidak valid", "Gunakan gambar JPG, PNG, atau WebP maksimal 2 MB.", "warning");
+    }
     const reader = new FileReader();
     reader.onload = () => { const preview = document.getElementById("previewFotoProduk"); preview.src = reader.result; preview.classList.remove("hidden"); };
     reader.readAsDataURL(file);
@@ -91,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const file = document.getElementById("inputFotoProduk").files[0];
     if (!file?.type.startsWith("image/")) return Swal.fire("Foto tidak valid", "Pilih sebuah file gambar.", "warning");
+    if (file.size > MAX_IMAGE_SIZE) return Swal.fire("Foto terlalu besar", "Ukuran gambar maksimal 2 MB.", "warning");
     const reader = new FileReader();
     reader.onload = async () => {
       try {

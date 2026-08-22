@@ -4,11 +4,11 @@ const multer = require("multer");
 const router = express.Router();
 
 const {
-  getPublikasi,
-  createPublikasi,
-  updatePublikasi,
-  deletePublikasi
-} = require("../controllers/publikasiController");
+  getInformasi,
+  createInformasi,
+  updateInformasi,
+  deleteInformasi
+} = require("../controllers/informasiController");
 
 const { verifyToken } = require("../middleware/authMiddleware");
 
@@ -42,39 +42,46 @@ const upload = multer({
 
 // ==================================================
 // ROUTE GET
+// Publik / Guest
 // ==================================================
-router.get("/", getPublikasi);
+router.get(
+  "/",
+  getInformasi
+);
 
 
 // ==================================================
 // ROUTE POST
+// Admin
 // ==================================================
 router.post(
   "/",
   verifyToken,
   upload.single("gambar"),
-  createPublikasi
+  createInformasi
 );
 
 
 // ==================================================
 // ROUTE PUT
+// Admin
 // ==================================================
 router.put(
   "/:id",
   verifyToken,
   upload.single("gambar"),
-  updatePublikasi
+  updateInformasi
 );
 
 
 // ==================================================
 // ROUTE DELETE
+// Admin
 // ==================================================
 router.delete(
   "/:id",
   verifyToken,
-  deletePublikasi
+  deleteInformasi
 );
 
 

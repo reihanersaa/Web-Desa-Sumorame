@@ -1,514 +1,697 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Administrasi Admin | Website Desa Tawangsari</title>
-  <link rel="icon" href="../img/logo.png" type="image/png">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" href="css/SuratMenyurat.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administrasi Admin | Website Desa Tawangsari</title>
+    <link rel="icon" href="../img/logo.png" type="image/png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link rel="stylesheet" href="css/SuratMenyurat.css" />
+  </head>
 
-</head>
-
-<body class="bg-gray-200">
-
-<!-- HEADER -->
-<header class="fixed top-0 left-0 right-0 h-16 bg-white border-b flex z-50">
-  <div id="headerLeft"
-    class="w-64 bg-white flex items-center px-4 border-r transition-all duration-300">
-    <img src="../img/logo2.png" class="h-20 object-contain" />
-  </div>
-
-  <div class="flex-1 flex items-center justify-between px-4">
-    <div class="flex items-center">
-      <button id="burgerBtn" class="mr-4">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
-      <h1 class="font-semibold text-lg">Permohonan Administrasi Surat Menyurat</h1>
-    </div>
-
-    <a href="LoginAdmin.html" 
-      class="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition">
-      <span class="material-symbols-outlined text-base">logout</span>
-      <span>Logout</span>
-    </a>
-  </div>
-</header>
-
-<aside id="sidebar"
-  class="fixed top-16 left-0 w-64 h-[calc(100%-4rem)] bg-black text-white p-4 transition-all duration-300 -translate-x-full md:translate-x-0">
-
-  <nav class="space-y-2 text-sm">
-
-    <!-- Dashboard (Aktif) -->
-    <a href="DashboardAdmin.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">home</span>
-      <span class="menu-text">Dashboard</span>
-    </a>
-
-    <!-- Aduan -->
-    <a href="Pengaduan.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">campaign</span>
-      <span class="menu-text">Aduan</span>
-    </a>
-
-    <div>
-      <button id="suratToggle"
-        class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-        <span class="flex items-center">
-          <span class="material-symbols-outlined mr-3">mail</span>
-          <span class="menu-text">Surat Menyurat</span>
-        </span>
-        <!-- UBAH ID DI SINI -->
-        <span id="suratIcon" class="material-symbols-outlined text-sm transition-transform">
-          expand_more
-        </span>
-      </button>
-
-      <!-- Submenu Kelola Surat Menyurat -->
-      <div id="suratMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
-        <a href="SuratDomisili.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Surat Keterangan Domisili
-        </a>
-
-        <a href="CmsProduk.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Surat Keterangan Kehilangan
-        </a>
-
-        <a href="Kelembagaan.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Surat Keterangan Tanah
-        </a>
-
-        <a href="PPID.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Surat Keterangan Tidak Mampu
-        </a>
-
-      </div>
-    </div>
-
-    <!-- Publikasi -->
-    <a href="Publikasi.html" class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-      <span class="material-symbols-outlined mr-3">linked_camera</span>
-      <span class="menu-text">Publikasi</span>
-    </a>
-
-    <!-- Kelola Website (Dropdown) -->
-    <div>
-      <button id="cmsToggle"
-        class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-        <span class="flex items-center">
-          <span class="material-symbols-outlined mr-3">web</span>
-          <span class="menu-text">Kelola Website</span>
-        </span>
-        <span id="cmsIcon" class="material-symbols-outlined text-sm transition-transform">
-          expand_more
-        </span>
-      </button>
-
-      <!-- Submenu Kelola Website -->
-      <!-- Submenu Kelola Website -->
-      <div id="cmsMenu" class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
-        <a href="CmsProfil.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Profil & Hero
-        </a>
-
-        <a href="CmsProduk.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Produk Unggulan
-        </a>
-
-        <a href="Kelembagaan.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Kelembagaan
-        </a>
-
-        <a href="PPID.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          PPID
-        </a>
-
-        <a href="Informasi.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-          <span class="material-symbols-outlined text-xs">chevron_right</span>
-          Informasi
-        </a>
-
-      </div>
-    </div>
-    
-  </nav>
-</aside>
-
-<!-- OVERLAY -->
-<div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"></div>
-
-<!-- MAIN -->
-<div id="mainContent"
-  class="pt-16 md:pl-64 transition-all duration-300 min-h-screen flex flex-col">
-
-  <main class="flex-1 p-6 pb-20 fade-up">
-
-    <div class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-
-      <!-- HEADER -->
-      <div class="bg-black text-white px-6 py-3">
-        <h3 class="text-sm font-semibold">
-          Data Permohonan Surat Menyurat
-        </h3>
-      </div>
-
-      <!-- CONTROL TABLE -->
-      <div class="flex flex-col md:flex-row justify-between items-center p-4 gap-3">
-
-        <!-- SHOW ENTRIES -->
-        <div class="flex items-center gap-2 text-sm">
-          <span>Show</span>
-          <select id="entriesSelect" class="border rounded px-2 py-1">
-            <option value="5">5</option>
-            <option value="10" selected>10</option>
-            <option value="25">25</option>
-          </select>
-          <span>entries</span>
-        </div>
-
-        <!-- SEARCH -->
-        <div class="flex items-center gap-2 text-sm">
-          <span>Search:</span>
-          <input type="text" id="searchInput"
-            class="border rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:shadow-md transition"
-            placeholder="Cari data...">
-        </div>
-
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm border border-gray-300 border-collapse">
-
-          <thead class="bg-gray-100 text-gray-700">
-            <tr class="fade-up" style="animation-delay: 0.3s">
-              <th class="px-4 py-3 text-center border">No</th>
-              <th class="px-4 py-3 text-center border">NIK</th>
-              <th class="px-4 py-3 text-center border">Nama</th>
-              <th class="px-4 py-3 text-center border">Tempat Lahir</th>
-              <th class="px-4 py-3 text-center border">Tanggal Lahir</th>
-              <th class="px-4 py-3 text-center border">No Handphone</th>
-              <th class="px-4 py-3 text-center border">Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr class="hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer">
-              <td class="px-4 py-3 text-center border">1</td>
-              <td class="px-4 py-3 text-center border">35151302205020008</td>
-              <td class="px-4 py-3 text-center border">Muhammad Calvin Arbiansyah</td>
-              <td class="px-4 py-3 text-center border">Trenggalek</td>
-              <td class="px-4 py-3 text-center border">2004-06-20</td>
-              <td class="px-4 py-3 text-center border">08438912983478</td>
-              <td class="px-4 py-3 border">
-                <div class="inline-flex gap-0 overflow-hidden rounded-lg">
-                  <button class="btnView bg-purple-500 hover:bg-purple-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
-                    <span class="material-symbols-outlined text-sm">visibility</span>
-                  </button>
-
-                  <button class="btnEdit bg-green-500 hover:bg-green-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
-                    <span class="material-symbols-outlined text-sm">edit_document</span>
-                  </button>
-
-                  <button class="btnCancelDelete bg-red-500 hover:bg-red-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
-                    <span class="material-symbols-outlined text-sm">delete</span>
-                  </button>
-                </div>  
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- INFO + PAGINATION -->
-        <div class="flex justify-between items-center p-4 text-sm">
-
-          <div id="tableInfo">
-            Showing 1 to 1 of 1 entries
-          </div>
-
-          <div class="flex gap-1">
-            <button id="prevBtn"
-              class="px-3 py-1 border rounded bg-gray-200 disabled:opacity-50">
-              Previous
-            </button>
-
-            <button id="nextBtn"
-              class="px-3 py-1 border rounded bg-gray-200 disabled:opacity-50">
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="text-center p-4 border-t">
-    <p class="text-sm text-gray-500">
-      @ 2026 Instalasi Teknologi Dan Informasi, Kantor Desa Tawangsari.
-    </p>
-  </footer>
-
-</div>
-
-<!-- MODAL MODERN -->
-<div id="modalView"
-  class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center
-  opacity-0 transition-opacity duration-300 ease-out">
-
-  <!-- BOX -->
-  <div id="modalBox"
-    class="bg-white w-[95%] md:w-[70%] h-[85%] rounded-2xl shadow-2xl flex flex-col overflow-hidden
-    transform scale-90 opacity-0 transition-all duration-300 ease-out">
-
+  <body class="bg-gray-200">
     <!-- HEADER -->
-    <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-400 to-yellow-300 text-white">
-      
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-3xl">description</span>
-        <h2 class="text-lg font-semibold">Detail Administrasi Surat Menyurat</h2>
+    <header class="fixed top-0 left-0 right-0 h-16 bg-white border-b flex z-50">
+      <div
+        id="headerLeft"
+        class="w-64 bg-white flex items-center px-4 border-r transition-all duration-300"
+      >
+        <img src="../img/logo2.png" class="h-20 object-contain" />
       </div>
 
-      <button id="closeModal" class="hover:scale-110 transition">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </div>
-
-    <!-- CONTENT (SCROLL DI SINI ✅) -->
-    <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-6">
-
-      <!-- GRID INFO -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Permohonan</p>
-          <p class="font-semibold text-gray-800">Surat Keterangan Tidak Mampu</p>
+      <div class="flex-1 flex items-center justify-between px-4">
+        <div class="flex items-center">
+          <button id="burgerBtn" class="mr-4">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <h1 class="font-semibold text-lg">
+            Permohonan Administrasi Surat Menyurat
+          </h1>
         </div>
 
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Nomor Induk Kependudukan(NIK)</p>
-          <p class="font-semibold text-gray-800">35151302205020008</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Nama Pemohon</p>
-          <p class="font-semibold text-gray-800">Muhammad Calvin Arbiansyah</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Tempat Lahir</p>
-          <p class="font-semibold text-gray-800">Trenggalek</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Tanggal Lahir</p>
-          <p class="font-semibold text-gray-800">2004-06-20</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">No. Telphone</p>
-          <p class="font-semibold text-gray-800">085673987217</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Alamat Email</p>
-          <p class="font-semibold text-gray-800">Calvinjmk@gmail.go.id</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Agama</p>
-          <p class="font-semibold text-gray-800">Kristen</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Jenis Kelamin</p>
-          <p class="font-semibold text-gray-800">Lanang</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Status Nikah</p>
-          <p class="font-semibold text-gray-800">Belum Kawen</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Pekerjaan</p>
-          <p class="font-semibold text-gray-800">Pengusaha Sukses</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Nama Petugas</p>
-          <p class="font-semibold text-gray-800">-</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Tanggal Tanggapan</p>
-          <p class="font-semibold text-gray-800">-</p>
-        </div>
+        <a
+          href="LoginAdmin.html"
+          class="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition"
+        >
+          <span class="material-symbols-outlined text-base">logout</span>
+          <span>Logout</span>
+        </a>
       </div>
+    </header>
 
-      <!-- Alamat -->
-      <div class="bg-white p-5 rounded-lg shadow">
-        <p class="text-sm text-gray-500 mb-2">Alamat Pemohon</p>
-        <p class="text-gray-800 font-semibold leading-relaxed">
-          Prumahan Griya Taman Asri Blok HG-8 RT/RW 028/006, Tawangsari Timur, Tawangsari, Kec. Taman, Kabupaten Sidoarjo, Jawa Timur 61257
+    <aside
+      id="sidebar"
+      class="fixed top-16 left-0 w-64 h-[calc(100%-4rem)] bg-black text-white p-4 transition-all duration-300 -translate-x-full md:translate-x-0"
+    >
+      <nav class="space-y-2 text-sm">
+        <!-- Dashboard (Aktif) -->
+        <a
+          href="DashboardAdmin.html"
+          class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+        >
+          <span class="material-symbols-outlined mr-3">home</span>
+          <span class="menu-text">Dashboard</span>
+        </a>
+
+        <!-- Aduan -->
+        <a
+          href="Pengaduan.html"
+          class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+        >
+          <span class="material-symbols-outlined mr-3">campaign</span>
+          <span class="menu-text">Aduan</span>
+        </a>
+
+        <div>
+          <button
+            id="suratToggle"
+            class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+          >
+            <span class="flex items-center">
+              <span class="material-symbols-outlined mr-3">mail</span>
+              <span class="menu-text">Surat Menyurat</span>
+            </span>
+            <!-- UBAH ID DI SINI -->
+            <span
+              id="suratIcon"
+              class="material-symbols-outlined text-sm transition-transform"
+            >
+              expand_more
+            </span>
+          </button>
+
+          <!-- Submenu Kelola Surat Menyurat -->
+          <div
+            id="suratMenu"
+            class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out"
+          >
+            <a
+              href="SuratDomisili.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Surat Keterangan Domisili
+            </a>
+
+            <a
+              href="CmsProduk.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Surat Keterangan Kehilangan
+            </a>
+
+            <a
+              href="Kelembagaan.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Surat Keterangan Tanah
+            </a>
+
+            <a
+              href="PPID.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Surat Keterangan Tidak Mampu
+            </a>
+          </div>
+        </div>
+
+        <!-- Publikasi -->
+        <a
+          href="Publikasi.html"
+          class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+        >
+          <span class="material-symbols-outlined mr-3">linked_camera</span>
+          <span class="menu-text">Publikasi</span>
+        </a>
+
+        <!-- Kelola Website (Dropdown) -->
+        <div>
+          <button
+            id="cmsToggle"
+            class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+          >
+            <span class="flex items-center">
+              <span class="material-symbols-outlined mr-3">web</span>
+              <span class="menu-text">Kelola Website</span>
+            </span>
+            <span
+              id="cmsIcon"
+              class="material-symbols-outlined text-sm transition-transform"
+            >
+              expand_more
+            </span>
+          </button>
+
+          <!-- Submenu Kelola Website -->
+          <!-- Submenu Kelola Website -->
+          <div
+            id="cmsMenu"
+            class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out"
+          >
+            <a
+              href="CmsProfil.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Profil & Hero
+            </a>
+
+            <a
+              href="CmsProduk.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Produk Unggulan
+            </a>
+
+            <a
+              href="Kelembagaan.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Kelembagaan
+            </a>
+
+            <a
+              href="PPID.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              PPID
+            </a>
+
+            <a
+              href="Informasi.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Informasi
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- OVERLAY -->
+    <div
+      id="overlay"
+      class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"
+    ></div>
+
+    <!-- MAIN -->
+    <div
+      id="mainContent"
+      class="pt-16 md:pl-64 transition-all duration-300 min-h-screen flex flex-col"
+    >
+      <main class="flex-1 p-6 pb-20 fade-up">
+        <div
+          class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+        >
+          <!-- HEADER -->
+          <div class="bg-black text-white px-6 py-3">
+            <h3 class="text-sm font-semibold">
+              Data Permohonan Surat Menyurat
+            </h3>
+          </div>
+
+          <!-- CONTROL TABLE -->
+          <div
+            class="flex flex-col md:flex-row justify-between items-center p-4 gap-3"
+          >
+            <!-- SHOW ENTRIES -->
+            <div class="flex items-center gap-2 text-sm">
+              <span>Show</span>
+              <select id="entriesSelect" class="border rounded px-2 py-1">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+              </select>
+              <span>entries</span>
+            </div>
+
+            <!-- SEARCH -->
+            <div class="flex items-center gap-2 text-sm">
+              <span>Search:</span>
+              <input
+                type="text"
+                id="searchInput"
+                class="border rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:shadow-md transition"
+                placeholder="Cari data..."
+              />
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table
+              class="w-full text-sm border border-gray-300 border-collapse"
+            >
+              <thead class="bg-gray-100 text-gray-700">
+                <tr class="fade-up" style="animation-delay: 0.3s">
+                  <th class="px-4 py-3 text-center border">No</th>
+                  <th class="px-4 py-3 text-center border">NIK</th>
+                  <th class="px-4 py-3 text-center border">Nama</th>
+                  <th class="px-4 py-3 text-center border">Tempat Lahir</th>
+                  <th class="px-4 py-3 text-center border">Tanggal Lahir</th>
+                  <th class="px-4 py-3 text-center border">No Handphone</th>
+                  <th class="px-4 py-3 text-center border">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr
+                  class="hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer"
+                >
+                  <td class="px-4 py-3 text-center border">1</td>
+                  <td class="px-4 py-3 text-center border">
+                    35151302205020008
+                  </td>
+                  <td class="px-4 py-3 text-center border">
+                    Muhammad Calvin Arbiansyah
+                  </td>
+                  <td class="px-4 py-3 text-center border">Trenggalek</td>
+                  <td class="px-4 py-3 text-center border">2004-06-20</td>
+                  <td class="px-4 py-3 text-center border">08438912983478</td>
+                  <td class="px-4 py-3 border">
+                    <div class="inline-flex gap-0 overflow-hidden rounded-lg">
+                      <button
+                        class="btnView bg-purple-500 hover:bg-purple-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded"
+                      >
+                        <span class="material-symbols-outlined text-sm"
+                          >visibility</span
+                        >
+                      </button>
+
+                      <button
+                        class="btnEdit bg-green-500 hover:bg-green-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded"
+                      >
+                        <span class="material-symbols-outlined text-sm"
+                          >edit_document</span
+                        >
+                      </button>
+
+                      <button
+                        class="btnCancelDelete bg-red-500 hover:bg-red-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded"
+                      >
+                        <span class="material-symbols-outlined text-sm"
+                          >delete</span
+                        >
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- INFO + PAGINATION -->
+            <div class="flex justify-between items-center p-4 text-sm">
+              <div id="tableInfo">Showing 1 to 1 of 1 entries</div>
+
+              <div class="flex gap-1">
+                <button
+                  id="prevBtn"
+                  class="px-3 py-1 border rounded bg-gray-200 disabled:opacity-50"
+                >
+                  Previous
+                </button>
+
+                <button
+                  id="nextBtn"
+                  class="px-3 py-1 border rounded bg-gray-200 disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="text-center p-4 border-t">
+        <p class="text-sm text-gray-500">
+          @ 2026 Instalasi Teknologi Dan Informasi, Kantor Desa Tawangsari.
         </p>
+      </footer>
+    </div>
+
+    <!-- MODAL MODERN -->
+    <div
+      id="modalView"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center opacity-0 transition-opacity duration-300 ease-out"
+    >
+      <!-- BOX -->
+      <div
+        id="modalBox"
+        class="bg-white w-[95%] md:w-[70%] h-[85%] rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-90 opacity-0 transition-all duration-300 ease-out"
+      >
+        <!-- HEADER -->
+        <div
+          class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-400 to-yellow-300 text-white"
+        >
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-3xl">description</span>
+            <h2 class="text-lg font-semibold">
+              Detail Administrasi Surat Menyurat
+            </h2>
+          </div>
+
+          <button id="closeModal" class="hover:scale-110 transition">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <!-- CONTENT (SCROLL DI SINI ✅) -->
+        <div
+          class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-6"
+          id="modalBody"
+        >
+          <!-- GRID INFO -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Permohonan</p>
+              <p class="font-semibold text-gray-800">
+                Surat Keterangan Tidak Mampu
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">
+                Nomor Induk Kependudukan(NIK)
+              </p>
+              <p class="font-semibold text-gray-800">35151302205020008</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Nama Pemohon</p>
+              <p class="font-semibold text-gray-800">
+                Muhammad Calvin Arbiansyah
+              </p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Tempat Lahir</p>
+              <p class="font-semibold text-gray-800">Trenggalek</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Tanggal Lahir</p>
+              <p class="font-semibold text-gray-800">2004-06-20</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">No. Telphone</p>
+              <p class="font-semibold text-gray-800">085673987217</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Alamat Email</p>
+              <p class="font-semibold text-gray-800">Calvinjmk@gmail.go.id</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Agama</p>
+              <p class="font-semibold text-gray-800">Kristen</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Jenis Kelamin</p>
+              <p class="font-semibold text-gray-800">Lanang</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Status Nikah</p>
+              <p class="font-semibold text-gray-800">Belum Kawen</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Pekerjaan</p>
+              <p class="font-semibold text-gray-800">Pengusaha Sukses</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Nama Petugas</p>
+              <p class="font-semibold text-gray-800">-</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="text-xs text-gray-500 mb-1">Tanggal Tanggapan</p>
+              <p class="font-semibold text-gray-800">-</p>
+            </div>
+          </div>
+
+          <!-- Alamat -->
+          <div class="bg-white p-5 rounded-lg shadow">
+            <p class="text-sm text-gray-500 mb-2">Alamat Pemohon</p>
+            <p class="text-gray-800 font-semibold leading-relaxed">
+              Prumahan Griya Taman Asri Blok HG-8 RT/RW 028/006, Tawangsari
+              Timur, Tawangsari, Kec. Taman, Kabupaten Sidoarjo, Jawa Timur
+              61257
+            </p>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="px-6 py-4 border-t flex justify-end gap-3 bg-white">
+          <button
+            id="btnClose2"
+            class="px-4 py-2 rounded bg-gray-500 hover:bg-gray-600 text-white transition"
+          >
+            Tutup
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="px-6 py-4 border-t flex justify-end gap-3 bg-white">
-      <button id="btnClose2"
-        class="px-4 py-2 rounded bg-gray-500 hover:bg-gray-600 text-white transition">
-        Tutup
-      </button>
+    <!-- ================= MODAL EDIT ================= -->
+    <div
+      id="modalEdit"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center opacity-0 transition-opacity duration-300 ease-out"
+    >
+      <div
+        id="modalEditBox"
+        class="bg-white w-[95%] md:w-[60%] h-[85%] rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-90 opacity-0 transition-all duration-300 ease-out"
+      >
+        <!-- HEADER -->
+        <div
+          class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-400 to-yellow-300 text-white"
+        >
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-3xl"
+              >edit_document</span
+            >
+            <h2 class="text-lg font-semibold">
+              Edit Permohonan Surat Menyurat
+            </h2>
+          </div>
+
+          <button id="closeEdit" class="hover:scale-110 transition">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <!-- FORM -->
+        <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-4">
+          <div>
+            <label class="text-sm text-gray-600">Permohonan</label>
+            <input
+              type="text"
+              value="Surat Keterangan Tidak Mampu"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600"
+              >Nomor Induk Kependudukan(NIK)</label
+            >
+            <input
+              type="text"
+              value="35151302205020008"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Nama Pemohon</label>
+            <input
+              type="text"
+              value="Muhammad Calvin Arbiansyah"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Tempat Lahir</label>
+            <input
+              type="text"
+              value="Trenggalek"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Tanggal Lahir</label>
+            <input
+              type="input"
+              value="2004-06-20"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">No. Telephone</label>
+            <input
+              type="input"
+              value="085673987217"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Alamat Email</label>
+            <input
+              type="input"
+              value="Calvinjmk@gmail.go.id"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Agama</label>
+            <input
+              type="input"
+              value="Kristen"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Jenis Kelamin</label>
+            <input
+              type="input"
+              value="Lanang"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Status Nikah</label>
+            <input
+              type="input"
+              value="Belum Kawin"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Tanggal Pengajuan</label>
+            <input
+              type="input"
+              value="2026-04-17"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Alamat Pemohon</label>
+            <textarea
+              rows="2"
+              readonly
+              class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+            >
+Prumahan Griya Taman Asri Blok HG-8 RT/RW 028/006, Tawangsari Timur, Tawangsari, Kec. Taman, Kabupaten Sidoarjo, Jawa Timur 61257</textarea
+            >
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Nama Petugas</label>
+            <input
+              type="text"
+              id="namaPetugas"
+              placeholder="Masukkan nama petugas"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-600">Pilih Tanggal Tanggapan</label>
+            <input
+              type="text"
+              id="tanggalTanggapan"
+              placeholder="Pilih tanggal tanggapan"
+              autocomplete="off"
+              class="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="p-4 border-t flex justify-end gap-2">
+          <button
+            id="btnCloseEdit"
+            class="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Batal
+          </button>
+
+          <button
+            class="btnSimpan bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Simpan
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ================= MODAL EDIT ================= -->
-<div id="modalEdit"
-  class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center
-  opacity-0 transition-opacity duration-300 ease-out">
-
-  <div id="modalEditBox"
-    class="bg-white w-[95%] md:w-[60%] h-[85%] rounded-2xl shadow-2xl flex flex-col overflow-hidden
-    transform scale-90 opacity-0 transition-all duration-300 ease-out">
-
-    <!-- HEADER -->
-    <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-400 to-yellow-300 text-white">
-  
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-3xl">edit_document</span>
-        <h2 class="text-lg font-semibold">Edit Permohonan Surat Menyurat</h2>
-      </div>
-
-      <button id="closeEdit" class="hover:scale-110 transition">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </div>
-
-    <!-- FORM -->
-    <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-4">
-
-      <div>
-        <label class="text-sm text-gray-600">Permohonan</label>
-        <input type="text" value="Surat Keterangan Tidak Mampu" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Nomor Induk Kependudukan(NIK)</label>
-        <input type="text" value="35151302205020008" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Nama Pemohon</label>
-        <input type="text" value="Muhammad Calvin Arbiansyah" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Tempat Lahir</label>
-        <input type="text" value="Trenggalek" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Tanggal Lahir</label>
-        <input type="input" value="2004-06-20" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">No. Telephone</label>
-        <input type="input" value="085673987217" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Alamat Email</label>
-        <input type="input" value="Calvinjmk@gmail.go.id" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Agama</label>
-        <input type="input" value="Kristen" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Jenis Kelamin</label>
-        <input type="input" value="Lanang" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Status Nikah</label>
-        <input type="input" value="Belum Kawin" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Tanggal Pengajuan</label>
-        <input type="input" value="2026-04-17" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Alamat Pemohon</label>
-        <textarea rows="2" readonly
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed">Prumahan Griya Taman Asri Blok HG-8 RT/RW 028/006, Tawangsari Timur, Tawangsari, Kec. Taman, Kabupaten Sidoarjo, Jawa Timur 61257</textarea>
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Nama Petugas</label>
-        <input type="text" id="namaPetugas"
-          placeholder="Masukkan nama petugas"
-          class="w-full border rounded px-3 py-2 mt-1 
-          focus:outline-none focus:ring-2 focus:ring-blue-400">
-      </div>
-
-      <div>
-        <label class="text-sm text-gray-600">Pilih Tanggal Tanggapan</label>
-        <input type="text" id="tanggalTanggapan"
-          placeholder="Pilih tanggal tanggapan"
-          autocomplete="off"
-          class="w-full border rounded px-3 py-2 mt-1 
-          focus:outline-none focus:ring-2 focus:ring-blue-400">
-      </div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="p-4 border-t flex justify-end gap-2">
-      <button id="btnCloseEdit"
-        class="bg-gray-500 text-white px-4 py-2 rounded">
-        Batal
-      </button>
-
-      <button class="btnSimpan bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-        Simpan
-      </button>
-    </div>
-
-  </div>
-</div>
-
-<script src="js/DashboardAdmin.js"></script>
-<script src="js/SuratMenyurat.js"></script>
-
-
-</body>
+    <script>
+      window.JENIS_SURAT = "all";
+    </script>
+    <script src="js/DashboardAdmin.js"></script>
+    <script src="js/CMSSurat.js"></script>
+  </body>
 </html>
