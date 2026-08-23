@@ -147,6 +147,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("viewJudul").innerText = aduan.judul_aduan;
     document.getElementById("viewEmail").innerText = aduan.email_pelapor;
     document.getElementById("viewIsi").innerText = aduan.isi_aduan;
+    document.getElementById("viewWa").innerText = aduan.no_wa || "Tidak ada data";
+    document.getElementById("viewTanggapan").innerText = aduan.tanggapan_admin || "Belum ditanggapi.";
+    document.getElementById("viewTanggalTanggapan").innerText = aduan.tanggal_tanggapan || "-";
 
     // Ubah format tanggal bawaan database menjadi tanggal standar Indonesia
     const dateObj = new Date(aduan.created_at);
@@ -185,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // INJEKSI DATA DINAMIS KE FORM READONLY (MODAL EDIT)
     document.getElementById("editNama").value = aduan.nama_pelapor;
     document.getElementById("editEmail").value = aduan.email_pelapor;
+    document.getElementById("editWa").value = aduan.no_wa || "Tidak ada nomor";
     document.getElementById("editJudul").value = aduan.judul_aduan;
     document.getElementById("editIsi").value = aduan.isi_aduan;
 

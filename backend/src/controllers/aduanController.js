@@ -159,4 +159,32 @@ const tanggapiAduan = async (req, res) => {
   }
 };
 
-module.exports = { buatAduan, getSemuaAduan, tanggapiAduan };
+// 4. Fungsi DELETE Admin
+const hapusAduan = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Hapus data dari tabel aduan di Supabase berdasarkan ID
+    const { data, error } = await supabase
+      .from("aduan")
+      .delete()
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+
+    return res.status(200).json({
+      success: true,
+      message: "Data aduan berhasil dihapus!",
+      data: data,
+    });
+  } catch (error) {
+    console.error("Error Hapus Aduan:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan saat menghapus data aduan.",
+    });
+  }
+};
+
+module.exports = { buatAduan, getSemuaAduan, tanggapiAduan, hapusAduan };

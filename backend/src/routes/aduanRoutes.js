@@ -6,7 +6,7 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
 const { verifyToken } = require("../middleware/authMiddleware");
-const { buatAduan, getSemuaAduan, tanggapiAduan } = require("../controllers/aduanController");
+const { buatAduan, getSemuaAduan, tanggapiAduan, hapusAduan } = require('../controllers/aduanController');
 
 // 1. Rute POST (Warga) -> HARUS ADA upload.single("file_bukti")
 router.post("/", verifyToken, upload.single("file_bukti"), buatAduan);
@@ -19,5 +19,7 @@ router.put("/:id", upload.fields([
   { name: 'lampiran_gambar', maxCount: 1 },
   { name: 'lampiran_file', maxCount: 1 }
 ]), tanggapiAduan);
+
+router.delete('/:id', hapusAduan);
 
 module.exports = router;
