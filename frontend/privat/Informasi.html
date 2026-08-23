@@ -216,28 +216,7 @@
             </tr>
           </thead>
 
-          <tbody>
-            <tr class="hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer">
-              <td class="px-4 py-3 text-center border">1</td>
-              <td class="px-4 py-3 text-center border">Berita Terbaru</td>
-              <td class="px-4 py-3 text-center border">Kegiatan Kuliah Kerja Nyata (KKN)....</td>
-              <td class="px-4 py-3 text-center border">Dalam upaya mewujudkan Desa Sumorame.....</td>
-              <td class="px-4 py-3 text-center border">
-                <div class="inline-flex gap-0 overflow-hidden rounded-lg">
-                  <button class="btnView bg-purple-500 hover:bg-purple-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
-                    <span class="material-symbols-outlined text-sm">visibility</span>
-                  </button>
-
-                  <button class="btnEdit bg-green-500 hover:bg-green-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
-                    <span class="material-symbols-outlined text-sm">edit_document</span>
-                  </button>
-
-                  <button class="btnCancelDelete bg-red-500 hover:bg-red-600 hover:shadow-lg active:scale-90 transition-all duration-150 text-white p-2 rounded">
-                    <span class="material-symbols-outlined text-sm">delete</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
+          <tbody id="informasiTableBody">
           </tbody>
         </table>
         <!-- INFO + PAGINATION -->
@@ -293,24 +272,24 @@
 
       <div>
         <label>Judul Kegiatan</label>
-        <input type="text" placeholder="Masukkan Judul Kegiatan" class="w-full border rounded px-3 py-2 mt-1">
+        <input type="text" id="judulTambah" placeholder="Masukkan Judul Kegiatan" class="w-full border rounded px-3 py-2 mt-1">
       </div>
 
       <div>
         <label>Isi Kegiatan</label>
-        <textarea placeholder="Masukkan Isi Kegiatan" 
+        <textarea id="isiTambah" placeholder="Masukkan Isi Kegiatan" 
           class="w-full border rounded px-3 py-2 mt-1"></textarea>
       </div>
 
       <div>
         <label>Penjelasan Kegiatan</label>
-        <textarea placeholder="Masukkan Penjelasan Kegiatan" 
+        <textarea id="penjelasanTambah" placeholder="Masukkan Penjelasan Kegiatan" 
           class="w-full border rounded px-3 py-2 mt-1"></textarea>
       </div>
 
       <div>
         <label>Gambar Kegiatan</label>
-        <input type="file" class="w-full mt-1" accept="image/png, image/jpeg">
+        <input type="file" id="gambarTambah" class="w-full mt-1" accept="image/png, image/jpeg">
         <p class="text-xs text-gray-500 mt-1 flex items-center gap-1 leading-relaxed">
           <span class="material-symbols-outlined text-sm">info</span>
           Format: JPG, PNG. Maksimal ukuran 2MB.
@@ -346,63 +325,116 @@
 
     <!-- HEADER -->
     <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-400 to-yellow-300 text-white">
-      
+
       <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-3xl">description</span>
-        <h2 class="text-lg font-semibold">Detail Informasi</h2>
+        <span class="material-symbols-outlined text-3xl">
+          description
+        </span>
+
+        <h2 class="text-lg font-semibold">
+          Detail Informasi
+        </h2>
       </div>
 
       <button id="closeModal" class="hover:scale-110 transition">
-        <span class="material-symbols-outlined">close</span>
+        <span class="material-symbols-outlined">
+          close
+        </span>
       </button>
+
     </div>
 
-    <!-- CONTENT (SCROLL DI SINI ✅) -->
+
+    <!-- CONTENT -->
     <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-6">
 
-      <!-- GRID INFO -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
+
+        <!-- JUDUL -->
         <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Judul</p>
-          <p class="font-semibold text-gray-800">Berita Terbaru</p>
+
+          <p class="text-xs text-gray-500 mb-1">
+            Judul
+          </p>
+
+          <p
+            id="viewJudul"
+            class="font-semibold text-gray-800"
+          >
+            -
+          </p>
+
         </div>
 
+
+        <!-- ISI BERITA -->
         <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Isi Berita</p>
-          <p class="font-semibold text-gray-800">Kegiatan Kuliah Kerja Nyata (KKN) di Desa Sumorame yang diikuti oleh mahasiswa Universitas Maarif Hasyim Latif (UMAHA). Berbagai program kerja dilaksanakan bersama pemerintah desa dan masyarakat sebagai bentuk pengabdian kepada masyarakat, meliputi Penguatan Desa Berkelanjutan melalui Sekolah Desa sebagai program utama, didukung edukasi kesehatan, inovasi digital, ekonomi kreatif, literasi hukum, dan pemberdayaan masyarakat.</p>
+
+          <p class="text-xs text-gray-500 mb-1">
+            Isi Berita
+          </p>
+
+          <p
+            id="viewIsi"
+            class="font-semibold text-gray-800 whitespace-pre-line"
+          >
+            -
+          </p>
+
         </div>
 
-        <div class="bg-white p-4 rounded-lg shadow">
-          <p class="text-xs text-gray-500 mb-1">Penjelasan Berita</p>
-          <p class="font-semibold text-gray-800">Dalam upaya mewujudkan Desa Sumorame yang modern dan berbasis teknologi, Pemerintah Desa Sumorame terus mengembangkan berbagai inovasi digital untuk meningkatkan kualitas pelayanan kepada masyarakat. Program Desa Sumorame Digital menjadi langkah strategis dalam mendukung administrasi yang lebih cepat, transparan, dan efisien.
 
-            Melalui program ini, pemerintah desa bersama mahasiswa Kuliah Kerja Nyata (KKN) Universitas Maarif Hasyim Latif (UMAHA) berkolaborasi dalam mengembangkan layanan digital yang dapat memudahkan masyarakat mengakses informasi desa, administrasi, serta berbagai layanan publik secara lebih praktis.
+        <!-- PENJELASAN BERITA -->
+        <div class="bg-white p-4 rounded-lg shadow md:col-span-2">
 
-            Selain pengembangan sistem digital, berbagai kegiatan edukasi juga dilaksanakan untuk meningkatkan literasi teknologi masyarakat dan perangkat desa. Pelatihan penggunaan media digital, pengelolaan data, serta pemanfaatan teknologi informasi menjadi bagian dari upaya mendukung transformasi digital di Desa Sumorame.
+          <p class="text-xs text-gray-500 mb-1">
+            Penjelasan Berita
+          </p>
 
-            Kehadiran Desa Sumorame Digital diharapkan mampu memberikan pelayanan publik yang lebih efektif, mempercepat penyampaian informasi, serta mendukung promosi potensi desa, termasuk sektor UMKM, pendidikan, dan kegiatan kemasyarakatan agar semakin dikenal oleh masyarakat luas.
+          <p
+            id="viewPenjelasan"
+            class="font-semibold text-gray-800 whitespace-pre-line"
+          >
+            -
+          </p>
 
-            Dengan semangat kolaborasi antara pemerintah desa, masyarakat, dan mahasiswa KKN UMAHA, Desa Sumorame terus berkomitmen mengembangkan inovasi digital sebagai fondasi menuju desa yang maju, mandiri, dan adaptif terhadap perkembangan teknologi di masa depan.
-
-            #DesaSumorame #DesaDigital #KKNUMAHA #TransformasiDigital #DesaMaju</p>
         </div>
+
+
         <!-- PREVIEW GAMBAR -->
-        <div class="bg-white p-5 rounded-lg shadow">
-          <p class="text-sm text-gray-500 mb-3">Foto Bukti</p>
+        <div class="bg-white p-5 rounded-lg shadow md:col-span-2">
 
-          <img src="../img/Kegiatan6.png" class="rounded-lg w-full object-cover border">
+          <p class="text-sm text-gray-500 mb-3">
+            Gambar Informasi
+          </p>
+
+          <img
+            id="viewGambar"
+            src=""
+            alt="Gambar informasi"
+            class="rounded-lg w-full max-h-96 object-contain border hidden"
+          >
+
         </div>
+
       </div>
+
     </div>
+
 
     <!-- FOOTER -->
     <div class="px-6 py-4 border-t flex justify-end gap-3 bg-white">
-      <button id="btnClose2"
-        class="px-4 py-2 rounded bg-gray-500 hover:bg-gray-600 text-white transition">
+
+      <button
+        id="btnClose2"
+        class="px-4 py-2 rounded bg-gray-500 hover:bg-gray-600 text-white transition"
+      >
         Tutup
       </button>
+
     </div>
+
   </div>
 </div>
 
@@ -433,48 +465,73 @@
 
       <div>
         <label class="text-sm text-gray-600">Judul</label>
-        <input type="text" id="Judul" value="Berita Terbaru"
-          class="w-full border rounded px-3 py-2 mt-1 bg-gray-100">
+        <input type="text" id="judulEdit" class="w-full border rounded px-3 py-2 mt-1 bg-gray-100">
       </div>
 
       <div>
         <label class="text-sm text-gray-600">Isi Berita</label>
         <textarea
-          id="Isi"
+          id="isiEdit"
           rows="5"
           class="w-full border rounded px-3 py-2 mt-1 bg-gray-100"
-        >Kegiatan Kuliah Kerja Nyata (KKN) di Desa Sumorame yang diikuti oleh mahasiswa Universitas Maarif Hasyim Latif (UMAHA). Berbagai program kerja dilaksanakan bersama pemerintah desa dan masyarakat sebagai bentuk pengabdian kepada masyarakat, meliputi Penguatan Desa Berkelanjutan melalui Sekolah Desa sebagai program utama, didukung edukasi kesehatan, inovasi digital, ekonomi kreatif, literasi hukum, dan pemberdayaan masyarakat.</textarea>
+        ></textarea>
       </div>
 
 
       <div>
         <label class="text-sm text-gray-600">Penjelasan Berita</label>
         <textarea
-          id="Penjelasan"
-          rows="12"
+          id="penjelasanEdit"
+          rows="10"
           class="w-full border rounded px-3 py-2 mt-1 bg-gray-100"
-        >Dalam upaya mewujudkan Desa Sumorame yang modern dan berbasis teknologi, Pemerintah Desa Sumorame terus mengembangkan berbagai inovasi digital untuk meningkatkan kualitas pelayanan kepada masyarakat. Program Desa Sumorame Digital menjadi langkah strategis dalam mendukung administrasi yang lebih cepat, transparan, dan efisien.
-
-        Melalui program ini, pemerintah desa bersama mahasiswa Kuliah Kerja Nyata (KKN) Universitas Maarif Hasyim Latif (UMAHA) berkolaborasi dalam mengembangkan layanan digital yang dapat memudahkan masyarakat mengakses informasi desa, administrasi, serta berbagai layanan publik secara lebih praktis.
-
-        Selain pengembangan sistem digital, berbagai kegiatan edukasi juga dilaksanakan untuk meningkatkan literasi teknologi masyarakat dan perangkat desa. Pelatihan penggunaan media digital, pengelolaan data, serta pemanfaatan teknologi informasi menjadi bagian dari upaya mendukung transformasi digital di Desa Sumorame.
-
-        Kehadiran Desa Sumorame Digital diharapkan mampu memberikan pelayanan publik yang lebih efektif, mempercepat penyampaian informasi, serta mendukung promosi potensi desa, termasuk sektor UMKM, pendidikan, dan kegiatan kemasyarakatan agar semakin dikenal oleh masyarakat luas.
-
-        Dengan semangat kolaborasi antara pemerintah desa, masyarakat, dan mahasiswa KKN UMAHA, Desa Sumorame terus berkomitmen mengembangkan inovasi digital sebagai fondasi menuju desa yang maju, mandiri, dan adaptif terhadap perkembangan teknologi di masa depan.
-
-        #DesaSumorame #DesaDigital #KKNUMAHA #TransformasiDigital #DesaMaju</textarea>
+        ></textarea>
       </div>
 
+       <!-- PREVIEW GAMBAR LAMA -->
       <div>
-        <label class="text-sm text-gray-600">Upload Gambar</label>
-        <input type="file" id="uploadGambar" class="w-full mt-1" accept="image/png, image/jpeg">
 
-        <p class="text-xs text-gray-500 mt-1 flex items-center gap-1 leading-relaxed">
-          <span class="material-symbols-outlined text-sm">info</span>
-          Format: JPG, PNG. Maksimal ukuran 2MB.
-        </p>
+        <label class="text-sm text-gray-600">
+          Gambar Saat Ini
+        </label>
+
+        <img
+          id="previewGambarEdit"
+          src=""
+          alt="Gambar informasi"
+          class="w-full max-h-60 object-contain rounded mt-2 border hidden"
+        >
+
       </div>
+
+
+      <!-- GAMBAR BARU -->
+      <div>
+
+        <label class="text-sm text-gray-600">
+          Ganti Gambar
+        </label>
+
+        <input
+          type="file"
+          id="gambarEdit"
+          class="w-full mt-1"
+          accept="image/png, image/jpeg"
+        >
+
+        <p
+          class="text-xs text-gray-500 mt-1 flex items-center gap-1 leading-relaxed"
+        >
+
+          <span class="material-symbols-outlined text-sm">
+            info
+          </span>
+
+          Kosongkan jika gambar tidak ingin diganti.
+
+        </p>
+
+      </div>
+
     </div>
 
     <!-- FOOTER -->
@@ -484,7 +541,7 @@
         Batal
       </button>
 
-      <button class="btnSimpan bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      <button id="btnSimpanEdit" class="btnSimpan bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
         Simpan
       </button>
     </div>

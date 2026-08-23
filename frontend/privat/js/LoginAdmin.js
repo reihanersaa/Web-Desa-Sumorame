@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     modal.classList.add("show");
   });
-  a;
+
   closeModal.addEventListener("click", function () {
     modal.classList.remove("show");
   });
@@ -71,6 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("token", result.token);
         localStorage.setItem("user", JSON.stringify(result.data));
         localStorage.setItem("login", "true");
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("admin", JSON.stringify(result.data));
 
         const redirectAduan = localStorage.getItem("redirectAduan");
 

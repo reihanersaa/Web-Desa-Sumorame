@@ -1,14 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
-
   function initDatePicker() {
     flatpickr(".datepicker", {
       dateFormat: "Y-m-d",
       altInput: true,
       altFormat: "d F Y",
-      allowInput: true
+      allowInput: true,
     });
   }
-  
+
+  let currentJenis = null; // buat nyimpen jenis surat yang lagi kebuka, dipake pas submit
+
+  window.addEventListener("load", () => {
+    const jenisPending = localStorage.getItem("jenisDipilih");
+    if (jenisPending && localStorage.getItem("login") === "true") {
+      localStorage.removeItem("jenisDipilih");
+      tampilForm(jenisPending);
+    }
+  });
+
   // ================= SET DEFAULT LOGIN =================
   if (!localStorage.getItem("login")) {
     localStorage.setItem("login", "false");
@@ -21,17 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeLoginModal = document.getElementById("closeLoginModal");
 
   btnLogin.addEventListener("click", () => {
-    // simulasi login
-    localStorage.setItem("login", "true");
-
-    // ambil jenis yang tadi dipilih
-    const jenis = localStorage.getItem("jenisDipilih");
-
-    // tutup modal
-    tutupLoginModal();
-
-    // langsung lanjut buka form
-    if (jenis) tampilForm(jenis);
+    // Simpan halaman ini biar abis login beneran, balik lagi ke sini otomatis
+    localStorage.setItem("redirectAfterLogin", "AdminP.html");
+    window.location.href = "login.html";
   });
 
   function tutupLoginModal() {
@@ -67,7 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.addEventListener("click", (e) => {
-    if (isOpen && !mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+    if (
+      isOpen &&
+      !mobileMenu.contains(e.target) &&
+      !menuBtn.contains(e.target)
+    ) {
       mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
       mobileMenu.classList.add("max-h-0", "opacity-0");
       menuBtn.textContent = "menu";
@@ -122,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "-translate-y-6",
             "-translate-x-10",
             "translate-x-10",
-            "translate-y-10"
+            "translate-y-10",
           );
         }, i * 200);
       });
@@ -130,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ================= SUARA NAVBAR =================
-  navItems.forEach(item => {
+  navItems.forEach((item) => {
     item.addEventListener("mouseenter", () => {
       const text = item.textContent.trim();
       if (!text) return;
@@ -143,8 +148,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-    // ================= Tutup Modal =================
-    window.tutupModal = function () {
+  // ================= Tutup Modal =================
+  window.tutupModal = function () {
     modal.classList.add("opacity-0", "pointer-events-none");
     modalContent.classList.remove("scale-100");
     modalContent.classList.add("scale-95");
@@ -157,10 +162,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const isiForm = document.getElementById("isiForm");
 
   window.tampilForm = function (jenis) {
-
     // 🔒 CEK LOGIN
+    currentJenis = jenis;
     if (localStorage.getItem("login") !== "true") {
       localStorage.setItem("jenisDipilih", jenis);
+      // simpen jenis surat aktif buat dipake pas submit
+      setTimeout(() => {
+        initDatePicker();
+      }, 100);
 
       loginModal.classList.remove("opacity-0", "pointer-events-none");
       loginBox.classList.remove("scale-95");
@@ -214,12 +223,12 @@ document.addEventListener("DOMContentLoaded", function () {
           <label>${label}</label>
           <select id="${id}" class="w-full border p-2 rounded">
             <option value="">Pilih ${label}</option>
-            ${options.map(o => `<option>${o}</option>`).join("")}
+            ${options.map((o) => `<option>${o}</option>`).join("")}
           </select>
         </div>`;
     }
 
-      function inputDate(id, label) {
+    function inputDate(id, label) {
       return `
         <div class="mb-4">
           <label>${label}</label>
@@ -227,81 +236,159 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>`;
     }
 
-  // ================= FORM PER JENIS =================
+    // ================= FORM PER JENIS =================
 
-  if (jenis === "domisili") {
-    judul.textContent = "Form Surat Keterangan Domisili";
+    if (jenis === "domisili") {
+      judul.textContent = "Form Surat Keterangan Domisili";
 
-    isiForm.innerHTML += inputNIK();
-    isiForm.innerHTML += inputText("nama", "Nama Lengkap Pemohon", "Masukkan Nama");
-    isiForm.innerHTML += select("kota", "Tempat Lahir", ["Surabaya","Sidoarjo","Malang"]);
-    isiForm.innerHTML += inputDate("tgl", "Tanggal Lahir");
-    isiForm.innerHTML += select("agama", "Agama", ["Islam","Kristen","Hindu","Budha"]);
-    isiForm.innerHTML += inputText("nohp", "Nomor HP", "Masukkan No HP");
-    isiForm.innerHTML += inputText("email", "Email", "Masukkan Email");
-    isiForm.innerHTML += select("jk", "Jenis Kelamin", ["Laki-laki","Perempuan"]);
-    isiForm.innerHTML += select("status", "Status Nikah", ["Belum Kawin","Kawin"]);
-    isiForm.innerHTML += inputText("pekerjaan", "Pekerjaan", "Masukkan Pekerjaan");
-    isiForm.innerHTML += textarea("alamat", "Alamat Lengkap", "Masukkan Alamat");
-    isiForm.innerHTML += inputText("warga", "Warga Negara", "Masukkan Kewarganegaraan");
-  }
+      isiForm.innerHTML += inputNIK();
+      isiForm.innerHTML += inputText(
+        "nama",
+        "Nama Lengkap Pemohon",
+        "Masukkan Nama",
+      );
+      isiForm.innerHTML += select("kota", "Tempat Lahir", [
+        "Surabaya",
+        "Sidoarjo",
+        "Malang",
+      ]);
+      isiForm.innerHTML += inputDate("tgl", "Tanggal Lahir");
+      isiForm.innerHTML += select("agama", "Agama", [
+        "Islam",
+        "Kristen",
+        "Hindu",
+        "Budha",
+      ]);
+      isiForm.innerHTML += inputText("nohp", "Nomor HP", "Masukkan No HP");
+      isiForm.innerHTML += inputText("email", "Email", "Masukkan Email");
+      isiForm.innerHTML += select("jk", "Jenis Kelamin", [
+        "Laki-laki",
+        "Perempuan",
+      ]);
+      isiForm.innerHTML += select("status", "Status Nikah", [
+        "Belum Kawin",
+        "Kawin",
+      ]);
+      isiForm.innerHTML += inputText(
+        "pekerjaan",
+        "Pekerjaan",
+        "Masukkan Pekerjaan",
+      );
+      isiForm.innerHTML += textarea(
+        "alamat",
+        "Alamat Lengkap",
+        "Masukkan Alamat",
+      );
+      isiForm.innerHTML += inputText(
+        "warga",
+        "Warga Negara",
+        "Masukkan Kewarganegaraan",
+      );
+    } else if (jenis === "kehilangan") {
+      judul.textContent = "Form Surat Keterangan Kehilangan";
 
-  else if (jenis === "kehilangan") {
-    judul.textContent = "Form Surat Keterangan Kehilangan";
+      isiForm.innerHTML += inputNIK();
+      isiForm.innerHTML += inputText("nama", "Nama Lengkap", "Masukkan Nama");
+      isiForm.innerHTML += inputText("nohp", "No HP", "Masukkan No HP");
+      isiForm.innerHTML += inputText("email", "Email", "Masukkan Email");
+      isiForm.innerHTML += inputText("umur", "Umur", "Masukkan Umur");
+      isiForm.innerHTML += inputText(
+        "pekerjaan",
+        "Pekerjaan",
+        "Masukkan Pekerjaan",
+      );
+      isiForm.innerHTML += textarea("alamat", "Alamat", "Masukkan Alamat");
+      isiForm.innerHTML += textarea(
+        "catatan",
+        "Catatan Kehilangan",
+        "Masukkan Catatan",
+      );
+    } else if (jenis === "tanah") {
+      judul.textContent = "Form Surat Keterangan Harga Tanah";
 
-    isiForm.innerHTML += inputNIK();
-    isiForm.innerHTML += inputText("nama", "Nama Lengkap", "Masukkan Nama");
-    isiForm.innerHTML += inputText("nohp", "No HP", "Masukkan No HP");
-    isiForm.innerHTML += inputText("email", "Email", "Masukkan Email");
-    isiForm.innerHTML += inputText("umur", "Umur", "Masukkan Umur");
-    isiForm.innerHTML += inputText("pekerjaan", "Pekerjaan", "Masukkan Pekerjaan");
-    isiForm.innerHTML += textarea("alamat", "Alamat", "Masukkan Alamat");
-    isiForm.innerHTML += textarea("catatan", "Catatan Kehilangan", "Masukkan Catatan");
-  }
+      isiForm.innerHTML += inputNIK();
+      isiForm.innerHTML += inputText("nama", "Nama Lengkap", "Masukkan Nama");
+      isiForm.innerHTML += inputText("nohp", "No HP", "Masukkan No HP");
+      isiForm.innerHTML += inputText("email", "Email", "Masukkan Email");
+      isiForm.innerHTML += inputText("umur", "Umur", "Masukkan Umur");
+      isiForm.innerHTML += inputText(
+        "pekerjaan",
+        "Pekerjaan",
+        "Masukkan Pekerjaan",
+      );
+      isiForm.innerHTML += textarea("alamat", "Alamat", "Masukkan Alamat");
+      isiForm.innerHTML += inputText("catatan", "Catatan", "Masukkan Catatan");
+    } else if (jenis === "tidakmampu") {
+      judul.textContent = "Form Surat Keterangan Tidak Mampu";
 
-  else if (jenis === "tanah") {
-    judul.textContent = "Form Surat Keterangan Harga Tanah";
+      isiForm.innerHTML += inputNIK();
+      isiForm.innerHTML += inputNoKK();
+      isiForm.innerHTML += inputText("nama", "Nama Lengkap", "Masukkan Nama");
+      isiForm.innerHTML += inputDate("tgl", "Tanggal Lahir");
+      isiForm.innerHTML += select("agama", "Agama", [
+        "Islam",
+        "Kristen",
+        "Hindu",
+        "Budha",
+      ]);
+      isiForm.innerHTML += inputText("nohp", "No HP", "Masukkan No HP");
+      isiForm.innerHTML += inputText("email", "Email", "Masukkan Email");
+      isiForm.innerHTML += select("jk", "Jenis Kelamin", [
+        "Laki-laki",
+        "Perempuan",
+      ]);
+      isiForm.innerHTML += select("status", "Status Nikah", [
+        "Belum Kawin",
+        "Kawin",
+      ]);
+      isiForm.innerHTML += inputText(
+        "pekerjaan",
+        "Pekerjaan",
+        "Masukkan Pekerjaan",
+      );
+      isiForm.innerHTML += textarea("alamat", "Alamat", "Masukkan Alamat");
+      isiForm.innerHTML += inputText("dusun", "Dusun", "Masukkan Dusun");
 
-    isiForm.innerHTML += inputNIK();
-    isiForm.innerHTML += inputText("nama", "Nama Lengkap", "Masukkan Nama");
-    isiForm.innerHTML += inputText("nohp", "No HP", "Masukkan No HP");
-    isiForm.innerHTML += inputText("email", "Email", "Masukkan Email");
-    isiForm.innerHTML += inputText("umur", "Umur", "Masukkan Umur");
-    isiForm.innerHTML += inputText("pekerjaan", "Pekerjaan", "Masukkan Pekerjaan");
-    isiForm.innerHTML += textarea("alamat", "Alamat", "Masukkan Alamat");
-    isiForm.innerHTML += inputText("catatan", "Catatan", "Masukkan Catatan");
-  }
+      isiForm.innerHTML += inputText(
+        "kepala",
+        "Nama Kepala Keluarga",
+        "Masukkan Nama",
+      );
+      isiForm.innerHTML += inputText(
+        "tempat",
+        "Tempat Lahir Kepala Keluarga",
+        "Masukkan Tempat",
+      );
+      isiForm.innerHTML += inputDate(
+        "tgl_kepala",
+        "Tanggal Lahir Kepala Keluarga",
+      );
+      isiForm.innerHTML += select(
+        "jk_kepala",
+        "Jenis Kelamin Kepala Keluarga",
+        ["Laki-laki", "Perempuan"],
+      );
+      isiForm.innerHTML += select(
+        "status_kepala",
+        "Status Kawin Kepala Keluarga",
+        ["Kawin", "Belum"],
+      );
+      isiForm.innerHTML += select("agama_kepala", "Agama Kepala Keluarga", [
+        "Islam",
+        "Kristen",
+      ]);
+      isiForm.innerHTML += inputText(
+        "kerja",
+        "Pekerjaan Kepala Keluarga",
+        "Masukkan Pekerjaan",
+      );
+    }
 
-  else if (jenis === "tidakmampu") {
-    judul.textContent = "Form Surat Keterangan Tidak Mampu";
-
-    isiForm.innerHTML += inputNIK();
-    isiForm.innerHTML += inputNoKK();
-    isiForm.innerHTML += inputText("nama", "Nama Lengkap", "Masukkan Nama");
-    isiForm.innerHTML += inputDate("tgl", "Tanggal Lahir");
-    isiForm.innerHTML += select("agama", "Agama", ["Islam","Kristen","Hindu","Budha"]);
-    isiForm.innerHTML += inputText("nohp", "No HP", "Masukkan No HP");
-    isiForm.innerHTML += inputText("email", "Email", "Masukkan Email");
-    isiForm.innerHTML += select("jk", "Jenis Kelamin", ["Laki-laki","Perempuan"]);
-    isiForm.innerHTML += select("status", "Status Nikah", ["Belum Kawin","Kawin"]);
-    isiForm.innerHTML += inputText("pekerjaan", "Pekerjaan", "Masukkan Pekerjaan");
-    isiForm.innerHTML += textarea("alamat", "Alamat", "Masukkan Alamat");
-    isiForm.innerHTML += inputText("dusun", "Dusun", "Masukkan Dusun");
-
-    isiForm.innerHTML += inputText("kepala", "Nama Kepala Keluarga", "Masukkan Nama");
-    isiForm.innerHTML += inputText("tempat", "Tempat Lahir Kepala Keluarga", "Masukkan Tempat");
-    isiForm.innerHTML += inputDate("tgl_kepala", "Tanggal Lahir Kepala Keluarga");
-    isiForm.innerHTML += select("jk_kepala", "Jenis Kelamin Kepala Keluarga", ["Laki-laki","Perempuan"]);
-    isiForm.innerHTML += select("status_kepala", "Status Kawin Kepala Keluarga", ["Kawin","Belum"]);
-    isiForm.innerHTML += select("agama_kepala", "Agama Kepala Keluarga", ["Islam","Kristen"]);
-    isiForm.innerHTML += inputText("kerja", "Pekerjaan Kepala Keluarga", "Masukkan Pekerjaan");
-  }
-
-  // ================= TAMPILKAN MODAL =================
-  modal.classList.remove("opacity-0", "pointer-events-none");
-  modalContent.classList.remove("scale-95");
-  modalContent.classList.add("scale-100");
-};
+    // ================= TAMPILKAN MODAL =================
+    modal.classList.remove("opacity-0", "pointer-events-none");
+    modalContent.classList.remove("scale-95");
+    modalContent.classList.add("scale-100");
+  };
 
   // ================= TUTUP MODAL =================
   document.getElementById("overlay").addEventListener("click", () => {
@@ -312,37 +399,90 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ================= SUBMIT =================
   document.getElementById("btnKirim").addEventListener("click", function () {
-
-    const inputs = document.querySelectorAll("#isiForm input");
+    // Ambil SEMUA field (input, select, textarea) di dalam form, bukan cuma <input>
+    const fields = document.querySelectorAll(
+      "#isiForm input, #isiForm select, #isiForm textarea",
+    );
     let kosong = false;
+    const data_form = {};
 
-    inputs.forEach(input => {
-      if (!input.value.trim()) kosong = true;
+    fields.forEach((field) => {
+      if (!field.value.trim()) kosong = true;
+      data_form[field.id] = field.value.trim();
     });
 
     if (kosong) {
-    Swal.fire({
-      title: "Peringatan!",
-      text: "Semua field wajib diisi",
-      icon: "warning",
-      confirmButtonText: "OK",
-      confirmButtonColor: "#d33",
-      background: "#fff5f5",
-      color: "#b91c1c"
-    });
-    return;
-  }
+      Swal.fire({
+        title: "Peringatan!",
+        text: "Semua field wajib diisi",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#d33",
+        background: "#fff5f5",
+        color: "#b91c1c",
+      });
+      return;
+    }
 
-  Swal.fire({
-    title: "Berhasil! 🎉",
-    text: "Data berhasil dikirim",
-    icon: "success",
-    showConfirmButton: false,
-    timer: 2000,
-    background: "#f0fff4",
-    color: "#2e7d32"
-  });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        title: "Sesi Habis",
+        text: "Silakan login ulang sebelum mengajukan surat.",
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
+      return;
+    }
 
+    // judul_surat wajib diisi di backend, kita generate otomatis
+    const namaPemohon = data_form.nama || data_form.kepala || "Warga";
+    const judul_surat = `${judul.textContent} - ${namaPemohon}`;
+
+    fetch("http://localhost:3000/api/surat/ajukan", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        judul_surat,
+        jenis_surat: currentJenis,
+        data_form,
+      }),
+    })
+      .then((res) => res.json().then((result) => ({ ok: res.ok, result })))
+      .then(({ ok, result }) => {
+        if (ok && result.success) {
+          Swal.fire({
+            title: "Berhasil! 🎉",
+            text: "Pengajuan surat berhasil dikirim.",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2000,
+            background: "#f0fff4",
+            color: "#2e7d32",
+          }).then(() => {
+            window.tutupModal();
+          });
+        } else {
+          Swal.fire({
+            title: "Gagal",
+            text: result.message || "Terjadi kesalahan saat mengirim surat.",
+            icon: "error",
+            confirmButtonColor: "#d33",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Gagal terhubung ke server backend.",
+          icon: "error",
+          confirmButtonColor: "#d33",
+        });
+      });
   });
 
   // ===============================
@@ -353,24 +493,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const heroSection = document.getElementById("heroSection");
 
   window.addEventListener("scroll", function () {
+    if (window.scrollY <= 0) {
+      // Navbar hilang
+      mainHeader.classList.add("header-hidden");
 
-      if (window.scrollY <= 0) {
+      // Hero langsung naik menutup celah
+      heroSection.classList.add("hero-top");
+    } else {
+      // Navbar muncul
+      mainHeader.classList.remove("header-hidden");
 
-          // Navbar hilang
-          mainHeader.classList.add("header-hidden");
-
-          // Hero langsung naik menutup celah
-          heroSection.classList.add("hero-top");
-
-      } else {
-
-          // Navbar muncul
-          mainHeader.classList.remove("header-hidden");
-
-          // Hero kembali ke posisi normal
-          heroSection.classList.remove("hero-top");
-      }
-
+      // Hero kembali ke posisi normal
+      heroSection.classList.remove("hero-top");
+    }
   });
 
   // ======================
@@ -381,29 +516,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Tampilkan tombol saat scroll
   window.addEventListener("scroll", () => {
-
-      if (window.scrollY > 300) {
-
-          scrollTopBtn.classList.add("show");
-
-      } else {
-
-          scrollTopBtn.classList.remove("show");
-
-      }
-
+    if (window.scrollY > 300) {
+      scrollTopBtn.classList.add("show");
+    } else {
+      scrollTopBtn.classList.remove("show");
+    }
   });
 
   // Klik tombol
   scrollTopBtn.addEventListener("click", () => {
-
-      window.scrollTo({
-
-          top: 0,
-          behavior: "smooth"
-
-      });
-
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   });
-  
 });
