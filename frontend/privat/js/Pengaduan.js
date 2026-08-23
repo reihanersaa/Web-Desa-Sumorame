@@ -147,6 +147,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("viewJudul").innerText = aduan.judul_aduan;
     document.getElementById("viewEmail").innerText = aduan.email_pelapor;
     document.getElementById("viewIsi").innerText = aduan.isi_aduan;
+    document.getElementById("viewWa").innerText = aduan.no_wa || "Tidak ada data";
+    document.getElementById("viewTanggapan").innerText = aduan.tanggapan_admin || "Belum ditanggapi.";
+    document.getElementById("viewTanggalTanggapan").innerText = aduan.tanggal_tanggapan || "-";
 
     // Ubah format tanggal bawaan database menjadi tanggal standar Indonesia
     const dateObj = new Date(aduan.created_at);
@@ -185,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // INJEKSI DATA DINAMIS KE FORM READONLY (MODAL EDIT)
     document.getElementById("editNama").value = aduan.nama_pelapor;
     document.getElementById("editEmail").value = aduan.email_pelapor;
+    document.getElementById("editWa").value = aduan.no_wa || "Tidak ada nomor";
     document.getElementById("editJudul").value = aduan.judul_aduan;
     document.getElementById("editIsi").value = aduan.isi_aduan;
 
@@ -317,6 +321,31 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("modalEditBox"),
           );
           fetchDataAduan(); // Muat ulang tabel
+
+          // ==========================================
+          // 🚀 EKSEKUSI LINK WA.ME (OPSI A)
+          // ==========================================
+          const aduan = globalDataAduan.find(item => item.id === aduanIdYangDiedit);
+          
+          if (aduan && aduan.no_wa) {
+            let noWaAsli = aduan.no_wa.trim();
+            
+            // Konversi nomor: Jika diawali '0', ubah menjadi '62'
+            if (noWaAsli.startsWith('0')) {
+              noWaAsli = '62' + noWaAsli.substring(1);
+            }
+            
+            // Susun teks pesan yang rapi
+            const pesanWA = `Halo *${aduan.nama_pelapor}*,\n\nLaporan Anda mengenai *"${aduan.judul_aduan}"* telah selesai ditindaklanjuti oleh Pemerintah Desa Tawangsari.\n\n*Tanggapan Admin:*\n"${tanggapan}"\n\nTerima kasih atas partisipasi Anda. 🙏`;
+            
+            // Buka tab WhatsApp
+            const linkWA = `https://wa.me/${noWaAsli}?text=${encodeURIComponent(pesanWA)}`;
+            window.open(linkWA, '_blank');
+          } else {
+            console.log("Nomor WA pelapor tidak tersedia.");
+          }
+          // ==========================================
+
         } catch (error) {
           console.error("Error:", error);
           Swal.fire("Gagal!", error.message, "error");

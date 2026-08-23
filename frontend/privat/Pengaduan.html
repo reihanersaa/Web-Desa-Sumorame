@@ -259,6 +259,7 @@
     <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-6">
 
       <!-- GRID INFO -->
+      <!-- GRID INFO -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <p class="text-xs text-gray-500 mb-1">Judul Aduan</p>
@@ -273,8 +274,16 @@
           <p id="viewEmail" class="font-semibold text-gray-800">-</p>
         </div>
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <p class="text-xs text-gray-500 mb-1">Tanggal</p>
+          <p class="text-xs text-gray-500 mb-1">No. WhatsApp</p>
+          <p id="viewWa" class="font-semibold text-gray-800">-</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <p class="text-xs text-gray-500 mb-1">Tanggal Aduan Masuk</p>
           <p id="viewTanggal" class="font-semibold text-gray-800">-</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <p class="text-xs text-gray-500 mb-1">Tanggal Ditanggapi</p>
+          <p id="viewTanggalTanggapan" class="font-semibold text-gray-800">-</p>
         </div>
       </div>
 
@@ -284,11 +293,19 @@
         <p id="viewIsi" class="text-gray-800 leading-relaxed">-</p>
       </div>
 
+      <!-- TANGGAPAN ADMIN (Ditambahkan di bawah Isi Aduan) -->
+      <div class="bg-green-50 p-5 rounded-lg shadow-sm border border-green-200">
+        <p class="text-sm text-green-700 font-bold mb-2 border-b border-green-200 pb-2">Tanggapan Admin Desa</p>
+        <p id="viewTanggapan" class="text-gray-800 leading-relaxed">-</p>
+      </div>
+
       <!-- PREVIEW GAMBAR -->
       <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
         <p class="text-sm text-gray-500 mb-3 border-b pb-2">Foto Bukti</p>
         <img id="viewGambar" src="" class="rounded-lg w-full max-h-64 object-cover border bg-gray-100" alt="Foto Aduan">
       </div>
+
+    </div>
 
     <!-- FOOTER -->
     <div class="px-6 py-4 border-t flex justify-end gap-3 bg-white">
@@ -315,6 +332,8 @@
     <!-- FORM -->
     <div class="p-6 overflow-y-auto flex-1 bg-gray-50 space-y-4">
 
+    
+      <!-- INFO READONLY -->
       <!-- INFO READONLY -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -325,13 +344,21 @@
           <label class="text-xs text-gray-600 font-semibold mb-1 block">Alamat Email</label>
           <input type="text" id="editEmail" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
         </div>
+        
+        <!-- 🚨 TAMBAHAN KOLOM NO WA 🚨 -->
         <div>
-          <label class="text-xs text-gray-600 font-semibold mb-1 block">Judul Aduan</label>
-          <input type="text" id="editJudul" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
+          <label class="text-xs text-gray-600 font-semibold mb-1 block">No. WhatsApp</label>
+          <input type="text" id="editWa" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
         </div>
+
         <div>
           <label class="text-xs text-gray-600 font-semibold mb-1 block">Tanggal Aduan</label>
           <input type="text" id="editTanggal" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="text-xs text-gray-600 font-semibold mb-1 block">Judul Aduan</label>
+          <input type="text" id="editJudul" value="" readonly class="w-full border rounded px-3 py-2 bg-gray-200 cursor-not-allowed text-sm">
         </div>
         <div class="md:col-span-2">
           <label class="text-xs text-gray-600 font-semibold mb-1 block">Isi Aduan</label>

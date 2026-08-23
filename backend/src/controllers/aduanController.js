@@ -1,11 +1,21 @@
 const supabase = require("../config/supabase");
 
+// 1. Fungsi POST Warga
+// 1. Fungsi POST Warga
 const buatAduan = async (req, res) => {
   try {
-    const user_id = req.user.id; // Diambil otomatis dari token login warga[cite: 19]
-    const { nama_pelapor, email_pelapor, judul_aduan, isi_aduan } = req.body; // file_bukti_url dihapus dari sini karena bentuknya masih file fisik[cite: 19]
-
-    const fileBukti = req.file; // File yang ditangkap oleh multer
+    const user_id = req.user.id; 
+    
+    // 🚨 1. Tambahkan no_wa saat menangkap req.body
+    const { 
+      nama_pelapor, 
+      email_pelapor, 
+      no_wa, 
+      judul_aduan, 
+      isi_aduan 
+    } = req.body; 
+    
+    const fileBukti = req.file; 
 
     if (!judul_aduan || !isi_aduan) {
       return res
@@ -15,20 +25,14 @@ const buatAduan = async (req, res) => {
 
     let file_bukti_url = null;
 
-    // 1. Jika warga melampirkan file, upload ke Supabase Storage terlebih dahulu
     if (fileBukti) {
-      // Buat nama file unik (menghindari nama kembar)
-      const fileName = `aduan_${Date.now()}_${fileBukti.originalname.replace(/\s+/g, "_")}`;
-
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("bukti_aduan") // Pastikan kamu sudah membuat bucket bernama 'bukti_aduan' di Supabase
-        .upload(fileName, fileBukti.buffer, {
-          contentType: fileBukti.mimetype,
-        });
+      const fileName = `aduan_${Date.now()}_${fileBukti.originalname.replace(/\s+/g, '_')}`;
+      const { error: uploadError } = await supabase.storage
+        .from("bukti_aduan") 
+        .upload(fileName, fileBukti.buffer, { contentType: fileBukti.mimetype });
 
       if (uploadError) throw uploadError;
 
-      // Dapatkan URL publik dari file yang baru saja diupload
       const { data: publicUrlData } = supabase.storage
         .from("bukti_aduan")
         .getPublicUrl(fileName);
@@ -36,7 +40,6 @@ const buatAduan = async (req, res) => {
       file_bukti_url = publicUrlData.publicUrl;
     }
 
-    // 2. Simpan semua data (termasuk URL file) ke database Supabase
     const { data, error } = await supabase
       .from("aduan")
       .insert([
@@ -44,10 +47,11 @@ const buatAduan = async (req, res) => {
           user_id: user_id,
           nama_pelapor: nama_pelapor,
           email_pelapor: email_pelapor,
+          no_wa: no_wa, // 🚨 2. Pastikan no_wa ikut disimpan ke database Supabase
           judul_aduan: judul_aduan,
           isi_aduan: isi_aduan,
-          file_bukti_url: file_bukti_url, // Masukkan URL yang didapat dari proses di atas
-          status: "Menunggu", // Diubah ke "Menunggu" agar sesuai dengan UI Frontend admin
+          file_bukti_url: file_bukti_url, 
+          status: "Menunggu", 
         },
       ])
       .select();
@@ -63,11 +67,9 @@ const buatAduan = async (req, res) => {
   }
 };
 
-// Tambahkan fungsi ini di bawah fungsi buatAduan
+// 2. Fungsi GET Admin
 const getSemuaAduan = async (req, res) => {
   try {
-    // Menarik seluruh data dari tabel 'aduan' di Supabase,
-    // diurutkan dari yang terbaru (descending)
     const { data, error } = await supabase
       .from("aduan")
       .select("*")
@@ -77,7 +79,7 @@ const getSemuaAduan = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: data, // Data ini yang akan ditangkap oleh Pengaduan.js
+      data: data, 
     });
   } catch (error) {
     console.error("Error Get Aduan:", error.message);
@@ -88,5 +90,95 @@ const getSemuaAduan = async (req, res) => {
   }
 };
 
-// PASTIKAN ANDA MENGUBAH BARIS EXPORT DI PALING BAWAH MENJADI SEPERTI INI:
-module.exports = { buatAduan, getSemuaAduan };
+// 3. Fungsi PUT Admin (Tanggapan)
+const tanggapiAduan = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const { tanggapan_admin, tanggal_tanggapan, status } = req.body;
+    
+    const files = req.files || {};
+    let gambarUrl = null;
+    let fileUrl = null;
+
+    if (files.lampiran_gambar && files.lampiran_gambar[0]) {
+      const fileGbr = files.lampiran_gambar[0];
+      const fileNameGbr = `tanggapan_img_${Date.now()}_${fileGbr.originalname.replace(/\s+/g, '_')}`;
+      
+      const { error: errGbr } = await supabase.storage.from("bukti_aduan").upload(fileNameGbr, fileGbr.buffer, { contentType: fileGbr.mimetype });
+      
+      if (!errGbr) {
+        const { data } = supabase.storage.from("bukti_aduan").getPublicUrl(fileNameGbr);
+        gambarUrl = data.publicUrl;
+      }
+    }
+
+    if (files.lampiran_file && files.lampiran_file[0]) {
+      const fileDoc = files.lampiran_file[0];
+      const fileNameDoc = `tanggapan_doc_${Date.now()}_${fileDoc.originalname.replace(/\s+/g, '_')}`;
+      
+      const { error: errDoc } = await supabase.storage.from("bukti_aduan").upload(fileNameDoc, fileDoc.buffer, { contentType: fileDoc.mimetype });
+      
+      if (!errDoc) {
+        const { data } = supabase.storage.from("bukti_aduan").getPublicUrl(fileNameDoc);
+        fileUrl = data.publicUrl;
+      }
+    }
+
+    const { data, error } = await supabase
+      .from("aduan")
+      .update({
+        status: status,
+        tanggapan_admin: tanggapan_admin,
+        tanggal_tanggapan: tanggal_tanggapan,
+        ...(gambarUrl && { lampiran_gambar_url: gambarUrl }),
+        ...(fileUrl && { lampiran_file_url: fileUrl })
+      })
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+
+    return res.status(200).json({
+      success: true,
+      message: "Tanggapan berhasil disimpan!",
+      data: data[0],
+    });
+
+  } catch (error) {
+    console.error("Error Tanggapi Aduan:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan saat memproses tanggapan.",
+    });
+  }
+};
+
+// 4. Fungsi DELETE Admin
+const hapusAduan = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Hapus data dari tabel aduan di Supabase berdasarkan ID
+    const { data, error } = await supabase
+      .from("aduan")
+      .delete()
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+
+    return res.status(200).json({
+      success: true,
+      message: "Data aduan berhasil dihapus!",
+      data: data,
+    });
+  } catch (error) {
+    console.error("Error Hapus Aduan:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan saat menghapus data aduan.",
+    });
+  }
+};
+
+module.exports = { buatAduan, getSemuaAduan, tanggapiAduan, hapusAduan };
