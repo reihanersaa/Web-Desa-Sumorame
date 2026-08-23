@@ -1,49 +1,78 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // MODAL LUPA PASSWORD
+  const forgotBtn = document.getElementById("forgotPassword");
+  const modal = document.getElementById("modalForgot");
+  const closeModal = document.querySelector(".close-modal");
 
-      // MODAL LUPA PASSWORD
-      const forgotBtn = document.getElementById("forgotPassword");
-      const modal = document.getElementById("modalForgot");
-      const closeModal = document.querySelector(".close-modal");
+  forgotBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    modal.classList.add("show");
+  });
 
-      forgotBtn.addEventListener("click", function(e) {
-        e.preventDefault();
-        modal.classList.add("show");
+  closeModal.addEventListener("click", function () {
+    modal.classList.remove("show");
+  });
+
+  /* klik luar modal = tutup */
+  window.addEventListener("click", function (e) {
+    if (e.target === modal) {
+      modal.classList.remove("show");
+    }
+  });
+
+  const form = document.getElementById("loginForm");
+  const password = document.getElementById("password");
+  const togglePassword = document.getElementById("togglePassword");
+
+  togglePassword.addEventListener("click", function () {
+    if (password.type === "password") {
+      password.type = "text";
+      this.classList.replace("fa-eye-slash", "fa-eye");
+    } else {
+      password.type = "password";
+      this.classList.replace("fa-eye", "fa-eye-slash");
+    }
+  });
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const nik = document.getElementById("nip").value; // input id="nip" berisi NIK
+    const pass = document.getElementById("password").value;
+
+    if (!nik || !pass) {
+      return Swal.fire({
+        title: "Login Gagal",
+        text: "NIK dan Password wajib diisi",
+        icon: "error",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#d33",
+        background: "#fff5f5",
+        color: "#b91c1c",
       });
+    }
 
-      closeModal.addEventListener("click", function() {
-        modal.classList.remove("show");
-      });
+    try {
+      // PORT disamakan dengan backend (index.js -> PORT || 3000)
+      const response = await fetch(
+        "http://localhost:3000/api/auth/login-admin",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nik, password: pass }),
+        },
+      );
 
-      /* klik luar modal = tutup */
-      window.addEventListener("click", function(e) {
-        if (e.target === modal) {
-          modal.classList.remove("show");
-        }
-      });
+      const result = await response.json();
 
-      const form = document.getElementById("loginForm");
-      const password = document.getElementById("password");
-      const togglePassword = document.getElementById("togglePassword");
-
-      togglePassword.addEventListener("click", function () {
-        if (password.type === "password") {
-          password.type = "text";
-          this.classList.replace("fa-eye-slash", "fa-eye");
-        } else {
-          password.type = "password";
-          this.classList.replace("fa-eye", "fa-eye-slash");
-        }
-      });
-
-      form.addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const nip = document.getElementById("nip").value;
-      const pass = document.getElementById("password").value;
-
-      if (nip === "admin" && pass === "123") {
-
+      if (response.ok && result.success) {
+        // Simpan token & data admin untuk dipakai di halaman lain
+        // (kirim di header: Authorization: Bearer <token>)
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("user", JSON.stringify(result.data));
         localStorage.setItem("login", "true");
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("admin", JSON.stringify(result.data));
 
         const redirectAduan = localStorage.getItem("redirectAduan");
 
@@ -51,30 +80,40 @@ document.addEventListener("DOMContentLoaded", function () {
           localStorage.removeItem("redirectAduan");
           window.location.href = "Aduan.html";
         } else {
-            // ✅ default ke halaman utama
-            Swal.fire({
+          Swal.fire({
             title: "Login Berhasil 🎉",
-            text: "Selamat datang",
+            text: "Selamat datang, " + result.data.nama_lengkap,
             icon: "success",
             showConfirmButton: false,
             timer: 2000,
             background: "#f0fff4",
-            color: "#2e7d32"
+            color: "#2e7d32",
           }).then(() => {
             window.location.href = "DashboardAdmin.html";
           });
         }
-
       } else {
-          Swal.fire({
+        // Pesan error dari backend, misal: "Akses ditolak. NIK ini terdaftar sebagai Warga, bukan Admin!"
+        Swal.fire({
           title: "Login Gagal",
-          text: "NIP atau Password yang Anda masukkan salah",
+          text: result.message || "NIK atau Password yang Anda masukkan salah",
           icon: "error",
           confirmButtonText: "Coba Lagi",
           confirmButtonColor: "#d33",
           background: "#fff5f5",
-          color: "#b91c1c"
+          color: "#b91c1c",
         });
       }
-    });
+    } catch (error) {
+      console.error("Fetch error:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Gagal terhubung ke server backend.",
+        icon: "error",
+        confirmButtonColor: "#d33",
+        background: "#fff5f5",
+        color: "#b91c1c",
+      });
+    }
   });
+});

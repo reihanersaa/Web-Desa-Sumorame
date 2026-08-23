@@ -2,46 +2,116 @@ const supabase = require("../config/supabase");
 
 const ajukanSurat = async (req, res) => {
   try {
-    // 1. Tangkap data dari frontend
-    const { user_id, jenis_surat, data_form } = req.body;
+    const created_by = req.user.id;
+    const { judul_surat, jenis_surat, data_form } = req.body;
 
-    // 2. Validasi input dasar
-    if (!user_id || !jenis_surat || !data_form) {
+    if (!judul_surat || !jenis_surat || !data_form) {
       return res.status(400).json({
         success: false,
         message:
-          "Data tidak lengkap. user_id, jenis_surat, dan data_form wajib diisi.",
+          "Data tidak lengkap. judul_surat, jenis_surat, dan data_form wajib diisi.",
       });
     }
 
-    // 3. Masukkan ke database Supabase
+    const tanggal_surat = new Date().toISOString().split("T")[0];
+
     const { data, error } = await supabase
-      .from("persuratan")
+      .from("surat")
       .insert([
         {
-          user_id: user_id,
-          jenis_surat: jenis_surat, // contoh: "SKTM" atau "DOMISILI"
-          data_form: data_form, // Ini "kardus" yang berisi detail spesifik formnya
-          status: "pending", // Otomatis pending saat baru diajukan
+          created_by: created_by,
+          judul_surat: judul_surat,
+          jenis_surat: jenis_surat,
+          tanggal_surat: tanggal_surat,
+          data_form: data_form,
+          status: "draft",
         },
       ])
       .select();
 
     if (error) throw error;
-
-    // 4. Beri respon sukses ke Frontend
     return res.status(201).json({
       success: true,
-      message: "Surat berhasil diajukan dan sedang diproses.",
-      data: data,
+      message: "Surat berhasil diajukan.",
+      data: data[0],
     });
   } catch (error) {
-    console.error("Error Pengajuan Surat:", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Terjadi kesalahan pada server.",
-    });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-module.exports = { ajukanSurat };
+// --- TAMBAHAN BARU UNTUK ADMIN CMS ---
+
+const getSemuaSurat = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ success: false, message: "Akses ditolak! Khusus admin." });
+    }
+
+    const { data, error } = await supabase
+      .from("surat")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return res.status(200).json({ success: true, data });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateStatusSurat = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ success: false, message: "Akses ditolak! Khusus admin." });
+    }
+
+    const { id } = req.params;
+    const { status } = req.body; // Terima "disetujui" atau "ditolak"
+
+    const { data, error } = await supabase
+      .from("surat")
+      .update({ status })
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+    return res.status(200).json({
+      success: true,
+      message: `Surat berhasil ${status}`,
+      data: data[0],
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// [ADMIN CMS] Hapus data surat
+const hapusSurat = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ success: false, message: "Akses ditolak! Khusus admin." });
+    }
+
+    const { id } = req.params;
+
+    const { error } = await supabase.from("surat").delete().eq("id", id);
+
+    if (error) throw error;
+    return res.status(200).json({
+      success: true,
+      message: "Surat berhasil dihapus.",
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// WAJIB DI-EXPORT SEMUANYA
+module.exports = { ajukanSurat, getSemuaSurat, updateStatusSurat, hapusSurat };

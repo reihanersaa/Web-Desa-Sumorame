@@ -18,10 +18,9 @@ const buatAduan = async (req, res) => {
     const fileBukti = req.file; 
 
     if (!judul_aduan || !isi_aduan) {
-      return res.status(400).json({
-        success: false,
-        message: "Judul dan isi aduan wajib diisi!",
-      });
+      return res
+        .status(400)
+        .json({ success: false, message: "Judul dan isi aduan wajib diisi!" });
     }
 
     let file_bukti_url = null;
@@ -37,7 +36,7 @@ const buatAduan = async (req, res) => {
       const { data: publicUrlData } = supabase.storage
         .from("bukti_aduan")
         .getPublicUrl(fileName);
-        
+
       file_bukti_url = publicUrlData.publicUrl;
     }
 
@@ -58,18 +57,13 @@ const buatAduan = async (req, res) => {
       .select();
 
     if (error) throw error;
-
     return res.status(201).json({
       success: true,
       message: "Aduan berhasil dikirim!",
       data: data[0],
     });
   } catch (error) {
-    console.error("Error Aduan:", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Terjadi kesalahan pada server saat mengirim aduan.",
-    });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 

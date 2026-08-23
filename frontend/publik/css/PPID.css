@@ -116,32 +116,6 @@ body {
   transform: translateY(-100%);
 }
 
-<<<<<<< HEAD
-#heroSection {
-  transition: margin-top 0.3s ease;
-}
-
-#heroSection.hero-top {
-  margin-top: 0;
-}
-
-/* HEADER SCROLL */
-#mainHeader {
-  transition: transform 0.3s ease;
-}
-
-#mainHeader.header-hidden {
-  transform: translateY(-100%);
-}
-
-#heroSection {
-  transition: margin-top 0.3s ease;
-}
-
-#heroSection.hero-top {
-  margin-top: 0;
-}
-=======
     #heroSection.hero-top {
       margin-top: 0;
     }
@@ -160,4 +134,3 @@ body {
         height: 500px !important;
       }
     }
->>>>>>> d189447369794cf22806ecfb4a7eee0621942e46

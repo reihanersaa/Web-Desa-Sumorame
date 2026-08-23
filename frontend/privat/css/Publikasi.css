@@ -18,3 +18,141 @@ body { font-family: 'Poppins', sans-serif; }
     .delay-1 { animation-delay: 0.2s; }
     .delay-2 { animation-delay: 0.4s; }
     .delay-3 { animation-delay: 0.6s; }
+    /* ===================================================
+       SIDEBAR / ASIDE NAV — ANIMASI LEBIH SMOOTH & TERTATA
+    =================================================== */
+
+    /* Transisi sidebar & layout saat collapse/expand */
+    #sidebar,
+    #headerLeft,
+    #mainContent {
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Link & tombol menu utama: easing custom + highlight bar */
+    .nav-link {
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                  color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                  padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      transform: translateX(5px);
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Garis indikator kiri yang muncul halus saat hover / aktif */
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8%;
+      bottom: 8%;
+      width: 3px;
+      border-radius: 4px;
+      background: #ffffff;
+      transform: scaleY(0);
+      opacity: 0;
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.is-active::before {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+
+    .nav-link.is-active {
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Ikon dalam menu (naik sedikit + sedikit membesar saat hover) */
+    .nav-link .material-symbols-outlined {
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-link:hover .material-symbols-outlined {
+      transform: scale(1.1);
+    }
+
+    /* Panah dropdown: rotasi lebih halus & lebih lambat sedikit dari hover */
+    #suratIcon,
+    #cmsIcon,
+    .nav-caret {
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Submenu accordion: buka/tutup lebih halus, tidak "patah" */
+    .nav-submenu {
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.3s ease-in-out,
+                  transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(-4px);
+    }
+
+    .nav-submenu.opacity-100,
+    #cmsMenu {
+      transform: translateY(0);
+    }
+
+    /* Item di dalam submenu: geser halus + delay bertahap agar terlihat rapi */
+    .nav-submenu a {
+      transition: background-color 0.2s ease,
+                  color 0.2s ease,
+                  transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.25s ease;
+    }
+
+    .nav-submenu a:hover {
+      transform: translateX(6px);
+    }
+
+    .nav-submenu.opacity-100 a {
+      animation: subItemIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .nav-submenu.opacity-100 a:nth-child(1) { animation-delay: 0.05s; }
+    .nav-submenu.opacity-100 a:nth-child(2) { animation-delay: 0.10s; }
+    .nav-submenu.opacity-100 a:nth-child(3) { animation-delay: 0.15s; }
+    .nav-submenu.opacity-100 a:nth-child(4) { animation-delay: 0.20s; }
+    .nav-submenu.opacity-100 a:nth-child(5) { animation-delay: 0.25s; }
+
+    @keyframes subItemIn {
+      from { opacity: 0; transform: translateX(-8px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Item menu utama masuk bertahap (staggered) saat aside pertama kali tampil */
+    #sidebar nav > .nav-item {
+      opacity: 0;
+      transform: translateX(-16px);
+      animation: navItemIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    #sidebar nav > .nav-item:nth-child(1) { animation-delay: 0.05s; }
+    #sidebar nav > .nav-item:nth-child(2) { animation-delay: 0.10s; }
+    #sidebar nav > .nav-item:nth-child(3) { animation-delay: 0.15s; }
+    #sidebar nav > .nav-item:nth-child(4) { animation-delay: 0.20s; }
+    #sidebar nav > .nav-item:nth-child(5) { animation-delay: 0.25s; }
+    #sidebar nav > .nav-item:nth-child(6) { animation-delay: 0.30s; }
+
+    @keyframes navItemIn {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Hormati preferensi pengguna yang mematikan animasi */
+    @media (prefers-reduced-motion: reduce) {
+      #sidebar, #headerLeft, #mainContent,
+      .nav-link, .nav-link::before, .nav-submenu, .nav-submenu a,
+      #sidebar nav > .nav-item {
+        animation: none !important;
+        transition: none !important;
+      }
+      #sidebar nav > .nav-item { opacity: 1; transform: none; }
+    }

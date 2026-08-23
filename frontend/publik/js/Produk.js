@@ -159,6 +159,7 @@ const closeProdukModal = document.getElementById("closeProdukModal");
 const cancelProduk = document.getElementById("cancelProduk");
 
 const formProduk = document.getElementById("formProduk");
+const API_BASE_URL = window.API_BASE_URL || "http://localhost:3000/api";
 
 // ======================================================
 // CEK ELEMEN MODAL
@@ -231,13 +232,17 @@ if (
 
     const penjual = document.getElementById("penjualProduk").value.trim();
 
+    const kontak = document.getElementById("kontakProduk").value.trim();
+
+    const deskripsi = document.getElementById("deskripsiProduk").value.trim();
+
     const file = document.getElementById("gambarProduk").files[0];
 
     // ========================================
     // VALIDASI
     // ========================================
 
-    if (!nama || !harga || !penjual || !file) {
+    if (!nama || !harga || !penjual || !kontak || !file) {
       Swal.fire({
         icon: "warning",
 
@@ -275,68 +280,39 @@ if (
 
     const reader = new FileReader();
 
-    reader.onload = function (event) {
-      const produkBaru = {
-        id: Date.now(),
-
-        nama: nama,
-
-        harga: Number(harga),
-
-        penjual: penjual,
-
-        gambar: event.target.result,
-      };
-
-      // ====================================
-      // AMBIL DATA LAMA
-      // ====================================
-
-      let daftarProduk = JSON.parse(localStorage.getItem("produkDesa")) || [];
-
-      // ====================================
-      // TAMBAHKAN
-      // ====================================
-
-      daftarProduk.push(produkBaru);
-
-      // ====================================
-      // SIMPAN
-      // ====================================
-
-      localStorage.setItem("produkDesa", JSON.stringify(daftarProduk));
-
-      // ====================================
-      // RENDER
-      // ====================================
-
-      renderProduk();
-
-      // ====================================
-      // RESET FORM
-      // ====================================
-
-      formProduk.reset();
-
-      // ====================================
-      // TUTUP
-      // ====================================
-
-      tutupModalProduk();
-
-      // ====================================
-      // NOTIFIKASI
-      // ====================================
-
-      Swal.fire({
-        icon: "success",
-
-        title: "Produk berhasil ditambahkan!",
-
-        text: `${nama} berhasil dipasarkan.`,
-
-        confirmButtonColor: "#166534",
-      });
+    reader.onload = async function (event) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/publik/produk`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nama_produk: nama,
+            deskripsi,
+            harga: Number(harga),
+            nama_penjual: penjual,
+            kontak_penjual: kontak,
+            gambar: event.target.result,
+          }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok)
+          throw new Error(result.message || "Produk gagal diajukan.");
+        formProduk.reset();
+        tutupModalProduk();
+        Swal.fire({
+          icon: "success",
+          title: "Produk berhasil diajukan!",
+          text: `${nama} akan tampil setelah disetujui admin.`,
+          confirmButtonColor: "#166534",
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Pengajuan gagal",
+          text: error.message,
+          confirmButtonColor: "#166534",
+        });
+      }
     };
 
     reader.readAsDataURL(file);
@@ -371,7 +347,7 @@ function escapeHTML(text) {
 // RENDER PRODUK
 // ======================================================
 
-function renderProduk() {
+async function renderProduk() {
   const container = document.getElementById("produk");
 
   if (!container) return;
@@ -380,7 +356,26 @@ function renderProduk() {
   // AMBIL PRODUK TAMBAHAN
   // ================================================
 
-  const produkTambahan = JSON.parse(localStorage.getItem("produkDesa")) || [];
+  let produkTambahan = [];
+  try {
+    const response = await fetch(`${API_BASE_URL}/publik/produk`);
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "Produk gagal dimuat.");
+    container
+      .querySelectorAll(".produk-item:not(.produk-dynamic)")
+      .forEach((item) => item.remove());
+    produkTambahan = (result.data || []).map((item) => ({
+      id: item.id,
+      nama: item.nama_produk,
+      harga: item.harga,
+      penjual: item.nama_penjual,
+      kontak: item.kontak_penjual,
+      deskripsi: item.deskripsi,
+      gambar: item.gambar,
+    }));
+  } catch (error) {
+    console.error("Gagal memuat produk:", error.message);
+  }
 
   // ================================================
   // HAPUS CARD DINAMIS LAMA
@@ -539,6 +534,8 @@ function buatCardProduk(item) {
                py-2 rounded-md
                hover:bg-green-800
                transition"
+        data-id="${item.id || ""}"
+        data-kontak="${escapeHTML(item.kontak || "")}"
       >
         Beli
       </button>
@@ -564,10 +561,29 @@ function updateTombolBeli() {
 
     btn.dataset.listener = "true";
 
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const card = btn.closest(".produk-item");
 
       const namaProduk = card.querySelector("h3").textContent.trim();
+
+      const productId = btn.dataset.id;
+      const kontak = btn.dataset.kontak;
+
+      if (productId) {
+        fetch(`${API_BASE_URL}/publik/produk/${productId}/view`, {
+          method: "POST",
+        }).catch(() => {});
+      }
+
+      if (kontak) {
+        const nomor = kontak.replace(/\D/g, "").replace(/^0/, "62");
+        window.open(
+          `https://wa.me/${nomor}?text=${encodeURIComponent(`Halo, saya tertarik dengan ${namaProduk}`)}`,
+          "_blank",
+          "noopener",
+        );
+        return;
+      }
 
       Swal.fire({
         icon: "success",

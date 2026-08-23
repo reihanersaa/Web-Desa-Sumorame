@@ -4,11 +4,11 @@ const multer = require("multer");
 const router = express.Router();
 
 const {
-  getPublikasi,
-  createPublikasi,
-  updatePublikasi,
-  deletePublikasi
-} = require("../controllers/publikasiController");
+  getKelembagaan,
+  createKelembagaan,
+  updateKelembagaan,
+  deleteKelembagaan
+} = require("../controllers/kelembagaanController");
 
 const { verifyToken } = require("../middleware/authMiddleware");
 
@@ -42,39 +42,43 @@ const upload = multer({
 
 // ==================================================
 // ROUTE GET
+// Untuk Guest / Publik
 // ==================================================
-router.get("/", getPublikasi);
+router.get("/", getKelembagaan);
 
 
 // ==================================================
 // ROUTE POST
+// Untuk Admin
 // ==================================================
 router.post(
   "/",
   verifyToken,
   upload.single("gambar"),
-  createPublikasi
+  createKelembagaan
 );
 
 
 // ==================================================
 // ROUTE PUT
+// Untuk Admin
 // ==================================================
 router.put(
   "/:id",
   verifyToken,
   upload.single("gambar"),
-  updatePublikasi
+  updateKelembagaan
 );
 
 
 // ==================================================
 // ROUTE DELETE
+// Untuk Admin
 // ==================================================
 router.delete(
   "/:id",
   verifyToken,
-  deletePublikasi
+  deleteKelembagaan
 );
 
 

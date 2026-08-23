@@ -1,22 +1,33 @@
 const express = require("express");
 const router = express.Router();
 const produkController = require("../controllers/produkController");
+const { verifyToken } = require("../middleware/authMiddleware");
 
 // --- ROUTES UNTUK PUBLIK (WARGA) ---
-// Endpoint untuk menampilkan produk yang sudah di-approve di website publik
+// Tampilkan produk approved di website
 router.get("/publik/produk", produkController.getProdukPublik);
 
-// Endpoint untuk warga submit produk baru
+// Endpoint untuk ambil Top 3 (Taruh DI ATAS route /publik/produk/:id/view agar tidak bentrok)
+router.get("/publik/produk/top", produkController.getTop3Produk);
+
+// Endpoint saat tombol Detail diklik FE (nambah angka view)
+router.post("/publik/produk/:id/view", produkController.tambahViewProduk);
+
+// Warga submit produk baru (bisa dipasang verifyToken jika warga wajib login dahulu)
 router.post("/publik/produk", produkController.ajukanProduk);
 
 // --- ROUTES UNTUK PRIVAT (ADMIN CMS) ---
-// Endpoint untuk mengambil semua data produk untuk tabel CMS
-router.get("/admin/produk", produkController.getSemuaProdukAdmin);
+// Ambil semua data produk untuk tabel CMS (Wajib Token Admin)
+router.get("/admin/produk", verifyToken, produkController.getSemuaProdukAdmin);
 
-// Endpoint untuk admin mengubah status (Approve/Reject)
-router.put("/admin/produk/:id/status", produkController.updateStatusProduk);
+// Admin ubah status (Approve/Reject) (Wajib Token Admin)
+router.put(
+  "/admin/produk/:id/status",
+  verifyToken,
+  produkController.updateStatusProduk,
+);
 
-// Endpoint untuk admin menghapus produk
-router.delete("/admin/produk/:id", produkController.hapusProduk);
+// Admin hapus produk (Wajib Token Admin)
+router.delete("/admin/produk/:id", verifyToken, produkController.hapusProduk);
 
 module.exports = router;

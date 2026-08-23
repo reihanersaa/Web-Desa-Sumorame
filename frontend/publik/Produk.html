@@ -257,24 +257,17 @@
 
           <!-- INFORMASI -->
           <div class="produk-info bg-yellow-400/85 px-3 py-2">
-
             <!-- NAMA PRODUK -->
-            <h3 class="produk-nama font-bold text-lg">
-              Keripik Nanas
-            </h3>
+            <h3 class="produk-nama font-bold text-lg">Keripik Nanas</h3>
 
             <div class="flex justify-between items-center mt-2">
-
               <!-- HARGA -->
               <p class="produk-harga text-2xl font-bold text-green-800">
                 Rp15.000
               </p>
 
               <!-- PENJUAL -->
-              <span class="text-sm text-gray-700">
-                Bpk. Agus
-              </span>
-
+              <span class="text-sm text-gray-700"> Bpk. Agus </span>
             </div>
 
             <button
@@ -283,7 +276,6 @@
             >
               Beli
             </button>
-
           </div>
         </div>
 
@@ -300,21 +292,14 @@
           </div>
 
           <div class="produk-info bg-yellow-400/85 px-3 py-2">
-
-            <h3 class="produk-nama font-bold text-lg">
-              Kopi Robusta Premium
-            </h3>
+            <h3 class="produk-nama font-bold text-lg">Kopi Robusta Premium</h3>
 
             <div class="flex justify-between items-center mt-2">
-
               <p class="produk-harga text-2xl font-bold text-green-800">
                 Rp30.000
               </p>
 
-              <span class="text-sm text-gray-700">
-                Ibu Lastri
-              </span>
-
+              <span class="text-sm text-gray-700"> Ibu Lastri </span>
             </div>
 
             <button
@@ -323,7 +308,6 @@
             >
               Beli
             </button>
-
           </div>
         </div>
 
@@ -340,21 +324,14 @@
           </div>
 
           <div class="produk-info bg-yellow-400/85 px-3 py-2">
-
-            <h3 class="produk-nama font-bold text-lg">
-              Minuman Coklat
-            </h3>
+            <h3 class="produk-nama font-bold text-lg">Minuman Coklat</h3>
 
             <div class="flex justify-between items-center mt-2">
-
               <p class="produk-harga text-2xl font-bold text-green-800">
                 Rp35.000
               </p>
 
-              <span class="text-sm text-gray-700">
-                Bpk. Yusron
-              </span>
-
+              <span class="text-sm text-gray-700"> Bpk. Yusron </span>
             </div>
 
             <button
@@ -363,7 +340,6 @@
             >
               Beli
             </button>
-
           </div>
         </div>
       </section>
@@ -402,39 +378,20 @@
 
         <!-- FORM -->
         <form id="formProduk">
-          <!-- Nama Produk -->
+          <!-- NIK -->
           <div class="mb-4">
             <label
-              for="namaProduk"
+              for="NIK"
               class="block text-sm font-semibold text-gray-700 mb-1"
             >
-              Nama Produk
+              NIK
             </label>
 
             <input
               type="text"
-              id="namaProduk"
+              id="NIK"
               required
-              placeholder="Contoh: Keripik Pisang"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
-            />
-          </div>
-
-          <!-- Harga -->
-          <div class="mb-4">
-            <label
-              for="hargaProduk"
-              class="block text-sm font-semibold text-gray-700 mb-1"
-            >
-              Harga
-            </label>
-
-            <input
-              type="number"
-              id="hargaProduk"
-              required
-              min="0"
-              placeholder="Contoh: 15000"
+              placeholder="Contoh: 3515135552450008"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
             />
           </div>
@@ -455,6 +412,73 @@
               placeholder="Contoh: Bpk. Agus"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
             />
+
+            <!-- Nama Produk -->
+            <div class="mb-4">
+              <label
+                for="namaProduk"
+                class="block text-sm font-semibold text-gray-700 mb-1"
+              >
+                Nama Produk
+              </label>
+
+              <input
+                type="text"
+                id="namaProduk"
+                required
+                placeholder="Contoh: Keripik Pisang"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              />
+            </div>
+
+            <!-- Harga -->
+            <div class="mb-4">
+              <label
+                for="hargaProduk"
+                class="block text-sm font-semibold text-gray-700 mb-1"
+              >
+                Harga
+              </label>
+
+              <input
+                type="number"
+                id="hargaProduk"
+                required
+                min="0"
+                placeholder="Contoh: 15000"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              />
+            </div>
+          </div>
+
+          <!-- Gambar -->
+          <div class="mb-4">
+            <label
+              for="kontakProduk"
+              class="block text-sm font-semibold text-gray-700 mb-1"
+              >Nomor WhatsApp</label
+            >
+            <input
+              type="tel"
+              id="kontakProduk"
+              required
+              placeholder="Contoh: 081234567890"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label
+              for="deskripsiProduk"
+              class="block text-sm font-semibold text-gray-700 mb-1"
+              >Deskripsi Produk</label
+            >
+            <textarea
+              id="deskripsiProduk"
+              rows="3"
+              placeholder="Ceritakan produk Anda"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            ></textarea>
           </div>
 
           <!-- Gambar -->
@@ -596,7 +620,8 @@
       </div>
 
       <div class="text-center mt-6 text-sm text-gray-400">
-        ©2026 Intalasi Teknologi Dan Informasi, Kantor Desa Sumorame.
+        ©2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa
+        Sumorame.
       </div>
     </footer>
 

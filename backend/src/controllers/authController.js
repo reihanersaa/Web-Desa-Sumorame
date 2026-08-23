@@ -176,42 +176,42 @@ const loginWarga = async (req, res) => {
   }
 };
 
-//logika login admin
-
+// logika login admin (Menggunakan NIK & Password)
 const loginAdmin = async (req, res) => {
   try {
-    const { email, password } = req.body; // Admin login menggunakan Email
+    const { nik, password } = req.body; // Sekarang ambil NIK & Password dari frontend
 
-    if (!email || !password) {
+    // 1. Validasi input
+    if (!nik || !password) {
       return res.status(400).json({
         success: false,
-        message: "Email dan password admin wajib diisi!",
+        message: "NIK dan password admin wajib diisi!",
       });
     }
 
-    // Cari user berdasarkan email
+    // 2. Cari user berdasarkan NIK
     const { data: user, error } = await supabase
       .from("users")
       .select("*")
-      .eq("email", email)
+      .eq("nik", nik)
       .single();
 
     if (error || !user) {
       return res.status(401).json({
         success: false,
-        message: "Akun admin tidak ditemukan.",
+        message: "Akun admin tidak ditemukan atau NIK salah.",
       });
     }
 
-    // CEK KHUSUS: Pastikan role-nya adalah 'admin'
+    // 3. CEK KHUSUS: Pastikan role-nya adalah 'admin'
     if (user.role !== "admin") {
       return res.status(403).json({
         success: false,
-        message: "Akses ditolak. Akun ini bukan akun Admin!",
+        message: "Akses ditolak. NIK ini terdaftar sebagai Warga, bukan Admin!",
       });
     }
 
-    // Cek password
+    // 4. Cek password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(401).json({
@@ -220,9 +220,9 @@ const loginAdmin = async (req, res) => {
       });
     }
 
-    // Buat Token JWT khusus Admin
+    // 5. Buat Token JWT khusus Admin
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user.id, nik: user.nik, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
     );
@@ -233,6 +233,7 @@ const loginAdmin = async (req, res) => {
       token: token,
       data: {
         id: user.id,
+        nik: user.nik,
         nama_lengkap: user.nama_lengkap,
         email: user.email,
         role: user.role,
@@ -240,12 +241,10 @@ const loginAdmin = async (req, res) => {
     });
   } catch (error) {
     console.error("Login Admin Error:", error.message);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "Terjadi kesalahan internal pada server.",
-      });
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan internal pada server.",
+    });
   }
 };
 

@@ -1,0 +1,188 @@
+const express = require("express");
+const multer = require("multer");
+
+const router = express.Router();
+
+const {
+  getCmsProfil,
+  createCmsProfil,
+  updateCmsProfil,
+  deleteCmsProfil
+} = require("../controllers/cmsprofilController");
+
+const {
+  verifyToken
+} = require("../middleware/authMiddleware");
+
+
+// ==================================================
+// KONFIGURASI MULTER
+// ==================================================
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage: storage,
+
+  limits: {
+    fileSize: 2 * 1024 * 1024
+  },
+
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(
+        new Error(
+          "Format gambar harus JPG, JPEG, PNG, atau WEBP."
+        )
+      );
+    }
+
+    cb(null, true);
+  }
+});
+
+
+// ==================================================
+// GET CMS PROFIL
+// GET /api/cmsprofil
+// PUBLIC
+// ==================================================
+router.get(
+  "/",
+  getCmsProfil
+);
+
+
+// ==================================================
+// TAMBAH CMS PROFIL
+// POST /api/cmsprofil
+// ADMIN
+//
+// FormData:
+// judul_hero
+// deskripsi_hero
+// sambutan
+// visi
+// misi
+// gambar
+// ==================================================
+router.post(
+  "/",
+  verifyToken,
+  upload.single("gambar"),
+  createCmsProfil
+);
+
+
+// ==================================================
+// UPDATE CMS PROFIL
+// PUT /api/cmsprofil/:id
+// ADMIN
+//
+// FormData:
+// judul_hero
+// deskripsi_hero
+// sambutan
+// visi
+// misi
+// gambar = opsional
+// ==================================================
+router.put(
+  "/:id",
+  verifyToken,
+  upload.single("gambar"),
+  updateCmsProfil
+);
+
+
+// ==================================================
+// DELETE CMS PROFIL
+// DELETE /api/cmsprofil/:id
+// ADMIN
+// ==================================================
+router.delete(
+  "/:id",
+  verifyToken,
+  deleteCmsProfil
+);
+
+
+// ==================================================
+// ERROR HANDLER MULTER
+// ==================================================
+router.use((err, req, res, next) => {
+
+  console.error(
+    "CMS Profil Route Error:",
+    err
+  );
+
+
+  // ==================================================
+  // ERROR DARI MULTER
+  // ==================================================
+  if (
+    err instanceof
+    multer.MulterError
+  ) {
+
+    // File terlalu besar
+    if (
+      err.code ===
+      "LIMIT_FILE_SIZE"
+    ) {
+
+      return res.status(400).json({
+        success: false,
+        message:
+          "Ukuran gambar maksimal 2 MB."
+      });
+    }
+
+
+    // Nama field file salah
+    if (
+      err.code ===
+      "LIMIT_UNEXPECTED_FILE"
+    ) {
+
+      return res.status(400).json({
+        success: false,
+        message:
+          "Nama field upload gambar tidak sesuai. Gunakan field 'gambar'."
+      });
+    }
+
+
+    return res.status(400).json({
+      success: false,
+      message:
+        err.message
+    });
+  }
+
+
+  // ==================================================
+  // ERROR FILE FILTER
+  // ==================================================
+  if (err) {
+
+    return res.status(400).json({
+      success: false,
+      message:
+        err.message ||
+        "Terjadi kesalahan saat upload gambar."
+    });
+  }
+
+
+  next();
+});
+
+
+module.exports = router;
