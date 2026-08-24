@@ -164,5 +164,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleSidebar = () => { sidebar.classList.toggle("-translate-x-full"); overlay.classList.toggle("hidden"); };
   document.getElementById("burgerBtn").addEventListener("click", toggleSidebar);
   overlay.addEventListener("click", toggleSidebar);
+
+  const cmsToggle = document.getElementById("cmsToggle");
+  const cmsMenu = document.getElementById("cmsMenu");
+  const cmsIcon = document.getElementById("cmsIcon");
+  cmsToggle.addEventListener("click", () => {
+    const isOpen = cmsToggle.getAttribute("aria-expanded") === "true";
+    cmsToggle.setAttribute("aria-expanded", String(!isOpen));
+    cmsMenu.classList.toggle("max-h-96", !isOpen);
+    cmsMenu.classList.toggle("opacity-100", !isOpen);
+    cmsMenu.classList.toggle("max-h-0", isOpen);
+    cmsMenu.classList.toggle("opacity-0", isOpen);
+    cmsIcon.classList.toggle("rotate-180", !isOpen);
+  });
   load();
 });
