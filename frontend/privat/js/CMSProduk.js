@@ -5,9 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formProduk");
   const modal = document.getElementById("modalProduk");
   const modalBox = document.getElementById("modalProdukBox");
+  const modalUnggulan = document.getElementById("modalUnggulan");
+  const modalUnggulanBox = document.getElementById("modalUnggulanBox");
+  const daftarPilihanUnggulan = document.getElementById("daftarPilihanUnggulan");
+  const searchProdukUnggulan = document.getElementById("searchProdukUnggulan");
   const token = localStorage.getItem("token");
   const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
   let products = [];
+  let featuredSelection = new Set();
 
   const escapeHTML = (value = "") => {
     const div = document.createElement("div");
@@ -41,9 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     tbody.innerHTML = products.map((item, index) => `<tr data-id="${item.id}" class="hover:bg-blue-50">
-      <td class="px-4 py-3 text-center border">${index + 1}</td><td class="px-4 py-3 text-center border">-</td>
+      <td class="px-4 py-3 text-center border">${index + 1}</td><td class="px-4 py-3 text-center border">${escapeHTML(item.nik || "-")}</td>
       <td class="px-4 py-3 font-semibold text-center border">${escapeHTML(item.nama_penjual)}</td>
-      <td class="px-4 py-3 font-semibold text-center border">${escapeHTML(item.nama_produk)}</td>
+      <td class="px-4 py-3 font-semibold text-center border">${escapeHTML(item.nama_produk)}${item.is_featured ? '<span class="block mt-1 text-[10px] text-green-700">★ Tampil di beranda</span>' : ""}</td>
       <td class="px-4 py-3 text-green-600 font-bold text-center border">${rupiah(item.harga)}</td>
       <td class="px-4 py-3 text-center border">${badge(item.status)}</td>
       <td class="px-4 py-3 text-center border"><div class="inline-flex gap-1">
@@ -78,9 +83,82 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const showUnggulan = (open) => {
+    if (open) {
+      featuredSelection = new Set(products.filter((item) => item.is_featured).map((item) => String(item.id)));
+      searchProdukUnggulan.value = "";
+      renderPilihanUnggulan();
+      modalUnggulan.classList.remove("hidden");
+      requestAnimationFrame(() => {
+        modalUnggulan.classList.remove("opacity-0");
+        modalUnggulanBox.classList.remove("scale-90", "opacity-0");
+      });
+    } else {
+      modalUnggulan.classList.add("opacity-0");
+      modalUnggulanBox.classList.add("scale-90", "opacity-0");
+      setTimeout(() => modalUnggulan.classList.add("hidden"), 300);
+    }
+  };
+
+  const updateJumlahPilihan = () => {
+    document.getElementById("jumlahPilihanUnggulan").textContent = `${featuredSelection.size} dari 5 produk dipilih`;
+  };
+
+  const renderPilihanUnggulan = () => {
+    const keyword = (searchProdukUnggulan.value || "").trim().toLocaleLowerCase("id");
+    const approvedProducts = products.filter((item) => {
+      if (item.status !== "approved") return false;
+      const searchable = [item.nama_produk, item.nama_penjual, item.nik, item.harga]
+        .map((value) => String(value || "").toLocaleLowerCase("id"))
+        .join(" ");
+      return !keyword || searchable.includes(keyword);
+    });
+    if (!approvedProducts.length) {
+      daftarPilihanUnggulan.innerHTML = `<p class="sm:col-span-2 py-8 text-center text-gray-500">${keyword ? "Produk tidak ditemukan." : "Belum ada produk yang berstatus disetujui."}</p>`;
+      updateJumlahPilihan();
+      return;
+    }
+    daftarPilihanUnggulan.innerHTML = approvedProducts
+      .sort((a, b) => (a.featured_order || 99) - (b.featured_order || 99))
+      .map((item) => `<label class="flex items-center gap-3 border rounded-xl p-3 cursor-pointer hover:border-green-400 hover:bg-green-50 transition">
+        <input type="checkbox" name="produk_unggulan" value="${item.id}" ${featuredSelection.has(String(item.id)) ? "checked" : ""} class="w-5 h-5 accent-green-600">
+        <img src="${escapeHTML(item.gambar)}" alt="" class="w-14 h-14 rounded-lg object-cover bg-gray-100">
+        <span class="min-w-0"><strong class="block truncate">${escapeHTML(item.nama_produk)}</strong><small class="text-gray-500">${escapeHTML(item.nama_penjual)} · ${rupiah(item.harga)}</small></span>
+      </label>`).join("");
+    updateJumlahPilihan();
+  };
+
   document.getElementById("btnTambahProduk")?.addEventListener("click", () => showForm(true));
   document.getElementById("btnCloseModal")?.addEventListener("click", () => showForm(false));
   document.getElementById("btnBatal")?.addEventListener("click", () => showForm(false));
+  document.getElementById("btnPilihUnggulan")?.addEventListener("click", () => showUnggulan(true));
+  document.getElementById("btnCloseUnggulan")?.addEventListener("click", () => showUnggulan(false));
+  document.getElementById("btnBatalUnggulan")?.addEventListener("click", () => showUnggulan(false));
+  searchProdukUnggulan?.addEventListener("input", renderPilihanUnggulan);
+  daftarPilihanUnggulan?.addEventListener("change", (event) => {
+    const id = String(event.target.value);
+    if (event.target.checked && featuredSelection.size >= 5) {
+      event.target.checked = false;
+      Swal.fire("Maksimal 5 produk", "Batalkan salah satu pilihan sebelum memilih produk lain.", "warning");
+    } else if (event.target.checked) {
+      featuredSelection.add(id);
+    } else {
+      featuredSelection.delete(id);
+    }
+    updateJumlahPilihan();
+  });
+  document.getElementById("formUnggulan")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const productIds = Array.from(featuredSelection);
+    try {
+      await request("/admin/produk/unggulan", { method: "PUT", body: JSON.stringify({ product_ids: productIds }) });
+      showUnggulan(false);
+      await load();
+      Swal.fire("Tersimpan", `${productIds.length} produk akan ditampilkan di beranda.`, "success");
+    } catch (error) {
+      Swal.fire("Gagal", error.message, "error");
+    }
+  });
   document.getElementById("inputFotoProduk")?.addEventListener("change", (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -104,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.onload = async () => {
       try {
         await request("/publik/produk", { method: "POST", body: JSON.stringify({
+          nik: document.getElementById("nikPenjual").value.trim(),
           nama_produk: document.getElementById("namaProduk").value.trim(), harga: Number(document.getElementById("hargaProduk").value),
           nama_penjual: document.getElementById("namaPenjual").value.trim(), kontak_penjual: document.getElementById("noHpPenjual").value.trim(),
           deskripsi: document.getElementById("alamatPenjual").value.trim(), gambar: reader.result,
@@ -120,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!item) return;
     if (button.dataset.action === "view") {
       return Swal.fire({ title: escapeHTML(item.nama_produk), imageUrl: item.gambar, imageHeight: 220,
-        html: `<div class="text-left"><b>Penjual:</b> ${escapeHTML(item.nama_penjual)}<br><b>Kontak:</b> ${escapeHTML(item.kontak_penjual)}<br><b>Harga:</b> ${rupiah(item.harga)}<br><b>Deskripsi:</b> ${escapeHTML(item.deskripsi || "-")}</div>` });
+        html: `<div class="text-left"><b>NIK:</b> ${escapeHTML(item.nik || "-")}<br><b>Penjual:</b> ${escapeHTML(item.nama_penjual)}<br><b>Kontak:</b> ${escapeHTML(item.kontak_penjual)}<br><b>Harga:</b> ${rupiah(item.harga)}<br><b>Deskripsi:</b> ${escapeHTML(item.deskripsi || "-")}</div>` });
     }
     if (button.dataset.action === "status") {
       const answer = await Swal.fire({ title: "Ubah status produk", input: "select", inputOptions: { pending: "Menunggu", approved: "Disetujui", rejected: "Ditolak" }, inputValue: item.status, showCancelButton: true, confirmButtonText: "Simpan" });

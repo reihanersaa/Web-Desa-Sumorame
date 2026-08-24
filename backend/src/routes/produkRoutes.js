@@ -6,6 +6,7 @@ const { verifyToken } = require("../middleware/authMiddleware");
 // --- ROUTES UNTUK PUBLIK (WARGA) ---
 // Tampilkan produk approved di website
 router.get("/publik/produk", produkController.getProdukPublik);
+router.get("/publik/produk/unggulan", produkController.getProdukUnggulanBeranda);
 
 // Endpoint untuk ambil Top 3 (Taruh DI ATAS route /publik/produk/:id/view agar tidak bentrok)
 router.get("/publik/produk/top", produkController.getTop3Produk);
@@ -19,6 +20,11 @@ router.post("/publik/produk", produkController.ajukanProduk);
 // --- ROUTES UNTUK PRIVAT (ADMIN CMS) ---
 // Ambil semua data produk untuk tabel CMS (Wajib Token Admin)
 router.get("/admin/produk", verifyToken, produkController.getSemuaProdukAdmin);
+router.put(
+  "/admin/produk/unggulan",
+  verifyToken,
+  produkController.updateProdukUnggulanBeranda,
+);
 
 // Admin ubah status (Approve/Reject) (Wajib Token Admin)
 router.put(
