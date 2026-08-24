@@ -127,7 +127,7 @@ body {
 }
 
 #heroSection {
-  height: 400px !important;
+  height: auto !important;
   transition: margin-top 0.3s ease;
 }
 
@@ -135,8 +135,40 @@ body {
   margin-top: 0;
 }
 
-@media (min-width: 768px) {
-  #heroSection {
-    height: 500px !important;
-  }
+#heroSection #slider {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  margin: 0;
+}
+
+#heroSection #slider > div {
+  position: relative;
+  min-width: 100%;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background-color: #006633;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#heroSection .hero-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  object-fit: contain;
+  object-position: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
