@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Publikasi | Website Desa Sumorame</title>
-  <link rel="icon" href="../img/logo.png" type="image/png">
+  <link rel="icon" href="../img/logo3.png?v=20260824-1" type="image/png">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="css/Publikasi.css">
+  <link rel="stylesheet" href="css/Publikasi.css?v=20260824-1">
 
   <!-- Tailwind Config -->
   <script>
@@ -48,7 +48,7 @@
       <!-- Logo -->
       <div class="flex items-center gap-3">
         <div class="logo">
-          <img src="../img/logo.png" alt="Logo Desa Digital" width="40" height="36">
+          <img src="../img/logo3.png" alt="Logo Desa Digital" width="40" height="36">
         </div>
         <h1 class="font-headline text-xl font-bold text-emerald-900">Desa Sumorame</h1>
       </div>
@@ -105,25 +105,25 @@
   </div>
 
   <!-- HERO -->
-    <section id="heroSection" class="relative overflow-hidden bg-primary h-[700px] flex items-center">
+    <section id="heroSection" class="group relative overflow-hidden bg-primary">
       <!-- SLIDER -->
-      <div id="slider" class="flex transition-transform duration-700 ease-in-out h-full">
+      <div id="slider" class="flex items-start transition-transform duration-700 ease-in-out">
         <!-- SLIDE 1 -->
         <div class="min-w-full relative">
-          <img src="../img/Kegiatan3.png" class="w-full h-full object-cover object-[center_70%]">
+          <img src="../img/Kegiatan3.png" alt="Kegiatan Desa Sumorame" class="hero-image">
         </div>
         <!-- SLIDE 2 -->
         <div class="min-w-full relative">
-          <img src="../img/Kegiatan4.png" class="w-full h-full object-cover object-[center_35%]">
+          <img src="../img/Kegiatan4.png" alt="Kegiatan Desa Sumorame" class="hero-image">
         </div>
         <!-- SLIDE 3 -->
         <div class="min-w-full relative">
-          <img src="../img/Kegiatan6.png" class="w-full h-full object-cover object-[center_40%]">
+          <img src="../img/Kegiatan6.png" alt="Kegiatan Desa Sumorame" class="hero-image">
         </div>
       </div>
       <!-- BUTTON -->
-      <button id="prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded">❮</button>
-      <button id="next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded">❯</button>
+      <button id="prev" aria-label="Slide sebelumnya" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300">❮</button>
+      <button id="next" aria-label="Slide berikutnya" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300">❯</button>
 
     </section>
 
@@ -323,8 +323,10 @@
     <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
           <!-- Logo & Nama -->
           <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
-            <img src="../img/logo.png" alt="Logo Desa" class="w-16 mb-3">
-            <h3 class="text-lg font-bold">Desa Sumorame</h3>
+            <div class="inline-flex flex-col items-center">
+              <img src="../img/logo3.png" alt="Logo Desa" class="w-16 mb-3">
+              <h3 class="text-lg font-bold">Desa Sumorame</h3>
+            </div>
             <p class="text-sm text-gray-300">
               Makmur dan Unggul.
             </p>
@@ -383,6 +385,6 @@
     </div>
   </footer>
 
-  <script src="js/Publikasi.js"></script>
+  <script src="js/Publikasi.js?v=20260824-1"></script>
 </body>
 </html>

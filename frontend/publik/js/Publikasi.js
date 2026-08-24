@@ -224,7 +224,7 @@ let startX = 0;
 
 slider.addEventListener("touchstart", (e) => {
   startX = e.touches[0].clientX;
-});
+}, { passive: true });
 
 slider.addEventListener("touchend", (e) => {
   let endX = e.changedTouches[0].clientX;
@@ -232,6 +232,22 @@ slider.addEventListener("touchend", (e) => {
   if (startX - endX > 50) {
     showSlide(index + 1);
   } else if (endX - startX > 50) {
+    showSlide(index - 1);
+  }
+}, { passive: true });
+
+// Navigasi keyboard sama seperti hero Profil Desa
+document.addEventListener("keydown", (e) => {
+  const tag = document.activeElement.tagName.toLowerCase();
+  if (tag === "input" || tag === "textarea") return;
+
+  if (e.key === "End") {
+    e.preventDefault();
+    showSlide(index + 1);
+  }
+
+  if (e.key === "Home") {
+    e.preventDefault();
     showSlide(index - 1);
   }
 });

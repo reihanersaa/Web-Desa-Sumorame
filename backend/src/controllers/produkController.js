@@ -6,6 +6,7 @@ const produkController = {
     try {
       // Tambahkan 'deskripsi' di tangkapan body
       const {
+        nik,
         nama_produk,
         deskripsi,
         harga,
@@ -13,6 +14,13 @@ const produkController = {
         kontak_penjual,
         gambar,
       } = req.body;
+
+      if (nik && !/^\d{16}$/.test(String(nik))) {
+        return res.status(400).json({
+          success: false,
+          message: "NIK harus terdiri dari tepat 16 angka.",
+        });
+      }
 
       if (
         !nama_produk ||
@@ -30,6 +38,7 @@ const produkController = {
         .from("produk_unggulan")
         .insert([
           {
+            nik: nik || null,
             nama_produk,
             deskripsi,
             harga,
@@ -55,6 +64,24 @@ const produkController = {
   },
 
   // --- 2 FUNGSI BARU UNTUK FRONTEND ---
+
+  // [PUBLIK] Ambil maksimal 5 produk pilihan admin untuk halaman utama
+  getProdukUnggulanBeranda: async (req, res) => {
+    try {
+      const { data, error } = await supabase
+        .from("produk_unggulan")
+        .select("*")
+        .eq("status", "approved")
+        .eq("is_featured", true)
+        .order("featured_order", { ascending: true })
+        .limit(5);
+
+      if (error) throw error;
+      return res.status(200).json({ success: true, data: data || [] });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  },
 
   // [PUBLIK] Ambil 3 Produk Teratas berdasarkan view
   getTop3Produk: async (req, res) => {
@@ -151,6 +178,53 @@ const produkController = {
     }
   },
 
+  // [ADMIN CMS] Tentukan maksimal 5 produk yang tampil di halaman utama
+  updateProdukUnggulanBeranda: async (req, res) => {
+    try {
+      if (req.user.role !== "admin") {
+        return res.status(403).json({ success: false, message: "Akses Ditolak! Khusus Admin." });
+      }
+
+      const ids = Array.isArray(req.body.product_ids)
+        ? [...new Set(req.body.product_ids.map(String))]
+        : [];
+
+      if (ids.length > 5) {
+        return res.status(400).json({ success: false, message: "Produk unggulan maksimal 5 item." });
+      }
+
+      if (ids.length) {
+        const { data: approved, error: validationError } = await supabase
+          .from("produk_unggulan")
+          .select("id")
+          .in("id", ids)
+          .eq("status", "approved");
+        if (validationError) throw validationError;
+        if ((approved || []).length !== ids.length) {
+          return res.status(400).json({ success: false, message: "Semua produk pilihan harus berstatus disetujui." });
+        }
+      }
+
+      const { error: clearError } = await supabase
+        .from("produk_unggulan")
+        .update({ is_featured: false, featured_order: null })
+        .eq("is_featured", true);
+      if (clearError) throw clearError;
+
+      for (let index = 0; index < ids.length; index += 1) {
+        const { error } = await supabase
+          .from("produk_unggulan")
+          .update({ is_featured: true, featured_order: index + 1 })
+          .eq("id", ids[index]);
+        if (error) throw error;
+      }
+
+      return res.status(200).json({ success: true, message: "Produk unggulan beranda berhasil diperbarui." });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  },
+
   // 4. [ADMIN CMS] Ubah Status Produk (Approve / Reject)
   updateStatusProduk: async (req, res) => {
     try {
@@ -171,9 +245,13 @@ const produkController = {
         });
       }
 
+      const updateData = status === "approved"
+        ? { status }
+        : { status, is_featured: false, featured_order: null };
+
       const { data, error } = await supabase
         .from("produk_unggulan")
-        .update({ status: status })
+        .update(updateData)
         .eq("id", id)
         .select(); // Tambahkan .select() agar mengembalikan data yang di-update
 
