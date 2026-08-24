@@ -393,7 +393,22 @@ slider.addEventListener(
 // === CONTROL KEYBOARD ===
 document.addEventListener("keydown", (e) => {
   const tag = document.activeElement.tagName.toLowerCase();
-  if (tag === "input" || tag === "textarea") return;
+  if (
+    tag === "input" ||
+    tag === "textarea" ||
+    tag === "select" ||
+    document.activeElement.isContentEditable
+  ) return;
+
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
+    showSlide(index + 1);
+  }
+
+  if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    showSlide(index - 1);
+  }
 
   if (e.key === "End") {
     e.preventDefault(); // ⬅️ ini penting
