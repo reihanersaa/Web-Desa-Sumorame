@@ -137,7 +137,7 @@
 
           <!-- CARD KIRI (GAMBAR) -->
           <div class="card-kiri bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden opacity-0 -translate-x-40 transition-all duration-500 ease-out cursor-pointer">
-            <img src="../img/kegiatan.jpg" alt="Gambar Desa" class="w-full h-[500px] object-cover">
+            <img id="heroGambar" src="../img/kegiatan.jpg" alt="Gambar Desa" class="w-full h-[500px] object-cover">
           </div>
 
           <!-- CARD KANAN (JUDUL) -->
@@ -150,7 +150,7 @@
           </h2>
 
           <!-- Deskripsi -->
-          <p class="text-gray-700 leading-relaxed text-lg text-justify">
+          <p id="heroIsi" class="text-gray-700 leading-relaxed text-lg text-justify">
               Kegiatan Kuliah Kerja Nyata (KKN) di Desa Sumorame yang diikuti oleh mahasiswa Universitas Maarif Hasyim Latif (UMAHA). Berbagai program kerja dilaksanakan bersama pemerintah desa dan masyarakat sebagai bentuk pengabdian kepada masyarakat, meliputi Penguatan Desa Berkelanjutan melalui Sekolah Desa sebagai program utama, didukung edukasi kesehatan, inovasi digital, ekonomi kreatif, literasi hukum, dan pemberdayaan masyarakat.
           </p>
 
@@ -158,47 +158,18 @@
 
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-base">person</span>
-              <span>Muhammad Calvin Arbiansyah</span>
+              <span>Admin Desa</span>
             </div>
 
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-base">calendar_today</span>
-              <span>02 Agustus 2026</span>
-            </div>
-
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-base">visibility</span>
-              <span>100.000</span>
+              <span id="heroTanggal">02 Agustus 2026</span>
             </div>
           </div>  
       </div>
 
       <div id="artikelText" class="max-w-3xl mx-auto mt-10 text-gray-700 leading-relaxed text-justify">
-          <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
-              Dalam upaya mewujudkan Desa Sumorame yang modern dan berbasis teknologi, Pemerintah Desa Sumorame terus mengembangkan berbagai inovasi digital untuk meningkatkan kualitas pelayanan kepada masyarakat. Program Desa Sumorame Digital menjadi langkah strategis dalam mendukung administrasi yang lebih cepat, transparan, dan efisien.
-          </p>
-
-          <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
-              Melalui program ini, pemerintah desa bersama mahasiswa Kuliah Kerja Nyata (KKN) Universitas Maarif Hasyim Latif (UMAHA) berkolaborasi dalam mengembangkan layanan digital yang dapat memudahkan masyarakat mengakses informasi desa, administrasi, serta berbagai layanan publik secara lebih praktis.
-          </p>
-
-          <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
-              Selain pengembangan sistem digital, berbagai kegiatan edukasi juga dilaksanakan untuk meningkatkan literasi teknologi masyarakat dan perangkat desa. Pelatihan penggunaan media digital, pengelolaan data, serta pemanfaatan teknologi informasi menjadi bagian dari upaya mendukung transformasi digital di Desa Sumorame.
-          </p>
-
-          <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
-              Kehadiran Desa Sumorame Digital diharapkan mampu memberikan pelayanan publik yang lebih efektif, mempercepat penyampaian informasi, serta mendukung promosi potensi desa, termasuk sektor UMKM, pendidikan, dan kegiatan kemasyarakatan agar semakin dikenal oleh masyarakat luas.
-          </p>
-
-          <p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">
-              Dengan semangat kolaborasi antara pemerintah desa, masyarakat, dan mahasiswa KKN UMAHA, Desa Sumorame terus berkomitmen mengembangkan inovasi digital sebagai fondasi menuju desa yang maju, mandiri, dan adaptif terhadap perkembangan teknologi di masa depan.
-          </p>
-
-          <!-- TAG -->
-          <div class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mt-6 text-emerald-700 font-semibold">
-              #DesaSumorame #DesaDigital #KKNUMAHA #TransformasiDigital #DesaMaju
-          </div>
-
+          <!-- Paragraf artikel diisi otomatis lewat js/informasi.js dari kolom "penjelasan" -->
       </div>
 
         <!-- KANAN (SIDEBAR) -->
@@ -214,103 +185,9 @@
               </button>
             </div>
 
-            <!-- KONTEN TERKINI -->
+            <!-- KONTEN TERKINI (diisi otomatis lewat js/informasi.js) -->
             <div id="contentTerkini" class="space-y-3 mt-4 transition-all duration-700 opacity-0 translate-x-20">
-              <!-- isi berita -->
-              <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
-                  bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
-                  hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
-                <img src="../img/gambar.jpg" alt="Logo Desa" class="w-16 mb-3">
-                <div>
-                  <h4 class="text-sm font-semibold">Sosialisasi Dan Edukasi Warga Desa tawangsari Terhadap Pembayaran PBB.</h4>
-                  <p class="text-xs text-gray-500">17 April 2026</p>
-                </div>
-                <!-- TOMBOL PDF -->
-                <a href="Publikasi.html" 
-                  class="ml-auto flex items-center justify-center 
-                  bg-yellow-400 hover:bg-yellow-500 
-                  active:scale-95 active:translate-y-[2px] active:shadow-md
-                  text-white px-2 py-1 rounded-md 
-                  transition-all duration-150 ease-in-out">
-                  
-                  <span class="material-symbols-outlined text-sm">folder</span>
-                </a>
-              </div>
-              <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
-                  bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
-                  hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
-                <img src="../img/kegiatan.jpg" alt="Logo Desa" class="w-16 mb-3">
-                <div>
-                  <h4 class="text-sm font-semibold">Dukungan Pendidikan bagi Siswa Miskin Berprestasi.</h4>
-                  <p class="text-xs text-gray-500">12 Maret 2026</p>
-                </div>
-                <!-- TOMBOL PDF -->
-                <a href="Publikasi.html" 
-                  class="ml-auto flex items-center justify-center 
-                  bg-yellow-400 hover:bg-yellow-500 
-                  active:scale-95 active:translate-y-[2px] active:shadow-md
-                  text-white px-2 py-1 rounded-md 
-                  transition-all duration-150 ease-in-out">
-                  
-                  <span class="material-symbols-outlined text-sm">folder</span>
-                </a>
-              </div>
-              <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
-                  bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
-                  hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
-                <img src="../img/kegiatan1.jpg" alt="Logo Desa" class="w-16 mb-3">
-                <div>
-                  <h4 class="text-sm font-semibold">Fasilitas sertifikasi halal bagi pelaku umkm di</h4>
-                  <p class="text-xs text-gray-500">14 Juli 2025</p>
-                </div>
-                <!-- TOMBOL PDF -->
-                <a href="Publikasi.html" 
-                  class="ml-auto flex items-center justify-center 
-                  bg-yellow-400 hover:bg-yellow-500 
-                  active:scale-95 active:translate-y-[2px] active:shadow-md
-                  text-white px-2 py-1 rounded-md 
-                  transition-all duration-150 ease-in-out">
-                  
-                  <span class="material-symbols-outlined text-sm">folder</span>
-                </a>
-              </div>
-              <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
-                  bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
-                  hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
-                <img src="../img/Kegiatan2.png" alt="Logo Desa" class="w-16 mb-3">
-                <div>
-                  <h4 class="text-sm font-semibold">Kegiatan Vaksinasi Polio Dan Edukasi Peningkatan Pengetahuan Terhadap Penyakit Polio.</h4>
-                  <p class="text-xs text-gray-500">19 Januari 2024</p>
-                </div>
-                <!-- TOMBOL PDF -->
-                <a href="Publikasi.html" 
-                  class="ml-auto flex items-center justify-center 
-                  bg-yellow-400 hover:bg-yellow-500 
-                  active:scale-95 active:translate-y-[2px] active:shadow-md
-                  text-white px-2 py-1 rounded-md 
-                  transition-all duration-150 ease-in-out">
-                  
-                  <span class="material-symbols-outlined text-sm">folder</span>
-                </a>
-              </div>
-              <div class="terkini-item opacity-0 translate-x-10 transition-all duration-500 
-                  bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
-                  hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
-                <img src="../img/kegiatan4.png" alt="Logo Desa" class="w-16 mb-3">
-                <div>
-                  <h4 class="text-sm font-semibold">Kegiatan Agenda Hari Kedua Pelatihan Praktik Pemasangan Paving Blok.</h4>
-                  <p class="text-xs text-gray-500">02 Oktober 2023</p>
-                </div>
-                <!-- TOMBOL PDF -->
-                <a href="Publikasi.html" 
-                  class="ml-auto flex items-center justify-center 
-                  bg-yellow-400 hover:bg-yellow-500 
-                  active:scale-95 active:translate-y-[2px] active:shadow-md
-                  text-white px-2 py-1 rounded-md 
-                  transition-all duration-150 ease-in-out">
-                  
-                  <span class="material-symbols-outlined text-sm">folder</span>
-                </a>
+              <p class="text-sm text-gray-400">Memuat arsip informasi...</p>
             </div>
         </div>
 

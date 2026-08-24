@@ -2,7 +2,6 @@
 // Logika burger, buka/tutup sidebar, dan sub-menu
 // ditangani oleh DashboardAdmin.js
 
-
 // ==================================================
 // 1. KONFIGURASI API
 // ==================================================
@@ -22,14 +21,12 @@ const tableInfo = document.getElementById("tableInfo");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 
-
 // ==================================================
 // 3. DATA TABLE
 // ==================================================
 let publikasiData = [];
 let currentPage = 1;
 let rowsPerPage = parseInt(entriesSelect.value);
-
 
 // ==================================================
 // 4. GET DATA PUBLIKASI
@@ -47,7 +44,6 @@ async function loadPublikasi() {
     currentPage = 1;
 
     renderTable();
-
   } catch (error) {
     console.error("Error load publikasi:", error);
 
@@ -64,11 +60,10 @@ async function loadPublikasi() {
     Swal.fire({
       icon: "error",
       title: "Gagal mengambil data",
-      text: error.message
+      text: error.message,
     });
   }
 }
-
 
 // ==================================================
 // 5. RENDER TABLE
@@ -76,10 +71,14 @@ async function loadPublikasi() {
 function renderTable() {
   const keyword = searchInput.value.trim().toLowerCase();
 
-  const filteredData = publikasiData.filter(item => {
+  const filteredData = publikasiData.filter((item) => {
     const judul = item.judul ? String(item.judul).toLowerCase() : "";
-    const deskripsi = item.deskripsi ? String(item.deskripsi).toLowerCase() : "";
-    const tanggal = item.waktu_kegiatan ? String(item.waktu_kegiatan).toLowerCase() : "";
+    const deskripsi = item.deskripsi
+      ? String(item.deskripsi).toLowerCase()
+      : "";
+    const tanggal = item.waktu_kegiatan
+      ? String(item.waktu_kegiatan).toLowerCase()
+      : "";
 
     return (
       judul.includes(keyword) ||
@@ -113,12 +112,12 @@ function renderTable() {
       </tr>
     `;
   } else {
-
     // ================= ISI TABLE =================
     pageData.forEach((item, index) => {
       const row = document.createElement("tr");
 
-      row.className = "hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer fade-up";
+      row.className =
+        "hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer fade-up";
       row.style.animationDelay = `${index * 0.1}s`;
 
       const nomor = start + index + 1;
@@ -199,7 +198,6 @@ function renderTable() {
   pasangEventAction();
 }
 
-
 // ==================================================
 // 6. POTONG TEXT
 // ==================================================
@@ -217,7 +215,6 @@ function potongText(text, maxLength) {
   return hasil.substring(0, maxLength) + "...";
 }
 
-
 // ==================================================
 // 7. FORMAT TANGGAL
 // ==================================================
@@ -229,7 +226,6 @@ function formatTanggal(tanggal) {
   return String(tanggal).split("T")[0];
 }
 
-
 // ==================================================
 // 8. SEARCH
 // ==================================================
@@ -237,7 +233,6 @@ searchInput.addEventListener("input", () => {
   currentPage = 1;
   renderTable();
 });
-
 
 // ==================================================
 // 9. SHOW ENTRIES
@@ -249,7 +244,6 @@ entriesSelect.addEventListener("change", () => {
   renderTable();
 });
 
-
 // ==================================================
 // 10. PREVIOUS
 // ==================================================
@@ -260,17 +254,20 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-
 // ==================================================
 // 11. NEXT
 // ==================================================
 nextBtn.addEventListener("click", () => {
   const keyword = searchInput.value.trim().toLowerCase();
 
-  const filteredData = publikasiData.filter(item => {
+  const filteredData = publikasiData.filter((item) => {
     const judul = item.judul ? String(item.judul).toLowerCase() : "";
-    const deskripsi = item.deskripsi ? String(item.deskripsi).toLowerCase() : "";
-    const tanggal = item.waktu_kegiatan ? String(item.waktu_kegiatan).toLowerCase() : "";
+    const deskripsi = item.deskripsi
+      ? String(item.deskripsi).toLowerCase()
+      : "";
+    const tanggal = item.waktu_kegiatan
+      ? String(item.waktu_kegiatan).toLowerCase()
+      : "";
 
     return (
       judul.includes(keyword) ||
@@ -285,7 +282,6 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-
 // ==================================================
 // 12. FLATPICKR
 // ==================================================
@@ -293,7 +289,7 @@ if (document.getElementById("tanggalTambah")) {
   flatpickr("#tanggalTambah", {
     dateFormat: "Y-m-d",
     altInput: true,
-    altFormat: "d F Y"
+    altFormat: "d F Y",
   });
 }
 
@@ -301,10 +297,9 @@ if (document.getElementById("tanggalEdit")) {
   flatpickr("#tanggalEdit", {
     dateFormat: "Y-m-d",
     altInput: true,
-    altFormat: "d F Y"
+    altFormat: "d F Y",
   });
 }
-
 
 // ==================================================
 // 13. MODAL FUNCTION
@@ -323,7 +318,6 @@ function openModal(modal, box) {
   });
 }
 
-
 function closeModalFunc(modal, box) {
   modal.classList.add("opacity-0");
 
@@ -334,7 +328,6 @@ function closeModalFunc(modal, box) {
     modal.classList.add("hidden");
   }, 300);
 }
-
 
 // ==================================================
 // 14. MODAL TAMBAH
@@ -354,7 +347,6 @@ document.getElementById("btnCloseTambah").onclick = () => {
   closeModalFunc(modalTambah, modalTambahBox);
 };
 
-
 // ==================================================
 // 15. MODAL VIEW
 // ==================================================
@@ -373,7 +365,6 @@ document.getElementById("closeModal").onclick = () => {
 document.getElementById("btnClose2").onclick = () => {
   closeModalFunc(modalView, modalBox);
 };
-
 
 // ==================================================
 // 16. MODAL EDIT
@@ -409,7 +400,7 @@ gambarEdit.addEventListener("change", () => {
 
   const reader = new FileReader();
 
-  reader.onload = event => {
+  reader.onload = (event) => {
     previewGambarEdit.src = event.target.result;
     previewGambarEdit.classList.remove("hidden");
   };
@@ -417,18 +408,16 @@ gambarEdit.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
-
 // ==================================================
 // 17. EVENT ACTION TABLE
 // ==================================================
 function pasangEventAction() {
-
   // ================= VIEW =================
-  document.querySelectorAll(".btnView").forEach(btn => {
+  document.querySelectorAll(".btnView").forEach((btn) => {
     btn.onclick = () => {
       const id = btn.dataset.id;
 
-      const item = publikasiData.find(data => {
+      const item = publikasiData.find((data) => {
         return String(data.id) === String(id);
       });
 
@@ -436,7 +425,7 @@ function pasangEventAction() {
         Swal.fire({
           icon: "error",
           title: "Data tidak ditemukan",
-          text: "Data publikasi yang dipilih tidak ditemukan."
+          text: "Data publikasi yang dipilih tidak ditemukan.",
         });
 
         return;
@@ -461,87 +450,85 @@ function pasangEventAction() {
     };
   });
 
-
   // ================= EDIT =================
-document.querySelectorAll(".btnEdit").forEach(btn => {
-  btn.onclick = () => {
-    const id = btn.dataset.id;
+  document.querySelectorAll(".btnEdit").forEach((btn) => {
+    btn.onclick = () => {
+      const id = btn.dataset.id;
 
-    const item = publikasiData.find(data => {
-      return String(data.id) === String(id);
-    });
-
-    if (!item) {
-      Swal.fire({
-        icon: "error",
-        title: "Data tidak ditemukan",
-        text: "Data publikasi yang dipilih tidak ditemukan."
+      const item = publikasiData.find((data) => {
+        return String(data.id) === String(id);
       });
 
-      return;
-    }
+      if (!item) {
+        Swal.fire({
+          icon: "error",
+          title: "Data tidak ditemukan",
+          text: "Data publikasi yang dipilih tidak ditemukan.",
+        });
 
-    // Simpan ID data yang sedang diedit
-    idPublikasiEdit = item.id;
+        return;
+      }
 
-    // Isi form dengan data lama
-    judulEdit.value = item.judul || "";
-    isiEdit.value = item.deskripsi || "";
-    tanggalEdit.value = formatTanggal(item.waktu_kegiatan);
+      // Simpan ID data yang sedang diedit
+      idPublikasiEdit = item.id;
 
-    // Kosongkan input file
-    gambarEdit.value = "";
+      // Isi form dengan data lama
+      judulEdit.value = item.judul || "";
+      isiEdit.value = item.deskripsi || "";
+      tanggalEdit.value = formatTanggal(item.waktu_kegiatan);
 
-    // Tampilkan gambar lama
-    if (item.gambar_url) {
-      previewGambarEdit.src = item.gambar_url;
-      previewGambarEdit.classList.remove("hidden");
-    } else {
-      previewGambarEdit.src = "";
-      previewGambarEdit.classList.add("hidden");
-    }
+      // Kosongkan input file
+      gambarEdit.value = "";
 
-    openModal(modalEdit, modalEditBox);
-  };
-});
+      // Tampilkan gambar lama
+      if (item.gambar_url) {
+        previewGambarEdit.src = item.gambar_url;
+        previewGambarEdit.classList.remove("hidden");
+      } else {
+        previewGambarEdit.src = "";
+        previewGambarEdit.classList.add("hidden");
+      }
 
+      openModal(modalEdit, modalEditBox);
+    };
+  });
 
   // ================= DELETE =================
-document.querySelectorAll(".btnDelete").forEach(btn => {
-  btn.onclick = async () => {
-    const id = btn.dataset.id;
+  document.querySelectorAll(".btnDelete").forEach((btn) => {
+    btn.onclick = async () => {
+      const id = btn.dataset.id;
 
-    const item = publikasiData.find(data => {
-      return String(data.id) === String(id);
-    });
-
-    if (!item) {
-      Swal.fire({
-        icon: "error",
-        title: "Data Tidak Ditemukan",
-        text: "Data publikasi yang dipilih tidak ditemukan."
+      const item = publikasiData.find((data) => {
+        return String(data.id) === String(id);
       });
 
-      return;
-    }
+      if (!item) {
+        Swal.fire({
+          icon: "error",
+          title: "Data Tidak Ditemukan",
+          text: "Data publikasi yang dipilih tidak ditemukan.",
+        });
 
-    // ================= TOKEN =================
-    const token = getAdminToken();
+        return;
+      }
 
-    if (!token) {
-      Swal.fire({
-        icon: "warning",
-        title: "Token Admin Tidak Ditemukan",
-        text: "Silakan login sebagai admin terlebih dahulu."
-      });
+      // ================= TOKEN =================
+      const token = getAdminToken();
 
-      return;
-    }
+      if (!token) {
+        Swal.fire({
+          icon: "warning",
+          title: "Token Admin Tidak Ditemukan",
+          text: "Silakan login sebagai admin terlebih dahulu.",
+        });
 
-    // ================= KONFIRMASI =================
-    const konfirmasi = await Swal.fire({
-      title: "Yakin Hapus?",
-      html: `
+        return;
+      }
+
+      // ================= KONFIRMASI =================
+      const konfirmasi = await Swal.fire({
+        title: "Yakin Hapus?",
+        html: `
         <div style="text-align:center;">
           <p>Publikasi berikut akan dihapus:</p>
 
@@ -554,78 +541,75 @@ document.querySelectorAll(".btnDelete").forEach(btn => {
           </p>
         </div>
       `,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Hapus",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#dc2626",
-      cancelButtonColor: "#6b7280"
-    });
-
-    if (!konfirmasi.isConfirmed) {
-      return;
-    }
-
-    try {
-      // ================= LOADING =================
-      Swal.fire({
-        title: "Menghapus...",
-        text: "Publikasi sedang dihapus.",
-        allowOutsideClick: false,
-        showConfirmButton: false,
-
-        didOpen: () => {
-          Swal.showLoading();
-        }
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, Hapus",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#dc2626",
+        cancelButtonColor: "#6b7280",
       });
 
-      // ================= DELETE API =================
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          result.message || "Gagal menghapus publikasi."
-        );
+      if (!konfirmasi.isConfirmed) {
+        return;
       }
 
-      // ================= BERHASIL =================
-      await Swal.fire({
-        title: "Berhasil 🎉",
-        text: "Publikasi berhasil dihapus.",
-        icon: "success",
-        timer: 1500,
-        showConfirmButton: false
-      });
+      try {
+        // ================= LOADING =================
+        Swal.fire({
+          title: "Menghapus...",
+          text: "Publikasi sedang dihapus.",
+          allowOutsideClick: false,
+          showConfirmButton: false,
 
-      // ================= REFRESH TABEL =================
-      await loadPublikasi();
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
 
-    } catch (error) {
-      console.error("Error delete publikasi:", error);
+        // ================= DELETE API =================
+        const response = await fetch(`${API_URL}/${id}`, {
+          method: "DELETE",
 
-      Swal.fire({
-        icon: "error",
-        title: "Gagal Menghapus",
-        text: error.message
-      });
-    }
-  };
-});
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Gagal menghapus publikasi.");
+        }
+
+        // ================= BERHASIL =================
+        await Swal.fire({
+          title: "Berhasil 🎉",
+          text: "Publikasi berhasil dihapus.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+
+        // ================= REFRESH TABEL =================
+        await loadPublikasi();
+      } catch (error) {
+        console.error("Error delete publikasi:", error);
+
+        Swal.fire({
+          icon: "error",
+          title: "Gagal Menghapus",
+          text: error.message,
+        });
+      }
+    };
+  });
 }
 
 // ==================================================
 // 18. OUTSIDE CLICK
 // ==================================================
 function enableOutsideClick(modal, box) {
-  modal.addEventListener("click", e => {
+  modal.addEventListener("click", (e) => {
     if (!box.contains(e.target)) {
       closeModalFunc(modal, box);
     }
@@ -635,7 +619,6 @@ function enableOutsideClick(modal, box) {
 enableOutsideClick(modalTambah, modalTambahBox);
 enableOutsideClick(modalView, modalBox);
 enableOutsideClick(modalEdit, modalEditBox);
-
 
 // ==================================================
 // 19. SIMPAN TAMBAH
@@ -671,14 +654,14 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
         <div style="text-align:center;">
           <p>Data berikut masih kosong:</p>
           <ul style="list-style-position: inside;">
-            ${kosong.map(item => `<li>${item}</li>`).join("")}
+            ${kosong.map((item) => `<li>${item}</li>`).join("")}
           </ul>
         </div>
       `,
       icon: "warning",
       confirmButtonColor: "#f59e0b",
       background: "#fffbeb",
-      color: "#92400e"
+      color: "#92400e",
     });
 
     return;
@@ -690,7 +673,7 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
     Swal.fire({
       icon: "warning",
       title: "Token Admin Tidak Ditemukan",
-      text: "Silakan login sebagai admin terlebih dahulu."
+      text: "Silakan login sebagai admin terlebih dahulu.",
     });
 
     return;
@@ -711,7 +694,7 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
     confirmButtonText: "Ya, simpan",
     cancelButtonText: "Batal",
     confirmButtonColor: "#3b82f6",
-    cancelButtonColor: "#6b7280"
+    cancelButtonColor: "#6b7280",
   });
 
   if (!konfirmasi.isConfirmed) {
@@ -725,27 +708,22 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
-    // SEMENTARA UNTUK TEST POST
-    // Nanti diganti dengan URL hasil upload Supabase Storage.
-    const gambarUrl = "https://placehold.co/600x400.png";
-
-    const dataPublikasi = {
-      judul: judul,
-      deskripsi: isi,
-      gambar_url: gambarUrl,
-      waktu_kegiatan: tanggal
-    };
+    // ================= FORM DATA (kirim file gambar asli, bukan URL placeholder) =================
+    const formData = new FormData();
+    formData.append("judul", judul);
+    formData.append("deskripsi", isi);
+    formData.append("waktu_kegiatan", tanggal);
+    formData.append("gambar", gambar);
 
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(dataPublikasi)
+      body: formData,
     });
 
     const result = await response.json();
@@ -759,7 +737,7 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
       text: "Publikasi berhasil ditambahkan.",
       icon: "success",
       timer: 1500,
-      showConfirmButton: false
+      showConfirmButton: false,
     });
 
     document.getElementById("judulTambah").value = "";
@@ -771,18 +749,16 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
       closeModalFunc(modalTambah, modalTambahBox);
       loadPublikasi();
     }, 1500);
-
   } catch (error) {
     console.error("Error tambah publikasi:", error);
 
     Swal.fire({
       icon: "error",
       title: "Gagal Menyimpan",
-      text: error.message
+      text: error.message,
     });
   }
 };
-
 
 // ==================================================
 // 20. SIMPAN EDIT
@@ -798,7 +774,7 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
     Swal.fire({
       icon: "error",
       title: "Data tidak ditemukan",
-      text: "ID publikasi yang akan diedit tidak ditemukan."
+      text: "ID publikasi yang akan diedit tidak ditemukan.",
     });
 
     return;
@@ -827,11 +803,11 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
           <p>Data berikut masih kosong:</p>
 
           <ul style="list-style-position: inside;">
-            ${kosong.map(item => `<li>${item}</li>`).join("")}
+            ${kosong.map((item) => `<li>${item}</li>`).join("")}
           </ul>
         </div>
       `,
-      icon: "warning"
+      icon: "warning",
     });
 
     return;
@@ -841,16 +817,13 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
   if (gambar) {
     const maksimalUkuran = 2 * 1024 * 1024;
 
-    const tipeGambar = [
-      "image/jpeg",
-      "image/png"
-    ];
+    const tipeGambar = ["image/jpeg", "image/png"];
 
     if (gambar.size > maksimalUkuran) {
       Swal.fire({
         icon: "warning",
         title: "Ukuran Gambar Terlalu Besar",
-        text: "Ukuran gambar maksimal 2MB."
+        text: "Ukuran gambar maksimal 2MB.",
       });
 
       return;
@@ -860,7 +833,7 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
       Swal.fire({
         icon: "warning",
         title: "Format Gambar Tidak Valid",
-        text: "Gunakan gambar JPG, JPEG, atau PNG."
+        text: "Gunakan gambar JPG, JPEG, atau PNG.",
       });
 
       return;
@@ -874,7 +847,7 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
     Swal.fire({
       icon: "warning",
       title: "Token Admin Tidak Ditemukan",
-      text: "Silakan login sebagai admin terlebih dahulu."
+      text: "Silakan login sebagai admin terlebih dahulu.",
     });
 
     return;
@@ -896,7 +869,7 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
     confirmButtonText: "Ya, simpan",
     cancelButtonText: "Batal",
     confirmButtonColor: "#3b82f6",
-    cancelButtonColor: "#6b7280"
+    cancelButtonColor: "#6b7280",
   });
 
   if (!konfirmasi.isConfirmed) {
@@ -912,7 +885,7 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
 
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
     // ================= FORM DATA =================
@@ -932,18 +905,16 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
       method: "PUT",
 
       headers: {
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
 
-      body: formData
+      body: formData,
     });
 
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        result.message || "Gagal memperbarui publikasi"
-      );
+      throw new Error(result.message || "Gagal memperbarui publikasi");
     }
 
     // ================= BERHASIL =================
@@ -952,7 +923,7 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
       text: "Publikasi berhasil diperbarui.",
       icon: "success",
       timer: 1500,
-      showConfirmButton: false
+      showConfirmButton: false,
     });
 
     // Tutup modal
@@ -963,18 +934,16 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
 
     // Refresh tabel
     await loadPublikasi();
-
   } catch (error) {
     console.error("Error edit publikasi:", error);
 
     Swal.fire({
       icon: "error",
       title: "Gagal Memperbarui",
-      text: error.message
+      text: error.message,
     });
   }
 };
-
 
 // ==================================================
 // 21. LOAD DATA SAAT HALAMAN DIBUKA
