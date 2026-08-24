@@ -46,15 +46,23 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ================= ANIMASI HERO =================
+  // Judul memakai animasi loop CSS seperti Administrasi Persuratan;
+  // deskripsi masuk satu kali dari kiri.
   const heroItems = document.querySelectorAll(".hero-item");
 
-  window.addEventListener("load", () => {
+  const showHeroItems = () => {
     heroItems.forEach((item, i) => {
       setTimeout(() => {
         item.classList.remove("opacity-0", "-translate-x-16");
       }, i * 200);
     });
-  });
+  };
+
+  if (document.readyState === "complete") {
+    showHeroItems();
+  } else {
+    window.addEventListener("load", showHeroItems, { once: true });
+  }
 
   // ================= ANIMASI FOOTER =================
   const footer = document.getElementById("footer");
