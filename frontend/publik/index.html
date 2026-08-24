@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-  <link href="css/index.css?v=20260824-1" rel="stylesheet"/>
+  <link href="css/index.css?v=20260824-2" rel="stylesheet"/>
   <!-- Tailwind Config -->
   <script>
    tailwind.config = {
@@ -510,8 +510,8 @@
     </h3>
     <!-- Container Card -->
     <div class="relative z-10 max-w-7xl mx-auto px-6">
-     <!-- 4 CARD DALAM SATU BARIS -->
-     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+     <!-- 5 CARD STATISTIK -->
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
       <!-- Laki-Laki -->
       <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
        <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
@@ -522,7 +522,7 @@
          Laki-Laki
         </h3>
         <p class="mt-1 text-3xl font-bold text-blue-500">
-         <span class="counter" data-target="1889">
+         <span class="counter" data-statistik="laki_laki" data-target="0">
           0
          </span>
         </p>
@@ -541,7 +541,7 @@
          Perempuan
         </h3>
         <p class="mt-1 text-3xl font-bold text-blue-500">
-         <span class="counter" data-target="929">
+         <span class="counter" data-statistik="perempuan" data-target="0">
           0
          </span>
         </p>
@@ -560,7 +560,7 @@
          Total Penduduk
         </h3>
         <p class="mt-1 text-3xl font-bold text-blue-500">
-         <span class="counter" data-target="960">
+         <span class="counter" data-statistik="total_penduduk" data-target="0">
           0
          </span>
         </p>
@@ -569,7 +569,26 @@
         </span>
        </div>
       </div>
-      <!-- Total Dusun -->
+      <!-- Total RW -->
+      <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+       <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+        <img alt="Total RW" class="w-12 h-12 object-contain" src="../img/statistik.png"/>
+       </div>
+       <div>
+        <h3 class="text-lg text-gray-500 uppercase">
+         Total RW
+        </h3>
+        <p class="mt-1 text-3xl font-bold text-blue-500">
+         <span class="counter" data-statistik="total_rw" data-target="0">
+          0
+         </span>
+        </p>
+        <span class="text-xl text-gray-600 font-medium">
+         RW
+        </span>
+       </div>
+      </div>
+      <!-- Total Dusun: nilai tetap dan tidak dikelola dari CMS -->
       <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
        <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
         <img alt="Total Dusun" class="w-12 h-12 object-contain" src="../img/dusun.png"/>
@@ -823,7 +842,7 @@
     &copy;2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa Sumorame.
    </div>
   </footer>
-  <script src="js/index.js?v=20260824-2">
+  <script src="js/index.js?v=20260824-3">
   </script>
  </body>
 </html>
