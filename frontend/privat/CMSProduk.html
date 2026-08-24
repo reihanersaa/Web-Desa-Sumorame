@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CMS Produk Unggulan | Website Desa Tawangsari</title>
-    <link rel="icon" href="../img/logo.png" type="image/png" />
+    <link rel="icon" href="../img/logo3.png?v=20260824-1" type="image/png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link
@@ -229,6 +229,12 @@
       <main class="flex-1 p-6 pb-20 space-y-6 fade-up">
       <!-- ================= HEADER + BUTTON ================= -->
       <div class="flex justify-between items-center">
+        <button
+          id="btnPilihUnggulan"
+          class="fade-up delay-1 bg-gradient-to-r from-green-500 to-yellow-400 hover:from-green-600 hover:to-yellow-500 text-white px-4 py-2 rounded flex items-center gap-2 hover:shadow-lg active:scale-90 transition-all duration-150">
+          <span class="material-symbols-outlined text-sm">stars</span>
+          Pilih Produk Beranda
+        </button>
         <button 
           id="btnTambahProduk"
           class="fade-up delay-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:shadow-lg active:scale-90 transition-all duration-150"
@@ -276,6 +282,7 @@
               <tr class="fade-up" style="animation-delay: 0.3s">
                 <th class="px-4 py-3 border text-center">No</th>
                 <th class="px-4 py-3 border text-center">NIK</th>
+                <th class="px-4 py-3 border text-center">Nama Penjual</th>
                 <th class="px-4 py-3 border text-center">Nama Produk</th>
                 <th class="px-4 py-3 border text-center">Harga</th>
                 <th class="px-4 py-3 border text-center">Status</th>
@@ -359,6 +366,20 @@
 
     <!-- FORM -->
     <form id="formProduk" class="p-6 space-y-4 overflow-y-auto flex-1">
+
+      <div>
+        <label for="nikPenjual">NIK</label>
+        <input
+          id="nikPenjual"
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]{16}"
+          maxlength="16"
+          placeholder="Masukkan 16 digit NIK"
+          required
+          class="w-full border rounded px-3 py-2 mt-1">
+        <p class="text-xs text-gray-500 mt-1">NIK harus terdiri dari tepat 16 angka.</p>
+      </div>
 
       <div>
         <label for="namaProduk">Nama Produk</label>
@@ -451,6 +472,35 @@
       </button>
     </div>
 
+  </div>
+</div>
+
+<!-- MODAL PILIH PRODUK BERANDA -->
+<div id="modalUnggulan"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center opacity-0 transition-opacity duration-300 ease-out p-4">
+  <div id="modalUnggulanBox"
+    class="bg-white w-[95%] md:w-[55%] max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-90 opacity-0 transition-all duration-300 ease-out">
+    <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-400 to-yellow-300 text-white flex-shrink-0">
+      <div>
+        <h2 class="text-lg font-semibold">Pilih Produk untuk Beranda</h2>
+        <p class="text-xs text-white/90">Pilih maksimal 5 produk yang sudah disetujui.</p>
+      </div>
+      <button id="btnCloseUnggulan" type="button"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <form id="formUnggulan" class="p-6 overflow-y-auto flex-1">
+      <div class="relative mb-4">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+        <input id="searchProdukUnggulan" type="search" autocomplete="off"
+          placeholder="Cari nama produk, penjual, NIK, atau harga..."
+          class="w-full border rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+      <div id="daftarPilihanUnggulan" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      <p id="jumlahPilihanUnggulan" class="mt-4 text-sm font-semibold text-green-700">0 dari 5 produk dipilih</p>
+    </form>
+    <div class="p-4 border-t flex justify-end gap-2 flex-shrink-0 bg-white">
+      <button id="btnBatalUnggulan" type="button" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+      <button type="submit" form="formUnggulan" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan Pilihan</button>
+    </div>
   </div>
 </div>
 
@@ -649,6 +699,6 @@
     <script src="js/DashboardAdmin.js"></script>
 
     <!-- SCRIPT KHUSUS KELOLA PRODUK (DIPISAH NANTI) -->
-    <script src="js/CMSProduk.js?v=20260820-2"></script>
+    <script src="js/CMSProduk.js?v=20260824-2"></script>
   </body>
 </html>
