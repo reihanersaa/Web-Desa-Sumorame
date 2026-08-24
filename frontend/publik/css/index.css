@@ -119,6 +119,55 @@ body {
   background: #004d26;
 }
 
+/* Kartu statistik: tipografi konsisten saat lima kartu dalam satu baris */
+#statistik .stat-card {
+  min-width: 0;
+  padding: 1rem;
+  gap: 0.75rem;
+}
+
+#statistik .stat-card > div:first-child {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+#statistik .stat-card > div:first-child img {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+#statistik .stat-card > div:last-child {
+  min-width: 0;
+  flex: 1;
+}
+
+#statistik .stat-card h3 {
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+#statistik .stat-card p {
+  margin-top: 0.25rem;
+  font-size: 1.75rem;
+  line-height: 2rem;
+}
+
+#statistik .stat-card > div:last-child > span {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+@media (max-width: 639px) {
+  #statistik .stat-card {
+    max-width: 22rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+}
+
 /* Produk unggulan beranda: sama dengan kartu di halaman Produk */
 #produk #produkUnggulanBeranda .produk-item {
   position: relative;

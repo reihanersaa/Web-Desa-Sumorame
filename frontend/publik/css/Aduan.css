@@ -44,6 +44,70 @@ body {
   margin-top: 0;
 }
 
+#heroSection .hero-title,
+#heroSection .hero-item {
+  will-change: transform, opacity;
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#heroSection .hero-title {
+  display: inline-block;
+  white-space: nowrap;
+  animation: aduanTitleSlideLoop 8s ease-in-out infinite;
+}
+
+/* Sama dengan judul hero Administrasi Persuratan:
+   masuk dari kanan, diam, lalu keluar ke kiri. */
+@keyframes aduanTitleSlideLoop {
+  0% {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  55% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  75%,
+  100% {
+    opacity: 0;
+    transform: translateX(-180%);
+  }
+}
+
+#heroSection .hero-background {
+  transform: scale(1.06);
+  animation: aduanHeroZoom 7s ease-out forwards;
+  will-change: transform;
+}
+
+@keyframes aduanHeroZoom {
+  to { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #heroSection .hero-title,
+  #heroSection .hero-item {
+    transition: none;
+  }
+
+  #heroSection .hero-title {
+    animation: none;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  #heroSection .hero-background {
+    animation: none;
+    transform: none;
+  }
+}
+
 .nav-item:hover::after {
   width: 100%;
 }

@@ -484,6 +484,31 @@ function animateCounter(counter) {
 
 const statistik = document.getElementById("statistik");
 
+async function loadStatistikPublik() {
+  try {
+    const response = await fetch(`${INDEX_API_BASE_URL}/statistik/publik`);
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "Statistik gagal dimuat.");
+
+    statistik.querySelectorAll(".counter[data-statistik]").forEach((counter) => {
+      const value = Number(result.data?.[counter.dataset.statistik]) || 0;
+      counter.dataset.target = String(value);
+      counter.textContent = "0";
+    });
+
+    const rect = statistik.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      statistik.querySelectorAll(".counter[data-statistik]").forEach(animateCounter);
+    } else if (rect.bottom <= 0) {
+      statistik.querySelectorAll(".counter[data-statistik]").forEach((counter) => {
+        counter.textContent = Number(counter.dataset.target).toLocaleString("id-ID");
+      });
+    }
+  } catch (error) {
+    console.error("Gagal memuat statistik publik:", error.message);
+  }
+}
+
 revealOnScroll(
   statistik,
   statCards,
@@ -495,6 +520,8 @@ revealOnScroll(
       .forEach((counter) => animateCounter(counter));
   },
 );
+
+loadStatistikPublik();
 
 // =====================================================
 // PARALLAX BACKGROUND (JELAJAH + STATISTIK)
