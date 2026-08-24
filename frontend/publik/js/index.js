@@ -187,11 +187,63 @@ revealOnScroll(
   200,
 );
 
-// === Animasi Produk Unggulan ===
+// === Produk Unggulan pilihan CMS (maksimal 5) ===
 const produk = document.getElementById("produk");
-const produkItems = produk.querySelectorAll(".produk-item");
+const produkUnggulanBeranda = document.getElementById("produkUnggulanBeranda");
+const INDEX_API_BASE_URL = window.API_BASE_URL || "http://localhost:3000/api";
 
-revealOnScroll(produk, produkItems, ["opacity-0", "translate-y-16"], 200);
+function escapeProdukHTML(value = "") {
+  const element = document.createElement("div");
+  element.textContent = value;
+  return element.innerHTML;
+}
+
+async function muatProdukUnggulanBeranda() {
+  if (!produkUnggulanBeranda) return;
+  try {
+    const response = await fetch(`${INDEX_API_BASE_URL}/publik/produk/unggulan`);
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "Produk gagal dimuat.");
+    const items = (result.data || []).slice(0, 5);
+    if (!items.length) {
+      produkUnggulanBeranda.innerHTML = '<p class="col-span-full text-center text-gray-500">Belum ada produk unggulan yang dipilih.</p>';
+      return;
+    }
+
+    produkUnggulanBeranda.innerHTML = items.map((item) => {
+      const nomor = String(item.kontak_penjual || "").replace(/\D/g, "").replace(/^0/, "62");
+      const pesan = encodeURIComponent(`Halo, saya tertarik dengan ${item.nama_produk}`);
+      return `<article class="produk-item produk-dynamic group w-full bg-white rounded-md overflow-hidden shadow-lg">
+        <div class="overflow-hidden">
+          <img src="${escapeProdukHTML(item.gambar)}" alt="${escapeProdukHTML(item.nama_produk)}" class="w-full h-full object-cover">
+        </div>
+        <div class="produk-info bg-yellow-400/85 px-3 py-2">
+          <h3 class="produk-nama font-bold text-lg">${escapeProdukHTML(item.nama_produk)}</h3>
+          <div class="flex justify-between items-center mt-2 gap-2">
+            <p class="produk-harga text-2xl font-bold text-green-800">${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(item.harga) || 0)}</p>
+            <span class="text-sm text-gray-700 text-right">${escapeProdukHTML(item.nama_penjual)}</span>
+          </div>
+          <a href="https://wa.me/${nomor}?text=${pesan}" target="_blank" rel="noopener" data-product-id="${item.id}" class="btn-beli mt-2 w-full bg-green-700 text-white py-2 rounded-md hover:bg-green-800 transition text-center block">Beli</a>
+        </div>
+      </article>`;
+    }).join("");
+
+    const cards = produkUnggulanBeranda.querySelectorAll(".produk-item");
+    revealOnScroll(produk, cards, [], 120, (card) => card.classList.add("show"));
+  } catch (error) {
+    console.error("Gagal memuat produk unggulan beranda:", error.message);
+    produkUnggulanBeranda.innerHTML = '<p class="col-span-full text-center text-red-600">Produk unggulan belum dapat dimuat.</p>';
+  }
+}
+
+produkUnggulanBeranda?.addEventListener("click", (event) => {
+  const link = event.target.closest(".btn-beli");
+  if (link?.dataset.productId) {
+    fetch(`${INDEX_API_BASE_URL}/publik/produk/${link.dataset.productId}/view`, { method: "POST" }).catch(() => {});
+  }
+});
+
+muatProdukUnggulanBeranda();
 
 // === Animasi Navbar ===
 const navItems = document.querySelectorAll(".nav-item");
