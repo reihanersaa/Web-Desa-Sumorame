@@ -1,25 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
-   Profil Desa | Website Desa Sumorame
-  </title>
-  <link href="../img/logo.png" rel="icon" type="image/png"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js">
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com" rel="preconnect"/>
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-  <link href="css/index.css" rel="stylesheet"/>
-  <!-- Tailwind Config -->
-  <script>
-   tailwind.config = {
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Profil Desa | Website Desa Sumorame</title>
+    <link href="img/logo3.png?v=20260824-1" rel="icon" type="image/png" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/index.css?v=20260824-2" rel="stylesheet" />
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
@@ -41,318 +46,396 @@
           },
         },
       };
-  </script>
- </head>
- <body class="bg-surface font-body text-on-surface">
-  <!-- HEADER -->
-  <header class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md" id="mainHeader">
-   <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
-    <!-- Logo -->
-    <div class="flex items-center gap-3">
-     <div class="logo">
-      <img alt="Logo Desa Digital" height="36" src="../img/logo.png" width="40"/>
-     </div>
-     <h1 class="font-headline text-xl font-bold text-emerald-900">
-      Desa Sumorame
-     </h1>
+    </script>
+  </head>
+  <body class="bg-surface font-body text-on-surface">
+    <!-- HEADER -->
+    <header
+      class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md"
+      id="mainHeader"
+    >
+      <div
+        class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16"
+      >
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div class="logo">
+            <img
+              alt="Logo Desa Digital"
+              height="36"
+              src="img/logo3.png"
+              width="40"
+            />
+          </div>
+          <h1 class="font-headline text-xl font-bold text-emerald-900">
+            Desa Sumorame
+          </h1>
+        </div>
+        <!-- Menu -->
+        <nav class="hidden md:flex items-center font-medium text-green-900">
+          <a class="nav-item relative px-5 font-bold" href="#">
+            Profile Desa
+          </a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+          <a class="nav-item relative px-5 font-bold" href="PPID.html">
+            PPID
+          </a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+          <a class="nav-item relative px-5 font-bold" href="Lembaga.html">
+            Lembaga
+          </a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+          <a class="nav-item relative px-5 font-bold" href="Informasi.html">
+            Informasi
+          </a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+          <a
+            class="nav-item relative px-5 font-bold text-green-800"
+            href="AdminP.html"
+          >
+            Administrasi Persuratan
+          </a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+          <a class="nav-item relative px-5 font-bold" href="Aduan.html">
+            Aduan
+          </a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+          <a class="nav-item relative px-5 font-bold" href="Publikasi.html">
+            Publikasi
+          </a>
+        </nav>
+        <!-- LOGOUT -->
+        <a
+          class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition"
+          href="login.html"
+        >
+          <span class="material-symbols-outlined text-2xl"> logout </span>
+        </a>
+        <!-- Right Section -->
+        <div class="flex items-center gap-4">
+          <!-- Hamburger (Mobile Only) -->
+          <button
+            class="md:hidden material-symbols-outlined text-emerald-900 text-3xl"
+            id="menuBtn"
+          >
+            menu
+          </button>
+        </div>
+      </div>
+    </header>
+    <!-- MOBILE MENU -->
+    <div
+      class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300"
+      id="mobileMenu"
+    >
+      <a
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        href="#"
+      >
+        Profile Desa
+      </a>
+      <a
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        href="PPID.html"
+      >
+        PPID
+      </a>
+      <a
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        href="Lembaga.html"
+      >
+        Lembaga
+      </a>
+      <a
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        href="Informasi.html"
+      >
+        Informasi
+      </a>
+      <a
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        href="AdminP.html"
+      >
+        Administrasi Persuratan
+      </a>
+      <a
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        href="Aduan.html"
+      >
+        Aduan
+      </a>
+      <a
+        class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        href="Publikasi.html"
+      >
+        Publikasi
+      </a>
+      <a
+        class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        href="login.html"
+      >
+        Log Out
+      </a>
     </div>
-    <!-- Menu -->
-    <nav class="hidden md:flex items-center font-medium text-green-900">
-     <a class="nav-item relative px-5 font-bold" href="#">
-      Profile Desa
-     </a>
-     <div class="h-5 w-[1px] bg-gray-400">
-     </div>
-     <a class="nav-item relative px-5 font-bold" href="PPID.html">
-      PPID
-     </a>
-     <div class="h-5 w-[1px] bg-gray-400">
-     </div>
-     <a class="nav-item relative px-5 font-bold" href="Lembaga.html">
-      Lembaga
-     </a>
-     <div class="h-5 w-[1px] bg-gray-400">
-     </div>
-     <a class="nav-item relative px-5 font-bold" href="Informasi.html">
-      Informasi
-     </a>
-     <div class="h-5 w-[1px] bg-gray-400">
-     </div>
-     <a class="nav-item relative px-5 font-bold text-green-800" href="AdminP.html">
-      Administrasi Persuratan
-     </a>
-     <div class="h-5 w-[1px] bg-gray-400">
-     </div>
-     <a class="nav-item relative px-5 font-bold" href="Aduan.html">
-      Aduan
-     </a>
-     <div class="h-5 w-[1px] bg-gray-400">
-     </div>
-     <a class="nav-item relative px-5 font-bold" href="Publikasi.html">
-      Publikasi
-     </a>
-    </nav>
-    <!-- LOGOUT -->
-    <a class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition" href="login.html">
-     <span class="material-symbols-outlined text-2xl">
-      logout
-     </span>
-    </a>
-    <!-- Right Section -->
-    <div class="flex items-center gap-4">
-     <!-- Hamburger (Mobile Only) -->
-     <button class="md:hidden material-symbols-outlined text-emerald-900 text-3xl" id="menuBtn">
-      menu
-     </button>
-    </div>
-   </div>
-  </header>
-  <!-- MOBILE MENU -->
-  <div class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300" id="mobileMenu">
-   <a class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition" href="#">
-    Profile Desa
-   </a>
-   <a class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition" href="PPID.html">
-    PPID
-   </a>
-   <a class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition" href="Lembaga.html">
-    Lembaga
-   </a>
-   <a class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition" href="Informasi.html">
-    Informasi
-   </a>
-   <a class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition" href="AdminP.html">
-    Administrasi Persuratan
-   </a>
-   <a class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition" href="Aduan.html">
-    Aduan
-   </a>
-   <a class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition" href="Publikasi.html">
-    Publikasi
-   </a>
-   <a class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition" href="login.html">
-    Log Out
-   </a>
-  </div>
-  <section class="relative overflow-hidden bg-primary" id="heroSection">
-   <div class="flex items-start transition-transform duration-700 ease-in-out" id="slider">
-    <div class="min-w-full relative">
-     <img alt="Hero" class="hero-image" src="../img/slide1.png"/>
-    </div>
-    <div class="min-w-full relative">
-     <img alt="Hero" class="hero-image" src="../img/slide2.png"/>
-    </div>
-    <div class="min-w-full relative">
-     <img alt="Hero" class="hero-image" src="../img/slide3.png"/>
-    </div>
-   </div>
-   <button class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded z-20" id="prev">
-    ❮
-   </button>
-   <button class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 px-3 py-2 rounded z-20" id="next">
-    ❯
-   </button>
-  </section>
-  <!-- MAIN -->
-  <main class="pt-24 max-w-7xl mx-auto px-6">
-   <section class="bg-[#EEEEEE] py-20" id="asal-usul">
-    <div class="max-w-6xl mx-auto px-6">
-     <!-- GRID UTAMA -->
-     <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start">
-      <!-- ================================= -->
-      <!-- KOLOM KIRI : ASAL USUL DESA -->
-      <!-- ================================= -->
-      <div class="lg:col-span-2">
-       <!-- Judul -->
-       <h2 class="font-poppins text-2xl md:text-3xl font-bold text-[#063b27] mb-7">
-        Asal Usul Desa
-       </h2>
-       <!-- Deskripsi -->
-       <div class="text-[15px] leading-[1.7] text-gray-800 text-justify">
-        <p class="mb-5">
-         <span class="float-left text-5xl leading-[0.8] mr-1 text-[#063b27]">
-          D
-         </span>
-         esa Sumorame merupakan salah satu desa yang berada di
+    <section class="group relative overflow-hidden bg-primary" id="heroSection">
+      <div
+        class="flex items-start transition-transform duration-700 ease-in-out"
+        id="slider"
+      >
+        <div class="min-w-full relative">
+          <img alt="Hero" class="hero-image" src="img/slide1.png" />
+        </div>
+        <div class="min-w-full relative">
+          <img alt="Hero" class="hero-image" src="img/slide2.png" />
+        </div>
+        <div class="min-w-full relative">
+          <img alt="Hero" class="hero-image" src="img/slide3.png" />
+        </div>
+      </div>
+      <button
+        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300"
+        id="prev"
+        aria-label="Slide sebelumnya"
+      >
+        ❮
+      </button>
+      <button
+        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300"
+        id="next"
+        aria-label="Slide berikutnya"
+      >
+        ❯
+      </button>
+    </section>
+    <!-- MAIN -->
+    <main class="pt-24 max-w-7xl mx-auto px-6">
+      <section class="bg-[#EEEEEE] py-20" id="asal-usul">
+        <div class="max-w-6xl mx-auto px-6">
+          <!-- GRID UTAMA -->
+          <div
+            class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start"
+          >
+            <!-- ================================= -->
+            <!-- KOLOM KIRI : ASAL USUL DESA -->
+            <!-- ================================= -->
+            <div class="lg:col-span-2">
+              <!-- Judul -->
+              <h2
+                class="font-poppins text-2xl md:text-3xl font-bold text-[#063b27] mb-7"
+              >
+                Asal Usul Desa
+              </h2>
+              <!-- Deskripsi -->
+              <div class="text-[15px] leading-[1.7] text-gray-800 text-justify">
+                <p class="mb-5">
+                  <span
+                    class="float-left text-5xl leading-[0.8] mr-1 text-[#063b27]"
+                  >
+                    D
+                  </span>
+                  esa Sumorame merupakan salah satu desa yang berada di
                   Kecamatan Candi, Kabupaten Sidoarjo, Provinsi Jawa Timur.
                   Berdasarkan penelusuran sejarah dan cerita yang berkembang di
                   masyarakat, khususnya berdasarkan keterangan dari sesepuh desa
                   seperti Mbah Atma Jaya dan Mbah Simojoyo, Desa Sumorame
                   diperkirakan telah berdiri sejak tahun 1616 Masehi.
-        </p>
-        <p class="mb-5">
-         Menurut cerita yang diwariskan secara turun-temurun, nama
-         <strong>
-          Sumorame
-         </strong>
-         berasal dari gabungan nama dua dusun
-                  yang menjadi bagian dari wilayah desa, yaitu
-         <strong>
-          Dusun Sumotuwo
-         </strong>
-         dan
-         <strong>
-          Dusun Keramean
-         </strong>
-         . Kata &ldquo;Sumo&rdquo; diambil dari
-                  bagian nama Dusun Sumotuwo, sedangkan kata &ldquo;Rame&rdquo; berasal dari
-                  Dusun Keramean. Penggabungan kedua nama tersebut kemudian
-                  dikenal sebagai Sumorame.
-        </p>
-        <p class="mb-5">
-         Dusun Sumotuwo dipercaya memiliki keterkaitan dengan istilah
-                  &ldquo;Sumo&rdquo; yang dalam cerita masyarakat dikaitkan dengan
-                  keberadaan singa tua, sumur tua, atau asal-usul para sesepuh
-                  yang dahulu menjadi bagian dari sejarah wilayah tersebut.
-                  Sementara itu, nama Keramean dikaitkan dengan kata &ldquo;rame&rdquo;,
-                  yang menggambarkan keadaan wilayah yang ramai oleh aktivitas
-                  dan kehidupan masyarakat.
-        </p>
-        <p class="mb-5">
-         Kisah mengenai asal-usul tersebut merupakan bagian dari
+                </p>
+                <p class="mb-5">
+                  Menurut cerita yang diwariskan secara turun-temurun, nama
+                  <strong> Sumorame </strong>
+                  berasal dari gabungan nama dua dusun yang menjadi bagian dari
+                  wilayah desa, yaitu
+                  <strong> Dusun Sumotuwo </strong>
+                  dan
+                  <strong> Dusun Keramean </strong>
+                  . Kata &ldquo;Sumo&rdquo; diambil dari bagian nama Dusun
+                  Sumotuwo, sedangkan kata &ldquo;Rame&rdquo; berasal dari Dusun
+                  Keramean. Penggabungan kedua nama tersebut kemudian dikenal
+                  sebagai Sumorame.
+                </p>
+                <p class="mb-5">
+                  Dusun Sumotuwo dipercaya memiliki keterkaitan dengan istilah
+                  &ldquo;Sumo&rdquo; yang dalam cerita masyarakat dikaitkan
+                  dengan keberadaan singa tua, sumur tua, atau asal-usul para
+                  sesepuh yang dahulu menjadi bagian dari sejarah wilayah
+                  tersebut. Sementara itu, nama Keramean dikaitkan dengan kata
+                  &ldquo;rame&rdquo;, yang menggambarkan keadaan wilayah yang
+                  ramai oleh aktivitas dan kehidupan masyarakat.
+                </p>
+                <p class="mb-5">
+                  Kisah mengenai asal-usul tersebut merupakan bagian dari
                   sejarah lisan yang diwariskan dari generasi ke generasi dan
                   menjadi salah satu identitas budaya masyarakat Desa Sumorame.
                   Dalam perkembangannya, Desa Sumorame secara administratif
                   terbagi menjadi dua dusun utama, yaitu
-         <strong>
-          Dusun Sumotuwo
-         </strong>
-         dan
-         <strong>
-          Dusun Keramean
-         </strong>
-         . Kedua dusun tersebut menjadi
-                  bagian penting dalam perjalanan sejarah dan perkembangan Desa
-                  Sumorame hingga saat ini.
-        </p>
-        <p class="mb-5">
-         Desa Sumorame memiliki luas wilayah sekitar
-         <strong>
-          113,98 hektare
-         </strong>
-         , yang terdiri atas kawasan
-                  permukiman, fasilitas umum, serta lahan pertanian. Sebagian
-                  masyarakat Desa Sumorame secara turun-temurun menggantungkan
-                  mata pencaharian pada sektor pertanian. Luas lahan pertanian
-                  yang terdapat di wilayah desa mencapai sekitar
-         <strong>
-          33 hektare
-         </strong>
-         , dengan hasil panen rata-rata
-                  sekitar
-         <strong>
-          210 ton per panen
-         </strong>
-         .
-        </p>
-        <!-- Batas Wilayah -->
-        <div class="mb-5">
-         <p class="mb-3">
-          Secara geografis, Desa Sumorame memiliki batas wilayah
+                  <strong> Dusun Sumotuwo </strong>
+                  dan
+                  <strong> Dusun Keramean </strong>
+                  . Kedua dusun tersebut menjadi bagian penting dalam perjalanan
+                  sejarah dan perkembangan Desa Sumorame hingga saat ini.
+                </p>
+                <p class="mb-5">
+                  Desa Sumorame memiliki luas wilayah sekitar
+                  <strong> 113,98 hektare </strong>
+                  , yang terdiri atas kawasan permukiman, fasilitas umum, serta
+                  lahan pertanian. Sebagian masyarakat Desa Sumorame secara
+                  turun-temurun menggantungkan mata pencaharian pada sektor
+                  pertanian. Luas lahan pertanian yang terdapat di wilayah desa
+                  mencapai sekitar
+                  <strong> 33 hektare </strong>
+                  , dengan hasil panen rata-rata sekitar
+                  <strong> 210 ton per panen </strong>
+                  .
+                </p>
+                <!-- Batas Wilayah -->
+                <div class="mb-5">
+                  <p class="mb-3">
+                    Secara geografis, Desa Sumorame memiliki batas wilayah
                     sebagai berikut:
-         </p>
-         <ul class="list-disc list-inside space-y-2 ml-2">
-          <li>
-           <strong>
-            Sebelah Utara:
-           </strong>
-           Desa Gelam dan Desa Sugihwaras
-          </li>
-          <li>
-           <strong>
-            Sebelah Selatan:
-           </strong>
-           Desa Boro, Kecamatan Tanggulangin
-          </li>
-          <li>
-           <strong>
-            Sebelah Barat:
-           </strong>
-           Desa Karangtanjung
-          </li>
-          <li>
-           <strong>
-            Sebelah Timur:
-           </strong>
-           Desa Ngampelsari
-          </li>
-         </ul>
-        </div>
-        <p class="mb-5">
-         Seiring dengan perkembangan zaman, Desa Sumorame terus
+                  </p>
+                  <ul class="list-disc list-inside space-y-2 ml-2">
+                    <li>
+                      <strong> Sebelah Utara: </strong>
+                      Desa Gelam dan Desa Sugihwaras
+                    </li>
+                    <li>
+                      <strong> Sebelah Selatan: </strong>
+                      Desa Boro, Kecamatan Tanggulangin
+                    </li>
+                    <li>
+                      <strong> Sebelah Barat: </strong>
+                      Desa Karangtanjung
+                    </li>
+                    <li>
+                      <strong> Sebelah Timur: </strong>
+                      Desa Ngampelsari
+                    </li>
+                  </ul>
+                </div>
+                <p class="mb-5">
+                  Seiring dengan perkembangan zaman, Desa Sumorame terus
                   mengalami perubahan dan pembangunan dalam berbagai bidang.
                   Meskipun demikian, nilai-nilai sejarah, cerita para sesepuh,
                   serta asal-usul terbentuknya desa tetap menjadi bagian penting
                   dari identitas masyarakat. Sejarah tersebut menjadi warisan
                   yang perlu dijaga dan dikenalkan kepada generasi penerus agar
                   keberadaan serta jati diri Desa Sumorame tetap lestari.
-        </p>
-        <p>
-         Dengan demikian, sejarah Desa Sumorame tidak hanya
+                </p>
+                <p>
+                  Dengan demikian, sejarah Desa Sumorame tidak hanya
                   menggambarkan terbentuknya sebuah wilayah, tetapi juga
                   mencerminkan perjalanan kehidupan masyarakat yang telah
                   berkembang dari masa ke masa. Kisah yang diwariskan oleh para
                   sesepuh menjadi bagian dari kekayaan sejarah lokal yang
                   memperkuat identitas Desa Sumorame sebagai salah satu desa di
                   Kecamatan Candi, Kabupaten Sidoarjo.
-        </p>
-       </div>
-      </div>
-      <!-- ================================= -->
-      <!-- KOLOM KANAN : CARD DESA -->
-      <!-- ================================= -->
-      <div class="lg:col-span-1">
-       <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-7 w-full">
-        <!-- Judul -->
-        <h3 class="font-poppins text-center text-xl md:text-2xl font-medium text-[#063b27]">
-         Desa Sumorame
-        </h3>
-        <!-- Logo Desa -->
-        <div class="flex justify-center mt-4 mb-7">
-         <img alt="Logo Desa Sumorame" class="w-24 h-24 object-contain" src="../img/logo.png"/>
-        </div>
-        <!-- Informasi Desa -->
-        <div class="space-y-4 mb-6">
-         <!-- Tanggal Berdiri -->
-         <div class="flex items-center gap-3">
-          <svg class="w-5 h-5 text-[#0b5c3b] shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-           <path d="M8 7V3m8 4V3m-9 8h10M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round">
-           </path>
-          </svg>
-          <p class="text-sm text-gray-600">
-           Tahun Berdiri:
-           <span class="font-medium text-gray-700">
-            1616 M
-           </span>
-          </p>
-         </div>
-         <!-- Luas Wilayah -->
-         <div class="flex items-center gap-3">
-          <svg class="w-5 h-5 text-[#0b5c3b] shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-           <path d="M4 20L20 4M4 4h6M4 4v6M20 20h-6M20 20v-6" stroke-linecap="round" stroke-linejoin="round">
-           </path>
-          </svg>
-          <p class="text-sm text-gray-600">
-           Luas Wilayah:
-           <span class="font-medium text-gray-700">
-            113,98 Ha
-           </span>
-          </p>
-         </div>
-        </div>
-        <!-- Peta Wilayah -->
-        <div class="w-full h-44 md:h-48 bg-[#e5e3df] rounded-xl overflow-hidden">
-         <iframe allowfullscreen="" class="w-full h-full" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8623.09562957141!2d112.70613286328192!3d-7.492188175924805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e0b7b61c7bdf%3A0x7118f9773eab61d2!2sSumorame%2C%20Kec.%20Candi%2C%20Kabupaten%20Sidoarjo%2C%20Jawa%20Timur!5e1!3m2!1sid!2sid!4v1785899024439!5m2!1sid!2sid" style="border:0;">
-         </iframe>
-         <!-- ================================= -->
-         <!-- PETA WILAYAH -->
-         <!-- ================================= -->
-         <div class="h-36 md:h-40 bg-[#e5e3df] rounded-xl flex flex-col items-center justify-center">
-          <div class="h-36 md:h-40 rounded-xl overflow-hidden shadow-sm">
-           <iframe allowfullscreen="" height="100%" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.app.goo.gl/rpe18jHwHgo87fp3A" style="border:0;" width="100%">
-           </iframe>
+                </p>
+              </div>
+            </div>
+            <!-- ================================= -->
+            <!-- KOLOM KANAN : CARD DESA -->
+            <!-- ================================= -->
+            <div class="lg:col-span-1">
+              <div
+                class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-7 w-full"
+              >
+                <!-- Judul -->
+                <h3
+                  class="font-poppins text-center text-xl md:text-2xl font-medium text-[#063b27]"
+                >
+                  Desa Sumorame
+                </h3>
+                <!-- Logo Desa -->
+                <div class="flex justify-center mt-4 mb-7">
+                  <img
+                    alt="Logo Desa Sumorame"
+                    class="w-24 h-24 object-contain"
+                    src="img/logo3.png"
+                  />
+                </div>
+                <!-- Informasi Desa -->
+                <div class="space-y-4 mb-6">
+                  <!-- Tanggal Berdiri -->
+                  <div class="flex items-center gap-3">
+                    <svg
+                      class="w-5 h-5 text-[#0b5c3b] shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      viewbox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 7V3m8 4V3m-9 8h10M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                    </svg>
+                    <p class="text-sm text-gray-600">
+                      Tahun Berdiri:
+                      <span class="font-medium text-gray-700"> 1616 M </span>
+                    </p>
+                  </div>
+                  <!-- Luas Wilayah -->
+                  <div class="flex items-center gap-3">
+                    <svg
+                      class="w-5 h-5 text-[#0b5c3b] shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      viewbox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M4 20L20 4M4 4h6M4 4v6M20 20h-6M20 20v-6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                    </svg>
+                    <p class="text-sm text-gray-600">
+                      Luas Wilayah:
+                      <span class="font-medium text-gray-700"> 113,98 Ha </span>
+                    </p>
+                  </div>
+                </div>
+                <!-- Peta Wilayah -->
+                <div
+                  class="w-full h-44 md:h-48 bg-[#e5e3df] rounded-xl overflow-hidden"
+                >
+                  <iframe
+                    allowfullscreen=""
+                    class="w-full h-full"
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8623.09562957141!2d112.70613286328192!3d-7.492188175924805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e0b7b61c7bdf%3A0x7118f9773eab61d2!2sSumorame%2C%20Kec.%20Candi%2C%20Kabupaten%20Sidoarjo%2C%20Jawa%20Timur!5e1!3m2!1sid!2sid!4v1785899024439!5m2!1sid!2sid"
+                    style="border: 0"
+                  >
+                  </iframe>
+                  <!-- ================================= -->
+                  <!-- PETA WILAYAH -->
+                  <!-- ================================= -->
+                  <div
+                    class="h-36 md:h-40 bg-[#e5e3df] rounded-xl flex flex-col items-center justify-center"
+                  >
+                    <div
+                      class="h-36 md:h-40 rounded-xl overflow-hidden shadow-sm"
+                    >
+                      <iframe
+                        allowfullscreen=""
+                        height="100%"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://maps.app.goo.gl/rpe18jHwHgo87fp3A"
+                        style="border: 0"
+                        width="100%"
+                      >
+                      </iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-         </div>
         </div>
        </div>
       </div>
@@ -644,271 +727,263 @@
        Meningkatkan kesejahteraan masyarakat melalui pengembangan ekonomi
               desa, pemberdayaan UMKM, pertanian, peternakan, dan sektor usaha
               produktif lainnya.
-      </li>
-      <li>
-       Meningkatkan kualitas sumber daya manusia melalui pendidikan,
+            </li>
+            <li>
+              Meningkatkan kualitas sumber daya manusia melalui pendidikan,
               kesehatan, pelatihan keterampilan, serta pengembangan generasi
               muda yang kreatif dan berprestasi.
-      </li>
-      <li>
-       Mewujudkan tata kelola pemerintahan desa yang profesional,
+            </li>
+            <li>
+              Mewujudkan tata kelola pemerintahan desa yang profesional,
               transparan, akuntabel, dan melayani masyarakat secara optimal.
-      </li>
-      <li>
-       Mengembangkan infrastruktur desa yang berkualitas dan
+            </li>
+            <li>
+              Mengembangkan infrastruktur desa yang berkualitas dan
               berkelanjutan untuk mendukung aktivitas ekonomi, sosial, dan
               pelayanan publik.
-      </li>
-      <li>
-       Memperkuat ketahanan sosial, budaya, dan lingkungan melalui
+            </li>
+            <li>
+              Memperkuat ketahanan sosial, budaya, dan lingkungan melalui
               pelestarian nilai gotong royong, keamanan, kebersihan, dan
               kelestarian lingkungan desa.
-      </li>
-      <li>
-       Meningkatkan daya saing desa melalui pemanfaatan teknologi
+            </li>
+            <li>
+              Meningkatkan daya saing desa melalui pemanfaatan teknologi
               informasi, inovasi pelayanan, serta pengembangan potensi unggulan
               desa.
-      </li>
-     </ul>
-    </div>
-   </section>
-   <!-- PRODUK UNGGULAN -->
-   <section class="py-16" id="produk">
-    <!-- Judul -->
-    <h2 class="font-poppins text-4xl font-extrabold text-center text-green-800 mb-10">
-     Produk Unggulan
-    </h2>
-    <div class="max-w-[840px] mx-auto">
-     <!-- Produk -->
-     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
-      <!-- Produk 1 -->
-      <a class="produk-item relative group w-64 h-[220px] rounded-xl overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700 ease-out" href="#">
-       <!-- Gambar -->
-       <img class="w-full h-full object-cover" src="../img/coklat.jpg"/>
-       <!-- Overlay -->
-       <div class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition">
-       </div>
-       <!-- Judul -->
-       <div class="absolute left-4 bottom-20 text-white z-10">
-       </div>
-       <!-- Footer Hover -->
-       <div class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <div class="flex justify-between items-center">
-         <button class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm">
-          Detail
-         </button>
-         <button class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1">
-          👁
-          <span>
-           52
-          </span>
-         </button>
-         <button class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
-          Beli
-         </button>
+            </li>
+          </ul>
         </div>
-       </div>
-      </a>
-      <!-- Produk 2 -->
-      <a class="produk-item relative group w-64 h-[220px] rounded-xl overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700 ease-out" href="#">
-       <!-- Gambar -->
-       <img class="w-full h-full object-cover" src="../img/kopi.jpg"/>
-       <!-- Overlay -->
-       <div class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition">
-       </div>
-       <!-- Judul -->
-       <div class="absolute left-4 bottom-20 text-white z-10">
-       </div>
-       <!-- Footer Hover -->
-       <div class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <div class="flex justify-between items-center">
-         <button class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm">
-          Detail
-         </button>
-         <button class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1">
-          👁
-          <span>
-           30
-          </span>
-         </button>
-         <button class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
-          Beli
-         </button>
+      </section>
+      <!-- PRODUK UNGGULAN -->
+      <section class="py-16" id="produk">
+        <!-- Judul -->
+        <h2
+          class="font-poppins text-4xl font-extrabold text-center text-green-800 mb-10"
+        >
+          Produk Unggulan
+        </h2>
+        <div class="max-w-[900px] mx-auto px-4">
+          <div
+            id="produkUnggulanBeranda"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            aria-live="polite"
+          >
+            <p class="col-span-full text-center text-gray-500">
+              Memuat produk unggulan...
+            </p>
+          </div>
         </div>
-       </div>
-      </a>
-      <!-- Produk 3 -->
-      <a class="produk-item relative group w-72 h-[330px] rounded-xl overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700 ease-out" href="#">
-       <!-- Gambar -->
-       <img class="w-full h-full object-cover" src="../img/nangka.jpg"/>
-       <!-- Overlay -->
-       <div class="absolute inset-0 bg-black/15 group-hover:bg-white/15 transition duration-300">
-       </div>
-       <!-- Judul -->
-       <div class="absolute left-4 bottom-20 text-white z-10">
-       </div>
-       <!-- Footer Hover -->
-       <div class="absolute bottom-0 left-0 w-full bg-yellow-400/40 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <div class="flex justify-between items-center">
-         <button class="bg-green-700 text-white px-3 py-2 rounded-lg text-sm">
-          Detail
-         </button>
-         <button class="bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1">
-          👁
-          <span>
-           15
-          </span>
-         </button>
-         <button class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
-          Beli
-         </button>
+        <!-- Tombol -->
+        <div class="text-center mt-10">
+          <a
+            class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out"
+            href="Produk.html"
+            id="btnProduk"
+          >
+            Selengkapnya
+          </a>
         </div>
-       </div>
-      </a>
-     </div>
-    </div>
-    <!-- Tombol -->
-    <div class="text-center mt-10">
-     <a class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out" href="Produk.html" id="btnProduk">
-      Selengkapnya
-     </a>
-    </div>
-   </section>
-   <!-- MODAL -->
-   <div class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden" id="">
-    <div class="relative w-[90%] max-w-6xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col" id="">
-     <!-- Tombol X -->
-     <button class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md" onclick="">
-      ✕
-     </button>
-     <!-- CONTENT (SCROLLABLE) -->
-     <div class="overflow-y-auto p-6 md:p-8">
-      <!-- JUDUL -->
-      <h2 class="text-lg md:text-xl font-semibold text-green-800 mb-4 text-left w-full">
-       Pengumuman Pelayanan
-      </h2>
-      <p class="text-sm md:text-[13px] font-normal text-black -mt-2 mb-3 text-left w-full">
-       Informasi Dan Pengumuman Pelayanan Kantor Desa Sumorame
-      </p>
-      <!-- GAMBAR -->
-      <img class="w-full max-h-[580px] object-cover rounded-xl shadow-lg mb-5 mx-auto" src="../img/Pengumuman.png"/>
-     </div>
-     <!-- FOOTER (TOMBOL STICKY) -->
-     <div class="p-4 border-t bg-white flex justify-center">
-      <a class="block w-full max-w-[1030px] text-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="PPID.html">
-       LIHAT PENGUMUMAN
-      </a>
-     </div>
-    </div>
-   </div>
-   <!-- MODAL Fleksible -->
-   <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" id="myModal">
-    <div class="relative bg-white rounded-2xl shadow-2xl w-fit max-w-[700px] max-h-[95vh] flex flex-col overflow-hidden" id="modalBox">
-     <!-- Tombol X -->
-     <button class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md" onclick="closeModal()">
-      ✕
-     </button>
-     <!-- HEADER -->
-     <div class="p-6 border-b">
-      <h2 class="text-xl font-semibold text-green-800">
-       Pengumuman Pelayanan
-      </h2>
-      <p class="text-sm text-gray-600 mt-1">
-       Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
-      </p>
-     </div>
-     <!-- BODY -->
-     <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-      <img class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" src="../img/Dirgahayu.png"/>
-     </div>
-     <!-- FOOTER -->
-     <div class="p-4 border-t bg-white">
-      <a class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="PPID.html">
-       LIHAT PENGUMUMAN
-      </a>
-     </div>
-    </div>
-   </div>
-  </main>
+      </section>
+      <!-- MODAL -->
+      <div
+        class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden"
+        id=""
+      >
+        <div
+          class="relative w-[90%] max-w-6xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col"
+          id=""
+        >
+          <!-- Tombol X -->
+          <button
+            class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
+            onclick=""
+          >
+            ✕
+          </button>
+          <!-- CONTENT (SCROLLABLE) -->
+          <div class="overflow-y-auto p-6 md:p-8">
+            <!-- JUDUL -->
+            <h2
+              class="text-lg md:text-xl font-semibold text-green-800 mb-4 text-left w-full"
+            >
+              Pengumuman Pelayanan
+            </h2>
+            <p
+              class="text-sm md:text-[13px] font-normal text-black -mt-2 mb-3 text-left w-full"
+            >
+              Informasi Dan Pengumuman Pelayanan Kantor Desa Sumorame
+            </p>
+            <!-- GAMBAR -->
+            <img
+              class="w-full max-h-[580px] object-cover rounded-xl shadow-lg mb-5 mx-auto"
+              src="img/Pengumuman.png"
+            />
+          </div>
+          <!-- FOOTER (TOMBOL STICKY) -->
+          <div class="p-4 border-t bg-white flex justify-center">
+            <a
+              class="block w-full max-w-[1030px] text-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+              href="PPID.html"
+            >
+              LIHAT PENGUMUMAN
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- MODAL Fleksible -->
+      <div
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+        id="myModal"
+      >
+        <div
+          class="relative bg-white rounded-2xl shadow-2xl w-fit max-w-[700px] max-h-[95vh] flex flex-col overflow-hidden"
+          id="modalBox"
+        >
+          <!-- Tombol X -->
+          <button
+            class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
+            onclick="closeModal()"
+          >
+            ✕
+          </button>
+          <!-- HEADER -->
+          <div class="p-6 border-b">
+            <h2 class="text-xl font-semibold text-green-800">
+              Pengumuman Pelayanan
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">
+              Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
+            </p>
+          </div>
+          <!-- BODY -->
+          <div class="flex-1 overflow-y-auto p-6 flex justify-center">
+            <img
+              class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg"
+              src="img/Dirgahayu.png"
+            />
+          </div>
+          <!-- FOOTER -->
+          <div class="p-4 border-t bg-white">
+            <a
+              class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+              href="PPID.html"
+            >
+              LIHAT PENGUMUMAN
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
 
-       <!-- Scroll To Top -->
-        <button id="scrollTopBtn"
-            class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800
-                  text-white rounded-full shadow-lg flex items-center justify-center
-                  opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+    <!-- Scroll To Top -->
+    <button
+      id="scrollTopBtn"
+      class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:scale-110 z-50"
+    >
+      <span class="material-symbols-outlined"> keyboard_arrow_up </span>
+    </button>
 
-            <span class="material-symbols-outlined">
-                keyboard_arrow_up
+    <footer
+      class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700"
+      id="footer"
+    >
+      <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+        <!-- Logo & Nama -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700"
+        >
+          <div class="inline-flex flex-col items-center">
+            <img alt="Logo Desa" class="w-16 mb-3" src="img/logo3.png" />
+            <h3 class="text-lg font-bold">Desa Sumorame</h3>
+          </div>
+          <p class="text-sm text-gray-300">
+            Desa mandiri berbasis teknologi untuk masa depan yang lebih baik.
+          </p>
+        </div>
+        <!-- Kontak -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200"
+        >
+          <!-- Judul -->
+          <h4
+            class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold"
+          >
+            Kontak
+          </h4>
+          <!-- Alamat (dari kiri) -->
+          <p
+            class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg mt-[2px]">
+              location_on
             </span>
-
-        </button>
-
-  <footer class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700" id="footer">
-   <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-    <!-- Logo & Nama -->
-    <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
-     <img alt="Logo Desa" class="w-16 mb-3" src="../img/logo.png">
-      <h3 class="text-lg font-bold">
-       Desa Sumorame
-      </h3>
-      <p class="text-sm text-gray-300">
-       Desa mandiri berbasis teknologi untuk masa depan yang lebih baik.
-      </p>
-     </img>
-    </div>
-    <!-- Kontak -->
-    <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200">
-     <!-- Judul -->
-     <h4 class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold">
-      Kontak
-     </h4>
-     <!-- Alamat (dari kiri) -->
-     <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300">
-      <span class="material-symbols-outlined text-lg mt-[2px]">
-       location_on
-      </span>
-      <span>
-       Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten
+            <span>
+              Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten
               Sidoarjo, Jawa Timur 61271
-      </span>
-     </p>
-     <p class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300">
-      <span class="material-symbols-outlined text-lg">
-       call
-      </span>
-      0812-3456-7890 (Hanya Menerima Pengaduan).
-     </p>
-     <p class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300">
-      <span class="material-symbols-outlined text-lg">
-       mail
-      </span>
-      PemdesSumorame@gmail.com
-     </p>
-    </div>
-    <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
-    <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300">
-     <h4 class="font-semibold mb-3">
-      Ikuti Kami
-     </h4>
-     <div class="flex gap-4 items-center">
-      <a class="hover:scale-125 transition duration-300" href="https://www.tiktok.com/search?q=pemdes%20sumorame&amp;t=1785759591160" target="_blank">
-       <img alt="TikTok" class="w-6 h-6 invert" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg"/>
-      </a>
-      <a class="hover:scale-125 transition duration-300" href="https://www.instagram.com/pemdes_sumorame02/" target="_blank">
-       <img alt="Instagram" class="w-6 h-6 invert" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"/>
-      </a>
-      <a class="hover:scale-125 transition duration-300" href="https://www.youtube.com/@pemdes.sumorame" target="_blank">
-       <img alt="YouTube" class="w-6 h-6 invert" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"/>
-      </a>
-     </div>
-    </div>
-   </div>
-   <!-- Copyrightt -->
-   <div class="text-center mt-8 text-sm text-gray-400">
-    &copy;2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa Sumorame.
-   </div>
-  </footer>
-  <script src="js/index.js">
-  </script>
- </body>
+            </span>
+          </p>
+          <p
+            class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg"> call </span>
+            0812-3456-7890 (Hanya Menerima Pengaduan).
+          </p>
+          <p
+            class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg"> mail </span>
+            PemdesSumorame@gmail.com
+          </p>
+        </div>
+        <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300"
+        >
+          <h4 class="font-semibold mb-3">Ikuti Kami</h4>
+          <div class="flex gap-4 items-center">
+            <a
+              class="hover:scale-125 transition duration-300"
+              href="https://www.tiktok.com/search?q=pemdes%20sumorame&amp;t=1785759591160"
+              target="_blank"
+            >
+              <img
+                alt="TikTok"
+                class="w-6 h-6 invert"
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg"
+              />
+            </a>
+            <a
+              class="hover:scale-125 transition duration-300"
+              href="https://www.instagram.com/pemdes_sumorame02/"
+              target="_blank"
+            >
+              <img
+                alt="Instagram"
+                class="w-6 h-6 invert"
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
+              />
+            </a>
+            <a
+              class="hover:scale-125 transition duration-300"
+              href="https://www.youtube.com/@pemdes.sumorame"
+              target="_blank"
+            >
+              <img
+                alt="YouTube"
+                class="w-6 h-6 invert"
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Copyrightt -->
+      <div class="text-center mt-8 text-sm text-gray-400">
+        &copy;2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa
+        Sumorame.
+      </div>
+    </footer>
+    <script src="js/index.js?v=20260824-3"></script>
+  </body>
 </html>

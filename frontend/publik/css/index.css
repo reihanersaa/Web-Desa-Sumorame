@@ -119,6 +119,167 @@ body {
   background: #004d26;
 }
 
+/* Kartu statistik: tipografi konsisten saat lima kartu dalam satu baris */
+#statistik .stat-card {
+  min-width: 0;
+  padding: 1rem;
+  gap: 0.75rem;
+}
+
+#statistik .stat-card > div:first-child {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+#statistik .stat-card > div:first-child img {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+#statistik .stat-card > div:last-child {
+  min-width: 0;
+  flex: 1;
+}
+
+#statistik .stat-card h3 {
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+#statistik .stat-card p {
+  margin-top: 0.25rem;
+  font-size: 1.75rem;
+  line-height: 2rem;
+}
+
+#statistik .stat-card > div:last-child > span {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+@media (max-width: 639px) {
+  #statistik .stat-card {
+    max-width: 22rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+}
+
+/* Produk unggulan beranda: sama dengan kartu di halaman Produk */
+#produk #produkUnggulanBeranda .produk-item {
+  position: relative;
+  height: 260px;
+  opacity: 0;
+  transform: translateY(64px);
+  overflow: hidden;
+  border-radius: 10px;
+  transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.35s ease;
+}
+
+#produk #produkUnggulanBeranda .produk-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#produk #produkUnggulanBeranda .produk-item:hover {
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+}
+
+#produk #produkUnggulanBeranda .produk-item > div:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#produk #produkUnggulanBeranda .produk-item img {
+  display: block;
+  width: 100%;
+  height: 100% !important;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 0.6s ease;
+}
+
+#produk #produkUnggulanBeranda .produk-item:hover img {
+  transform: scale(1.05);
+}
+
+#produk #produkUnggulanBeranda .produk-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: inherit;
+  transform: translateY(100%);
+  background: rgba(250, 204, 21, 0.68) !important;
+  padding: 16px 12px;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 5;
+}
+
+#produk #produkUnggulanBeranda .produk-item:hover .produk-info,
+#produk #produkUnggulanBeranda .produk-item:focus-within .produk-info {
+  transform: translateY(0);
+}
+
+#produk #produkUnggulanBeranda .produk-nama,
+#produk #produkUnggulanBeranda .produk-harga,
+#produk #produkUnggulanBeranda .produk-info span,
+#produk #produkUnggulanBeranda .produk-info .btn-beli {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.35s ease, transform 0.35s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#produk #produkUnggulanBeranda .produk-nama {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+#produk #produkUnggulanBeranda .produk-harga {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+#produk #produkUnggulanBeranda .produk-item:hover .produk-nama,
+#produk #produkUnggulanBeranda .produk-item:hover .produk-harga,
+#produk #produkUnggulanBeranda .produk-item:hover .produk-info span,
+#produk #produkUnggulanBeranda .produk-item:hover .produk-info .btn-beli,
+#produk #produkUnggulanBeranda .produk-item:focus-within .produk-nama,
+#produk #produkUnggulanBeranda .produk-item:focus-within .produk-harga,
+#produk #produkUnggulanBeranda .produk-item:focus-within .produk-info span,
+#produk #produkUnggulanBeranda .produk-item:focus-within .produk-info .btn-beli {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#produk #produkUnggulanBeranda .produk-item:hover .produk-nama { transition-delay: 0.12s; }
+#produk #produkUnggulanBeranda .produk-item:hover .produk-harga { transition-delay: 0.18s; }
+#produk #produkUnggulanBeranda .produk-item:hover .produk-info span { transition-delay: 0.22s; }
+#produk #produkUnggulanBeranda .produk-item:hover .produk-info .btn-beli { transition-delay: 0.28s; }
+
+#produk #produkUnggulanBeranda .btn-beli:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  #produk #produkUnggulanBeranda .produk-item { height: 280px; }
+  #produk #produkUnggulanBeranda .produk-info { transform: translateY(0); }
+  #produk #produkUnggulanBeranda .produk-nama,
+  #produk #produkUnggulanBeranda .produk-harga,
+  #produk #produkUnggulanBeranda .produk-info span,
+  #produk #produkUnggulanBeranda .produk-info .btn-beli {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes pulseButton {
   0% {
     transform: scale(1);
