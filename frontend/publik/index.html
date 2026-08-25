@@ -178,19 +178,18 @@
         Log Out
       </a>
     </div>
-    <section class="group relative overflow-hidden bg-primary" id="heroSection">
+    
+    <section
+      class="public-hero public-hero--slider group relative overflow-hidden bg-primary"
+      id="heroSection"
+    >
       <div
         class="flex items-start transition-transform duration-700 ease-in-out"
         id="slider"
       >
+        <!-- Konten slider akan diisi oleh index.js dari database -->
         <div class="min-w-full relative">
           <img alt="Hero" class="hero-image" src="img/slide1.png" />
-        </div>
-        <div class="min-w-full relative">
-          <img alt="Hero" class="hero-image" src="img/slide2.png" />
-        </div>
-        <div class="min-w-full relative">
-          <img alt="Hero" class="hero-image" src="img/slide3.png" />
         </div>
       </div>
       <button
@@ -208,6 +207,7 @@
         ❯
       </button>
     </section>
+
     <!-- MAIN -->
     <main class="pt-24 max-w-7xl mx-auto px-6">
       <section class="bg-[#EEEEEE] py-20" id="asal-usul">
@@ -220,13 +220,11 @@
             <!-- KOLOM KIRI : ASAL USUL DESA -->
             <!-- ================================= -->
             <div class="lg:col-span-2">
-              <!-- Judul -->
               <h2
                 class="font-poppins text-2xl md:text-3xl font-bold text-[#063b27] mb-7"
               >
                 Asal Usul Desa
               </h2>
-              <!-- Deskripsi -->
               <div class="text-[15px] leading-[1.7] text-gray-800 text-justify">
                 <p class="mb-5">
                   <span
@@ -439,20 +437,25 @@
           </div>
         </div>
       </section>
+
+      <!-- SAMBUTAN KEPALA DESA -->
       <section
         class="mt-16 mb-16 max-w-4xl mx-auto flex flex-col md:flex-row items-stretch gap-6"
         id="sambutan"
       >
-        <!-- CARD FOTO (dari bawah) -->
+        <!-- CARD FOTO -->
         <div
           class="sambutan-item opacity-0 translate-y-16 transition-all duration-700 bg-white shadow-md rounded-xl p-4 w-full max-w-xs mx-auto md:mx-0 md:w-80 text-center flex flex-col"
         >
+          <!-- 🚨 ID FOTO KADES -->
           <img
+            id="fotoKadesPublik"
             alt="Kepala Desa"
             class="rounded-lg mb-3 w-full h-96 object-cover object-top hover:scale-105 transition duration-300"
             src="img/rochmanu-red.jpg"
           />
-          <h4 class="font-semibold text-base">ROCHMANU</h4>
+          <!-- 🚨 ID NAMA KADES -->
+          <h4 id="namaKadesPublik" class="font-semibold text-base">ROCHMANU</h4>
         </div>
         <!-- TEXT AREA -->
         <div class="flex-1 flex flex-col gap-3">
@@ -461,7 +464,9 @@
           >
             Sambutan Kepala Desa Sumorame
           </h3>
+          <!-- 🚨 ID TEKS SAMBUTAN -->
           <p
+            id="sambutanPublik"
             class="sambutan-item opacity-0 translate-x-16 transition-all duration-700 delay-300 text-base md:text-lg text-gray-600 leading-8 text-justify"
           >
             Assalamu&rsquo;alaikum warahmatullahi wabarakatuh, Salam sejahtera
@@ -472,22 +477,18 @@
           </p>
         </div>
       </section>
+
       <!-- JELAJAH MENU -->
       <section class="max-w-7xl mx-auto px-4 py-10" id="jelajah">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
-          <!-- ============================= -->
           <!-- PANEL KIRI / JELAJAH -->
-          <!-- ============================= -->
           <div
             class="relative lg:col-span-4 min-h-[390px] rounded-xl overflow-hidden"
           >
-            <!-- Layer Parallax -->
             <div class="parallax-bg" data-parallax-speed="0.25"></div>
-            <!-- Overlay biru -->
             <div
               class="absolute inset-0 bg-gradient-to-b from-cyan-600/80 via-blue-900/40 to-blue-950/90"
             ></div>
-            <!-- Tulisan -->
             <div class="relative z-20 h-full flex items-center justify-center">
               <h2
                 class="font-poppins text-3xl font-extrabold text-white"
@@ -497,102 +498,53 @@
               </h2>
             </div>
           </div>
-          <!-- ============================= -->
           <!-- MENU KANAN -->
-          <!-- ============================= -->
           <div class="lg:col-span-8">
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-              <!-- Statistik -->
               <a class="menu-card" href="#statistik">
-                <img
-                  alt="Statistik"
-                  class="menu-icon"
-                  src="img/statistik.png"
-                />
+                <img alt="Statistik" class="menu-icon" src="img/statistik.png"/>
                 <span> Statistik </span>
               </a>
-              <!-- Pemerintah -->
               <a class="menu-card" href="PPID.html?open=profile-ppid">
-                <img
-                  alt="Pemerintah"
-                  class="menu-icon"
-                  src="img/pemerintah.png"
-                />
+                <img alt="Pemerintah" class="menu-icon" src="img/pemerintah.png"/>
                 <span>Pemerintah</span>
               </a>
-              <!-- Pembangunan -->
               <a class="menu-card" href="#pembangunan">
-                <img
-                  alt="Pembangunan"
-                  class="menu-icon"
-                  src="img/pembangunan.png"
-                />
+                <img alt="Pembangunan" class="menu-icon" src="img/pembangunan.png"/>
                 <span> Pembangunan </span>
               </a>
               <a class="menu-card" href="#produk">
                 <img alt="Lapak" class="menu-icon" src="img/lapak.png" />
                 <span> Lapak </span>
               </a>
-              <!-- SDGs -->
               <a class="menu-card" href="#sdgs">
                 <img alt="SDGs" class="menu-icon" src="img/SDGs.png" />
                 <span> SDGs </span>
               </a>
-              <!-- Pengaduan -->
               <a class="menu-card" href="#pengaduan">
-                <img
-                  alt="Pengaduan"
-                  class="menu-icon"
-                  src="img/PengaduanIcn.png"
-                />
+                <img alt="Pengaduan" class="menu-icon" src="img/PengaduanIcn.png"/>
                 <span> Pengaduan </span>
               </a>
-              <!-- Peraturan -->
               <a class="menu-card" href="#peraturan">
-                <img
-                  alt="Peraturan"
-                  class="menu-icon"
-                  src="img/Peraturan.png"
-                />
+                <img alt="Peraturan" class="menu-icon" src="img/Peraturan.png"/>
                 <span> Peraturan </span>
               </a>
-              <!-- Status IDM -->
               <a class="menu-card" href="#idm">
-                <img
-                  alt="Status IDM"
-                  class="menu-icon"
-                  src="img/Status_IDM.png"
-                />
+                <img alt="Status IDM" class="menu-icon" src="img/Status_IDM.png"/>
                 <span> Status IDM </span>
               </a>
-              <!-- Info Publik -->
               <a class="menu-card" href="Informasi.html">
-                <img
-                  alt="Info Publik"
-                  class="menu-icon"
-                  src="img/Info Publik.png"
-                />
+                <img alt="Info Publik" class="menu-icon" src="img/Info Publik.png"/>
                 <span> Info Publik </span>
               </a>
-              <!-- Inventaris -->
               <a class="menu-card" href="#inventaris">
-                <img
-                  alt="Inventaris"
-                  class="menu-icon"
-                  src="img/inventaris.png"
-                />
+                <img alt="Inventaris" class="menu-icon" src="img/inventaris.png"/>
                 <span> Inventaris </span>
               </a>
-              <!-- Galeri -->
               <a class="menu-card" href="#galeri">
-                <img
-                  alt="Galeri Foto"
-                  class="menu-icon"
-                  src="img/Galeri_Foto.png"
-                />
+                <img alt="Galeri Foto" class="menu-icon" src="img/Galeri_Foto.png"/>
                 <span> Galeri Foto </span>
               </a>
-              <!-- Peta -->
               <a class="menu-card" href="PPID.html#maps">
                 <img alt="Peta" class="menu-icon" src="img/peta.png" />
                 <span> Peta </span>
@@ -601,18 +553,16 @@
           </div>
         </div>
       </section>
+
       <!-- STATISTIK PENDUDUK -->
       <section
         class="relative mx-5 my-4 overflow-hidden rounded-xl py-16"
         id="statistik"
       >
-        <!-- Layer Parallax -->
         <div class="parallax-bg" data-parallax-speed="0.25"></div>
-        <!-- Overlay warna -->
         <div
           class="absolute inset-0 z-[1] bg-gradient-to-r from-green-800/50 via-gray-500/50 to-teal-800/50"
         ></div>
-        <!-- Judul -->
         <h2
           class="relative z-10 font-poppins text-4xl font-extrabold text-center text-white mb-2 tracking-wider"
           id="teks-animasi"
@@ -624,132 +574,61 @@
         >
           DATA POPULASI PPID DESA SUMORAME, KECAMATAN CANDI, DESA SIDOARJO
         </h3>
-        <!-- Container Card -->
         <div class="relative z-10 max-w-7xl mx-auto px-6">
-          <!-- 5 CARD STATISTIK -->
           <div
             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
           >
-            <!-- Laki-Laki -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
-                <img
-                  alt="Laki-laki"
-                  class="w-12 h-12 object-contain"
-                  src="img/laki-laki.png"
-                />
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                <img alt="Laki-laki" class="w-12 h-12 object-contain" src="img/laki-laki.png"/>
               </div>
               <div>
                 <h3 class="text-lg text-gray-500 uppercase">Laki-Laki</h3>
                 <p class="mt-1 text-3xl font-bold text-blue-500">
-                  <span
-                    class="counter"
-                    data-statistik="laki_laki"
-                    data-target="0"
-                  >
-                    0
-                  </span>
+                  <span class="counter" data-statistik="laki_laki" data-target="0">0</span>
                 </p>
                 <span class="text-xl text-gray-600 font-medium"> Jiwa </span>
               </div>
             </div>
-            <!-- Perempuan -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
-                <img
-                  alt="Perempuan"
-                  class="w-12 h-12 object-contain"
-                  src="img/perempuan.png"
-                />
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                <img alt="Perempuan" class="w-12 h-12 object-contain" src="img/perempuan.png"/>
               </div>
               <div>
                 <h3 class="text-lg text-gray-500 uppercase">Perempuan</h3>
                 <p class="mt-1 text-3xl font-bold text-blue-500">
-                  <span
-                    class="counter"
-                    data-statistik="perempuan"
-                    data-target="0"
-                  >
-                    0
-                  </span>
+                  <span class="counter" data-statistik="perempuan" data-target="0">0</span>
                 </p>
                 <span class="text-xl text-gray-600 font-medium"> Jiwa </span>
               </div>
             </div>
-            <!-- Total Penduduk -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
-                <img
-                  alt="Total Penduduk"
-                  class="w-12 h-12 object-contain"
-                  src="img/total.png"
-                />
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                <img alt="Total Penduduk" class="w-12 h-12 object-contain" src="img/total.png"/>
               </div>
               <div>
                 <h3 class="text-lg text-gray-500 uppercase">Total Penduduk</h3>
                 <p class="mt-1 text-3xl font-bold text-blue-500">
-                  <span
-                    class="counter"
-                    data-statistik="total_penduduk"
-                    data-target="0"
-                  >
-                    0
-                  </span>
+                  <span class="counter" data-statistik="total_penduduk" data-target="0">0</span>
                 </p>
                 <span class="text-xl text-gray-600 font-medium"> Jiwa </span>
               </div>
             </div>
-            <!-- Total RW -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
-                <img
-                  alt="Total RW"
-                  class="w-12 h-12 object-contain"
-                  src="img/statistik.png"
-                />
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                <img alt="Total RW" class="w-12 h-12 object-contain" src="img/statistik.png"/>
               </div>
               <div>
                 <h3 class="text-lg text-gray-500 uppercase">Total RW</h3>
                 <p class="mt-1 text-3xl font-bold text-blue-500">
-                  <span
-                    class="counter"
-                    data-statistik="total_rw"
-                    data-target="0"
-                  >
-                    0
-                  </span>
+                  <span class="counter" data-statistik="total_rw" data-target="0">0</span>
                 </p>
                 <span class="text-xl text-gray-600 font-medium"> RW </span>
               </div>
             </div>
-            <!-- Total Dusun: nilai tetap dan tidak dikelola dari CMS -->
-            <div
-              class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4"
-            >
-              <div
-                class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0"
-              >
-                <img
-                  alt="Total Dusun"
-                  class="w-12 h-12 object-contain"
-                  src="img/dusun.png"
-                />
+            <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                <img alt="Total Dusun" class="w-12 h-12 object-contain" src="img/dusun.png"/>
               </div>
               <div>
                 <h3 class="text-lg text-gray-500 uppercase">Total Dusun</h3>
@@ -762,9 +641,9 @@
           </div>
         </div>
       </section>
+
       <!-- BERITA TERKINI -->
       <section class="mb-16" id="berita">
-        <!-- Judul -->
         <h1
           class="font-poppins berita-item opacity-0 -translate-y-10 transition-all duration-700 text-[#006633] text-xl md:text-2xl lg:text-3xl font-black capitalize text-center mb-6"
         >
@@ -773,7 +652,6 @@
         <div
           class="berita-item opacity-0 translate-y-10 transition-all duration-700 delay-200 max-w-4xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-md min-h-[220px]"
         >
-          <!-- Kiri (Isi dari kiri) -->
           <div
             class="berita-item opacity-0 -translate-x-16 transition-all duration-700 delay-300 bg-yellow-400 p-4 flex-1 flex flex-col justify-center"
           >
@@ -781,10 +659,7 @@
               Kegiatan Kuliah Kerja Nyata (KKN) di Desa Sumorame yang diikuti
               oleh mahasiswa Universitas Maarif Hasyim Latif (UMAHA). Berbagai
               program kerja dilaksanakan bersama pemerintah desa dan masyarakat
-              sebagai bentuk pengabdian kepada masyarakat, meliputi Penguatan
-              Desa Berkelanjutan melalui Sekolah Desa sebagai program utama,
-              didukung edukasi kesehatan, inovasi digital, ekonomi kreatif,
-              literasi hukum, dan pemberdayaan masyarakat.
+              sebagai bentuk pengabdian kepada masyarakat...
             </p>
             <a
               class="text-sm font-semibold text-green-900 hover:underline"
@@ -793,15 +668,10 @@
               Lebih Lanjut
             </a>
           </div>
-          <!-- Kanan (Gambar dari kanan) -->
           <div
             class="berita-item opacity-0 translate-x-16 transition-all duration-700 delay-500 flex-1"
           >
-            <img
-              alt="Berita"
-              class="w-full h-full object-cover"
-              src="img/kegiatan.jpg"
-            />
+            <img alt="Berita" class="w-full h-full object-cover" src="img/kegiatan.jpg"/>
           </div>
         </div>
         <div class="text-center mt-5">
@@ -813,61 +683,30 @@
           </a>
         </div>
       </section>
+
       <!-- VISI MISI -->
       <section class="grid md:grid-cols-2 gap-6 mb-16" id="visimisi">
-        <!-- VISI (dari kiri) -->
-        <div
-          class="visi-item opacity-0 -translate-x-16 transition-all duration-700 bg-green-800 text-white p-6 rounded-xl hover:scale-105 transition duration-300"
-        >
+        <!-- VISI -->
+        <div class="visi-item opacity-0 -translate-x-16 transition-all duration-700 bg-green-800 text-white p-6 rounded-xl hover:scale-105 transition duration-300">
           <h3 class="text-xl font-bold mb-2">Visi</h3>
-          <p>
+          <!-- 🚨 ID VISI -->
+          <p id="visiPublik">
             "Terwujudnya Desa Sumorame yang Makmur dan Unggul melalui
-            pembangunan yang berkelanjutan, masyarakat yang sejahtera, mandiri,
-            berdaya saing, serta berlandaskan nilai-nilai gotong royong dan
-            kearifan lokal."
+            pembangunan yang berkelanjutan..."
           </p>
         </div>
-        <!-- MISI (dari kanan) -->
-        <div
-          class="visi-item opacity-0 translate-x-16 transition-all duration-700 delay-200 bg-yellow-400 p-6 rounded-xl hover:scale-105 transition duration-300"
-        >
+        <!-- MISI -->
+        <div class="visi-item opacity-0 translate-x-16 transition-all duration-700 delay-200 bg-yellow-400 p-6 rounded-xl hover:scale-105 transition duration-300">
           <h3 class="text-xl font-bold mb-2">Misi</h3>
-          <ul class="list-disc ml-5">
-            <li>
-              Meningkatkan kesejahteraan masyarakat melalui pengembangan ekonomi
-              desa, pemberdayaan UMKM, pertanian, peternakan, dan sektor usaha
-              produktif lainnya.
-            </li>
-            <li>
-              Meningkatkan kualitas sumber daya manusia melalui pendidikan,
-              kesehatan, pelatihan keterampilan, serta pengembangan generasi
-              muda yang kreatif dan berprestasi.
-            </li>
-            <li>
-              Mewujudkan tata kelola pemerintahan desa yang profesional,
-              transparan, akuntabel, dan melayani masyarakat secara optimal.
-            </li>
-            <li>
-              Mengembangkan infrastruktur desa yang berkualitas dan
-              berkelanjutan untuk mendukung aktivitas ekonomi, sosial, dan
-              pelayanan publik.
-            </li>
-            <li>
-              Memperkuat ketahanan sosial, budaya, dan lingkungan melalui
-              pelestarian nilai gotong royong, keamanan, kebersihan, dan
-              kelestarian lingkungan desa.
-            </li>
-            <li>
-              Meningkatkan daya saing desa melalui pemanfaatan teknologi
-              informasi, inovasi pelayanan, serta pengembangan potensi unggulan
-              desa.
-            </li>
+          <!-- 🚨 ID MISI -->
+          <ul id="misiPublik" class="list-disc ml-5">
+            <li>Memuat Misi...</li>
           </ul>
         </div>
       </section>
+
       <!-- PRODUK UNGGULAN -->
       <section class="py-16" id="produk">
-        <!-- Judul -->
         <h2
           class="font-poppins text-4xl font-extrabold text-center text-green-800 mb-10"
         >
@@ -884,7 +723,6 @@
             </p>
           </div>
         </div>
-        <!-- Tombol -->
         <div class="text-center mt-10">
           <a
             class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out"
@@ -895,69 +733,16 @@
           </a>
         </div>
       </section>
-      <!-- MODAL -->
-      <div
-        class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden"
-        id=""
-      >
-        <div
-          class="relative w-[90%] max-w-6xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl bg-white flex flex-col"
-          id=""
-        >
-          <!-- Tombol X -->
-          <button
-            class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
-            onclick=""
-          >
-            ✕
-          </button>
-          <!-- CONTENT (SCROLLABLE) -->
-          <div class="overflow-y-auto p-6 md:p-8">
-            <!-- JUDUL -->
-            <h2
-              class="text-lg md:text-xl font-semibold text-green-800 mb-4 text-left w-full"
-            >
-              Pengumuman Pelayanan
-            </h2>
-            <p
-              class="text-sm md:text-[13px] font-normal text-black -mt-2 mb-3 text-left w-full"
-            >
-              Informasi Dan Pengumuman Pelayanan Kantor Desa Sumorame
-            </p>
-            <!-- GAMBAR -->
-            <img
-              class="w-full max-h-[580px] object-cover rounded-xl shadow-lg mb-5 mx-auto"
-              src="img/Pengumuman.png"
-            />
-          </div>
-          <!-- FOOTER (TOMBOL STICKY) -->
-          <div class="p-4 border-t bg-white flex justify-center">
-            <a
-              class="block w-full max-w-[1030px] text-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
-              href="PPID.html"
-            >
-              LIHAT PENGUMUMAN
-            </a>
-          </div>
-        </div>
-      </div>
-      <!-- MODAL Fleksible -->
-      <div
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-        id="myModal"
-      >
-        <div
-          class="relative bg-white rounded-2xl shadow-2xl w-fit max-w-[700px] max-h-[95vh] flex flex-col overflow-hidden"
-          id="modalBox"
-        >
-          <!-- Tombol X -->
+
+      <!-- MODAL Pengumuman -->
+      <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" id="myModal">
+        <div class="relative bg-white rounded-2xl shadow-2xl w-fit max-w-[700px] max-h-[95vh] flex flex-col overflow-hidden" id="modalBox">
           <button
             class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
             onclick="closeModal()"
           >
             ✕
           </button>
-          <!-- HEADER -->
           <div class="p-6 border-b">
             <h2 class="text-xl font-semibold text-green-800">
               Pengumuman Pelayanan
@@ -966,19 +751,11 @@
               Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
             </p>
           </div>
-          <!-- BODY -->
           <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-            <img
-              class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg"
-              src="img/Dirgahayu.png"
-            />
+            <img class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" src="img/Dirgahayu.png"/>
           </div>
-          <!-- FOOTER -->
           <div class="p-4 border-t bg-white">
-            <a
-              class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition"
-              href="PPID.html"
-            >
+            <a class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="PPID.html">
               LIHAT PENGUMUMAN
             </a>
           </div>
@@ -999,10 +776,7 @@
       id="footer"
     >
       <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-        <!-- Logo & Nama -->
-        <div
-          class="footer-item opacity-0 translate-y-6 transition-all duration-700"
-        >
+        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
           <div class="inline-flex flex-col items-center">
             <img alt="Logo Desa" class="w-16 mb-3" src="img/logo3.png" />
             <h3 class="text-lg font-bold">Desa Sumorame</h3>
@@ -1011,87 +785,40 @@
             Desa mandiri berbasis teknologi untuk masa depan yang lebih baik.
           </p>
         </div>
-        <!-- Kontak -->
-        <div
-          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200"
-        >
-          <!-- Judul -->
-          <h4
-            class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold"
-          >
+        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200">
+          <h4 class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold">
             Kontak
           </h4>
-          <!-- Alamat (dari kiri) -->
-          <p
-            class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300"
-          >
-            <span class="material-symbols-outlined text-lg mt-[2px]">
-              location_on
-            </span>
-            <span>
-              Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten
-              Sidoarjo, Jawa Timur 61271
-            </span>
+          <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300">
+            <span class="material-symbols-outlined text-lg mt-[2px]">location_on</span>
+            <span>Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271</span>
           </p>
-          <p
-            class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300"
-          >
+          <p class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300">
             <span class="material-symbols-outlined text-lg"> call </span>
             0812-3456-7890 (Hanya Menerima Pengaduan).
           </p>
-          <p
-            class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300"
-          >
+          <p class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300">
             <span class="material-symbols-outlined text-lg"> mail </span>
             PemdesSumorame@gmail.com
           </p>
         </div>
-        <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
-        <div
-          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300"
-        >
+        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300">
           <h4 class="font-semibold mb-3">Ikuti Kami</h4>
           <div class="flex gap-4 items-center">
-            <a
-              class="hover:scale-125 transition duration-300"
-              href="https://www.tiktok.com/search?q=pemdes%20sumorame&amp;t=1785759591160"
-              target="_blank"
-            >
-              <img
-                alt="TikTok"
-                class="w-6 h-6 invert"
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg"
-              />
+            <a class="hover:scale-125 transition duration-300" href="https://www.tiktok.com/search?q=pemdes%20sumorame&amp;t=1785759591160" target="_blank">
+              <img alt="TikTok" class="w-6 h-6 invert" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg"/>
             </a>
-            <a
-              class="hover:scale-125 transition duration-300"
-              href="https://www.instagram.com/pemdes_sumorame02/"
-              target="_blank"
-            >
-              <img
-                alt="Instagram"
-                class="w-6 h-6 invert"
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
-              />
+            <a class="hover:scale-125 transition duration-300" href="https://www.instagram.com/pemdes_sumorame02/" target="_blank">
+              <img alt="Instagram" class="w-6 h-6 invert" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"/>
             </a>
-            <a
-              class="hover:scale-125 transition duration-300"
-              href="https://www.youtube.com/@pemdes.sumorame"
-              target="_blank"
-            >
-              <img
-                alt="YouTube"
-                class="w-6 h-6 invert"
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"
-              />
+            <a class="hover:scale-125 transition duration-300" href="https://www.youtube.com/@pemdes.sumorame" target="_blank">
+              <img alt="YouTube" class="w-6 h-6 invert" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"/>
             </a>
           </div>
         </div>
       </div>
-      <!-- Copyrightt -->
       <div class="text-center mt-8 text-sm text-gray-400">
-        &copy;2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa
-        Sumorame.
+        &copy;2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa Sumorame.
       </div>
     </footer>
     <script src="js/index.js?v=20260824-3"></script>
