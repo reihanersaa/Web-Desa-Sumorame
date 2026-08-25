@@ -1,0 +1,27 @@
+/* Perlindungan layout bersama untuk seluruh halaman publik. */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  position: relative;
+}
+
+img,
+video,
+svg,
+canvas {
+  max-width: 100%;
+}
+
+/* Mencegah transform animasi memperluas scrollWidth halaman. */
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
+

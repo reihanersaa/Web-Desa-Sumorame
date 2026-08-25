@@ -1,6 +1,9 @@
 /* Tinggi hero bersama untuk seluruh halaman publik. */
 .public-hero {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  contain: paint;
   height: clamp(26rem, 70vh, 43.75rem) !important;
   height: clamp(26rem, 70svh, 43.75rem) !important;
   min-height: 26rem;
