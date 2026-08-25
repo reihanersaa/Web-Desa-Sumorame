@@ -268,6 +268,87 @@ const produkController = {
     }
   },
 
+  // [ADMIN CMS] Perbaiki isi data produk tanpa mengubah statusnya
+  updateProduk: async (req, res) => {
+    try {
+      if (req.user.role !== "admin") {
+        return res.status(403).json({
+          success: false,
+          message: "Akses Ditolak! Khusus Admin.",
+        });
+      }
+
+      const { id } = req.params;
+      const {
+        nik,
+        nama_produk,
+        deskripsi,
+        harga,
+        nama_penjual,
+        kontak_penjual,
+        gambar,
+      } = req.body;
+
+      if (!/^\d{16}$/.test(String(nik || ""))) {
+        return res.status(400).json({
+          success: false,
+          message: "NIK harus terdiri dari tepat 16 angka.",
+        });
+      }
+
+      if (!nama_produk || !nama_penjual || !kontak_penjual || !deskripsi) {
+        return res.status(400).json({
+          success: false,
+          message: "Kolom data produk wajib dilengkapi.",
+        });
+      }
+
+      if (!/^\d{9,15}$/.test(String(kontak_penjual))) {
+        return res.status(400).json({
+          success: false,
+          message: "Nomor HP harus terdiri dari 9 sampai 15 angka.",
+        });
+      }
+
+      const hargaProduk = Number(harga);
+      if (!Number.isFinite(hargaProduk) || hargaProduk <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Harga produk harus lebih dari 0.",
+        });
+      }
+
+      const updateData = {
+        nik: String(nik),
+        nama_produk: String(nama_produk).trim(),
+        deskripsi: String(deskripsi).trim(),
+        harga: hargaProduk,
+        nama_penjual: String(nama_penjual).trim(),
+        kontak_penjual: String(kontak_penjual),
+      };
+
+      if (gambar) updateData.gambar = gambar;
+
+      const { data, error } = await supabase
+        .from("produk_unggulan")
+        .update(updateData)
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return res.status(200).json({
+        success: true,
+        message: "Data produk berhasil diperbarui.",
+        data,
+      });
+    } catch (error) {
+      console.error("Error Update Produk:", error.message);
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  },
+
   // 5. [ADMIN CMS] Hapus Produk
   hapusProduk: async (req, res) => {
     try {

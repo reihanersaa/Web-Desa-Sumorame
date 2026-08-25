@@ -538,23 +538,41 @@ loadStatistikPublik();
   const parallaxEls = document.querySelectorAll(".parallax-bg");
   if (!parallaxEls.length) return;
 
-  const prefersReducedMotion = window.matchMedia(
+  const reduceMotionQuery = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
-  ).matches;
-  if (prefersReducedMotion) return; // biarkan CSS yang menonaktifkan gerak
+  );
+  const compactDeviceQuery = window.matchMedia(
+    "(max-width: 767px), (pointer: coarse)",
+  );
+  const saveData = Boolean(navigator.connection?.saveData);
+
+  if (reduceMotionQuery.matches || saveData) {
+    parallaxEls.forEach((bg) => {
+      bg.style.transform = "none";
+    });
+    return;
+  }
 
   const activeEls = new Set();
   let ticking = false;
 
   function updateParallax() {
     const viewportCenter = window.innerHeight / 2;
+    const deviceMultiplier = compactDeviceQuery.matches ? 0.45 : 1;
 
     activeEls.forEach((bg) => {
       const wrap = bg.parentElement;
       const rect = wrap.getBoundingClientRect();
-      const speed = parseFloat(bg.dataset.parallaxSpeed || "0.25");
+      const speed = parseFloat(bg.dataset.parallaxSpeed || "0.25") * deviceMultiplier;
       const elCenter = rect.top + rect.height / 2;
-      const offset = (viewportCenter - elCenter) * speed;
+      const desiredOffset = (viewportCenter - elCenter) * speed;
+
+      // Batasi gerakan sesuai tinggi layer agar tidak muncul celah kosong.
+      const availableTravel = Math.max(0, (bg.offsetHeight - rect.height) / 2);
+      const offset = Math.max(
+        -availableTravel,
+        Math.min(availableTravel, desiredOffset),
+      );
 
       bg.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
     });
@@ -574,8 +592,10 @@ loadStatistikPublik();
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           activeEls.add(entry.target);
+          entry.target.classList.add("is-parallax-active");
         } else {
           activeEls.delete(entry.target);
+          entry.target.classList.remove("is-parallax-active");
         }
       });
 
@@ -591,4 +611,7 @@ loadStatistikPublik();
   );
 
   parallaxEls.forEach((el) => io.observe(el));
+
+  window.addEventListener("resize", onScroll, { passive: true });
+  window.addEventListener("orientationchange", onScroll, { passive: true });
 })();
