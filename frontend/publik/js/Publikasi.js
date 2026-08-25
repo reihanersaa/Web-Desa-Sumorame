@@ -53,31 +53,6 @@ const modalDate = document.getElementById("modalDate");
 
 const closeModal = document.getElementById("closeModal");
 
-// ambil semua card
-const cards = document.querySelectorAll(".pub-card");
-
-cards.forEach((card) => {
-  card.addEventListener("click", () => {
-    const img = card.querySelector("img").src;
-    const title = card.querySelector("h4").innerText;
-    const desc = card.querySelector("p").innerText;
-    const date = card.querySelectorAll("p")[1].innerText;
-
-    // isi modal
-    modalImg.src = img;
-    modalTitle.innerText = title;
-    modalDesc.innerText = desc;
-    modalDate.innerText = date;
-
-    // tampilkan modal
-    modal.classList.remove("opacity-0", "pointer-events-none");
-    modalContent.classList.remove("scale-90", "opacity-0");
-
-    modal.classList.add("opacity-100");
-    modalContent.classList.add("scale-100", "opacity-100");
-  });
-});
-
 // tombol X
 closeModal.addEventListener("click", close);
 
@@ -97,6 +72,85 @@ function close() {
     modal.classList.add("pointer-events-none");
   }, 300);
 }
+
+function bukaModal(item) {
+  modalImg.src = item.gambar_url;
+  modalTitle.innerText = item.judul;
+  modalDesc.innerText = item.deskripsi;
+  modalDate.innerText = formatTanggal(item.waktu_kegiatan);
+
+  modal.classList.remove("opacity-0", "pointer-events-none");
+  modalContent.classList.remove("scale-90", "opacity-0");
+
+  modal.classList.add("opacity-100");
+  modalContent.classList.add("scale-100", "opacity-100");
+}
+
+function formatTanggal(tanggal) {
+  return new Date(tanggal).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+const escapeHTML = (value = "") => {
+  const div = document.createElement("div");
+  div.textContent = value;
+  return div.innerHTML;
+};
+
+// === AMBIL & RENDER DATA PUBLIKASI DARI BACKEND ===
+const API_BASE_URL = window.API_BASE_URL || "http://localhost:3000/api";
+const publikasiGrid = document.getElementById("publikasiGrid");
+
+async function loadPublikasi() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/publikasi`);
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Gagal memuat data publikasi.");
+    }
+
+    const items = result.data || [];
+
+    if (!items.length) {
+      publikasiGrid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-10">Belum ada publikasi kegiatan.</p>`;
+      return;
+    }
+
+    publikasiGrid.innerHTML = items
+      .map(
+        (item) => `
+      <div class="pub-card opacity-0 translate-y-10 md:translate-y-16 transition-all duration-700" data-id="${item.id}">
+        <img src="${item.gambar_url}" class="w-full h-48 object-cover" alt="${escapeHTML(item.judul)}">
+        <div class="bg-green-50 p-5 shadow-md rounded-b-xl">
+          <h4 class="text-lg font-bold text-green-800 mb-2">${escapeHTML(item.judul)}</h4>
+          <p class="text-gray-600 text-sm">${escapeHTML(item.deskripsi)}</p>
+          <p class="text-xs text-gray-400 mt-3">${formatTanggal(item.waktu_kegiatan)}</p>
+        </div>
+      </div>`,
+      )
+      .join("");
+
+    // Pasang klik-buka-modal ke tiap card yang baru dirender
+    publikasiGrid.querySelectorAll(".pub-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const item = items.find((i) => String(i.id) === card.dataset.id);
+        if (item) bukaModal(item);
+      });
+    });
+
+    // Nyalakan lagi animasi scroll-reveal untuk card yang baru masuk ke DOM
+    initScrollRevealCards();
+  } catch (error) {
+    console.error("Gagal memuat publikasi:", error);
+    publikasiGrid.innerHTML = `<p class="col-span-full text-center text-red-500 py-10">${escapeHTML(error.message)}</p>`;
+  }
+}
+
+loadPublikasi();
 
 // ===== Animasi Footer =====
 const footer = document.getElementById("footer");
@@ -169,7 +223,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // === ANIMASI CARD PUBLIKASI (SCROLL REVEAL + STAGGER) ===
-document.addEventListener("DOMContentLoaded", () => {
+// Dipanggil ulang tiap habis loadPublikasi() render card baru,
+// karena card sekarang muncul belakangan (fetch async), bukan
+// udah ada dari awal kayak dulu waktu masih hardcoded di HTML.
+function initScrollRevealCards() {
   const cards = document.querySelectorAll(".pub-card");
 
   const observer = new IntersectionObserver(
@@ -189,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(card);
     card.style.transitionDelay = `${i * 0.03}s`; // ini yang bikin urut
   });
-});
+}
 
 // === HERO SLIDER ===
 const slider = document.getElementById("slider");
@@ -222,50 +279,27 @@ slider.addEventListener("mouseleave", () => {
 // SWIPE MOBILE
 let startX = 0;
 
-slider.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-}, { passive: true });
+slider.addEventListener(
+  "touchstart",
+  (e) => {
+    startX = e.touches[0].clientX;
+  },
+  { passive: true },
+);
 
-slider.addEventListener("touchend", (e) => {
-  let endX = e.changedTouches[0].clientX;
+slider.addEventListener(
+  "touchend",
+  (e) => {
+    let endX = e.changedTouches[0].clientX;
 
-  if (startX - endX > 50) {
-    showSlide(index + 1);
-  } else if (endX - startX > 50) {
-    showSlide(index - 1);
-  }
-}, { passive: true });
-
-// Navigasi keyboard sama seperti hero Profil Desa
-document.addEventListener("keydown", (e) => {
-  const tag = document.activeElement.tagName.toLowerCase();
-  if (
-    tag === "input" ||
-    tag === "textarea" ||
-    tag === "select" ||
-    document.activeElement.isContentEditable
-  ) return;
-
-  if (e.key === "ArrowRight") {
-    e.preventDefault();
-    showSlide(index + 1);
-  }
-
-  if (e.key === "ArrowLeft") {
-    e.preventDefault();
-    showSlide(index - 1);
-  }
-
-  if (e.key === "End") {
-    e.preventDefault();
-    showSlide(index + 1);
-  }
-
-  if (e.key === "Home") {
-    e.preventDefault();
-    showSlide(index - 1);
-  }
-});
+    if (startX - endX > 50) {
+      showSlide(index + 1);
+    } else if (endX - startX > 50) {
+      showSlide(index - 1);
+    }
+  },
+  { passive: true },
+);
 
 // ===============================
 // HEADER HILANG HANYA DI PALING ATAS

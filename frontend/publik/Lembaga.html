@@ -1,311 +1,346 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lembaga | Website Desa Sumorame</title>
-  <link rel="icon" href="../img/logo3.png?v=20260824-1" type="image/png">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link rel="stylesheet" href="css/Lembaga.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lembaga | Website Desa Sumorame</title>
+    <link rel="icon" href="img/logo3.png?v=20260824-1" type="image/png" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/Lembaga.css" />
 
-  <!-- Tailwind Config -->
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            primary: "#004b24",
-            "primary-container": "#006633",
-            secondary: "#745b00",
-            "secondary-container": "#fecb00",
-            background: "#fbf9f8",
-            surface: "#fbf9f8",
-            "on-surface": "#1b1c1c",
-            "on-surface-variant": "#3f4940"
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#004b24",
+              "primary-container": "#006633",
+              secondary: "#745b00",
+              "secondary-container": "#fecb00",
+              background: "#fbf9f8",
+              surface: "#fbf9f8",
+              "on-surface": "#1b1c1c",
+              "on-surface-variant": "#3f4940",
+            },
+            fontFamily: {
+              headline: ["Plus Jakarta Sans"],
+              body: ["Inter"],
+              label: ["Work Sans"],
+            },
           },
-          fontFamily: {
-            headline: ["Plus Jakarta Sans"],
-            body: ["Inter"],
-            label: ["Work Sans"]
-          }
-        }
-      }
-    };
-  </script>
-</head>
+        },
+      };
+    </script>
+  </head>
 
-<body class="bg-surface font-body text-on-surface">
-
-  <!-- HEADER -->
-  <header id="mainHeader" class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md">
-    <div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
-
-      <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <div class="logo">
-          <img src="../img/logo3.png" alt="Logo Desa Digital" width="40" height="36">
+  <body class="bg-surface font-body text-on-surface">
+    <!-- HEADER -->
+    <header
+      id="mainHeader"
+      class="bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-md"
+    >
+      <div
+        class="flex justify-between items-center max-w-7xl mx-auto px-6 h-16"
+      >
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div class="logo">
+            <img
+              src="img/logo3.png"
+              alt="Logo Desa Digital"
+              width="40"
+              height="36"
+            />
+          </div>
+          <h1 class="font-headline text-xl font-bold text-emerald-900">
+            Desa Sumorame
+          </h1>
         </div>
-        <h1 class="font-headline text-xl font-bold text-emerald-900">Desa Sumorame</h1>
+
+        <!-- NAVBAR -->
+        <nav class="hidden md:flex items-center font-medium text-green-900">
+          <a href="index.html" class="nav-item relative px-5 font-bold"
+            >Profile Desa</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="#" class="nav-item relative px-5 font-bold">Lembaga</a>
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="Informasi.html" class="nav-item relative px-5 font-bold"
+            >Informasi</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a
+            href="AdminP.html"
+            class="nav-item relative px-5 font-bold text-green-800"
+            >Administrasi Persuratan</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="Aduan.html" class="nav-item relative px-5 font-bold"
+            >Aduan</a
+          >
+          <div class="h-5 w-[1px] bg-gray-400"></div>
+
+          <a href="Publikasi.html" class="nav-item relative px-5 font-bold"
+            >Publikasi</a
+          >
+        </nav>
+
+        <!-- Logout -->
+        <a
+          href="login.html"
+          class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition"
+        >
+          <span class="material-symbols-outlined">logout</span>
+        </a>
+
+        <!-- Right Section -->
+        <div class="flex items-center gap-4">
+          <!-- Hamburger (Mobile Only) -->
+          <button
+            id="menuBtn"
+            class="md:hidden material-symbols-outlined text-emerald-900 text-3xl"
+          >
+            menu
+          </button>
+        </div>
       </div>
+    </header>
 
-      <!-- NAVBAR -->
-      <nav class="hidden md:flex items-center font-medium text-green-900">
-        <a href="index.html" class="nav-item relative px-5 font-bold">Profile Desa</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="#" class="nav-item relative px-5 font-bold">Lembaga</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Informasi.html" class="nav-item relative px-5 font-bold">Informasi</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="AdminP.html" class="nav-item relative px-5 font-bold text-green-800">Administrasi Persuratan</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Aduan.html" class="nav-item relative px-5 font-bold">Aduan</a>
-        <div class="h-5 w-[1px] bg-gray-400"></div>
-
-        <a href="Publikasi.html" class="nav-item relative px-5 font-bold">Publikasi</a>
-      </nav>
-
-      <!-- Logout -->
-      <a href="login.html" class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition">
-        <span class="material-symbols-outlined">logout</span>
-      </a>
-
-      <!-- Right Section -->
-      <div class="flex items-center gap-4">
-
-        <!-- Hamburger (Mobile Only) -->
-        <button id="menuBtn" class="md:hidden material-symbols-outlined text-emerald-900 text-3xl">
-          menu
-        </button>
-      </div>
+    <!-- MOBILE MENU -->
+    <div
+      id="mobileMenu"
+      class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300"
+    >
+      <a
+        href="index.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Profile Desa</a
+      >
+      <a
+        href="PPID.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >PPID</a
+      >
+      <a
+        href="#"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Lembaga</a
+      >
+      <a
+        href="Informasi.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Informasi</a
+      >
+      <a
+        href="AdminP.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Administrasi Persuratan</a
+      >
+      <a
+        href="Aduan.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Aduan</a
+      >
+      <a
+        href="Publikasi.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Publikasi</a
+      >
+      <a
+        href="login.html"
+        class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
+        >Log Out</a
+      >
     </div>
-  </header>
 
-  <!-- MOBILE MENU -->
-  <div id="mobileMenu" class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300">
-    <a href="index.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Profile Desa</a>
-    <a href="PPID.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">PPID</a>
-    <a href="#" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Lembaga</a>
-    <a href="Informasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Informasi</a>
-    <a href="AdminP.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Administrasi Persuratan</a>
-    <a href="Aduan.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Aduan</a>
-    <a href="Publikasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Publikasi</a>
-    <a href="login.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Log Out</a>
-  </div>
-
-  <!-- HERO -->
-  <section id="heroSection" class="relative overflow-hidden bg-primary h-[700px] flex items-center">
-
+    <!-- HERO -->
+    <section
+      id="heroSection"
+      class="relative overflow-hidden bg-primary h-[700px] flex items-center"
+    >
       <!-- Background -->
-      <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
-          class="absolute inset-0 w-full h-full object-cover object-[center_40%] opacity-50">
+      <img
+        src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
+        class="absolute inset-0 w-full h-full object-cover object-[center_40%] opacity-50"
+      />
 
       <!-- Overlay -->
       <div class="absolute inset-0 bg-black/30"></div>
 
       <!-- Content -->
       <div class="relative z-10 px-8 max-w-7xl mx-auto pt-20">
+        <!-- Judul -->
+        <h2
+          class="hero-title opacity-0 -translate-x-16 transition-all duration-700 text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 leading-tight"
+        >
+          Badan Kelembagaan Desa
+        </h2>
 
-          <!-- Judul -->
-          <h2 class="hero-title opacity-0 -translate-x-16 transition-all duration-700
-                    text-3xl sm:text-4xl md:text-5xl
-                    font-bold text-white mb-4 leading-tight">
-               Badan Kelembagaan Desa
-          </h2>
-
-          <!-- Deskripsi -->
-          <p id="heroItem"
-            class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80">
-              Selamat Datang Di Desa Sumorame.
-          </p>
-
+        <!-- Deskripsi -->
+        <p
+          id="heroItem"
+          class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80"
+        >
+          Selamat Datang Di Desa Sumorame.
+        </p>
       </div>
-  </section>
+    </section>
 
-      <!-- CONTENT (KOSONG) -->
-      <main class="pt-28 max-w-5xl mx-auto px-6 text-center">
+    <!-- ====================================================== -->
+    <!-- MAIN CONTENT KELEMBAGAAN -->
+    <!-- ====================================================== -->
+    <main class="pt-28 max-w-5xl mx-auto px-6 text-center">
+      <!-- ==================================================== -->
+      <!-- CONTAINER DATA KELEMBAGAAN -->
+      <!-- Data dari public.kelembagaan akan dimasukkan ke sini -->
+      <!-- melalui JavaScript Lembaga.js -->
+      <!-- ==================================================== -->
+      <div id="kelembagaanContainer">
+        <!-- ================= LOADING ================= -->
+        <div
+          id="loadingKelembagaan"
+          class="py-16 flex flex-col items-center justify-center gap-3 text-gray-500"
+        >
+          <span class="material-symbols-outlined text-4xl animate-spin">
+            progress_activity
+          </span>
 
-      <!-- JUDUL -->
-      <h1 class="text-2xl md:text-3xl font-bold text-black mb-2">
-        Lembaga Pemberdayaan Masyarakat
-      </h1>
-
-      <!-- GARIS KECIL -->
-      <div class="flex justify-center mb-8">
-        <div class="w-20 h-1 bg-yellow-400 rounded"></div>
+          <p class="text-base md:text-lg">Memuat data kelembagaan...</p>
+        </div>
       </div>
-
-      <!-- LOGO (TENGAH) -->
-      <div class="flex justify-center mb-8">
-        <img src="../img/lpm.png" alt="Logo LPM" class="w-40 h-auto">
-      </div>
-
-      <!-- DESKRIPSI -->
-      <p class="text-green-700 text-base md:text-lg leading-relaxed">
-        Lembaga Pemberdayaan Masyarakat (LPM) adalah organisasi yang dibentuk untuk
-        memberdayakan masyarakat di tingkat desa. LPM dibentuk atas prakarsa masyarakat.<br></br>
-
-        Tugas LPM<br></br>
-
-        Menyusun
-        rencana pembangunan secara partisipatif
-        Menggerakkan
-        swadaya gotong royong masyarakat
-        Melaksanakan
-        dan mengendalikan pembangunan
-        Menampung
-        dan menyalurkan aspirasi masyarakat dalam pembangunan
-        Meningkatkan
-        kualitas dan percepatan pelayanan pemerintah kepada masyarakat
-        Mengembangkan
-        kemitraan.<br></br>
-
-        Tujuan LPM<br></br>
-
-        Menciptakan
-        masyarakat yang mandiri dan berdaya saing
-        Meningkatkan
-        partisipasi dan pelayanan penyelenggaraan masyarakat desa
-        Ikut
-        serta dalam perencanaan, pelaksanaan, dan pembangunan yang dilakukan oleh
-        Pemerintah Desa.
-      </p><br></br>
-
-      <!-- JUDUL -->
-      <h1 class="text-2xl md:text-3xl font-bold text-black mb-2">
-        Badan Permusyawaratan Desa
-      </h1>
-
-      <!-- GARIS KECIL -->
-      <div class="flex justify-center mb-8">
-        <div class="w-20 h-1 bg-yellow-400 rounded"></div>
-      </div>
-
-      <!-- LOGO (TENGAH) -->
-      <div class="flex justify-center mb-8">
-        <img src="../img/bpd.png" alt="Logo LPM" class="w-40 h-auto">
-      </div>
-
-      <!-- DESKRIPSI -->
-      <p class="text-green-700 text-base md:text-lg leading-relaxed">
-        Badan Permusyawaratan Desa (BPD) adalah lembaga yang menjalankan fungsi pemerintahan desa. BPD merupakan wakil dari penduduk desa yang dipilih secara demokratis. BPD juga disebut sebagai parlemen desa.<br><br>
-
-        Tugas BPD :<br></br>
-
-        Menampung dan menyalurkan aspirasi masyarakat desa
-        Melakukan pengawasan kinerja kepala desa.
-      </p><br></br>  
-
-      <!-- JUDUL -->
-      <h1 class="text-2xl md:text-3xl font-bold text-black mb-2">
-        Pembinaan Kesejahteraan Keluarga
-      </h1>
-
-      <!-- GARIS KECIL -->
-      <div class="flex justify-center mb-8">
-        <div class="w-20 h-1 bg-yellow-400 rounded"></div>
-      </div>
-
-      <!-- LOGO (TENGAH) -->
-      <div class="flex justify-center mb-8">
-        <img src="../img/pkk.png" alt="Logo LPM" class="w-40 h-auto">
-      </div>
-
-      <!-- DESKRIPSI -->
-      <p class="text-green-700 text-base md:text-lg leading-relaxed">
-        Pembinaan Kesejahteraan Keluarga (PKK) adalah organisasi kemasyarakatan yang bertujuan untuk meningkatkan kesejahteraan keluarga. PKK juga bertujuan untuk memberdayakan wanita dalam pembangunan Indonesia.<br><br>
-      </p>
-
     </main>
 
     <!-- Scroll To Top -->
-        <button id="scrollTopBtn"
-            class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800
-                  text-white rounded-full shadow-lg flex items-center justify-center
-                  opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+    <button
+      id="scrollTopBtn"
+      class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-700 hover:bg-emerald-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:scale-110 z-50"
+    >
+      <span class="material-symbols-outlined"> keyboard_arrow_up </span>
+    </button>
 
-            <span class="material-symbols-outlined">
-                keyboard_arrow_up
+    <!-- FOOTER -->
+    <footer
+      id="footer"
+      class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700"
+    >
+      <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+        <!-- Logo & Nama -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700"
+        >
+          <div class="inline-flex flex-col items-center">
+            <img src="img/logo3.png" alt="Logo Desa" class="w-16 mb-3" />
+            <h3 class="text-lg font-bold">Desa Sumorame</h3>
+          </div>
+          <p class="text-sm text-gray-300">Makmur dan Unggul.</p>
+        </div>
+
+        <!-- Kontak -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200"
+        >
+          <!-- Judul -->
+          <h4
+            class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold"
+          >
+            Kontak
+          </h4>
+          <!-- Alamat (dari kiri) -->
+          <p
+            class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg mt-[2px]"
+              >location_on</span
+            >
+            <span>
+              Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten
+              Sidoarjo, Jawa Timur 61271
             </span>
+          </p>
 
-        </button>
+          <p
+            class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg">call</span>
+            0812-3456-7890 (Hanya Menerima Pengaduan).
+          </p>
 
-  <!-- FOOTER -->
-  <footer id="footer" class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-          <!-- Logo & Nama -->
-          <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
-            <div class="inline-flex flex-col items-center">
-              <img src="../img/logo3.png" alt="Logo Desa" class="w-16 mb-3">
-              <h3 class="text-lg font-bold">Desa Sumorame</h3>
-            </div>
-            <p class="text-sm text-gray-300">
-              Makmur dan Unggul.
-            </p>
-          </div>
+          <p
+            class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300"
+          >
+            <span class="material-symbols-outlined text-lg">mail</span>
+            PemdesSumorame@gmail.com
+          </p>
+        </div>
 
-      <!-- Kontak -->
-          <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200">
-              <!-- Judul -->
-              <h4 class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold">
-                Kontak
-              </h4>
-              <!-- Alamat (dari kiri) -->
-              <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg mt-[2px]">location_on</span>
-                <span>
-                  Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271
-                </span>
-              </p>
-
-              <p class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg">call</span>
-                0812-3456-7890 (Hanya Menerima Pengaduan).
-              </p>
-
-              <p class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg">mail</span>
-                PemdesSumorame@gmail.com
-              </p>
-          </div>
-
-      <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
-        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300">
-            <h4 class="font-semibold mb-3">Ikuti Kami</h4>
+        <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
+        <div
+          class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300"
+        >
+          <h4 class="font-semibold mb-3">Ikuti Kami</h4>
           <div class="flex gap-4 items-center">
+            <a
+              href="https://www.tiktok.com/search?q=pemdes%20sumorame&t=1785759591160"
+              target="_blank"
+              class="hover:scale-125 transition duration-300"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg"
+                class="w-6 h-6 invert"
+                alt="TikTok"
+              />
+            </a>
 
-              <a href="https://www.tiktok.com/search?q=pemdes%20sumorame&t=1785759591160" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" 
-                    class="w-6 h-6 invert" alt="TikTok">
-              </a>
+            <a
+              href="https://www.instagram.com/pemdes_sumorame02/"
+              target="_blank"
+              class="hover:scale-125 transition duration-300"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
+                class="w-6 h-6 invert"
+                alt="Instagram"
+              />
+            </a>
 
-              <a href="https://www.instagram.com/pemdes_sumorame02/" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" 
-                    class="w-6 h-6 invert" alt="Instagram">
-              </a>
-
-              <a href="https://www.youtube.com/@pemdes.sumorame" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" 
-                    class="w-6 h-6 invert" alt="YouTube">
-              </a>
+            <a
+              href="https://www.youtube.com/@pemdes.sumorame"
+              target="_blank"
+              class="hover:scale-125 transition duration-300"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"
+                class="w-6 h-6 invert"
+                alt="YouTube"
+              />
+            </a>
           </div>
         </div>
       </div>
 
-    <div class="text-center mt-6 text-sm text-gray-400">
-      ©2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa Sumorame.
-    </div>
-  </footer>
+      <div class="text-center mt-6 text-sm text-gray-400">
+        ©2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa
+        Sumorame.
+      </div>
+    </footer>
 
-  <script src="js/Lembaga.js"></script>
-</body>
+    <script src="js/Lembaga.js"></script>
+  </body>
 </html>
