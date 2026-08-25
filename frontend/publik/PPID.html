@@ -36,6 +36,24 @@
     };
   </script>
 </head>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("open") === "profile-ppid") {
+        const target = document.getElementById("profile-ppid");
+
+        if (target) {
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
+        openModalPengumuman();
+    }
+});
+</script>
 
 <body class="bg-surface font-body text-on-surface">
 
@@ -167,13 +185,18 @@
             </div>
 
             <!-- CARD 2 -->
-            <div class="relative overflow-hidden cursor-pointer group bg-green-50 rounded-2xl p-6 text-center 
-              hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
-              onclick="ripple(event); openModalPengumuman();">
-              <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-200 flex items-center justify-center text-3xl group-hover:scale-110 transition">
-                🏢
-              </div>
-              <h4 class="font-semibold text-green-800">Profile PPID</h4>
+            <div id="profile-ppid"
+                class="relative overflow-hidden cursor-pointer group bg-green-50 rounded-2xl p-6 text-center 
+                        hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+                onclick="ripple(event); openModalPengumuman();">
+
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-200 flex items-center justify-center text-3xl group-hover:scale-110 transition">
+                    🏢
+                </div>
+
+                <h4 class="font-semibold text-green-800">
+                    Profile PPID
+                </h4>
             </div>
 
             <!-- CARD 3 -->

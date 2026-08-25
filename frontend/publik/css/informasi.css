@@ -131,7 +131,6 @@ body {
 }
 
 #heroSection {
-  height: 400px !important;
   transition: margin-top 0.3s ease;
 }
 
@@ -139,11 +138,6 @@ body {
   margin-top: 0;
 }
 
-@media (min-width: 768px) {
-  #heroSection {
-    height: 500px !important;
-  }
-}
 
 /* Animasi flip */
 @keyframes flipLetter {
@@ -184,7 +178,6 @@ body {
 }
 
 #heroSection {
-  height: 400px !important;
   transition: margin-top 0.3s ease;
 }
 
@@ -192,11 +185,6 @@ body {
   margin-top: 0;
 }
 
-@media (min-width: 768px) {
-  #heroSection {
-    height: 500px !important;
-  }
-}
 
 /* Animasi flip */
 @keyframes flipLetter {
