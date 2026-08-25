@@ -7,7 +7,6 @@ function getAdminToken() {
   return localStorage.getItem("token");
 }
 
-
 // ==================================================
 // 2. ELEMENT TABLE
 // ==================================================
@@ -18,14 +17,12 @@ const tableInfo = document.getElementById("tableInfo");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 
-
 // ==================================================
 // 3. DATA
 // ==================================================
 let informasiData = [];
 let currentPage = 1;
 let rowsPerPage = parseInt(entriesSelect.value);
-
 
 // ==================================================
 // 4. GET DATA INFORMASI
@@ -43,9 +40,7 @@ async function loadInformasi() {
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        result.message || "Gagal mengambil data informasi."
-      );
+      throw new Error(result.message || "Gagal mengambil data informasi.");
     }
 
     informasiData = result.data || [];
@@ -53,7 +48,6 @@ async function loadInformasi() {
     currentPage = 1;
 
     renderTable();
-
   } catch (error) {
     console.error("Error load informasi:", error);
 
@@ -70,11 +64,10 @@ async function loadInformasi() {
     Swal.fire({
       icon: "error",
       title: "Gagal Mengambil Data",
-      text: error.message
+      text: error.message,
     });
   }
 }
-
 
 // ==================================================
 // 5. POTONG TEXT
@@ -93,14 +86,13 @@ function potongText(text, maxLength) {
   return hasil.substring(0, maxLength) + "...";
 }
 
-
 // ==================================================
 // 6. FILTER DATA
 // ==================================================
 function getFilteredData() {
   const keyword = searchInput.value.trim().toLowerCase();
 
-  return informasiData.filter(item => {
+  return informasiData.filter((item) => {
     const judul = String(item.judul || "").toLowerCase();
     const isi = String(item.isi || "").toLowerCase();
     const penjelasan = String(item.penjelasan || "").toLowerCase();
@@ -113,7 +105,6 @@ function getFilteredData() {
   });
 }
 
-
 // ==================================================
 // 7. RENDER TABLE
 // ==================================================
@@ -122,10 +113,7 @@ function renderTable() {
 
   const total = filteredData.length;
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(total / rowsPerPage)
-  );
+  const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
 
   if (currentPage > totalPages) {
     currentPage = totalPages;
@@ -222,8 +210,7 @@ function renderTable() {
   if (total === 0) {
     tableInfo.innerText = "Showing 0 to 0 of 0 entries";
   } else {
-    tableInfo.innerText =
-      `Showing ${start + 1} to ${Math.min(end, total)} of ${total} entries`;
+    tableInfo.innerText = `Showing ${start + 1} to ${Math.min(end, total)} of ${total} entries`;
   }
 
   prevBtn.disabled = currentPage === 1;
@@ -231,7 +218,6 @@ function renderTable() {
 
   pasangEventAction();
 }
-
 
 // ==================================================
 // 8. SEARCH
@@ -241,7 +227,6 @@ searchInput.addEventListener("input", () => {
 
   renderTable();
 });
-
 
 // ==================================================
 // 9. SHOW ENTRIES
@@ -254,7 +239,6 @@ entriesSelect.addEventListener("change", () => {
   renderTable();
 });
 
-
 // ==================================================
 // 10. PREVIOUS
 // ==================================================
@@ -265,7 +249,6 @@ prevBtn.addEventListener("click", () => {
     renderTable();
   }
 });
-
 
 // ==================================================
 // 11. NEXT
@@ -280,7 +263,6 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-
 // ==================================================
 // 12. MODAL FUNCTION
 // ==================================================
@@ -289,45 +271,28 @@ function openModal(modal, box) {
 
   modal.classList.add("opacity-0");
 
-  box.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
+  box.classList.add("scale-90", "opacity-0");
 
   requestAnimationFrame(() => {
     modal.classList.remove("opacity-0");
 
-    box.classList.remove(
-      "scale-90",
-      "opacity-0"
-    );
+    box.classList.remove("scale-90", "opacity-0");
 
-    box.classList.add(
-      "scale-100",
-      "opacity-100"
-    );
+    box.classList.add("scale-100", "opacity-100");
   });
 }
-
 
 function closeModalFunc(modal, box) {
   modal.classList.add("opacity-0");
 
-  box.classList.remove(
-    "scale-100",
-    "opacity-100"
-  );
+  box.classList.remove("scale-100", "opacity-100");
 
-  box.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
+  box.classList.add("scale-90", "opacity-0");
 
   setTimeout(() => {
     modal.classList.add("hidden");
   }, 300);
 }
-
 
 // ==================================================
 // 13. MODAL TAMBAH
@@ -341,26 +306,16 @@ const penjelasanTambah = document.getElementById("penjelasanTambah");
 const gambarTambah = document.getElementById("gambarTambah");
 
 document.getElementById("btnTambah").onclick = () => {
-  openModal(
-    modalTambah,
-    modalTambahBox
-  );
+  openModal(modalTambah, modalTambahBox);
 };
 
 document.getElementById("closeTambah").onclick = () => {
-  closeModalFunc(
-    modalTambah,
-    modalTambahBox
-  );
+  closeModalFunc(modalTambah, modalTambahBox);
 };
 
 document.getElementById("btnCloseTambah").onclick = () => {
-  closeModalFunc(
-    modalTambah,
-    modalTambahBox
-  );
+  closeModalFunc(modalTambah, modalTambahBox);
 };
-
 
 // ==================================================
 // 14. MODAL VIEW
@@ -374,19 +329,12 @@ const viewPenjelasan = document.getElementById("viewPenjelasan");
 const viewGambar = document.getElementById("viewGambar");
 
 document.getElementById("closeModal").onclick = () => {
-  closeModalFunc(
-    modalView,
-    modalBox
-  );
+  closeModalFunc(modalView, modalBox);
 };
 
 document.getElementById("btnClose2").onclick = () => {
-  closeModalFunc(
-    modalView,
-    modalBox
-  );
+  closeModalFunc(modalView, modalBox);
 };
-
 
 // ==================================================
 // 15. MODAL EDIT
@@ -403,19 +351,12 @@ const previewGambarEdit = document.getElementById("previewGambarEdit");
 let idInformasiEdit = null;
 
 document.getElementById("closeEdit").onclick = () => {
-  closeModalFunc(
-    modalEdit,
-    modalEditBox
-  );
+  closeModalFunc(modalEdit, modalEditBox);
 };
 
 document.getElementById("btnCloseEdit").onclick = () => {
-  closeModalFunc(
-    modalEdit,
-    modalEditBox
-  );
+  closeModalFunc(modalEdit, modalEditBox);
 };
-
 
 // ==================================================
 // 16. PREVIEW GAMBAR EDIT
@@ -427,16 +368,13 @@ gambarEdit.addEventListener("change", () => {
     return;
   }
 
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png"
-  ];
+  const allowedTypes = ["image/jpeg", "image/png"];
 
   if (!allowedTypes.includes(file.type)) {
     Swal.fire({
       icon: "warning",
       title: "Format Gambar Tidak Valid",
-      text: "Gunakan JPG, JPEG, atau PNG."
+      text: "Gunakan JPG, JPEG, atau PNG.",
     });
 
     gambarEdit.value = "";
@@ -444,14 +382,13 @@ gambarEdit.addEventListener("change", () => {
     return;
   }
 
-  const maksimalUkuran =
-    2 * 1024 * 1024;
+  const maksimalUkuran = 2 * 1024 * 1024;
 
   if (file.size > maksimalUkuran) {
     Swal.fire({
       icon: "warning",
       title: "Ukuran Gambar Terlalu Besar",
-      text: "Ukuran gambar maksimal 2MB."
+      text: "Ukuran gambar maksimal 2MB.",
     });
 
     gambarEdit.value = "";
@@ -461,30 +398,25 @@ gambarEdit.addEventListener("change", () => {
 
   const reader = new FileReader();
 
-  reader.onload = event => {
-    previewGambarEdit.src =
-      event.target.result;
+  reader.onload = (event) => {
+    previewGambarEdit.src = event.target.result;
 
-    previewGambarEdit.classList.remove(
-      "hidden"
-    );
+    previewGambarEdit.classList.remove("hidden");
   };
 
   reader.readAsDataURL(file);
 });
 
-
 // ==================================================
 // 17. EVENT ACTION TABLE
 // ==================================================
 function pasangEventAction() {
-
   // ================= VIEW =================
-  document.querySelectorAll(".btnView").forEach(btn => {
+  document.querySelectorAll(".btnView").forEach((btn) => {
     btn.onclick = () => {
       const id = btn.dataset.id;
 
-      const item = informasiData.find(data => {
+      const item = informasiData.find((data) => {
         return String(data.id) === String(id);
       });
 
@@ -492,53 +424,40 @@ function pasangEventAction() {
         Swal.fire({
           icon: "error",
           title: "Data Tidak Ditemukan",
-          text: "Data informasi tidak ditemukan."
+          text: "Data informasi tidak ditemukan.",
         });
 
         return;
       }
 
-      viewJudul.textContent =
-        item.judul || "-";
+      viewJudul.textContent = item.judul || "-";
 
-      viewIsi.textContent =
-        item.isi || "-";
+      viewIsi.textContent = item.isi || "-";
 
-      viewPenjelasan.textContent =
-        item.penjelasan || "-";
+      viewPenjelasan.textContent = item.penjelasan || "-";
 
       if (item.gambar_url) {
-        viewGambar.src =
-          item.gambar_url;
+        viewGambar.src = item.gambar_url;
 
-        viewGambar.alt =
-          item.judul || "Gambar informasi";
+        viewGambar.alt = item.judul || "Gambar informasi";
 
-        viewGambar.classList.remove(
-          "hidden"
-        );
+        viewGambar.classList.remove("hidden");
       } else {
         viewGambar.src = "";
 
-        viewGambar.classList.add(
-          "hidden"
-        );
+        viewGambar.classList.add("hidden");
       }
 
-      openModal(
-        modalView,
-        modalBox
-      );
+      openModal(modalView, modalBox);
     };
   });
 
-
   // ================= EDIT =================
-  document.querySelectorAll(".btnEdit").forEach(btn => {
+  document.querySelectorAll(".btnEdit").forEach((btn) => {
     btn.onclick = () => {
       const id = btn.dataset.id;
 
-      const item = informasiData.find(data => {
+      const item = informasiData.find((data) => {
         return String(data.id) === String(id);
       });
 
@@ -546,55 +465,42 @@ function pasangEventAction() {
         Swal.fire({
           icon: "error",
           title: "Data Tidak Ditemukan",
-          text: "Data informasi tidak ditemukan."
+          text: "Data informasi tidak ditemukan.",
         });
 
         return;
       }
 
-      idInformasiEdit =
-        item.id;
+      idInformasiEdit = item.id;
 
-      judulEdit.value =
-        item.judul || "";
+      judulEdit.value = item.judul || "";
 
-      isiEdit.value =
-        item.isi || "";
+      isiEdit.value = item.isi || "";
 
-      penjelasanEdit.value =
-        item.penjelasan || "";
+      penjelasanEdit.value = item.penjelasan || "";
 
       gambarEdit.value = "";
 
       if (item.gambar_url) {
-        previewGambarEdit.src =
-          item.gambar_url;
+        previewGambarEdit.src = item.gambar_url;
 
-        previewGambarEdit.classList.remove(
-          "hidden"
-        );
+        previewGambarEdit.classList.remove("hidden");
       } else {
         previewGambarEdit.src = "";
 
-        previewGambarEdit.classList.add(
-          "hidden"
-        );
+        previewGambarEdit.classList.add("hidden");
       }
 
-      openModal(
-        modalEdit,
-        modalEditBox
-      );
+      openModal(modalEdit, modalEditBox);
     };
   });
 
-
   // ================= DELETE =================
-  document.querySelectorAll(".btnDelete").forEach(btn => {
+  document.querySelectorAll(".btnDelete").forEach((btn) => {
     btn.onclick = async () => {
       const id = btn.dataset.id;
 
-      const item = informasiData.find(data => {
+      const item = informasiData.find((data) => {
         return String(data.id) === String(id);
       });
 
@@ -602,29 +508,27 @@ function pasangEventAction() {
         Swal.fire({
           icon: "error",
           title: "Data Tidak Ditemukan",
-          text: "Data informasi tidak ditemukan."
+          text: "Data informasi tidak ditemukan.",
         });
 
         return;
       }
 
-      const token =
-        getAdminToken();
+      const token = getAdminToken();
 
       if (!token) {
         Swal.fire({
           icon: "warning",
           title: "Token Admin Tidak Ditemukan",
-          text: "Silakan login sebagai admin terlebih dahulu."
+          text: "Silakan login sebagai admin terlebih dahulu.",
         });
 
         return;
       }
 
-      const konfirmasi =
-        await Swal.fire({
-          title: "Yakin Hapus?",
-          html: `
+      const konfirmasi = await Swal.fire({
+        title: "Yakin Hapus?",
+        html: `
             <div style="text-align:center;">
               <p>Data informasi berikut akan dihapus:</p>
 
@@ -637,13 +541,13 @@ function pasangEventAction() {
               </p>
             </div>
           `,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Ya, Hapus",
-          cancelButtonText: "Batal",
-          confirmButtonColor: "#dc2626",
-          cancelButtonColor: "#6b7280"
-        });
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, Hapus",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#dc2626",
+        cancelButtonColor: "#6b7280",
+      });
 
       if (!konfirmasi.isConfirmed) {
         return;
@@ -658,29 +562,21 @@ function pasangEventAction() {
 
           didOpen: () => {
             Swal.showLoading();
-          }
+          },
         });
 
-        const response =
-          await fetch(
-            `${API_URL}/${id}`,
-            {
-              method: "DELETE",
+        const response = await fetch(`${API_URL}/${id}`, {
+          method: "DELETE",
 
-              headers: {
-                "Authorization": `Bearer ${token}`
-              }
-            }
-          );
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        const result =
-          await response.json();
+        const result = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            result.message ||
-            "Gagal menghapus informasi."
-          );
+          throw new Error(result.message || "Gagal menghapus informasi.");
         }
 
         await Swal.fire({
@@ -688,73 +584,51 @@ function pasangEventAction() {
           text: "Data informasi berhasil dihapus.",
           icon: "success",
           timer: 1500,
-          showConfirmButton: false
+          showConfirmButton: false,
         });
 
         await loadInformasi();
-
       } catch (error) {
-        console.error(
-          "Error delete informasi:",
-          error
-        );
+        console.error("Error delete informasi:", error);
 
         Swal.fire({
           icon: "error",
           title: "Gagal Menghapus",
-          text: error.message
+          text: error.message,
         });
       }
     };
   });
 }
 
-
 // ==================================================
 // 18. CLICK OUTSIDE MODAL
 // ==================================================
 function enableOutsideClick(modal, box) {
-  modal.addEventListener("click", event => {
+  modal.addEventListener("click", (event) => {
     if (event.target === modal) {
-      closeModalFunc(
-        modal,
-        box
-      );
+      closeModalFunc(modal, box);
     }
   });
 }
 
-enableOutsideClick(
-  modalTambah,
-  modalTambahBox
-);
+enableOutsideClick(modalTambah, modalTambahBox);
 
-enableOutsideClick(
-  modalView,
-  modalBox
-);
+enableOutsideClick(modalView, modalBox);
 
-enableOutsideClick(
-  modalEdit,
-  modalEditBox
-);
-
+enableOutsideClick(modalEdit, modalEditBox);
 
 // ==================================================
 // 19. SIMPAN TAMBAH INFORMASI
 // ==================================================
 document.getElementById("btnSimpanTambah").onclick = async () => {
-  const judul =
-    judulTambah.value.trim();
+  const judul = judulTambah.value.trim();
 
-  const isi =
-    isiTambah.value.trim();
+  const isi = isiTambah.value.trim();
 
-  const penjelasan =
-    penjelasanTambah.value.trim();
+  const penjelasan = penjelasanTambah.value.trim();
 
-  const gambar =
-    gambarTambah.files[0];
+  const gambar = gambarTambah.files[0];
 
   const kosong = [];
 
@@ -782,64 +656,56 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
           <p>Data berikut masih kosong:</p>
 
           <ul style="list-style-position:inside;">
-            ${kosong
-              .map(item => `<li>${item}</li>`)
-              .join("")}
+            ${kosong.map((item) => `<li>${item}</li>`).join("")}
           </ul>
         </div>
       `,
       icon: "warning",
-      confirmButtonColor: "#f59e0b"
+      confirmButtonColor: "#f59e0b",
     });
 
     return;
   }
 
-  const maksimalUkuran =
-    2 * 1024 * 1024;
+  const maksimalUkuran = 2 * 1024 * 1024;
 
   if (gambar.size > maksimalUkuran) {
     Swal.fire({
       icon: "warning",
       title: "Ukuran Gambar Terlalu Besar",
-      text: "Ukuran gambar maksimal 2MB."
+      text: "Ukuran gambar maksimal 2MB.",
     });
 
     return;
   }
 
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png"
-  ];
+  const allowedTypes = ["image/jpeg", "image/png"];
 
   if (!allowedTypes.includes(gambar.type)) {
     Swal.fire({
       icon: "warning",
       title: "Format Gambar Tidak Valid",
-      text: "Gunakan JPG, JPEG, atau PNG."
+      text: "Gunakan JPG, JPEG, atau PNG.",
     });
 
     return;
   }
 
-  const token =
-    getAdminToken();
+  const token = getAdminToken();
 
   if (!token) {
     Swal.fire({
       icon: "warning",
       title: "Token Admin Tidak Ditemukan",
-      text: "Silakan login sebagai admin terlebih dahulu."
+      text: "Silakan login sebagai admin terlebih dahulu.",
     });
 
     return;
   }
 
-  const konfirmasi =
-    await Swal.fire({
-      title: "Konfirmasi Data",
-      html: `
+  const konfirmasi = await Swal.fire({
+    title: "Konfirmasi Data",
+    html: `
         <div style="text-align:left;">
           <p><b>Judul:</b> ${judul}</p>
           <p><b>Isi:</b> ${isi}</p>
@@ -847,13 +713,13 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
           <p><b>Gambar:</b> ${gambar.name}</p>
         </div>
       `,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Simpan",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#3b82f6",
-      cancelButtonColor: "#6b7280"
-    });
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya, Simpan",
+    cancelButtonText: "Batal",
+    confirmButtonColor: "#3b82f6",
+    cancelButtonColor: "#6b7280",
+  });
 
   if (!konfirmasi.isConfirmed) {
     return;
@@ -868,54 +734,33 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
 
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
-    const formData =
-      new FormData();
+    const formData = new FormData();
 
-    formData.append(
-      "judul",
-      judul
-    );
+    formData.append("judul", judul);
 
-    formData.append(
-      "isi",
-      isi
-    );
+    formData.append("isi", isi);
 
-    formData.append(
-      "penjelasan",
-      penjelasan
-    );
+    formData.append("penjelasan", penjelasan);
 
-    formData.append(
-      "gambar",
-      gambar
-    );
+    formData.append("gambar", gambar);
 
-    const response =
-      await fetch(
-        API_URL,
-        {
-          method: "POST",
+    const response = await fetch(API_URL, {
+      method: "POST",
 
-          headers: {
-            "Authorization": `Bearer ${token}`
-          },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
 
-          body: formData
-        }
-      );
+      body: formData,
+    });
 
-    const result =
-      await response.json();
+    const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        result.message ||
-        "Gagal menambahkan informasi."
-      );
+      throw new Error(result.message || "Gagal menambahkan informasi.");
     }
 
     await Swal.fire({
@@ -923,7 +768,7 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
       text: "Informasi berhasil ditambahkan.",
       icon: "success",
       timer: 1500,
-      showConfirmButton: false
+      showConfirmButton: false,
     });
 
     judulTambah.value = "";
@@ -931,115 +776,93 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
     penjelasanTambah.value = "";
     gambarTambah.value = "";
 
-    closeModalFunc(
-      modalTambah,
-      modalTambahBox
-    );
+    closeModalFunc(modalTambah, modalTambahBox);
 
     await loadInformasi();
-
   } catch (error) {
-    console.error(
-      "Error tambah informasi:",
-      error
-    );
+    console.error("Error tambah informasi:", error);
 
     Swal.fire({
       icon: "error",
       title: "Gagal Menyimpan",
-      text: error.message
+      text: error.message,
     });
   }
 };
-
 
 // ==================================================
 // 20. SIMPAN EDIT INFORMASI
 // ==================================================
 document.getElementById("btnSimpanEdit").onclick = async () => {
-  const judul =
-    judulEdit.value.trim();
+  const judul = judulEdit.value.trim();
 
-  const isi =
-    isiEdit.value.trim();
+  const isi = isiEdit.value.trim();
 
-  const penjelasan =
-    penjelasanEdit.value.trim();
+  const penjelasan = penjelasanEdit.value.trim();
 
-  const gambar =
-    gambarEdit.files[0];
+  const gambar = gambarEdit.files[0];
 
   if (!idInformasiEdit) {
     Swal.fire({
       icon: "error",
       title: "Data Tidak Ditemukan",
-      text: "ID informasi tidak ditemukan."
+      text: "ID informasi tidak ditemukan.",
     });
 
     return;
   }
 
-  if (
-    !judul ||
-    !isi ||
-    !penjelasan
-  ) {
+  if (!judul || !isi || !penjelasan) {
     Swal.fire({
       icon: "warning",
       title: "Form Belum Lengkap",
-      text: "Judul, isi berita, dan penjelasan berita wajib diisi."
+      text: "Judul, isi berita, dan penjelasan berita wajib diisi.",
     });
 
     return;
   }
 
   if (gambar) {
-    const maksimalUkuran =
-      2 * 1024 * 1024;
+    const maksimalUkuran = 2 * 1024 * 1024;
 
     if (gambar.size > maksimalUkuran) {
       Swal.fire({
         icon: "warning",
         title: "Ukuran Gambar Terlalu Besar",
-        text: "Ukuran gambar maksimal 2MB."
+        text: "Ukuran gambar maksimal 2MB.",
       });
 
       return;
     }
 
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png"
-    ];
+    const allowedTypes = ["image/jpeg", "image/png"];
 
     if (!allowedTypes.includes(gambar.type)) {
       Swal.fire({
         icon: "warning",
         title: "Format Gambar Tidak Valid",
-        text: "Gunakan JPG, JPEG, atau PNG."
+        text: "Gunakan JPG, JPEG, atau PNG.",
       });
 
       return;
     }
   }
 
-  const token =
-    getAdminToken();
+  const token = getAdminToken();
 
   if (!token) {
     Swal.fire({
       icon: "warning",
       title: "Token Admin Tidak Ditemukan",
-      text: "Silakan login sebagai admin terlebih dahulu."
+      text: "Silakan login sebagai admin terlebih dahulu.",
     });
 
     return;
   }
 
-  const konfirmasi =
-    await Swal.fire({
-      title: "Konfirmasi Perubahan",
-      html: `
+  const konfirmasi = await Swal.fire({
+    title: "Konfirmasi Perubahan",
+    html: `
         <div style="text-align:left;">
           <p><b>Judul:</b> ${judul}</p>
           <p><b>Isi:</b> ${isi}</p>
@@ -1047,21 +870,17 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
 
           <p>
             <b>Gambar:</b>
-            ${
-              gambar
-                ? gambar.name
-                : "Tetap menggunakan gambar lama"
-            }
+            ${gambar ? gambar.name : "Tetap menggunakan gambar lama"}
           </p>
         </div>
       `,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Simpan",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#3b82f6",
-      cancelButtonColor: "#6b7280"
-    });
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya, Simpan",
+    cancelButtonText: "Batal",
+    confirmButtonColor: "#3b82f6",
+    cancelButtonColor: "#6b7280",
+  });
 
   if (!konfirmasi.isConfirmed) {
     return;
@@ -1076,56 +895,35 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
 
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
-    const formData =
-      new FormData();
+    const formData = new FormData();
 
-    formData.append(
-      "judul",
-      judul
-    );
+    formData.append("judul", judul);
 
-    formData.append(
-      "isi",
-      isi
-    );
+    formData.append("isi", isi);
 
-    formData.append(
-      "penjelasan",
-      penjelasan
-    );
+    formData.append("penjelasan", penjelasan);
 
     if (gambar) {
-      formData.append(
-        "gambar",
-        gambar
-      );
+      formData.append("gambar", gambar);
     }
 
-    const response =
-      await fetch(
-        `${API_URL}/${idInformasiEdit}`,
-        {
-          method: "PUT",
+    const response = await fetch(`${API_URL}/${idInformasiEdit}`, {
+      method: "PUT",
 
-          headers: {
-            "Authorization": `Bearer ${token}`
-          },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
 
-          body: formData
-        }
-      );
+      body: formData,
+    });
 
-    const result =
-      await response.json();
+    const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        result.message ||
-        "Gagal memperbarui informasi."
-      );
+      throw new Error(result.message || "Gagal memperbarui informasi.");
     }
 
     await Swal.fire({
@@ -1133,32 +931,24 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
       text: "Informasi berhasil diperbarui.",
       icon: "success",
       timer: 1500,
-      showConfirmButton: false
+      showConfirmButton: false,
     });
 
-    closeModalFunc(
-      modalEdit,
-      modalEditBox
-    );
+    closeModalFunc(modalEdit, modalEditBox);
 
     idInformasiEdit = null;
 
     await loadInformasi();
-
   } catch (error) {
-    console.error(
-      "Error edit informasi:",
-      error
-    );
+    console.error("Error edit informasi:", error);
 
     Swal.fire({
       icon: "error",
       title: "Gagal Memperbarui",
-      text: error.message
+      text: error.message,
     });
   }
 };
-
 
 // ==================================================
 // 21. LOAD DATA SAAT HALAMAN DIBUKA
