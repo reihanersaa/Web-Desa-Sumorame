@@ -51,6 +51,7 @@ const createCmsProfil = async (req, res) => {
     const {
       judul_hero,
       deskripsi_hero,
+      nama_kades, // 🚨 Ditambahkan di sini
       sambutan,
       visi,
       misi
@@ -59,10 +60,11 @@ const createCmsProfil = async (req, res) => {
     const admin_id = req.user.id;
 
     // ================= VALIDASI =================
-    if (!judul_hero || !deskripsi_hero || !sambutan || !visi || !misi) {
+    // 🚨 nama_kades ditambahkan di pengecekan ini
+    if (!judul_hero || !deskripsi_hero || !nama_kades || !sambutan || !visi || !misi) {
       return res.status(400).json({
         success: false,
-        message: "Judul hero, deskripsi hero, sambutan, visi, dan misi wajib diisi!"
+        message: "Semua field teks (termasuk nama kades) wajib diisi!"
       });
     }
 
@@ -136,7 +138,8 @@ const createCmsProfil = async (req, res) => {
           visi: visi.trim(),
           misi: misi.trim(),
           gambar_url: gambar_url,
-          foto_kades_url: foto_kades_url // 🚨 Kolom baru
+          foto_kades_url: foto_kades_url,
+          nama_kades: nama_kades.trim() // 🚨 Ditambahkan di sini
         }
       ])
       .select();
@@ -184,7 +187,9 @@ const updateCmsProfil = async (req, res) => {
     const { judul_hero, deskripsi_hero, nama_kades, sambutan, visi, misi } = req.body || {};
 
     if (!id) return res.status(400).json({ success: false, message: "ID tidak ditemukan." });
-    if (!judul_hero || !deskripsi_hero || !sambutan || !visi || !misi) {
+    
+    // 🚨 nama_kades ditambahkan di validasi ini
+    if (!judul_hero || !deskripsi_hero || !nama_kades || !sambutan || !visi || !misi) {
       return res.status(400).json({ success: false, message: "Semua field teks wajib diisi!" });
     }
 

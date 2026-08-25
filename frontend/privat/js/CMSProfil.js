@@ -36,28 +36,27 @@ async function loadCmsProfil() {
     const response = await fetch(API_URL);
     const result = await response.json();
 
-    wadahSlideDynamic.innerHTML = ""; // Bersihkan loading
+    wadahSlideDynamic.innerHTML = ""; 
 
     if (result.success && result.data.length > 0) {
       let data = result.data;
       
-      // 🚨 KUNCI PERBAIKAN KEKUATAN FRONTEND: 
-      // Memaksa browser menyusun urutan dari data yang paling pertama dibuat hingga yang terbaru
       data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
       
+      // 🚨 MENGISI INPUT NAMA KADES DARI DATABASE
+      const inputNamaKades = document.getElementById("namaKades");
+      if(inputNamaKades) inputNamaKades.value = data[0].nama_kades || "";
+      
       document.getElementById("sambutan").value = data[0].sambutan || "";
-      document.getElementById("namaKades").value = data[0].nama_kades || "";
       document.getElementById("visi").value = data[0].visi || "";
       document.getElementById("misi").value = data[0].misi || "";
       
       if (data[0].foto_kades_url) previewFotoKades.src = data[0].foto_kades_url;
 
-      // Cetak kartu untuk setiap slide yang tersimpan sesuai urutan yang sudah diperbaiki
       data.forEach(item => {
         buatKartuSlide(item);
       });
     } else {
-      // Jika database kosong, sediakan 1 kartu kosong
       buatKartuSlide(null);
     }
   } catch (error) {
@@ -79,7 +78,6 @@ function buatKartuSlide(data) {
   card.setAttribute("data-id", idDb);
 
   card.innerHTML = `
-    <!-- Tombol Hapus Slide -->
     <button type="button" class="btn-hapus-slide absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-lg flex items-center justify-center transition active:scale-90" title="Hapus Slide">
       <span class="material-symbols-outlined text-sm">delete</span>
     </button>
@@ -87,7 +85,6 @@ function buatKartuSlide(data) {
     <h4 class="judul-nomor-slide font-bold text-gray-700 mb-3 border-b pb-2">Slide #</h4>
     
     <div class="flex flex-col md:flex-row gap-5">
-      <!-- Upload Gambar Slider -->
       <div class="w-full md:w-1/3">
         <div class="w-full h-40 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center overflow-hidden mb-3">
           <img class="preview-img w-full h-full object-cover" src="${imgUrl}">
@@ -96,7 +93,6 @@ function buatKartuSlide(data) {
         <p class="text-[10px] text-gray-400 mt-1">*Abaikan jika tidak ingin mengubah gambar.</p>
       </div>
 
-      <!-- Input Teks -->
       <div class="w-full md:w-2/3 space-y-3">
         <div>
           <label class="block text-xs font-semibold text-gray-600 mb-1">Judul Hero</label>
@@ -110,7 +106,6 @@ function buatKartuSlide(data) {
     </div>
   `;
 
-  // EVENT: Preview Gambar Lokal (Slider)
   const fileInput = card.querySelector(".input-file");
   const previewImg = card.querySelector(".preview-img");
   fileInput.addEventListener("change", function(e) {
@@ -127,7 +122,6 @@ function buatKartuSlide(data) {
     }
   });
 
-  // EVENT: Hapus Kartu
   const btnHapus = card.querySelector(".btn-hapus-slide");
   btnHapus.addEventListener("click", async () => {
     if (idDb) {
@@ -202,11 +196,18 @@ formCmsProfil.addEventListener("submit", async (e) => {
     return Swal.fire("Peringatan", "Anda harus menyisakan minimal 1 Slider!", "warning");
   }
 
+  // 🚨 PENANGKAP DATA: Pastikan ID elemen di HTML sesuai dengan ini
+  const elementNamaKades = document.getElementById("namaKades");
+  const valNamaKades = elementNamaKades ? elementNamaKades.value.trim() : "";
   const valSambutan = document.getElementById("sambutan").value.trim();
-  const valNamaKades = document.getElementById("namaKades").value.trim();
   const valVisi = document.getElementById("visi").value.trim();
   const valMisi = document.getElementById("misi").value.trim();
   const fileFotoKades = inputFotoKadesAsli.files[0];
+
+  // Cegat jika Nama Kades kosong sebelum dikirim ke server (mencegah error 400)
+  if (!valNamaKades) {
+    return Swal.fire("Peringatan", "Kolom Nama Kepala Desa wajib diisi!", "warning");
+  }
 
   Swal.fire({ title: "Menyimpan Data...", html: "Mohon tunggu sebentar...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
@@ -228,8 +229,8 @@ formCmsProfil.addEventListener("submit", async (e) => {
     const formData = new FormData();
     formData.append("judul_hero", judul);
     formData.append("deskripsi_hero", desk);
+    formData.append("nama_kades", valNamaKades); // 🚨 DATA DIKIRIM KE BACKEND
     formData.append("sambutan", valSambutan);
-    formData.append("nama_kades", valNamaKades);
     formData.append("visi", valVisi);
     formData.append("misi", valMisi);
     if (file) formData.append("gambar", file);
@@ -240,7 +241,12 @@ formCmsProfil.addEventListener("submit", async (e) => {
 
     try {
       const res = await fetch(url, { method, headers: { "Authorization": `Bearer ${token}` }, body: formData });
-      if (!res.ok) throw new Error(`Gagal menyimpan slide #${i+1}`);
+      
+      // Tangkap pesan error spesifik dari backend jika gagal
+      if (!res.ok) {
+          const resData = await res.json();
+          throw new Error(resData.message || `Gagal menyimpan slide #${i+1}`);
+      }
       successCount++;
     } catch (err) {
       errors.push(err.message);

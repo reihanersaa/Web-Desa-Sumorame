@@ -35,16 +35,10 @@ const heroSection = document.getElementById("heroSection");
 
 window.addEventListener("scroll", function () {
   if (window.scrollY <= 0) {
-    // Navbar hilang
     mainHeader.classList.add("header-hidden");
-
-    // Hero langsung naik menutup celah
     heroSection.classList.add("hero-top");
   } else {
-    // Navbar muncul
     mainHeader.classList.remove("header-hidden");
-
-    // Hero kembali ke posisi normal
     heroSection.classList.remove("hero-top");
   }
 });
@@ -52,17 +46,6 @@ window.addEventListener("scroll", function () {
 // =====================================================
 // HELPER: Reveal-on-scroll pakai IntersectionObserver
 // =====================================================
-// Kenapa diganti dari `window.addEventListener("scroll", ...)`:
-// - listener scroll lama memanggil getBoundingClientRect() di SETIAP
-//   event scroll (bisa puluhan kali/detik) -> memaksa browser
-//   menghitung ulang layout berkali-kali (layout thrashing) -> berat.
-// - beberapa section (footer, sambutan, berita, visimisi, kontak)
-//   tidak punya flag "sudah dianimasikan", jadi selama section itu
-//   masih kelihatan di layar, setiap event scroll membuat setTimeout
-//   BARU untuk semua item di dalamnya -> ribuan timer menumpuk saat
-//   scroll -> inilah penyebab utama scroll terasa patah-patah.
-// IntersectionObserver hanya memberi tahu browser sekali saat elemen
-// benar-benar masuk/keluar viewport, tanpa perlu polling tiap scroll.
 function revealOnScroll(
   target,
   items,
@@ -84,7 +67,7 @@ function revealOnScroll(
           }, i * staggerMs);
         });
 
-        obs.unobserve(target); // hanya jalan sekali
+        obs.unobserve(target); 
       });
     },
     { threshold: 0.15, rootMargin: "0px 0px -100px 0px" },
@@ -138,6 +121,7 @@ window.addEventListener("load", () => {
 // === Animasi Statistik Desa (teks huruf per huruf) ===
 document.addEventListener("DOMContentLoaded", function () {
   const element = document.getElementById("teks-animasi");
+  if(!element) return;
   const text = element.innerText.trim();
   element.innerHTML = "";
 
@@ -161,31 +145,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // === Animasi Berita Terkini ===
 const berita = document.getElementById("berita");
-const beritaItems = berita.querySelectorAll(".berita-item");
-
-revealOnScroll(
-  berita,
-  beritaItems,
-  [
-    "opacity-0",
-    "-translate-y-10",
-    "translate-y-10",
-    "-translate-x-16",
-    "translate-x-16",
-  ],
-  150,
-);
+if (berita) {
+    const beritaItems = berita.querySelectorAll(".berita-item");
+    revealOnScroll(
+      berita,
+      beritaItems,
+      [
+        "opacity-0",
+        "-translate-y-10",
+        "translate-y-10",
+        "-translate-x-16",
+        "translate-x-16",
+      ],
+      150,
+    );
+}
 
 // === Animasi Visi Dan Misi ===
 const visimisi = document.getElementById("visimisi");
-const visiItems = visimisi.querySelectorAll(".visi-item");
-
-revealOnScroll(
-  visimisi,
-  visiItems,
-  ["opacity-0", "-translate-x-16", "translate-x-16"],
-  200,
-);
+if (visimisi) {
+    const visiItems = visimisi.querySelectorAll(".visi-item");
+    revealOnScroll(
+      visimisi,
+      visiItems,
+      ["opacity-0", "-translate-x-16", "translate-x-16"],
+      200,
+    );
+}
 
 // === Produk Unggulan pilihan CMS (maksimal 5) ===
 const produk = document.getElementById("produk");
@@ -213,7 +199,7 @@ async function muatProdukUnggulanBeranda() {
     produkUnggulanBeranda.innerHTML = items.map((item) => {
       const nomor = String(item.kontak_penjual || "").replace(/\D/g, "").replace(/^0/, "62");
       const pesan = encodeURIComponent(`Halo, saya tertarik dengan ${item.nama_produk}`);
-      return `<article class="produk-item produk-dynamic group w-full bg-white rounded-md overflow-hidden shadow-lg">
+      return `<article class="produk-item produk-dynamic group w-full bg-white rounded-md overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700">
         <div class="overflow-hidden">
           <img src="${escapeProdukHTML(item.gambar)}" alt="${escapeProdukHTML(item.nama_produk)}" class="w-full h-full object-cover">
         </div>
@@ -229,7 +215,7 @@ async function muatProdukUnggulanBeranda() {
     }).join("");
 
     const cards = produkUnggulanBeranda.querySelectorAll(".produk-item");
-    revealOnScroll(produk, cards, [], 120, (card) => card.classList.add("show"));
+    revealOnScroll(produk, cards, ["opacity-0", "translate-y-16"], 120, (card) => card.classList.add("show"));
   } catch (error) {
     console.error("Gagal memuat produk unggulan beranda:", error.message);
     produkUnggulanBeranda.innerHTML = '<p class="col-span-full text-center text-red-600">Produk unggulan belum dapat dimuat.</p>';
@@ -296,17 +282,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cards.forEach((card, i) => {
     observer.observe(card);
-    card.style.transitionDelay = `${i * 0.15}s`; // ini yang bikin urut
+    card.style.transitionDelay = `${i * 0.15}s`; 
   });
 });
 
+// === MODAL ===
 const modal = document.getElementById("myModal");
 const modalBox = document.getElementById("modalBox");
 
-// OPEN
 function openModal() {
+  if(!modal || !modalBox) return;
   modal.classList.remove("hidden");
-
   modalBox.classList.add("modal-enter");
   setTimeout(() => {
     modalBox.classList.add("modal-enter-active");
@@ -314,10 +300,9 @@ function openModal() {
   }, 10);
 }
 
-// CLOSE
 function closeModal() {
+  if(!modal || !modalBox) return;
   modalBox.classList.add("modal-exit-active");
-
   setTimeout(() => {
     modal.classList.add("hidden");
     modalBox.classList.remove("modal-exit-active");
@@ -330,161 +315,115 @@ window.addEventListener("load", () => {
   }, 1000);
 });
 
-modal.addEventListener("click", (e) => {
-  // kalau klik di background (bukan isi modal)
-  if (e.target === modal) {
-    closeModal();
-  }
-});
+if(modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+}
 
 // === HERO SLIDER ===
 const slider = document.getElementById("slider");
-const slides = document.querySelectorAll("#slider > div");
 
 let index = 0;
-let total = slides.length;
+let total = 0;
+let autoSlide;
 
-// fungsi geser
 function showSlide(i) {
+  if(total === 0) return;
   index = (i + total) % total;
   slider.style.transform = `translateX(-${index * 100}%)`;
 }
 
-// tombol manual
-document.getElementById("next").onclick = () => showSlide(index + 1);
-document.getElementById("prev").onclick = () => showSlide(index - 1);
+// Pasang event navigasi jika slider dan tombol tersedia
+const nextBtn = document.getElementById("next");
+const prevBtn = document.getElementById("prev");
 
-// AUTO SLIDE
-let autoSlide = setInterval(() => {
-  showSlide(index + 1);
-}, 4000);
+if (slider && nextBtn && prevBtn) {
+    nextBtn.onclick = () => showSlide(index + 1);
+    prevBtn.onclick = () => showSlide(index - 1);
 
-// STOP kalau hover (desktop)
-slider.addEventListener("mouseenter", () => clearInterval(autoSlide));
-slider.addEventListener("mouseleave", () => {
-  autoSlide = setInterval(() => showSlide(index + 1), 4000);
-});
-
-// SWIPE MOBILE
-let startX = 0;
-
-slider.addEventListener(
-  "touchstart",
-  (e) => {
-    startX = e.touches[0].clientX;
-  },
-  { passive: true },
-);
-
-slider.addEventListener(
-  "touchend",
-  (e) => {
-    let endX = e.changedTouches[0].clientX;
-
-    if (startX - endX > 50) {
+    autoSlide = setInterval(() => {
       showSlide(index + 1);
-    } else if (endX - startX > 50) {
-      showSlide(index - 1);
-    }
-  },
-  { passive: true },
-);
+    }, 4000);
+
+    slider.addEventListener("mouseenter", () => clearInterval(autoSlide));
+    slider.addEventListener("mouseleave", () => {
+      autoSlide = setInterval(() => showSlide(index + 1), 4000);
+    });
+
+    let startX = 0;
+    slider.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener("touchend", (e) => {
+        let endX = e.changedTouches[0].clientX;
+        if (startX - endX > 50) showSlide(index + 1);
+        else if (endX - startX > 50) showSlide(index - 1);
+      },
+      { passive: true },
+    );
+}
 
 // === CONTROL KEYBOARD ===
 document.addEventListener("keydown", (e) => {
+  if(!slider || total === 0) return;
   const tag = document.activeElement.tagName.toLowerCase();
-  if (
-    tag === "input" ||
-    tag === "textarea" ||
-    tag === "select" ||
-    document.activeElement.isContentEditable
-  ) return;
+  if (tag === "input" || tag === "textarea" || tag === "select" || document.activeElement.isContentEditable) return;
 
-  if (e.key === "ArrowRight") {
+  if (e.key === "ArrowRight" || e.key === "End") {
     e.preventDefault();
     showSlide(index + 1);
   }
-
-  if (e.key === "ArrowLeft") {
+  if (e.key === "ArrowLeft" || e.key === "Home") {
     e.preventDefault();
-    showSlide(index - 1);
-  }
-
-  if (e.key === "End") {
-    e.preventDefault(); // ⬅️ ini penting
-    showSlide(index + 1);
-  }
-
-  if (e.key === "Home") {
-    e.preventDefault(); // ⬅️ ini penting
     showSlide(index - 1);
   }
 });
 
 // === Animasi Hover Tombol Selengkapnya ===
 const btnProduk = document.getElementById("btnProduk");
-
-btnProduk.addEventListener("mouseenter", () => {
-  btnProduk.classList.add("pulse-button");
-});
-
-btnProduk.addEventListener("mouseleave", () => {
-  btnProduk.classList.remove("pulse-button");
-});
+if (btnProduk) {
+    btnProduk.addEventListener("mouseenter", () => btnProduk.classList.add("pulse-button"));
+    btnProduk.addEventListener("mouseleave", () => btnProduk.classList.remove("pulse-button"));
+}
 
 // ======================
 // SCROLL TO TOP
 // ======================
-
 const scrollTopBtn = document.getElementById("scrollTopBtn");
+if (scrollTopBtn) {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) scrollTopBtn.classList.add("show");
+      else scrollTopBtn.classList.remove("show");
+    });
 
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 300) {
-    scrollTopBtn.classList.add("show");
-  } else {
-    scrollTopBtn.classList.remove("show");
-  }
-});
-
-scrollTopBtn.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-});
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+}
 
 // =======================
-// CARD STATISTIK
+// CARD STATISTIK (API)
 // ======================
-
 const statCards = document.querySelectorAll(".stat-card");
+const statistik = document.getElementById("statistik");
 
 function animateCounter(counter) {
-  const target = parseInt(counter.dataset.target);
+  const target = parseInt(counter.dataset.target) || 0;
   let current = 0;
-
-  const increment = Math.ceil(target / 180);
+  const increment = Math.ceil(target / 180) || 1;
 
   function update() {
     current += increment;
-
-    if (current >= target) {
-      current = target;
-    }
-
+    if (current >= target) current = target;
     counter.textContent = current.toLocaleString("id-ID");
-
-    if (current < target) {
-      requestAnimationFrame(update);
-    }
+    if (current < target) requestAnimationFrame(update);
   }
-
   update();
 }
 
-const statistik = document.getElementById("statistik");
-
 async function loadStatistikPublik() {
+  if(!statistik) return;
   try {
     const response = await fetch(`${INDEX_API_BASE_URL}/statistik/publik`);
     const result = await response.json();
@@ -509,47 +448,32 @@ async function loadStatistikPublik() {
   }
 }
 
-revealOnScroll(
-  statistik,
-  statCards,
-  ["opacity-0", "translate-y-10"],
-  200,
-  (card) => {
-    card
-      .querySelectorAll(".counter")
-      .forEach((counter) => animateCounter(counter));
-  },
-);
-
-loadStatistikPublik();
+if(statistik) {
+    revealOnScroll(
+      statistik,
+      statCards,
+      ["opacity-0", "translate-y-10"],
+      200,
+      (card) => {
+        card.querySelectorAll(".counter").forEach((counter) => animateCounter(counter));
+      },
+    );
+    loadStatistikPublik();
+}
 
 // =====================================================
-// PARALLAX BACKGROUND (JELAJAH + STATISTIK)
+// PARALLAX BACKGROUND
 // =====================================================
-// Prinsip performa:
-// 1. Gerakkan background pakai `transform` (translate3d), BUKAN
-//    `background-position`/`background-attachment: fixed` -> transform
-//    di-composite GPU, tidak memicu repaint/layout.
-// 2. Listener scroll hanya AKTIF selagi elemen parallax terlihat di
-//    layar (dikontrol via IntersectionObserver), bukan selalu nyala.
-// 3. Perhitungan posisi dibungkus requestAnimationFrame supaya
-//    maksimal 1x update per frame, tidak numpuk seperti masalah lama.
 (function initParallax() {
   const parallaxEls = document.querySelectorAll(".parallax-bg");
   if (!parallaxEls.length) return;
 
-  const reduceMotionQuery = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  );
-  const compactDeviceQuery = window.matchMedia(
-    "(max-width: 767px), (pointer: coarse)",
-  );
+  const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const compactDeviceQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
   const saveData = Boolean(navigator.connection?.saveData);
 
   if (reduceMotionQuery.matches || saveData) {
-    parallaxEls.forEach((bg) => {
-      bg.style.transform = "none";
-    });
+    parallaxEls.forEach((bg) => { bg.style.transform = "none"; });
     return;
   }
 
@@ -567,12 +491,8 @@ loadStatistikPublik();
       const elCenter = rect.top + rect.height / 2;
       const desiredOffset = (viewportCenter - elCenter) * speed;
 
-      // Batasi gerakan sesuai tinggi layer agar tidak muncul celah kosong.
       const availableTravel = Math.max(0, (bg.offsetHeight - rect.height) / 2);
-      const offset = Math.max(
-        -availableTravel,
-        Math.min(availableTravel, desiredOffset),
-      );
+      const offset = Math.max(-availableTravel, Math.min(availableTravel, desiredOffset));
 
       bg.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
     });
@@ -599,7 +519,6 @@ loadStatistikPublik();
         }
       });
 
-      // hanya dengarkan scroll saat minimal 1 elemen parallax terlihat
       if (activeEls.size > 0) {
         window.addEventListener("scroll", onScroll, { passive: true });
         onScroll();
@@ -611,82 +530,65 @@ loadStatistikPublik();
   );
 
   parallaxEls.forEach((el) => io.observe(el));
-
   window.addEventListener("resize", onScroll, { passive: true });
   window.addEventListener("orientationchange", onScroll, { passive: true });
 })();
 
 // =====================================================
-// TARIK DATA DARI CMS (HERO, SAMBUTAN, VISI MISI)
+// TARIK DATA DARI CMS PROFIL (HERO, SAMBUTAN, VISI MISI)
 // =====================================================
 async function loadDataBeranda() {
   try {
-    const response = await fetch("http://localhost:3000/api/cmsprofil");
+    const response = await fetch(`${INDEX_API_BASE_URL}/cmsprofil`);
     const result = await response.json();
     
-    // Pastikan data berhasil ditarik dan tidak kosong
     if (result.success && result.data && result.data.length > 0) {
-      
       const dataCMS = result.data;
-      // Kita ambil data pertama (paling atas/terbaru) untuk Sambutan, Visi, Misi
       const dataUtama = dataCMS[0]; 
 
       // 1. UPDATE SLIDER / HERO
       const sliderEl = document.getElementById("slider");
       if (sliderEl) {
-        sliderEl.innerHTML = ""; // Kosongkan gambar bawaan HTML
+        sliderEl.innerHTML = ""; 
         
         dataCMS.forEach(item => {
           if (item.gambar_url) {
             sliderEl.innerHTML += `
               <div class="min-w-full relative">
-               <img alt="${item.judul_hero || 'Hero'}" class="hero-image object-cover w-full h-[100vh]" src="${item.gambar_url}"/>
+               <img alt="${escapeProdukHTML(item.judul_hero || 'Hero')}" class="hero-image object-cover w-full h-[100vh]" src="${item.gambar_url}"/>
               </div>
             `;
           }
         });
         
-        // Reset hitungan slider bawaan web Anda
         const slidesBaru = document.querySelectorAll("#slider > div");
         total = slidesBaru.length;
         index = 0;
+        
+        // Render slide pertama agar tidak kosong
+        if(total > 0) showSlide(0);
       }
 
-      // ==========================================
-      // 2. UPDATE SAMBUTAN & FOTO KADES
-      // ==========================================
+      // 2. UPDATE SAMBUTAN, FOTO & NAMA KADES
       const fotoKades = document.getElementById("fotoKadesPublik");
       const sambutanTeks = document.getElementById("sambutanPublik");
-      
-      if (fotoKades && dataUtama.foto_kades_url) {
-        fotoKades.src = dataUtama.foto_kades_url;
-      }
-      
-      if (sambutanTeks && dataUtama.sambutan) {
-        sambutanTeks.innerText = dataUtama.sambutan;
-      }
-
-      // 👇 LETAKKAN KODE NAMA KADES DI SINI 👇
       const namaKadesEl = document.getElementById("namaKadesPublik");
-      if (namaKadesEl && dataUtama.nama_kades) {
-        namaKadesEl.innerText = dataUtama.nama_kades;
-      }
+      
+      if (fotoKades && dataUtama.foto_kades_url) fotoKades.src = dataUtama.foto_kades_url;
+      if (sambutanTeks && dataUtama.sambutan) sambutanTeks.innerText = dataUtama.sambutan;
+      if (namaKadesEl && dataUtama.nama_kades) namaKadesEl.innerText = dataUtama.nama_kades;
 
       // 3. UPDATE VISI & MISI
       const visiTeks = document.getElementById("visiPublik");
       const misiList = document.getElementById("misiPublik");
       
-      if (visiTeks && dataUtama.visi) {
-        visiTeks.innerText = `"${dataUtama.visi}"`;
-      }
+      if (visiTeks && dataUtama.visi) visiTeks.innerText = `"${dataUtama.visi}"`;
       if (misiList && dataUtama.misi) {
-        misiList.innerHTML = ""; // Kosongkan list <li> bawaan HTML
-        
-        // Pecah teks misi setiap kali ada Enter (baris baru)
+        misiList.innerHTML = ""; 
         const poinMisi = dataUtama.misi.split('\n'); 
         poinMisi.forEach(poin => {
           if(poin.trim() !== "") {
-            misiList.innerHTML += `<li class="mb-2">${poin.trim()}</li>`;
+            misiList.innerHTML += `<li class="mb-2">${escapeProdukHTML(poin.trim())}</li>`;
           }
         });
       }
@@ -696,7 +598,6 @@ async function loadDataBeranda() {
   }
 }
 
-// Panggil fungsi penarik data setelah struktur HTML selesai dimuat
 document.addEventListener("DOMContentLoaded", () => {
   loadDataBeranda();
 });
