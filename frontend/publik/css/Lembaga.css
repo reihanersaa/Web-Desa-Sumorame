@@ -80,41 +80,51 @@ body {
 }
 
 .hero-title {
-  display: inline-block;
-  white-space: nowrap;
-  animation: slideLoop 8s ease-in-out infinite;
+  --hero-slide-distance: clamp(2rem, 8vw, 6rem);
+  --hero-slide-exit: clamp(-6rem, -8vw, -2rem);
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  font-size: clamp(1.65rem, 6vw, 3rem);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  animation: slideLoop 8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  will-change: transform, opacity;
 }
 
 /* Masuk → Diam 3 detik → Keluar → Ulang */
 @keyframes slideLoop {
-  /* Mulai di luar kanan */
   0% {
     opacity: 0;
-    transform: translateX(120%);
+    transform: translate3d(var(--hero-slide-distance), 0, 0);
   }
 
-  /* Masuk */
-  15% {
+  14%,
+  58% {
     opacity: 1;
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
-  /* Diam sekitar 3 detik */
-  55% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  /* Keluar ke kiri */
-  75% {
-    opacity: 0;
-    transform: translateX(-180%);
-  }
-
-  /* Tetap di luar kiri sebelum reset */
+  76%,
   100% {
     opacity: 0;
-    transform: translateX(-180%);
+    transform: translate3d(var(--hero-slide-exit), 0, 0);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    will-change: auto;
   }
 }
 

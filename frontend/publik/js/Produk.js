@@ -226,6 +226,8 @@ if (
   formProduk.addEventListener("submit", (e) => {
     e.preventDefault();
 
+    const nik = document.getElementById("NIK").value.trim();
+
     const nama = document.getElementById("namaProduk").value.trim();
 
     const harga = document.getElementById("hargaProduk").value;
@@ -242,7 +244,7 @@ if (
     // VALIDASI
     // ========================================
 
-    if (!nama || !harga || !penjual || !kontak || !file) {
+    if (!nik || !nama || !harga || !penjual || !kontak || !file) {
       Swal.fire({
         icon: "warning",
 
@@ -250,6 +252,17 @@ if (
 
         text: "Silakan lengkapi semua data produk.",
 
+        confirmButtonColor: "#166534",
+      });
+
+      return;
+    }
+
+    if (!/^\d{16}$/.test(nik)) {
+      Swal.fire({
+        icon: "warning",
+        title: "NIK tidak valid",
+        text: "NIK harus terdiri dari tepat 16 angka.",
         confirmButtonColor: "#166534",
       });
 
@@ -286,6 +299,7 @@ if (
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            nik,
             nama_produk: nama,
             deskripsi,
             harga: Number(harga),
