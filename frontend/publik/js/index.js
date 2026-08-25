@@ -498,3 +498,88 @@ revealOnScroll(
 
   parallaxEls.forEach((el) => io.observe(el));
 })();
+
+// =====================================================
+// TARIK DATA DARI CMS (HERO, SAMBUTAN, VISI MISI)
+// =====================================================
+async function loadDataBeranda() {
+  try {
+    const response = await fetch("http://localhost:3000/api/cmsprofil");
+    const result = await response.json();
+    
+    // Pastikan data berhasil ditarik dan tidak kosong
+    if (result.success && result.data && result.data.length > 0) {
+      
+      const dataCMS = result.data;
+      // Kita ambil data pertama (paling atas/terbaru) untuk Sambutan, Visi, Misi
+      const dataUtama = dataCMS[0]; 
+
+      // 1. UPDATE SLIDER / HERO
+      const sliderEl = document.getElementById("slider");
+      if (sliderEl) {
+        sliderEl.innerHTML = ""; // Kosongkan gambar bawaan HTML
+        
+        dataCMS.forEach(item => {
+          if (item.gambar_url) {
+            sliderEl.innerHTML += `
+              <div class="min-w-full relative">
+               <img alt="${item.judul_hero || 'Hero'}" class="hero-image object-cover w-full h-[100vh]" src="${item.gambar_url}"/>
+              </div>
+            `;
+          }
+        });
+        
+        // Reset hitungan slider bawaan web Anda
+        const slidesBaru = document.querySelectorAll("#slider > div");
+        total = slidesBaru.length;
+        index = 0;
+      }
+
+      // ==========================================
+      // 2. UPDATE SAMBUTAN & FOTO KADES
+      // ==========================================
+      const fotoKades = document.getElementById("fotoKadesPublik");
+      const sambutanTeks = document.getElementById("sambutanPublik");
+      
+      if (fotoKades && dataUtama.foto_kades_url) {
+        fotoKades.src = dataUtama.foto_kades_url;
+      }
+      
+      if (sambutanTeks && dataUtama.sambutan) {
+        sambutanTeks.innerText = dataUtama.sambutan;
+      }
+
+      // 👇 LETAKKAN KODE NAMA KADES DI SINI 👇
+      const namaKadesEl = document.getElementById("namaKadesPublik");
+      if (namaKadesEl && dataUtama.nama_kades) {
+        namaKadesEl.innerText = dataUtama.nama_kades;
+      }
+
+      // 3. UPDATE VISI & MISI
+      const visiTeks = document.getElementById("visiPublik");
+      const misiList = document.getElementById("misiPublik");
+      
+      if (visiTeks && dataUtama.visi) {
+        visiTeks.innerText = `"${dataUtama.visi}"`;
+      }
+      if (misiList && dataUtama.misi) {
+        misiList.innerHTML = ""; // Kosongkan list <li> bawaan HTML
+        
+        // Pecah teks misi setiap kali ada Enter (baris baru)
+        const poinMisi = dataUtama.misi.split('\n'); 
+        poinMisi.forEach(poin => {
+          if(poin.trim() !== "") {
+            misiList.innerHTML += `<li class="mb-2">${poin.trim()}</li>`;
+          }
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Gagal menarik data CMS Beranda:", error);
+  }
+}
+
+// Panggil fungsi penarik data setelah struktur HTML selesai dimuat
+document.addEventListener("DOMContentLoaded", () => {
+  loadDataBeranda();
+});
