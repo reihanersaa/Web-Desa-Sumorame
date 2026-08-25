@@ -7,19 +7,6 @@
   max-height: 43.75rem;
 }
 
-/* Slider selalu mengikuti tinggi hero, bukan rasio gambar sumber. */
-.public-hero--slider > #slider,
-.public-hero--slider > #slider > div {
-  height: 100% !important;
-}
-
-.public-hero--slider .hero-image {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  object-position: center !important;
-}
-
 /* Layar ponsel pendek dan orientasi lanskap. */
 @media (max-height: 600px) {
   .public-hero {
@@ -41,4 +28,3 @@
     min-height: 22rem;
   }
 }
-
