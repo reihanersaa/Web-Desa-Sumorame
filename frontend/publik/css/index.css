@@ -8,6 +8,7 @@
 .font-poppins {
   font-family: "Poppins", sans-serif;
 }
+
 body {
   min-height: max(884px, 100dvh);
 }
