@@ -47,17 +47,18 @@ const createInformasi = async (req, res) => {
     const {
       judul,
       isi,
-      penjelasan
+      penjelasan,
+      tanggal
     } = req.body || {};
 
     const admin_id = req.user.id;
 
 
     // ================= VALIDASI =================
-    if (!judul || !isi || !penjelasan) {
+    if (!judul || !isi || !penjelasan || !tanggal) {
       return res.status(400).json({
         success: false,
-        message: "Judul, isi berita, dan penjelasan berita wajib diisi!"
+        message: "Judul, isi berita, penjelasan berita, dan tanggal wajib diisi!"
       });
     }
 
@@ -130,6 +131,7 @@ const createInformasi = async (req, res) => {
           judul: judul,
           isi: isi,
           penjelasan: penjelasan,
+          tanggal: tanggal,
           gambar_url: gambar_url
         }
       ])
@@ -187,15 +189,16 @@ const updateInformasi = async (req, res) => {
     const {
       judul,
       isi,
-      penjelasan
+      penjelasan,
+      tanggal
     } = req.body || {};
 
 
     // ================= VALIDASI =================
-    if (!judul || !isi || !penjelasan) {
+    if (!judul || !isi || !penjelasan || !tanggal) {
       return res.status(400).json({
         success: false,
-        message: "Judul, isi berita, dan penjelasan berita wajib diisi!"
+        message: "Judul, isi berita, penjelasan berita, dan tanggal wajib diisi!"
       });
     }
 
@@ -276,6 +279,7 @@ const updateInformasi = async (req, res) => {
         judul: judul,
         isi: isi,
         penjelasan: penjelasan,
+        tanggal: tanggal,
         gambar_url: gambar_url,
         updated_at: new Date().toISOString()
       })
