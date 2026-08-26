@@ -35,15 +35,18 @@ body {
   width: 100%;
 }
 
-/* default (dari bawah) */
+/* =========================================
+   CARD PUBLIKASI
+========================================= */
+
 .pub-card {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.5s ease-out;
   will-change: transform, opacity;
+  cursor: pointer;
 }
 
-/* variasi arah */
 .pub-card:nth-child(3n + 1) {
   transform: translateX(-40px);
 }
@@ -56,15 +59,10 @@ body {
   transform: translateX(40px);
 }
 
-/* saat muncul */
 .pub-card.show {
   opacity: 1;
   transform: translate(0, 0);
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.pub-card {
-  cursor: pointer;
 }
 
 .pub-card img {
@@ -74,6 +72,10 @@ body {
 .pub-card:hover img {
   transform: scale(1.05);
 }
+
+/* =========================================
+   ANIMASI TITLE
+========================================= */
 
 .title-loop {
   animation: floating 5s ease-in-out infinite;
@@ -95,9 +97,9 @@ body {
   }
 }
 
-/* ==========================
-      SCROLL TO TOP
-    ========================== */
+/* =========================================
+   SCROLL TO TOP
+========================================= */
 
 #scrollTopBtn {
   transform: translateY(20px);
@@ -113,7 +115,10 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
-/* HEADER SCROLL */
+/* =========================================
+   HEADER SCROLL
+========================================= */
+
 #mainHeader {
   transition: transform 0.3s ease;
 }
@@ -122,53 +127,71 @@ body {
   transform: translateY(-100%);
 }
 
-#heroSection.hero-top {
-  margin-top: 0;
-}
+/* =========================================
+   HERO SECTION
+========================================= */
 
 #heroSection {
-  height: auto !important;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
   transition: margin-top 0.3s ease;
+  background-color: #004b24;
 }
 
 #heroSection.hero-top {
   margin-top: 0;
 }
+
+/* =========================================
+   HERO SLIDER
+========================================= */
 
 #heroSection #slider {
   position: relative;
   display: flex;
-  align-items: flex-start;
   width: 100%;
-  height: auto;
+  height: 100%;
+  min-height: 100%;
   padding: 0;
   margin: 0;
 }
 
 #heroSection #slider > div {
   position: relative;
+  flex: 0 0 100%;
   min-width: 100%;
+  max-width: 100%;
   width: 100%;
-  height: auto;
+  height: 100%;
   padding: 0;
   margin: 0;
   overflow: hidden;
   background-color: #006633;
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* =========================================
+   GAMBAR HERO
+========================================= */
+
 #heroSection .hero-image {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   max-width: 100%;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
-  object-fit: contain;
+
+  object-fit: cover;
   object-position: center;
+
   border: 0;
   border-radius: 0;
-  background: transparent;
+  background-color: #006633;
 }

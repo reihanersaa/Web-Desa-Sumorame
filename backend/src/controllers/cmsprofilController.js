@@ -71,9 +71,26 @@ const createCmsProfil = async (req, res) => {
       return { url: data.publicUrl, path };
     };
 
-    const uploadHero = await uploadFile(fileGambar, "hero");
-    filePathGambar = uploadHero?.path;
-    const gambar_url = uploadHero?.url;
+    // ==================================================
+    // SIMPAN KE DATABASE
+    // ==================================================
+    const { data, error } = await supabase
+      .from("cmsprofil")
+      .insert([{
+          admin_id: admin_id,
+          judul_hero: judul_hero.trim(),
+          deskripsi_hero: deskripsi_hero.trim(),
+          sambutan: sambutan.trim(),
+          visi: visi.trim(),
+          misi: misi.trim(),
+          gambar_url: gambar_url,
+          foto_kades_url: foto_kades_url,
+          nama_kades: nama_kades.trim(), // 🚨 Ditambahkan di sini
+          peraturan_judul: peraturan_judul?.trim() || null,
+          peraturan_isi: peraturan_isi?.trim() || null
+        }
+      ])
+      .select();
 
     const uploadKades = await uploadFile(fileFotoKades, "kades");
     filePathFotoKades = uploadKades?.path;
@@ -178,11 +195,11 @@ const updateCmsProfil = async (req, res) => {
         sambutan: sambutan.trim(),
         visi: visi.trim(),
         misi: misi.trim(),
-        peraturan_judul: peraturan_judul ? peraturan_judul.trim() : null,
-        peraturan_isi: peraturan_isi ? peraturan_isi.trim() : null,
-        gambar_url,
-        foto_kades_url,
-        gambar_modal_url,
+        gambar_url: gambar_url,
+        foto_kades_url: foto_kades_url,
+        nama_kades: nama_kades.trim(),
+        peraturan_judul: peraturan_judul?.trim() || null,
+        peraturan_isi: peraturan_isi?.trim() || null,
         updated_at: new Date().toISOString()
       })
       .eq("id", id)

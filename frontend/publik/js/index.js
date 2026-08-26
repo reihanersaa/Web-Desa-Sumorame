@@ -184,6 +184,51 @@ function escapeProdukHTML(value = "") {
   return element.innerHTML;
 }
 
+// === Modal Peraturan ===
+const bukaPeraturan = document.getElementById("bukaPeraturan");
+const peraturanModal = document.getElementById("peraturanModal");
+const peraturanModalBox = document.getElementById("peraturanModalBox");
+const tutupPeraturan = document.getElementById("tutupPeraturan");
+const tutupPeraturanBawah = document.getElementById("tutupPeraturanBawah");
+
+function bukaModalPeraturan(event) {
+  if (event) event.preventDefault();
+  if (!peraturanModal || !peraturanModalBox) return;
+
+  peraturanModal.classList.remove("hidden");
+  peraturanModal.classList.add("flex");
+  document.body.style.overflow = "hidden";
+
+  requestAnimationFrame(() => {
+    peraturanModalBox.classList.remove("opacity-0", "scale-95");
+    tutupPeraturan?.focus();
+  });
+}
+
+function tutupModalPeraturan() {
+  if (!peraturanModal || !peraturanModalBox) return;
+
+  peraturanModalBox.classList.add("opacity-0", "scale-95");
+  window.setTimeout(() => {
+    peraturanModal.classList.add("hidden");
+    peraturanModal.classList.remove("flex");
+    document.body.style.overflow = "";
+    bukaPeraturan?.focus();
+  }, 200);
+}
+
+bukaPeraturan?.addEventListener("click", bukaModalPeraturan);
+tutupPeraturan?.addEventListener("click", tutupModalPeraturan);
+tutupPeraturanBawah?.addEventListener("click", tutupModalPeraturan);
+peraturanModal?.addEventListener("click", (event) => {
+  if (event.target === peraturanModal) tutupModalPeraturan();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && peraturanModal?.classList.contains("flex")) {
+    tutupModalPeraturan();
+  }
+});
+
 async function muatProdukUnggulanBeranda() {
   if (!produkUnggulanBeranda) return;
   try {

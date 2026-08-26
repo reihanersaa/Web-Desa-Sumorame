@@ -16,7 +16,8 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="css/Publikasi.css?v=20260824-1" />
+    <link rel="stylesheet" href="css/hero-responsive.css?v=20260825-1" />
+    <link rel="stylesheet" href="css/Publikasi.css?v=20260826-2" />
 
     <!-- Tailwind Config -->
     <script>
@@ -174,52 +175,46 @@
     </div>
 
     <!-- HERO -->
-    <section id="heroSection" class="group relative overflow-hidden bg-primary">
-      <!-- SLIDER -->
+    <section id="heroSection" class="public-hero group relative overflow-hidden bg-primary">
+
+      <!-- SLIDER DINAMIS -->
       <div
         id="slider"
         class="flex items-start transition-transform duration-700 ease-in-out"
       >
-        <!-- SLIDE 1 -->
-        <div class="min-w-full relative">
-          <img
-            src="img/Kegiatan3.png"
-            alt="Kegiatan Desa Sumorame"
-            class="hero-image"
-          />
-        </div>
-        <!-- SLIDE 2 -->
-        <div class="min-w-full relative">
-          <img
-            src="img/Kegiatan4.png"
-            alt="Kegiatan Desa Sumorame"
-            class="hero-image"
-          />
-        </div>
-        <!-- SLIDE 3 -->
-        <div class="min-w-full relative">
-          <img
-            src="img/Kegiatan6.png"
-            alt="Kegiatan Desa Sumorame"
-            class="hero-image"
-          />
-        </div>
+        <!-- 3 gambar terbaru akan dimasukkan lewat Publikasi.js -->
       </div>
-      <!-- BUTTON -->
+
+      <!-- BUTTON PREV -->
       <button
         id="prev"
         aria-label="Slide sebelumnya"
-        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300"
+        class="absolute left-4 top-1/2 -translate-y-1/2
+              bg-white/50 hover:bg-white/80
+              px-3 py-2 rounded z-20
+              opacity-0 pointer-events-none
+              group-hover:opacity-100 group-hover:pointer-events-auto
+              focus-visible:opacity-100 focus-visible:pointer-events-auto
+              transition-opacity duration-300"
       >
         ❮
       </button>
+
+      <!-- BUTTON NEXT -->
       <button
         id="next"
         aria-label="Slide berikutnya"
-        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300"
+        class="absolute right-4 top-1/2 -translate-y-1/2
+              bg-white/50 hover:bg-white/80
+              px-3 py-2 rounded z-20
+              opacity-0 pointer-events-none
+              group-hover:opacity-100 group-hover:pointer-events-auto
+              focus-visible:opacity-100 focus-visible:pointer-events-auto
+              transition-opacity duration-300"
       >
         ❯
       </button>
+
     </section>
 
     <!-- CONTENT (KOSONG) -->
@@ -393,5 +388,6 @@
     </footer>
 
     <script src="js/Publikasi.js?v=20260824-1"></script>
+    <script src="js/header-scroll.js?v=20260826-1"></script>
   </body>
 </html>
