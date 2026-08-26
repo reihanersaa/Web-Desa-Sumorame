@@ -3,6 +3,12 @@
 // ==================================================
 const API_URL = `${window.API_BASE_URL}/informasi`;
 
+function escapeHTML(value = "") {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
+
 function getAdminToken() {
   return localStorage.getItem("token");
 }
@@ -155,15 +161,15 @@ function renderTable() {
         </td>
 
         <td class="px-4 py-3 text-center border">
-          ${item.judul || "-"}
+          ${escapeHTML(item.judul || "-")}
         </td>
 
         <td class="px-4 py-3 text-center border">
-          ${potongText(item.isi, 80)}
+          ${escapeHTML(potongText(item.isi, 80))}
         </td>
 
         <td class="px-4 py-3 text-center border">
-          ${potongText(item.penjelasan, 80)}
+          ${escapeHTML(potongText(item.penjelasan, 80))}
         </td>
 
         <td class="px-4 py-3 text-center border">
@@ -533,7 +539,7 @@ function pasangEventAction() {
               <p>Data informasi berikut akan dihapus:</p>
 
               <p style="margin-top:10px;">
-                <b>${item.judul}</b>
+                <b>${escapeHTML(item.judul)}</b>
               </p>
 
               <p style="margin-top:10px; color:#dc2626;">

@@ -15,6 +15,9 @@ const statistikRoutes = require("./src/routes/statistikRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Vercel meneruskan IP pengunjung lewat proxy. Diperlukan untuk rate limit.
+app.set("trust proxy", 1);
+
 const productionFrontend = "https://web-desa-sumorame.vercel.app";
 const allowedOrigins = (
   process.env.FRONTEND_URLS ||
@@ -41,6 +44,16 @@ app.use(
 );
 app.use(express.json({ limit: "3mb" }));
 app.disable("x-powered-by");
+app.use((req, res, next) => {
+  res.set({
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+  });
+  next();
+});
 
 // Routes
 app.use("/api/auth", authRoutes);

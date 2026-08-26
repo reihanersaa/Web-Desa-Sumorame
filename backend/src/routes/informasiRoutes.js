@@ -11,6 +11,7 @@ const {
 } = require("../controllers/informasiController");
 
 const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 
 
 // ==================================================
@@ -59,6 +60,7 @@ router.post(
   verifyToken,
   requireAdmin,
   upload.single("gambar"),
+  verifyUploadSignatures,
   createInformasi
 );
 
@@ -72,6 +74,7 @@ router.put(
   verifyToken,
   requireAdmin,
   upload.single("gambar"),
+  verifyUploadSignatures,
   updateInformasi
 );
 

@@ -500,59 +500,64 @@
           </div>
           <!-- MENU KANAN -->
           <div class="lg:col-span-8">
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <a class="menu-card" href="#statistik">
-                <img alt="Statistik" class="menu-icon" src="img/statistik.png"/>
+                <img alt="Statistik" class="menu-icon" src="img/Statistik.webp"/>
                 <span> Statistik </span>
               </a>
               <a class="menu-card" href="PPID.html?open=profile-ppid">
-                <img alt="Pemerintah" class="menu-icon" src="img/pemerintah.png"/>
+                <img alt="Pemerintah" class="menu-icon" src="img/Pemerintah.webp"/>
                 <span>Pemerintah</span>
               </a>
-              <a class="menu-card" href="#pembangunan">
-                <img alt="Pembangunan" class="menu-icon" src="img/pembangunan.png"/>
-                <span> Pembangunan </span>
-              </a>
               <a class="menu-card" href="#produk">
-                <img alt="Lapak" class="menu-icon" src="img/lapak.png" />
+                <img alt="Lapak" class="menu-icon" src="img/Lapak.webp" />
                 <span> Lapak </span>
               </a>
-              <a class="menu-card" href="#sdgs">
-                <img alt="SDGs" class="menu-icon" src="img/SDGs.png" />
-                <span> SDGs </span>
-              </a>
               <a class="menu-card" href="#pengaduan">
-                <img alt="Pengaduan" class="menu-icon" src="img/PengaduanIcn.png"/>
+                <img alt="Pengaduan" class="menu-icon" src="img/PengaduanIcn.webp"/>
                 <span> Pengaduan </span>
               </a>
-              <a class="menu-card" href="#peraturan">
-                <img alt="Peraturan" class="menu-icon" src="img/Peraturan.png"/>
+              <a class="menu-card" href="#peraturanModal" id="bukaPeraturan" aria-haspopup="dialog" aria-controls="peraturanModal">
+                <img alt="Peraturan" class="menu-icon" src="img/Peraturan.webp"/>
                 <span> Peraturan </span>
               </a>
-              <a class="menu-card" href="#idm">
-                <img alt="Status IDM" class="menu-icon" src="img/Status_IDM.png"/>
-                <span> Status IDM </span>
-              </a>
               <a class="menu-card" href="Informasi.html">
-                <img alt="Info Publik" class="menu-icon" src="img/Info Publik.png"/>
+                <img alt="Info Publik" class="menu-icon" src="img/Info Publik.webp"/>
                 <span> Info Publik </span>
               </a>
-              <a class="menu-card" href="#inventaris">
-                <img alt="Inventaris" class="menu-icon" src="img/inventaris.png"/>
-                <span> Inventaris </span>
-              </a>
               <a class="menu-card" href="#galeri">
-                <img alt="Galeri Foto" class="menu-icon" src="img/Galeri_Foto.png"/>
+                <img alt="Galeri Foto" class="menu-icon" src="img/Galeri_Foto.webp"/>
                 <span> Galeri Foto </span>
               </a>
               <a class="menu-card" href="PPID.html#maps">
-                <img alt="Peta" class="menu-icon" src="img/peta.png" />
+                <img alt="Peta" class="menu-icon" src="img/Peta.webp" />
                 <span> Peta </span>
               </a>
             </div>
           </div>
         </div>
       </section>
+
+      <!-- MODAL PERATURAN -->
+      <div id="peraturanModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="peraturanModalJudul">
+        <div id="peraturanModalBox" class="relative w-full max-w-2xl max-h-[85vh] overflow-hidden rounded-2xl bg-white shadow-2xl opacity-0 scale-95 transition duration-200">
+          <div class="flex items-center justify-between gap-4 px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-emerald-700 to-green-600">
+            <div class="flex items-center gap-3 text-white">
+              <span class="material-symbols-outlined text-3xl">gavel</span>
+              <h2 id="peraturanModalJudul" class="font-poppins text-xl sm:text-2xl font-bold">Peraturan Desa Sumorame</h2>
+            </div>
+            <button id="tutupPeraturan" type="button" class="shrink-0 w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition" aria-label="Tutup modal Peraturan">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="max-h-[65vh] overflow-y-auto px-6 py-6">
+            <p id="peraturanModalIsi" class="font-poppins text-gray-700 leading-7 whitespace-pre-line">Informasi peraturan Desa Sumorame akan ditampilkan di sini.</p>
+          </div>
+          <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 text-right">
+            <button id="tutupPeraturanBawah" type="button" class="px-5 py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-semibold transition">Tutup</button>
+          </div>
+        </div>
+      </div>
 
       <!-- STATISTIK PENDUDUK -->
       <section
@@ -616,7 +621,7 @@
             </div>
             <div class="stat-card bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
               <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                <img alt="Total RW" class="w-12 h-12 object-contain" src="img/statistik.png"/>
+                <img alt="Total RW" class="w-12 h-12 object-contain" src="img/Statistik.webp"/>
               </div>
               <div>
                 <h3 class="text-lg text-gray-500 uppercase">Total RW</h3>
@@ -752,7 +757,7 @@
             </p>
           </div>
           <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-            <img class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" src="img/Dirgahayu.png"/>
+            <img id="gambarModalPublik" class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" src="img/peringatan.png"/>
           </div>
           <div class="p-4 border-t bg-white">
             <a class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="PPID.html">
@@ -822,6 +827,7 @@
       </div>
     </footer>
     <script src="js/api-config.js"></script>
-    <script src="js/index.js?v=20260826-1"></script>
+    <script src="js/index.js?v=20260826-2"></script>
+    <script src="js/header-scroll.js?v=20260826-1"></script>
   </body>
 </html>

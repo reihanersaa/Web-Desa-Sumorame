@@ -3,6 +3,7 @@ const multer = require("multer");
 const router = express.Router();
 const produkController = require("../controllers/produkController");
 const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 
 const uploadProduk = multer({
   storage: multer.memoryStorage(),
@@ -28,7 +29,7 @@ router.get("/publik/produk/top", produkController.getTop3Produk);
 router.post("/publik/produk/:id/view", produkController.tambahViewProduk);
 
 // Warga submit produk baru (bisa dipasang verifyToken jika warga wajib login dahulu)
-router.post("/publik/produk", uploadProduk.single("gambar"), produkController.ajukanProduk);
+router.post("/publik/produk", uploadProduk.single("gambar"), verifyUploadSignatures, produkController.ajukanProduk);
 
 // --- ROUTES UNTUK PRIVAT (ADMIN CMS) ---
 // Ambil semua data produk untuk tabel CMS (Wajib Token Admin)
@@ -54,6 +55,7 @@ router.put(
   verifyToken,
   requireAdmin,
   uploadProduk.single("gambar"),
+  verifyUploadSignatures,
   produkController.updateProduk,
 );
 

@@ -3,69 +3,120 @@
 // ==================================================
 const API_URL = `${window.API_BASE_URL}/kelembagaan`;
 
+function escapeHTML(value = "") {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
+
 function getAdminToken() {
   return localStorage.getItem("token");
 }
 
 
 // ==================================================
-// 2. ELEMENT TABLE
+// 2. HELPER RESPONSE API
 // ==================================================
-const kelembagaanTableBody = document.getElementById("kelembagaanTableBody");
-const searchInput = document.getElementById("searchInput");
-const entriesSelect = document.getElementById("entriesSelect");
-const tableInfo = document.getElementById("tableInfo");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
+async function bacaResponseJSON(response) {
+  const contentType = response.headers.get("content-type");
+
+  if (
+    contentType &&
+    contentType.includes("application/json")
+  ) {
+    return await response.json();
+  }
+
+  const text = await response.text();
+
+  console.error(
+    "Response backend bukan JSON:",
+    text
+  );
+
+  throw new Error(
+    `Server mengembalikan response tidak valid (${response.status}).`
+  );
+}
 
 
 // ==================================================
-// 3. DATA
+// 3. ELEMENT TABLE
+// ==================================================
+const kelembagaanTableBody =
+  document.getElementById("kelembagaanTableBody");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const entriesSelect =
+  document.getElementById("entriesSelect");
+
+const tableInfo =
+  document.getElementById("tableInfo");
+
+const prevBtn =
+  document.getElementById("prevBtn");
+
+const nextBtn =
+  document.getElementById("nextBtn");
+
+
+// ==================================================
+// 4. DATA
 // ==================================================
 let kelembagaanData = [];
+
 let currentPage = 1;
-let rowsPerPage = parseInt(entriesSelect.value);
+
+let rowsPerPage =
+  parseInt(entriesSelect.value);
 
 
 // ==================================================
-// 4. GET DATA KELEMBAGAAN
+// 5. GET DATA KELEMBAGAAN
 // ==================================================
 async function loadKelembagaan() {
   try {
-    const response = await fetch(API_URL);
+    const response =
+      await fetch(API_URL);
 
-    const contentType = response.headers.get("content-type");
-
-    if (!contentType || !contentType.includes("application/json")) {
-      throw new Error("Response backend bukan JSON.");
-    }
-
-    const result = await response.json();
+    const result =
+      await bacaResponseJSON(response);
 
     if (!response.ok) {
       throw new Error(
-        result.message || "Gagal mengambil data kelembagaan."
+        result.message ||
+        "Gagal mengambil data kelembagaan."
       );
     }
 
-    kelembagaanData = result.data || [];
+    kelembagaanData =
+      result.data || [];
 
     currentPage = 1;
 
     renderTable();
 
   } catch (error) {
-    console.error("Error load kelembagaan:", error);
+    console.error(
+      "Error load kelembagaan:",
+      error
+    );
 
     kelembagaanTableBody.innerHTML = `
       <tr>
-        <td colspan="5" class="px-4 py-6 border text-center text-red-500">
+        <td
+          colspan="5"
+          class="px-4 py-6 border text-center text-red-500"
+        >
           Gagal mengambil data kelembagaan
         </td>
       </tr>
     `;
 
-    tableInfo.innerText = "Showing 0 to 0 of 0 entries";
+    tableInfo.innerText =
+      "Showing 0 to 0 of 0 entries";
 
     Swal.fire({
       icon: "error",
@@ -77,34 +128,52 @@ async function loadKelembagaan() {
 
 
 // ==================================================
-// 5. POTONG TEXT
+// 6. POTONG TEXT
 // ==================================================
 function potongText(text, maxLength) {
   if (!text) {
     return "-";
   }
 
-  const hasil = String(text);
+  const hasil =
+    String(text);
 
   if (hasil.length <= maxLength) {
     return hasil;
   }
 
-  return hasil.substring(0, maxLength) + "...";
+  return hasil.substring(
+    0,
+    maxLength
+  ) + "...";
 }
 
 
 // ==================================================
-// 6. FILTER DATA
+// 7. FILTER DATA
 // ==================================================
 function getFilteredData() {
-  const keyword = searchInput.value.trim().toLowerCase();
+  const keyword =
+    searchInput.value
+      .trim()
+      .toLowerCase();
 
   return kelembagaanData.filter(item => {
-    const nama = String(item.nama || "").toLowerCase();
-    const pengertian = String(item.pengertian || "").toLowerCase();
-    const tugas = String(item.tugas || "").toLowerCase();
-    const tujuan = String(item.tujuan || "").toLowerCase();
+    const nama =
+      String(item.nama || "")
+        .toLowerCase();
+
+    const pengertian =
+      String(item.pengertian || "")
+        .toLowerCase();
+
+    const tugas =
+      String(item.tugas || "")
+        .toLowerCase();
+
+    const tujuan =
+      String(item.tujuan || "")
+        .toLowerCase();
 
     return (
       nama.includes(keyword) ||
@@ -117,33 +186,49 @@ function getFilteredData() {
 
 
 // ==================================================
-// 7. RENDER TABLE
+// 8. RENDER TABLE
 // ==================================================
 function renderTable() {
-  const filteredData = getFilteredData();
+  const filteredData =
+    getFilteredData();
 
-  const total = filteredData.length;
+  const total =
+    filteredData.length;
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(total / rowsPerPage)
-  );
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(total / rowsPerPage)
+    );
 
   if (currentPage > totalPages) {
-    currentPage = totalPages;
+    currentPage =
+      totalPages;
   }
 
-  const start = (currentPage - 1) * rowsPerPage;
-  const end = start + rowsPerPage;
+  const start =
+    (currentPage - 1) *
+    rowsPerPage;
 
-  const pageData = filteredData.slice(start, end);
+  const end =
+    start +
+    rowsPerPage;
+
+  const pageData =
+    filteredData.slice(
+      start,
+      end
+    );
 
   kelembagaanTableBody.innerHTML = "";
 
   if (pageData.length === 0) {
     kelembagaanTableBody.innerHTML = `
       <tr>
-        <td colspan="5" class="px-4 py-6 border text-center text-gray-500">
+        <td
+          colspan="5"
+          class="px-4 py-6 border text-center text-gray-500"
+        >
           ${
             searchInput.value.trim()
               ? "Data tidak ditemukan"
@@ -153,72 +238,96 @@ function renderTable() {
       </tr>
     `;
   } else {
-    pageData.forEach((item, index) => {
-      const row = document.createElement("tr");
+    pageData.forEach(
+      (item, index) => {
+        const row =
+          document.createElement("tr");
 
-      row.className =
-        "hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer fade-up";
+        row.className =
+          "hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer fade-up";
 
-      row.style.animationDelay = `${index * 0.1}s`;
+        row.style.animationDelay =
+          `${index * 0.1}s`;
 
-      const nomor = start + index + 1;
+        const nomor =
+          start + index + 1;
 
-      row.innerHTML = `
-        <td class="px-4 py-3 border text-center">
-          ${nomor}
-        </td>
+        row.innerHTML = `
+          <td
+            class="px-4 py-3 border text-center"
+          >
+            ${nomor}
+          </td>
 
-        <td class="px-4 py-3 border text-center">
-          ${item.nama || "-"}
-        </td>
+          <td
+            class="px-4 py-3 border text-center"
+          >
+            ${escapeHTML(item.nama || "-")}
+          </td>
 
-        <td class="px-4 py-3 border text-center">
-          ${potongText(item.pengertian, 60)}
-        </td>
+          <td
+            class="px-4 py-3 border text-center"
+          >
+            ${escapeHTML(potongText(item.pengertian, 60))}
+          </td>
 
-        <td class="px-4 py-3 border text-center">
-          ${potongText(item.tugas, 60)}
-        </td>
+          <td
+            class="px-4 py-3 border text-center"
+          >
+            ${escapeHTML(potongText(item.tugas, 60))}
+          </td>
 
-        <td class="px-4 py-3 border text-center">
-          <div class="inline-flex gap-1 rounded-lg">
-
-            <button
-              class="btnView bg-purple-500 hover:bg-purple-600 text-white p-2 rounded hover:shadow-lg active:scale-90 transition-all duration-150"
-              data-id="${item.id}"
-              title="Lihat"
+          <td
+            class="px-4 py-3 border text-center"
+          >
+            <div
+              class="inline-flex gap-1 rounded-lg"
             >
-              <span class="material-symbols-outlined text-sm">
-                visibility
-              </span>
-            </button>
 
-            <button
-              class="btnEdit bg-green-500 hover:bg-green-600 text-white p-2 rounded hover:shadow-lg active:scale-90 transition-all duration-150"
-              data-id="${item.id}"
-              title="Edit"
-            >
-              <span class="material-symbols-outlined text-sm">
-                edit_document
-              </span>
-            </button>
+              <button
+                class="btnView bg-purple-500 hover:bg-purple-600 text-white p-2 rounded hover:shadow-lg active:scale-90 transition-all duration-150"
+                data-id="${item.id}"
+                title="Lihat"
+              >
+                <span
+                  class="material-symbols-outlined text-sm"
+                >
+                  visibility
+                </span>
+              </button>
 
-            <button
-              class="btnDelete bg-red-500 hover:bg-red-600 text-white p-2 rounded hover:shadow-lg active:scale-90 transition-all duration-150"
-              data-id="${item.id}"
-              title="Hapus"
-            >
-              <span class="material-symbols-outlined text-sm">
-                delete
-              </span>
-            </button>
+              <button
+                class="btnEdit bg-green-500 hover:bg-green-600 text-white p-2 rounded hover:shadow-lg active:scale-90 transition-all duration-150"
+                data-id="${item.id}"
+                title="Edit"
+              >
+                <span
+                  class="material-symbols-outlined text-sm"
+                >
+                  edit_document
+                </span>
+              </button>
 
-          </div>
-        </td>
-      `;
+              <button
+                class="btnDelete bg-red-500 hover:bg-red-600 text-white p-2 rounded hover:shadow-lg active:scale-90 transition-all duration-150"
+                data-id="${item.id}"
+                title="Hapus"
+              >
+                <span
+                  class="material-symbols-outlined text-sm"
+                >
+                  delete
+                </span>
+              </button>
 
-      kelembagaanTableBody.appendChild(row);
-    });
+            </div>
+          </td>
+        `;
+
+        kelembagaanTableBody
+          .appendChild(row);
+      }
+    );
   }
 
   if (total === 0) {
@@ -229,95 +338,129 @@ function renderTable() {
       `Showing ${start + 1} to ${Math.min(end, total)} of ${total} entries`;
   }
 
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = end >= total;
+  prevBtn.disabled =
+    currentPage === 1;
+
+  nextBtn.disabled =
+    end >= total;
 
   pasangEventAction();
 }
 
 
 // ==================================================
-// 8. SEARCH
+// 9. SEARCH
 // ==================================================
-searchInput.addEventListener("input", () => {
-  currentPage = 1;
-
-  renderTable();
-});
-
-
-// ==================================================
-// 9. SHOW ENTRIES
-// ==================================================
-entriesSelect.addEventListener("change", () => {
-  rowsPerPage = parseInt(entriesSelect.value);
-
-  currentPage = 1;
-
-  renderTable();
-});
-
-
-// ==================================================
-// 10. PREVIOUS
-// ==================================================
-prevBtn.addEventListener("click", () => {
-  if (currentPage > 1) {
-    currentPage--;
+searchInput.addEventListener(
+  "input",
+  () => {
+    currentPage = 1;
 
     renderTable();
   }
-});
+);
 
 
 // ==================================================
-// 11. NEXT
+// 10. SHOW ENTRIES
 // ==================================================
-nextBtn.addEventListener("click", () => {
-  const filteredData = getFilteredData();
+entriesSelect.addEventListener(
+  "change",
+  () => {
+    rowsPerPage =
+      parseInt(entriesSelect.value);
 
-  if (
-    currentPage * rowsPerPage <
-    filteredData.length
-  ) {
-    currentPage++;
+    currentPage = 1;
 
     renderTable();
   }
-});
+);
 
 
 // ==================================================
-// 12. MODAL FUNCTION
+// 11. PREVIOUS
 // ==================================================
-function openModal(modal, box) {
-  modal.classList.remove("hidden");
+prevBtn.addEventListener(
+  "click",
+  () => {
+    if (currentPage > 1) {
+      currentPage--;
 
-  modal.classList.add("opacity-0");
+      renderTable();
+    }
+  }
+);
+
+
+// ==================================================
+// 12. NEXT
+// ==================================================
+nextBtn.addEventListener(
+  "click",
+  () => {
+    const filteredData =
+      getFilteredData();
+
+    if (
+      currentPage *
+      rowsPerPage <
+      filteredData.length
+    ) {
+      currentPage++;
+
+      renderTable();
+    }
+  }
+);
+
+
+// ==================================================
+// 13. MODAL FUNCTION
+// ==================================================
+function openModal(
+  modal,
+  box
+) {
+  modal.classList.remove(
+    "hidden"
+  );
+
+  modal.classList.add(
+    "opacity-0"
+  );
 
   box.classList.add(
     "scale-90",
     "opacity-0"
   );
 
-  requestAnimationFrame(() => {
-    modal.classList.remove("opacity-0");
+  requestAnimationFrame(
+    () => {
+      modal.classList.remove(
+        "opacity-0"
+      );
 
-    box.classList.remove(
-      "scale-90",
-      "opacity-0"
-    );
+      box.classList.remove(
+        "scale-90",
+        "opacity-0"
+      );
 
-    box.classList.add(
-      "scale-100",
-      "opacity-100"
-    );
-  });
+      box.classList.add(
+        "scale-100",
+        "opacity-100"
+      );
+    }
+  );
 }
 
 
-function closeModalFunc(modal, box) {
-  modal.classList.add("opacity-0");
+function closeModalFunc(
+  modal,
+  box
+) {
+  modal.classList.add(
+    "opacity-0"
+  );
 
   box.classList.remove(
     "scale-100",
@@ -329,475 +472,708 @@ function closeModalFunc(modal, box) {
     "opacity-0"
   );
 
-  setTimeout(() => {
-    modal.classList.add("hidden");
-  }, 300);
+  setTimeout(
+    () => {
+      modal.classList.add(
+        "hidden"
+      );
+    },
+    300
+  );
 }
 
 
 // ==================================================
-// 13. MODAL TAMBAH
+// 14. MODAL TAMBAH
 // ==================================================
 const modalTambah =
-  document.getElementById("modalTambah");
+  document.getElementById(
+    "modalTambah"
+  );
 
 const modalTambahBox =
-  document.getElementById("modalTambahBox");
+  document.getElementById(
+    "modalTambahBox"
+  );
 
 const namaTambah =
-  document.getElementById("namaTambah");
+  document.getElementById(
+    "namaTambah"
+  );
 
 const pengertianTambah =
-  document.getElementById("pengertianTambah");
+  document.getElementById(
+    "pengertianTambah"
+  );
 
 const tugasTambah =
-  document.getElementById("tugasTambah");
+  document.getElementById(
+    "tugasTambah"
+  );
 
 const tujuanTambah =
-  document.getElementById("tujuanTambah");
+  document.getElementById(
+    "tujuanTambah"
+  );
 
 const gambarTambah =
-  document.getElementById("gambarTambah");
-
-
-document.getElementById("btnTambah").onclick = () => {
-  openModal(
-    modalTambah,
-    modalTambahBox
+  document.getElementById(
+    "gambarTambah"
   );
-};
 
 
-document.getElementById("closeTambah").onclick = () => {
-  closeModalFunc(
-    modalTambah,
-    modalTambahBox
-  );
-};
-
-
-document.getElementById("btnCloseTambah").onclick = () => {
-  closeModalFunc(
-    modalTambah,
-    modalTambahBox
-  );
-};
-
-
-// ==================================================
-// 14. MODAL VIEW
-// ==================================================
-const modalView =
-  document.getElementById("modalView");
-
-const modalBox =
-  document.getElementById("modalBox");
-
-const viewNama =
-  document.getElementById("viewNama");
-
-const viewPengertian =
-  document.getElementById("viewPengertian");
-
-const viewTugas =
-  document.getElementById("viewTugas");
-
-const viewTujuan =
-  document.getElementById("viewTujuan");
-
-const viewGambar =
-  document.getElementById("viewGambar");
-
-
-document.getElementById("closeModal").onclick = () => {
-  closeModalFunc(
-    modalView,
-    modalBox
-  );
-};
-
-
-document.getElementById("btnClose2").onclick = () => {
-  closeModalFunc(
-    modalView,
-    modalBox
-  );
-};
-
-
-// ==================================================
-// 15. MODAL EDIT
-// ==================================================
-const modalEdit =
-  document.getElementById("modalEdit");
-
-const modalEditBox =
-  document.getElementById("modalEditBox");
-
-const namaEdit =
-  document.getElementById("namaEdit");
-
-const pengertianEdit =
-  document.getElementById("pengertianEdit");
-
-const tugasEdit =
-  document.getElementById("tugasEdit");
-
-const tujuanEdit =
-  document.getElementById("tujuanEdit");
-
-const gambarEdit =
-  document.getElementById("gambarEdit");
-
-const previewGambarEdit =
-  document.getElementById("previewGambarEdit");
-
-let idKelembagaanEdit = null;
-
-
-// ================= CLOSE EDIT =================
-document.getElementById("closeEdit").onclick = () => {
-  closeModalFunc(
-    modalEdit,
-    modalEditBox
-  );
-};
-
-
-document.getElementById("btnCloseEdit").onclick = () => {
-  closeModalFunc(
-    modalEdit,
-    modalEditBox
-  );
-};
-
-
-// ==================================================
-// 16. PREVIEW GAMBAR EDIT
-// ==================================================
-gambarEdit.addEventListener("change", () => {
-  const file = gambarEdit.files[0];
-
-  if (!file) {
-    return;
-  }
-
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png"
-  ];
-
-  if (!allowedTypes.includes(file.type)) {
-    Swal.fire({
-      icon: "warning",
-      title: "Format Gambar Tidak Valid",
-      text: "Gunakan JPG, JPEG, atau PNG."
-    });
-
-    gambarEdit.value = "";
-
-    return;
-  }
-
-  const maksimalUkuran =
-    2 * 1024 * 1024;
-
-  if (file.size > maksimalUkuran) {
-    Swal.fire({
-      icon: "warning",
-      title: "Ukuran Gambar Terlalu Besar",
-      text: "Ukuran gambar maksimal 2MB."
-    });
-
-    gambarEdit.value = "";
-
-    return;
-  }
-
-  const reader =
-    new FileReader();
-
-  reader.onload = event => {
-    previewGambarEdit.src =
-      event.target.result;
-
-    previewGambarEdit.classList.remove(
-      "hidden"
+document
+  .getElementById("btnTambah")
+  .onclick = () => {
+    openModal(
+      modalTambah,
+      modalTambahBox
     );
   };
 
-  reader.readAsDataURL(file);
-});
+
+document
+  .getElementById("closeTambah")
+  .onclick = () => {
+    closeModalFunc(
+      modalTambah,
+      modalTambahBox
+    );
+  };
+
+
+document
+  .getElementById("btnCloseTambah")
+  .onclick = () => {
+    closeModalFunc(
+      modalTambah,
+      modalTambahBox
+    );
+  };
 
 
 // ==================================================
-// 17. EVENT ACTION TABLE
+// 15. VALIDASI GAMBAR TAMBAH
+// ==================================================
+gambarTambah.addEventListener(
+  "change",
+  () => {
+    const file =
+      gambarTambah.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png"
+    ];
+
+    const maksimalUkuran =
+      2 * 1024 * 1024;
+
+    if (
+      !allowedTypes.includes(
+        file.type
+      )
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title:
+          "Format Gambar Tidak Valid",
+        text:
+          "Gunakan JPG, JPEG, atau PNG."
+      });
+
+      gambarTambah.value = "";
+
+      return;
+    }
+
+    if (
+      file.size >
+      maksimalUkuran
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title:
+          "Ukuran Gambar Terlalu Besar",
+        text:
+          "Ukuran gambar maksimal 2MB."
+      });
+
+      gambarTambah.value = "";
+
+      return;
+    }
+  }
+);
+
+
+// ==================================================
+// 16. MODAL VIEW
+// ==================================================
+const modalView =
+  document.getElementById(
+    "modalView"
+  );
+
+const modalBox =
+  document.getElementById(
+    "modalBox"
+  );
+
+const viewNama =
+  document.getElementById(
+    "viewNama"
+  );
+
+const viewPengertian =
+  document.getElementById(
+    "viewPengertian"
+  );
+
+const viewTugas =
+  document.getElementById(
+    "viewTugas"
+  );
+
+const viewTujuan =
+  document.getElementById(
+    "viewTujuan"
+  );
+
+const viewGambar =
+  document.getElementById(
+    "viewGambar"
+  );
+
+
+document
+  .getElementById("closeModal")
+  .onclick = () => {
+    closeModalFunc(
+      modalView,
+      modalBox
+    );
+  };
+
+
+document
+  .getElementById("btnClose2")
+  .onclick = () => {
+    closeModalFunc(
+      modalView,
+      modalBox
+    );
+  };
+
+
+// ==================================================
+// 17. MODAL EDIT
+// ==================================================
+const modalEdit =
+  document.getElementById(
+    "modalEdit"
+  );
+
+const modalEditBox =
+  document.getElementById(
+    "modalEditBox"
+  );
+
+const namaEdit =
+  document.getElementById(
+    "namaEdit"
+  );
+
+const pengertianEdit =
+  document.getElementById(
+    "pengertianEdit"
+  );
+
+const tugasEdit =
+  document.getElementById(
+    "tugasEdit"
+  );
+
+const tujuanEdit =
+  document.getElementById(
+    "tujuanEdit"
+  );
+
+const gambarEdit =
+  document.getElementById(
+    "gambarEdit"
+  );
+
+const previewGambarEdit =
+  document.getElementById(
+    "previewGambarEdit"
+  );
+
+let idKelembagaanEdit =
+  null;
+
+
+// ==================================================
+// CLOSE EDIT
+// ==================================================
+document
+  .getElementById("closeEdit")
+  .onclick = () => {
+    closeModalFunc(
+      modalEdit,
+      modalEditBox
+    );
+  };
+
+
+document
+  .getElementById("btnCloseEdit")
+  .onclick = () => {
+    closeModalFunc(
+      modalEdit,
+      modalEditBox
+    );
+  };
+
+
+// ==================================================
+// 18. PREVIEW GAMBAR EDIT
+// ==================================================
+gambarEdit.addEventListener(
+  "change",
+  () => {
+    const file =
+      gambarEdit.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png"
+    ];
+
+    if (
+      !allowedTypes.includes(
+        file.type
+      )
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title:
+          "Format Gambar Tidak Valid",
+        text:
+          "Gunakan JPG, JPEG, atau PNG."
+      });
+
+      gambarEdit.value = "";
+
+      return;
+    }
+
+    const maksimalUkuran =
+      2 * 1024 * 1024;
+
+    if (
+      file.size >
+      maksimalUkuran
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title:
+          "Ukuran Gambar Terlalu Besar",
+        text:
+          "Ukuran gambar maksimal 2MB."
+      });
+
+      gambarEdit.value = "";
+
+      return;
+    }
+
+    const reader =
+      new FileReader();
+
+    reader.onload =
+      event => {
+        previewGambarEdit.src =
+          event.target.result;
+
+        previewGambarEdit
+          .classList
+          .remove("hidden");
+      };
+
+    reader.readAsDataURL(
+      file
+    );
+  }
+);
+
+
+// ==================================================
+// 19. EVENT ACTION TABLE
 // ==================================================
 function pasangEventAction() {
 
   // ==================================================
   // VIEW
   // ==================================================
-  document.querySelectorAll(".btnView").forEach(btn => {
-    btn.onclick = () => {
-      const id = btn.dataset.id;
+  document
+    .querySelectorAll(".btnView")
+    .forEach(btn => {
 
-      const item = kelembagaanData.find(data => {
-        return String(data.id) === String(id);
-      });
+      btn.onclick = () => {
+        const id =
+          btn.dataset.id;
 
-      if (!item) {
-        Swal.fire({
-          icon: "error",
-          title: "Data Tidak Ditemukan",
-          text: "Data kelembagaan tidak ditemukan."
-        });
+        const item =
+          kelembagaanData.find(
+            data => {
+              return (
+                String(data.id) ===
+                String(id)
+              );
+            }
+          );
 
-        return;
-      }
+        if (!item) {
+          Swal.fire({
+            icon: "error",
+            title:
+              "Data Tidak Ditemukan",
+            text:
+              "Data kelembagaan tidak ditemukan."
+          });
 
-      viewNama.textContent =
-        item.nama || "-";
+          return;
+        }
 
-      viewPengertian.textContent =
-        item.pengertian || "-";
+        viewNama.textContent =
+          item.nama || "-";
 
-      viewTugas.textContent =
-        item.tugas || "-";
+        viewPengertian.textContent =
+          item.pengertian || "-";
 
-      viewTujuan.textContent =
-        item.tujuan || "-";
+        viewTugas.textContent =
+          item.tugas || "-";
 
-      if (item.gambar_url) {
-        viewGambar.src =
-          item.gambar_url;
+        viewTujuan.textContent =
+          item.tujuan || "-";
 
-        viewGambar.alt =
-          item.nama || "Gambar kelembagaan";
+        if (item.gambar_url) {
+          viewGambar.src =
+            item.gambar_url;
 
-        viewGambar.classList.remove(
-          "hidden"
+          viewGambar.alt =
+            item.nama ||
+            "Gambar kelembagaan";
+
+          viewGambar
+            .classList
+            .remove("hidden");
+        } else {
+          viewGambar.src = "";
+
+          viewGambar
+            .classList
+            .add("hidden");
+        }
+
+        openModal(
+          modalView,
+          modalBox
         );
-      } else {
-        viewGambar.src = "";
-
-        viewGambar.classList.add(
-          "hidden"
-        );
-      }
-
-      openModal(
-        modalView,
-        modalBox
-      );
-    };
-  });
+      };
+    });
 
 
   // ==================================================
   // EDIT
   // ==================================================
-  document.querySelectorAll(".btnEdit").forEach(btn => {
-    btn.onclick = () => {
-      const id = btn.dataset.id;
+  document
+    .querySelectorAll(".btnEdit")
+    .forEach(btn => {
 
-      const item = kelembagaanData.find(data => {
-        return String(data.id) === String(id);
-      });
+      btn.onclick = () => {
+        const id =
+          btn.dataset.id;
 
-      if (!item) {
-        Swal.fire({
-          icon: "error",
-          title: "Data Tidak Ditemukan",
-          text: "Data kelembagaan tidak ditemukan."
-        });
+        const item =
+          kelembagaanData.find(
+            data => {
+              return (
+                String(data.id) ===
+                String(id)
+              );
+            }
+          );
 
-        return;
-      }
+        if (!item) {
+          Swal.fire({
+            icon: "error",
+            title:
+              "Data Tidak Ditemukan",
+            text:
+              "Data kelembagaan tidak ditemukan."
+          });
 
-      // Simpan ID
-      idKelembagaanEdit =
-        item.id;
+          return;
+        }
 
-      // Isi data lama
-      namaEdit.value =
-        item.nama || "";
+        idKelembagaanEdit =
+          item.id;
 
-      pengertianEdit.value =
-        item.pengertian || "";
+        namaEdit.value =
+          item.nama || "";
 
-      tugasEdit.value =
-        item.tugas || "";
+        pengertianEdit.value =
+          item.pengertian || "";
 
-      tujuanEdit.value =
-        item.tujuan || "";
+        tugasEdit.value =
+          item.tugas || "";
 
-      // Reset input gambar
-      gambarEdit.value = "";
+        tujuanEdit.value =
+          item.tujuan || "";
 
-      // Preview gambar lama
-      if (item.gambar_url) {
-        previewGambarEdit.src =
-          item.gambar_url;
+        gambarEdit.value = "";
 
-        previewGambarEdit.classList.remove(
-          "hidden"
+        if (item.gambar_url) {
+          previewGambarEdit.src =
+            item.gambar_url;
+
+          previewGambarEdit
+            .classList
+            .remove("hidden");
+        } else {
+          previewGambarEdit.src = "";
+
+          previewGambarEdit
+            .classList
+            .add("hidden");
+        }
+
+        openModal(
+          modalEdit,
+          modalEditBox
         );
-      } else {
-        previewGambarEdit.src = "";
-
-        previewGambarEdit.classList.add(
-          "hidden"
-        );
-      }
-
-      openModal(
-        modalEdit,
-        modalEditBox
-      );
-    };
-  });
+      };
+    });
 
 
   // ==================================================
   // DELETE
   // ==================================================
-  document.querySelectorAll(".btnDelete").forEach(btn => {
-    btn.onclick = async () => {
-      const id = btn.dataset.id;
+  document
+    .querySelectorAll(".btnDelete")
+    .forEach(btn => {
 
-      const item = kelembagaanData.find(data => {
-        return String(data.id) === String(id);
-      });
+      btn.onclick =
+        async () => {
 
-      if (!item) {
-        Swal.fire({
-          icon: "error",
-          title: "Data Tidak Ditemukan",
-          text: "Data kelembagaan tidak ditemukan."
-        });
+          const id =
+            btn.dataset.id;
 
-        return;
-      }
-
-      const token =
-        getAdminToken();
-
-      if (!token) {
-        Swal.fire({
-          icon: "warning",
-          title: "Token Admin Tidak Ditemukan",
-          text: "Silakan login sebagai admin terlebih dahulu."
-        });
-
-        return;
-      }
-
-      const konfirmasi =
-        await Swal.fire({
-          title: "Yakin Hapus?",
-          html: `
-            <div style="text-align:center;">
-              <p>
-                Data kelembagaan berikut akan dihapus:
-              </p>
-
-              <p style="margin-top:10px;">
-                <b>${item.nama}</b>
-              </p>
-
-              <p style="margin-top:10px; color:#dc2626;">
-                Data yang sudah dihapus tidak dapat dikembalikan.
-              </p>
-            </div>
-          `,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Ya, Hapus",
-          cancelButtonText: "Batal",
-          confirmButtonColor: "#dc2626",
-          cancelButtonColor: "#6b7280"
-        });
-
-      if (!konfirmasi.isConfirmed) {
-        return;
-      }
-
-      try {
-        Swal.fire({
-          title: "Menghapus...",
-          text: "Data kelembagaan sedang dihapus.",
-          allowOutsideClick: false,
-          showConfirmButton: false,
-
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-
-        const response =
-          await fetch(
-            `${API_URL}/${id}`,
-            {
-              method: "DELETE",
-
-              headers: {
-                "Authorization": `Bearer ${token}`
+          const item =
+            kelembagaanData.find(
+              data => {
+                return (
+                  String(data.id) ===
+                  String(id)
+                );
               }
+            );
+
+          if (!item) {
+            Swal.fire({
+              icon: "error",
+              title:
+                "Data Tidak Ditemukan",
+              text:
+                "Data kelembagaan tidak ditemukan."
+            });
+
+            return;
+          }
+
+          const token =
+            getAdminToken();
+
+          if (!token) {
+            Swal.fire({
+              icon: "warning",
+              title:
+                "Token Admin Tidak Ditemukan",
+              text:
+                "Silakan login sebagai admin terlebih dahulu."
+            });
+
+            return;
+          }
+
+          const konfirmasi =
+            await Swal.fire({
+              title:
+                "Yakin Hapus?",
+
+              html: `
+                <div style="text-align:center;">
+                  <p>
+                    Data kelembagaan berikut akan dihapus:
+                  </p>
+
+                  <p style="margin-top:10px;">
+                    <b>${escapeHTML(item.nama)}</b>
+                  </p>
+
+                  <p
+                    style="
+                      margin-top:10px;
+                      color:#dc2626;
+                    "
+                  >
+                    Data yang sudah dihapus tidak dapat dikembalikan.
+                  </p>
+                </div>
+              `,
+
+              icon: "warning",
+
+              showCancelButton:
+                true,
+
+              confirmButtonText:
+                "Ya, Hapus",
+
+              cancelButtonText:
+                "Batal",
+
+              confirmButtonColor:
+                "#dc2626",
+
+              cancelButtonColor:
+                "#6b7280"
+            });
+
+          if (
+            !konfirmasi.isConfirmed
+          ) {
+            return;
+          }
+
+          try {
+            Swal.fire({
+              title:
+                "Menghapus...",
+
+              text:
+                "Data kelembagaan sedang dihapus.",
+
+              allowOutsideClick:
+                false,
+
+              showConfirmButton:
+                false,
+
+              didOpen: () => {
+                Swal.showLoading();
+              }
+            });
+
+            const response =
+              await fetch(
+                `${API_URL}/${id}`,
+                {
+                  method:
+                    "DELETE",
+
+                  headers: {
+                    "Authorization":
+                      `Bearer ${token}`
+                  }
+                }
+              );
+
+            const result =
+              await bacaResponseJSON(
+                response
+              );
+
+            if (!response.ok) {
+              throw new Error(
+                result.message ||
+                "Gagal menghapus kelembagaan."
+              );
             }
-          );
 
-        const result =
-          await response.json();
+            await Swal.fire({
+              title:
+                "Berhasil 🎉",
 
-        if (!response.ok) {
-          throw new Error(
-            result.message ||
-            "Gagal menghapus kelembagaan."
-          );
-        }
+              text:
+                "Data kelembagaan berhasil dihapus.",
 
-        await Swal.fire({
-          title: "Berhasil 🎉",
-          text: "Data kelembagaan berhasil dihapus.",
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false
-        });
+              icon:
+                "success",
 
-        await loadKelembagaan();
+              timer:
+                1500,
 
-      } catch (error) {
-        console.error(
-          "Error delete kelembagaan:",
-          error
-        );
+              showConfirmButton:
+                false
+            });
 
-        Swal.fire({
-          icon: "error",
-          title: "Gagal Menghapus",
-          text: error.message
-        });
-      }
-    };
-  });
+            await loadKelembagaan();
+
+          } catch (error) {
+            console.error(
+              "Error delete kelembagaan:",
+              error
+            );
+
+            Swal.fire({
+              icon:
+                "error",
+
+              title:
+                "Gagal Menghapus",
+
+              text:
+                error.message
+            });
+          }
+        };
+    });
 }
 
 
 // ==================================================
-// 18. CLICK OUTSIDE MODAL
+// 20. CLICK OUTSIDE MODAL
 // ==================================================
-function enableOutsideClick(modal, box) {
-  modal.addEventListener("click", event => {
-    if (
-      event.target === modal
-    ) {
-      closeModalFunc(
-        modal,
-        box
-      );
+function enableOutsideClick(
+  modal,
+  box
+) {
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target ===
+        modal
+      ) {
+        closeModalFunc(
+          modal,
+          box
+        );
+      }
     }
-  });
+  );
 }
 
 
@@ -818,453 +1194,799 @@ enableOutsideClick(
 
 
 // ==================================================
-// 19. SIMPAN TAMBAH KELEMBAGAAN
+// 21. SIMPAN TAMBAH KELEMBAGAAN
 // ==================================================
-document.getElementById("btnSimpanTambah").onclick = async () => {
-  const nama =
-    namaTambah.value.trim();
+document
+  .getElementById(
+    "btnSimpanTambah"
+  )
+  .onclick =
+    async () => {
 
-  const pengertian =
-    pengertianTambah.value.trim();
+      const nama =
+        namaTambah.value.trim();
 
-  const tugas =
-    tugasTambah.value.trim();
+      const pengertian =
+        pengertianTambah
+          .value
+          .trim();
 
-  const tujuan =
-    tujuanTambah.value.trim();
+      const tugas =
+        tugasTambah
+          .value
+          .trim();
 
-  const gambar =
-    gambarTambah.files[0];
+      const tujuan =
+        tujuanTambah
+          .value
+          .trim();
 
-  const kosong = [];
+      const gambar =
+        gambarTambah.files[0];
 
-  if (!nama) {
-    kosong.push("Nama");
-  }
+      const kosong = [];
 
-  if (!pengertian) {
-    kosong.push("Pengertian");
-  }
-
-  if (!tugas) {
-    kosong.push("Tugas");
-  }
-
-  if (!tujuan) {
-    kosong.push("Tujuan");
-  }
-
-  if (!gambar) {
-    kosong.push("Gambar");
-  }
-
-  if (kosong.length > 0) {
-    Swal.fire({
-      title: "Form Belum Lengkap ⚠️",
-      html: `
-        <div style="text-align:center;">
-          <p>Data berikut masih kosong:</p>
-
-          <ul style="list-style-position:inside;">
-            ${kosong
-              .map(item => `<li>${item}</li>`)
-              .join("")}
-          </ul>
-        </div>
-      `,
-      icon: "warning",
-      confirmButtonColor: "#f59e0b"
-    });
-
-    return;
-  }
-
-  const maksimalUkuran =
-    2 * 1024 * 1024;
-
-  if (gambar.size > maksimalUkuran) {
-    Swal.fire({
-      icon: "warning",
-      title: "Ukuran Gambar Terlalu Besar",
-      text: "Ukuran gambar maksimal 2MB."
-    });
-
-    return;
-  }
-
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png"
-  ];
-
-  if (!allowedTypes.includes(gambar.type)) {
-    Swal.fire({
-      icon: "warning",
-      title: "Format Gambar Tidak Valid",
-      text: "Gunakan JPG, JPEG, atau PNG."
-    });
-
-    return;
-  }
-
-  const token =
-    getAdminToken();
-
-  if (!token) {
-    Swal.fire({
-      icon: "warning",
-      title: "Token Admin Tidak Ditemukan",
-      text: "Silakan login sebagai admin terlebih dahulu."
-    });
-
-    return;
-  }
-
-  const konfirmasi =
-    await Swal.fire({
-      title: "Konfirmasi Data",
-      html: `
-        <div style="text-align:left;">
-          <p><b>Nama:</b> ${nama}</p>
-          <p><b>Pengertian:</b> ${pengertian}</p>
-          <p><b>Tugas:</b> ${tugas}</p>
-          <p><b>Tujuan:</b> ${tujuan}</p>
-          <p><b>Gambar:</b> ${gambar.name}</p>
-        </div>
-      `,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Simpan",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#3b82f6",
-      cancelButtonColor: "#6b7280"
-    });
-
-  if (!konfirmasi.isConfirmed) {
-    return;
-  }
-
-  try {
-    Swal.fire({
-      title: "Menyimpan...",
-      text: "Data kelembagaan sedang disimpan.",
-      allowOutsideClick: false,
-      showConfirmButton: false,
-
-      didOpen: () => {
-        Swal.showLoading();
+      if (!nama) {
+        kosong.push(
+          "Nama"
+        );
       }
-    });
 
-    const formData =
-      new FormData();
+      if (!pengertian) {
+        kosong.push(
+          "Pengertian"
+        );
+      }
 
-    formData.append(
-      "nama",
-      nama
-    );
+      if (!tugas) {
+        kosong.push(
+          "Tugas"
+        );
+      }
 
-    formData.append(
-      "pengertian",
-      pengertian
-    );
+      if (!tujuan) {
+        kosong.push(
+          "Tujuan"
+        );
+      }
 
-    formData.append(
-      "tugas",
-      tugas
-    );
-
-    formData.append(
-      "tujuan",
-      tujuan
-    );
-
-    formData.append(
-      "gambar",
-      gambar
-    );
-
-    const response =
-      await fetch(
-        API_URL,
-        {
-          method: "POST",
-
-          headers: {
-            "Authorization": `Bearer ${token}`
-          },
-
-          body: formData
-        }
-      );
-
-    const result =
-      await response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        result.message ||
-        "Gagal menambahkan kelembagaan."
-      );
-    }
-
-    await Swal.fire({
-      title: "Berhasil 🎉",
-      text: "Kelembagaan berhasil ditambahkan.",
-      icon: "success",
-      timer: 1500,
-      showConfirmButton: false
-    });
-
-    // Reset form
-    namaTambah.value = "";
-    pengertianTambah.value = "";
-    tugasTambah.value = "";
-    tujuanTambah.value = "";
-    gambarTambah.value = "";
-
-    closeModalFunc(
-      modalTambah,
-      modalTambahBox
-    );
-
-    await loadKelembagaan();
-
-  } catch (error) {
-    console.error(
-      "Error tambah kelembagaan:",
-      error
-    );
-
-    Swal.fire({
-      icon: "error",
-      title: "Gagal Menyimpan",
-      text: error.message
-    });
-  }
-};
+      if (!gambar) {
+        kosong.push(
+          "Gambar"
+        );
+      }
 
 
-// ==================================================
-// 20. SIMPAN EDIT KELEMBAGAAN
-// ==================================================
-document.getElementById("btnSimpanEdit").onclick = async () => {
-  const nama =
-    namaEdit.value.trim();
+      // ==================================================
+      // VALIDASI FORM
+      // ==================================================
+      if (
+        kosong.length >
+        0
+      ) {
+        Swal.fire({
+          title:
+            "Form Belum Lengkap ⚠️",
 
-  const pengertian =
-    pengertianEdit.value.trim();
+          html: `
+            <div style="text-align:center;">
+              <p>
+                Data berikut masih kosong:
+              </p>
 
-  const tugas =
-    tugasEdit.value.trim();
+              <ul
+                style="
+                  list-style-position:inside;
+                "
+              >
+                ${
+                  kosong
+                    .map(
+                      item =>
+                        `<li>${item}</li>`
+                    )
+                    .join("")
+                }
+              </ul>
+            </div>
+          `,
 
-  const tujuan =
-    tujuanEdit.value.trim();
+          icon:
+            "warning",
 
-  const gambar =
-    gambarEdit.files[0];
+          confirmButtonColor:
+            "#f59e0b"
+        });
 
-  if (!idKelembagaanEdit) {
-    Swal.fire({
-      icon: "error",
-      title: "Data Tidak Ditemukan",
-      text: "ID kelembagaan tidak ditemukan."
-    });
+        return;
+      }
 
-    return;
-  }
 
-  if (
-    !nama ||
-    !pengertian ||
-    !tugas ||
-    !tujuan
-  ) {
-    Swal.fire({
-      icon: "warning",
-      title: "Form Belum Lengkap",
-      text: "Nama, pengertian, tugas, dan tujuan wajib diisi."
-    });
+      // ==================================================
+      // VALIDASI UKURAN GAMBAR
+      // ==================================================
+      const maksimalUkuran =
+        2 * 1024 * 1024;
 
-    return;
-  }
+      if (
+        gambar.size >
+        maksimalUkuran
+      ) {
+        Swal.fire({
+          icon:
+            "warning",
 
-  // Validasi gambar jika memilih gambar baru
-  if (gambar) {
-    const maksimalUkuran =
-      2 * 1024 * 1024;
+          title:
+            "Ukuran Gambar Terlalu Besar",
 
-    if (gambar.size > maksimalUkuran) {
-      Swal.fire({
-        icon: "warning",
-        title: "Ukuran Gambar Terlalu Besar",
-        text: "Ukuran gambar maksimal 2MB."
-      });
+          text:
+            "Ukuran gambar maksimal 2MB."
+        });
 
-      return;
-    }
+        return;
+      }
 
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png"
-    ];
 
-    if (!allowedTypes.includes(gambar.type)) {
-      Swal.fire({
-        icon: "warning",
-        title: "Format Gambar Tidak Valid",
-        text: "Gunakan JPG, JPEG, atau PNG."
-      });
+      // ==================================================
+      // VALIDASI FORMAT GAMBAR
+      // ==================================================
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png"
+      ];
 
-      return;
-    }
-  }
+      if (
+        !allowedTypes.includes(
+          gambar.type
+        )
+      ) {
+        Swal.fire({
+          icon:
+            "warning",
 
-  const token =
-    getAdminToken();
+          title:
+            "Format Gambar Tidak Valid",
 
-  if (!token) {
-    Swal.fire({
-      icon: "warning",
-      title: "Token Admin Tidak Ditemukan",
-      text: "Silakan login sebagai admin terlebih dahulu."
-    });
+          text:
+            "Gunakan JPG, JPEG, atau PNG."
+        });
 
-    return;
-  }
+        return;
+      }
 
-  const konfirmasi =
-    await Swal.fire({
-      title: "Konfirmasi Perubahan",
-      html: `
-        <div style="text-align:left;">
-          <p><b>Nama:</b> ${nama}</p>
-          <p><b>Pengertian:</b> ${pengertian}</p>
-          <p><b>Tugas:</b> ${tugas}</p>
-          <p><b>Tujuan:</b> ${tujuan}</p>
 
-          <p>
-            <b>Gambar:</b>
-            ${
-              gambar
-                ? gambar.name
-                : "Tetap menggunakan gambar lama"
+      // ==================================================
+      // TOKEN
+      // ==================================================
+      const token =
+        getAdminToken();
+
+      if (!token) {
+        Swal.fire({
+          icon:
+            "warning",
+
+          title:
+            "Token Admin Tidak Ditemukan",
+
+          text:
+            "Silakan login sebagai admin terlebih dahulu."
+        });
+
+        return;
+      }
+
+
+      // ==================================================
+      // KONFIRMASI
+      // ==================================================
+      const konfirmasi =
+        await Swal.fire({
+          title:
+            "Konfirmasi Data",
+
+          html: `
+            <div style="text-align:left;">
+              <p>
+                <b>Nama:</b>
+                ${nama}
+              </p>
+
+              <p>
+                <b>Pengertian:</b>
+                ${pengertian}
+              </p>
+
+              <p>
+                <b>Tugas:</b>
+                ${tugas}
+              </p>
+
+              <p>
+                <b>Tujuan:</b>
+                ${tujuan}
+              </p>
+
+              <p>
+                <b>Gambar:</b>
+                ${gambar.name}
+              </p>
+            </div>
+          `,
+
+          icon:
+            "question",
+
+          showCancelButton:
+            true,
+
+          confirmButtonText:
+            "Ya, Simpan",
+
+          cancelButtonText:
+            "Batal",
+
+          confirmButtonColor:
+            "#3b82f6",
+
+          cancelButtonColor:
+            "#6b7280"
+        });
+
+      if (
+        !konfirmasi.isConfirmed
+      ) {
+        return;
+      }
+
+
+      // ==================================================
+      // PROSES SIMPAN
+      // ==================================================
+      try {
+        Swal.fire({
+          title:
+            "Menyimpan...",
+
+          text:
+            "Data kelembagaan sedang disimpan.",
+
+          allowOutsideClick:
+            false,
+
+          showConfirmButton:
+            false,
+
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+
+        // ==================================================
+        // FORM DATA
+        // ==================================================
+        const formData =
+          new FormData();
+
+        formData.append(
+          "nama",
+          nama
+        );
+
+        formData.append(
+          "pengertian",
+          pengertian
+        );
+
+        formData.append(
+          "tugas",
+          tugas
+        );
+
+        formData.append(
+          "tujuan",
+          tujuan
+        );
+
+        formData.append(
+          "gambar",
+          gambar
+        );
+
+
+        // ==================================================
+        // FETCH POST
+        // ==================================================
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method:
+                "POST",
+
+              headers: {
+                "Authorization":
+                  `Bearer ${token}`
+              },
+
+              body:
+                formData
             }
-          </p>
-        </div>
-      `,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Simpan",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#3b82f6",
-      cancelButtonColor: "#6b7280"
-    });
+          );
 
-  if (!konfirmasi.isConfirmed) {
-    return;
-  }
 
-  try {
-    Swal.fire({
-      title: "Menyimpan Perubahan...",
-      text: "Data kelembagaan sedang diperbarui.",
-      allowOutsideClick: false,
-      showConfirmButton: false,
+        // ==================================================
+        // RESPONSE
+        // ==================================================
+        const result =
+          await bacaResponseJSON(
+            response
+          );
 
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
-
-    const formData =
-      new FormData();
-
-    formData.append(
-      "nama",
-      nama
-    );
-
-    formData.append(
-      "pengertian",
-      pengertian
-    );
-
-    formData.append(
-      "tugas",
-      tugas
-    );
-
-    formData.append(
-      "tujuan",
-      tujuan
-    );
-
-    // Gambar tidak wajib diganti
-    if (gambar) {
-      formData.append(
-        "gambar",
-        gambar
-      );
-    }
-
-    const response =
-      await fetch(
-        `${API_URL}/${idKelembagaanEdit}`,
-        {
-          method: "PUT",
-
-          headers: {
-            "Authorization": `Bearer ${token}`
-          },
-
-          body: formData
+        if (
+          !response.ok
+        ) {
+          throw new Error(
+            result.message ||
+            "Gagal menambahkan kelembagaan."
+          );
         }
-      );
 
-    const result =
-      await response.json();
 
-    if (!response.ok) {
-      throw new Error(
-        result.message ||
-        "Gagal memperbarui kelembagaan."
-      );
-    }
+        // ==================================================
+        // SUCCESS
+        // ==================================================
+        await Swal.fire({
+          title:
+            "Berhasil 🎉",
 
-    await Swal.fire({
-      title: "Berhasil 🎉",
-      text: "Kelembagaan berhasil diperbarui.",
-      icon: "success",
-      timer: 1500,
-      showConfirmButton: false
-    });
+          text:
+            result.message ||
+            "Kelembagaan berhasil ditambahkan.",
 
-    closeModalFunc(
-      modalEdit,
-      modalEditBox
-    );
+          icon:
+            "success",
 
-    idKelembagaanEdit = null;
+          timer:
+            1500,
 
-    await loadKelembagaan();
+          showConfirmButton:
+            false
+        });
 
-  } catch (error) {
-    console.error(
-      "Error edit kelembagaan:",
-      error
-    );
 
-    Swal.fire({
-      icon: "error",
-      title: "Gagal Memperbarui",
-      text: error.message
-    });
-  }
-};
+        // ==================================================
+        // RESET FORM
+        // ==================================================
+        namaTambah.value =
+          "";
+
+        pengertianTambah.value =
+          "";
+
+        tugasTambah.value =
+          "";
+
+        tujuanTambah.value =
+          "";
+
+        gambarTambah.value =
+          "";
+
+
+        // ==================================================
+        // CLOSE MODAL
+        // ==================================================
+        closeModalFunc(
+          modalTambah,
+          modalTambahBox
+        );
+
+
+        // ==================================================
+        // REFRESH DATA
+        // ==================================================
+        await loadKelembagaan();
+
+      } catch (error) {
+        console.error(
+          "Error tambah kelembagaan:",
+          error
+        );
+
+        Swal.fire({
+          icon:
+            "error",
+
+          title:
+            "Gagal Menyimpan",
+
+          text:
+            error.message
+        });
+      }
+    };
 
 
 // ==================================================
-// 21. LOAD DATA SAAT HALAMAN DIBUKA
+// 22. SIMPAN EDIT KELEMBAGAAN
+// ==================================================
+document
+  .getElementById(
+    "btnSimpanEdit"
+  )
+  .onclick =
+    async () => {
+
+      const nama =
+        namaEdit
+          .value
+          .trim();
+
+      const pengertian =
+        pengertianEdit
+          .value
+          .trim();
+
+      const tugas =
+        tugasEdit
+          .value
+          .trim();
+
+      const tujuan =
+        tujuanEdit
+          .value
+          .trim();
+
+      const gambar =
+        gambarEdit.files[0];
+
+
+      // ==================================================
+      // VALIDASI ID
+      // ==================================================
+      if (
+        !idKelembagaanEdit
+      ) {
+        Swal.fire({
+          icon:
+            "error",
+
+          title:
+            "Data Tidak Ditemukan",
+
+          text:
+            "ID kelembagaan tidak ditemukan."
+        });
+
+        return;
+      }
+
+
+      // ==================================================
+      // VALIDASI FORM
+      // ==================================================
+      if (
+        !nama ||
+        !pengertian ||
+        !tugas ||
+        !tujuan
+      ) {
+        Swal.fire({
+          icon:
+            "warning",
+
+          title:
+            "Form Belum Lengkap",
+
+          text:
+            "Nama, pengertian, tugas, dan tujuan wajib diisi."
+        });
+
+        return;
+      }
+
+
+      // ==================================================
+      // VALIDASI GAMBAR BARU
+      // ==================================================
+      if (gambar) {
+        const maksimalUkuran =
+          2 * 1024 * 1024;
+
+        if (
+          gambar.size >
+          maksimalUkuran
+        ) {
+          Swal.fire({
+            icon:
+              "warning",
+
+            title:
+              "Ukuran Gambar Terlalu Besar",
+
+            text:
+              "Ukuran gambar maksimal 2MB."
+          });
+
+          return;
+        }
+
+        const allowedTypes = [
+          "image/jpeg",
+          "image/png"
+        ];
+
+        if (
+          !allowedTypes.includes(
+            gambar.type
+          )
+        ) {
+          Swal.fire({
+            icon:
+              "warning",
+
+            title:
+              "Format Gambar Tidak Valid",
+
+            text:
+              "Gunakan JPG, JPEG, atau PNG."
+          });
+
+          return;
+        }
+      }
+
+
+      // ==================================================
+      // TOKEN
+      // ==================================================
+      const token =
+        getAdminToken();
+
+      if (!token) {
+        Swal.fire({
+          icon:
+            "warning",
+
+          title:
+            "Token Admin Tidak Ditemukan",
+
+          text:
+            "Silakan login sebagai admin terlebih dahulu."
+        });
+
+        return;
+      }
+
+
+      // ==================================================
+      // KONFIRMASI
+      // ==================================================
+      const konfirmasi =
+        await Swal.fire({
+          title:
+            "Konfirmasi Perubahan",
+
+          html: `
+            <div style="text-align:left;">
+              <p>
+                <b>Nama:</b>
+                ${nama}
+              </p>
+
+              <p>
+                <b>Pengertian:</b>
+                ${pengertian}
+              </p>
+
+              <p>
+                <b>Tugas:</b>
+                ${tugas}
+              </p>
+
+              <p>
+                <b>Tujuan:</b>
+                ${tujuan}
+              </p>
+
+              <p>
+                <b>Gambar:</b>
+                ${
+                  gambar
+                    ? gambar.name
+                    : "Tetap menggunakan gambar lama"
+                }
+              </p>
+            </div>
+          `,
+
+          icon:
+            "question",
+
+          showCancelButton:
+            true,
+
+          confirmButtonText:
+            "Ya, Simpan",
+
+          cancelButtonText:
+            "Batal",
+
+          confirmButtonColor:
+            "#3b82f6",
+
+          cancelButtonColor:
+            "#6b7280"
+        });
+
+      if (
+        !konfirmasi.isConfirmed
+      ) {
+        return;
+      }
+
+
+      // ==================================================
+      // PROSES UPDATE
+      // ==================================================
+      try {
+        Swal.fire({
+          title:
+            "Menyimpan Perubahan...",
+
+          text:
+            "Data kelembagaan sedang diperbarui.",
+
+          allowOutsideClick:
+            false,
+
+          showConfirmButton:
+            false,
+
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+
+        // ==================================================
+        // FORM DATA
+        // ==================================================
+        const formData =
+          new FormData();
+
+        formData.append(
+          "nama",
+          nama
+        );
+
+        formData.append(
+          "pengertian",
+          pengertian
+        );
+
+        formData.append(
+          "tugas",
+          tugas
+        );
+
+        formData.append(
+          "tujuan",
+          tujuan
+        );
+
+        if (gambar) {
+          formData.append(
+            "gambar",
+            gambar
+          );
+        }
+
+
+        // ==================================================
+        // FETCH PUT
+        // ==================================================
+        const response =
+          await fetch(
+            `${API_URL}/${idKelembagaanEdit}`,
+            {
+              method:
+                "PUT",
+
+              headers: {
+                "Authorization":
+                  `Bearer ${token}`
+              },
+
+              body:
+                formData
+            }
+          );
+
+
+        // ==================================================
+        // RESPONSE
+        // ==================================================
+        const result =
+          await bacaResponseJSON(
+            response
+          );
+
+        if (
+          !response.ok
+        ) {
+          throw new Error(
+            result.message ||
+            "Gagal memperbarui kelembagaan."
+          );
+        }
+
+
+        // ==================================================
+        // SUCCESS
+        // ==================================================
+        await Swal.fire({
+          title:
+            "Berhasil 🎉",
+
+          text:
+            result.message ||
+            "Kelembagaan berhasil diperbarui.",
+
+          icon:
+            "success",
+
+          timer:
+            1500,
+
+          showConfirmButton:
+            false
+        });
+
+
+        // ==================================================
+        // CLOSE MODAL
+        // ==================================================
+        closeModalFunc(
+          modalEdit,
+          modalEditBox
+        );
+
+        idKelembagaanEdit =
+          null;
+
+        gambarEdit.value =
+          "";
+
+
+        // ==================================================
+        // REFRESH DATA
+        // ==================================================
+        await loadKelembagaan();
+
+      } catch (error) {
+        console.error(
+          "Error edit kelembagaan:",
+          error
+        );
+
+        Swal.fire({
+          icon:
+            "error",
+
+          title:
+            "Gagal Memperbarui",
+
+          text:
+            error.message
+        });
+      }
+    };
+
+
+// ==================================================
+// 23. LOAD DATA SAAT HALAMAN DIBUKA
 // ==================================================
 loadKelembagaan();

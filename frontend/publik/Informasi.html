@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Informasi | Website Desa Sumorame</title>
   <link rel="icon" href="img/logo3.png?v=20260824-1" type="image/png">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link rel="stylesheet" href="css/informasi.css">
+  <link rel="stylesheet" href="css/informasi.css?v=20260826-1">
   <link rel="stylesheet" href="css/hero-responsive.css?v=20260825-1">
 
   <!-- Tailwind Config -->
@@ -55,7 +56,7 @@
 
       <!-- NAVBAR -->
       <nav class="hidden md:flex items-center font-medium text-green-900">
-        <a href="index.html" class="nav-item relative px-5 font-bold">Profile Desa</a>
+        <a href="Index.html" class="nav-item relative px-5 font-bold">Profile Desa</a>
         <div class="h-5 w-[1px] bg-gray-400"></div>
 
         <a href="PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
@@ -162,9 +163,15 @@
               <span>Admin Desa</span>
             </div>
 
+            <!-- TANGGAL -->
             <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-base">calendar_today</span>
-              <span id="heroTanggal">02 Agustus 2026</span>
+              <span class="material-symbols-outlined text-base">
+                calendar_today
+              </span>
+
+              <span id="heroTanggal">
+                -
+              </span>
             </div>
           </div>  
       </div>
@@ -274,5 +281,6 @@
 
   <script src="js/api-config.js"></script>
   <script src="js/informasi.js"></script>
+  <script src="js/header-scroll.js?v=20260826-1"></script>
 </body>
 </html>

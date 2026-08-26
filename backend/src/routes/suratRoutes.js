@@ -6,10 +6,10 @@ const {
   updateStatusSurat,
   hapusSurat,
 } = require("../controllers/persuratanController");
-const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
+const { verifyToken, requireRole, requireAdmin } = require("../middleware/authMiddleware");
 
 // Route warga (sudah ada sebelumnya)
-router.post("/ajukan", verifyToken, ajukanSurat);
+router.post("/ajukan", verifyToken, requireRole("warga"), ajukanSurat);
 
 // Route Admin CMS
 router.get("/admin", verifyToken, requireAdmin, getSemuaSurat);

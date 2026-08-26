@@ -7,19 +7,25 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 2 * 1024 * 1024, files: 2 },
   fileFilter(req, file, callback) {
-    const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const allowedByField = {
+      file_bukti: ["image/jpeg", "image/png", "application/pdf"],
+      lampiran_gambar: ["image/jpeg", "image/png"],
+      lampiran_file: ["application/pdf"],
+    };
+    const allowedTypes = allowedByField[file.fieldname] || [];
     if (!allowedTypes.includes(file.mimetype)) {
-      return callback(new Error("Lampiran harus JPG, PNG, atau PDF maksimal 2 MB."));
+      return callback(new Error("Jenis lampiran tidak sesuai dengan kolom upload atau melebihi 2 MB."));
     }
     return callback(null, true);
   },
 });
 
-const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
+const { verifyToken, requireRole, requireAdmin } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 const { buatAduan, getSemuaAduan, tanggapiAduan, hapusAduan } = require('../controllers/aduanController');
 
 // 1. Rute POST (Warga) -> HARUS ADA upload.single("file_bukti")
-router.post("/", verifyToken, upload.single("file_bukti"), buatAduan);
+router.post("/", verifyToken, requireRole("warga"), upload.single("file_bukti"), verifyUploadSignatures, buatAduan);
 
 // 2. Rute GET (Admin)
 router.get("/", verifyToken, requireAdmin, getSemuaAduan);
@@ -28,7 +34,7 @@ router.get("/", verifyToken, requireAdmin, getSemuaAduan);
 router.put("/:id", verifyToken, requireAdmin, upload.fields([
   { name: 'lampiran_gambar', maxCount: 1 },
   { name: 'lampiran_file', maxCount: 1 }
-]), tanggapiAduan);
+]), verifyUploadSignatures, tanggapiAduan);
 
 router.delete('/:id', verifyToken, requireAdmin, hapusAduan);
 

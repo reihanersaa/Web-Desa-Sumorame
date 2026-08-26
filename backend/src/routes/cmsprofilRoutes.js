@@ -14,6 +14,7 @@ const {
   verifyToken,
   requireAdmin
 } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 
 
 // ==================================================
@@ -66,13 +67,15 @@ router.get(
 // ==================================================
 // 🚨 Menerima 2 file sekaligus: 'gambar' dan 'foto_kades'
 router.post(
-    "/",
-    verifyToken,
-    requireAdmin,
+  "/",
+  verifyToken,
+  requireAdmin,
   upload.fields([
     { name: 'gambar', maxCount: 1 },
-    { name: 'foto_kades', maxCount: 1 }
+    { name: 'foto_kades', maxCount: 1 },
+    { name: 'gambar_modal', maxCount: 1 }
   ]),
+  verifyUploadSignatures,
   createCmsProfil
 );
 
@@ -84,13 +87,15 @@ router.post(
 // ==================================================
 // 🚨 Menerima 2 file sekaligus: 'gambar' dan 'foto_kades'
 router.put(
-    "/:id",
-    verifyToken,
-    requireAdmin,
+  "/:id",
+  verifyToken,
+  requireAdmin,
   upload.fields([
     { name: 'gambar', maxCount: 1 },
-    { name: 'foto_kades', maxCount: 1 }
+    { name: 'foto_kades', maxCount: 1 },
+    { name: 'gambar_modal', maxCount: 1 }
   ]),
+  verifyUploadSignatures,
   updateCmsProfil
 );
 
@@ -101,9 +106,9 @@ router.put(
 // ADMIN
 // ==================================================
 router.delete(
-    "/:id",
-    verifyToken,
-    requireAdmin,
+  "/:id",
+  verifyToken,
+  requireAdmin,
   deleteCmsProfil
 );
 

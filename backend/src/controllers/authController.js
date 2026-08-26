@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const registerWarga = async (req, res) => {
   try {
-    const {
+    let {
       nik,
       no_kk,
       nama_lengkap,
@@ -17,6 +17,11 @@ const registerWarga = async (req, res) => {
       password,
       confirm_password,
     } = req.body;
+
+    nik = String(nik || "").trim();
+    no_kk = String(no_kk || "").trim();
+    no_hp = String(no_hp || "").trim();
+    nama_lengkap = String(nama_lengkap || "").trim();
 
     // 1. Validasi Kelengkapan Field
     if (
@@ -65,27 +70,40 @@ const registerWarga = async (req, res) => {
       });
     }
 
-    if (String(password).length < 8) {
+    const passwordBytes = Buffer.byteLength(String(password), "utf8");
+    if (passwordBytes < 8 || passwordBytes > 72) {
       return res.status(400).json({
         success: false,
-        message: "Password minimal 8 karakter.",
+        message: "Password harus berukuran 8 sampai 72 byte.",
       });
     }
 
     // 4. Cek Pendaftaran Ganda (NIK / Email)
-    const { data: existingUser, error: checkError } = await supabase
+    const { data: existingNik, error: nikCheckError } = await supabase
       .from("users")
-      .select("nik, email")
-      .or(`nik.eq.${nik},email.eq.${normalizedEmail}`)
+      .select("nik")
+      .eq("nik", nik)
       .maybeSingle();
+    if (nikCheckError) throw nikCheckError;
 
-    if (checkError) throw checkError;
-
-    if (existingUser) {
-      const field = existingUser.nik === nik ? "NIK" : "Email";
+    if (existingNik) {
       return res.status(409).json({
         success: false,
-        message: `${field} tersebut sudah terdaftar dalam sistem.`,
+        message: "NIK atau email tersebut sudah terdaftar dalam sistem.",
+      });
+    }
+
+    const { data: existingEmail, error: emailCheckError } = await supabase
+      .from("users")
+      .select("email")
+      .eq("email", normalizedEmail)
+      .maybeSingle();
+    if (emailCheckError) throw emailCheckError;
+
+    if (existingEmail) {
+      return res.status(409).json({
+        success: false,
+        message: "NIK atau email tersebut sudah terdaftar dalam sistem.",
       });
     }
 
@@ -134,7 +152,8 @@ const registerWarga = async (req, res) => {
 
 const loginWarga = async (req, res) => {
   try {
-    const { nik, password } = req.body;
+    const nik = String(req.body.nik || "").trim();
+    const password = req.body.password;
 
     // 1. Validasi NIK dan password wajib diisi
     if (!nik || !password) {
@@ -154,7 +173,7 @@ const loginWarga = async (req, res) => {
     if (error || !user) {
       return res.status(401).json({
         success: false,
-        message: "NIK tidak ditemukan atau salah.",
+        message: "NIK atau password salah.",
       });
     }
 
@@ -163,7 +182,14 @@ const loginWarga = async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(401).json({
         success: false,
-        message: "Password yang Anda masukkan salah.",
+        message: "NIK atau password salah.",
+      });
+    }
+
+    if (user.role !== "warga") {
+      return res.status(403).json({
+        success: false,
+        message: "Gunakan halaman login admin untuk akun ini.",
       });
     }
 
@@ -202,7 +228,8 @@ const loginWarga = async (req, res) => {
 // logika login admin (Menggunakan NIK & Password)
 const loginAdmin = async (req, res) => {
   try {
-    const { nik, password } = req.body; // Sekarang ambil NIK & Password dari frontend
+    const nik = String(req.body.nik || "").trim();
+    const password = req.body.password;
 
     // 1. Validasi input
     if (!nik || !password) {
@@ -222,24 +249,24 @@ const loginAdmin = async (req, res) => {
     if (error || !user) {
       return res.status(401).json({
         success: false,
-        message: "Akun admin tidak ditemukan atau NIK salah.",
+        message: "NIK atau password admin salah.",
       });
     }
 
-    // 3. CEK KHUSUS: Pastikan role-nya adalah 'admin'
-    if (user.role !== "admin") {
-      return res.status(403).json({
-        success: false,
-        message: "Akses ditolak. NIK ini terdaftar sebagai Warga, bukan Admin!",
-      });
-    }
-
-    // 4. Cek password
+    // 3. Cek password sebelum role agar endpoint tidak membocorkan jenis akun.
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(401).json({
         success: false,
-        message: "Password admin salah.",
+        message: "NIK atau password admin salah.",
+      });
+    }
+
+    // 4. Pastikan akun yang kredensialnya benar memang berperan admin.
+    if (user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Akses ditolak. Akun ini bukan akun admin.",
       });
     }
 
@@ -247,7 +274,7 @@ const loginAdmin = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, nik: user.nik, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "2h" },
     );
 
     return res.status(200).json({

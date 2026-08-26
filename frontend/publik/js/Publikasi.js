@@ -680,7 +680,7 @@ function initScrollRevealCards() {
 
 
 // ======================================================
-// HEADER HILANG HANYA DI PALING ATAS
+// HEADER HILANG SAAT SCROLL TURUN, MUNCUL SAAT SCROLL NAIK
 // ======================================================
 
 const mainHeader =
@@ -689,35 +689,32 @@ const mainHeader =
 const heroSection =
   document.getElementById("heroSection");
 
+let lastScrollY = Math.max(window.scrollY, 0);
 
 window.addEventListener(
   "scroll",
   function () {
-    if (window.scrollY <= 0) {
-      // Navbar hilang
-      mainHeader.classList.add(
-        "header-hidden",
-      );
+    const currentScrollY = Math.max(window.scrollY, 0);
 
-
-      // Hero langsung naik menutup celah
-      heroSection.classList.add(
-        "hero-top",
-      );
-
-    } else {
-      // Navbar muncul
+    if (currentScrollY <= 0 || currentScrollY < lastScrollY) {
       mainHeader.classList.remove(
         "header-hidden",
       );
-
-
-      // Hero kembali ke posisi normal
       heroSection.classList.remove(
         "hero-top",
       );
+    } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      mainHeader.classList.add(
+        "header-hidden",
+      );
+      heroSection.classList.add(
+        "hero-top",
+      );
     }
+
+    lastScrollY = currentScrollY;
   },
+  { passive: true },
 );
 
 

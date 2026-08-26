@@ -15,6 +15,7 @@ const {
   verifyToken,
   requireAdmin
 } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 
 
 // ==================================================
@@ -116,6 +117,7 @@ router.put(
   verifyToken,
   requireAdmin,
   uploadStruktur.single("struktur"),
+  verifyUploadSignatures,
   updateStrukturPPID
 );
 
@@ -150,6 +152,7 @@ router.post(
   verifyToken,
   requireAdmin,
   uploadPDF.single("file_pdf"),
+  verifyUploadSignatures,
   createPDFPPID
 );
 

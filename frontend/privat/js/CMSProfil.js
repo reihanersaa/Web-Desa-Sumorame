@@ -4,6 +4,12 @@
 
 const API_URL = `${window.API_BASE_URL}/cmsprofil`;
 
+function escapeHTML(value = "") {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
+
 function getAdminToken() {
   return localStorage.getItem("token");
 }
@@ -14,6 +20,10 @@ const formCmsProfil = document.getElementById("formCmsProfil");
 
 const inputFotoKadesAsli = document.getElementById("inputFotoKadesAsli");
 const previewFotoKades = document.getElementById("previewFotoKades");
+
+// 🚨 Deklarasi untuk Modal Pengumuman
+const inputGambarModal = document.getElementById("inputGambarModal");
+const previewGambarModal = document.getElementById("previewGambarModal");
 
 // ==================================================
 // FUNGSI: MENGHITUNG ULANG NOMOR SLIDE
@@ -36,24 +46,40 @@ async function loadCmsProfil() {
     const response = await fetch(API_URL);
     const result = await response.json();
 
-    wadahSlideDynamic.innerHTML = ""; 
+    wadahSlideDynamic.innerHTML = "";
 
     if (result.success && result.data.length > 0) {
       let data = result.data;
-      
+
       data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-      
-      // 🚨 MENGISI INPUT NAMA KADES DARI DATABASE
+
       const inputNamaKades = document.getElementById("namaKades");
-      if(inputNamaKades) inputNamaKades.value = data[0].nama_kades || "";
-      
+      if (inputNamaKades) inputNamaKades.value = data[0].nama_kades || "";
+
       document.getElementById("sambutan").value = data[0].sambutan || "";
       document.getElementById("visi").value = data[0].visi || "";
       document.getElementById("misi").value = data[0].misi || "";
-      
-      if (data[0].foto_kades_url) previewFotoKades.src = data[0].foto_kades_url;
+      document.getElementById("peraturanJudul").value =
+        data[0].peraturan_judul || "";
+      document.getElementById("peraturanIsi").value =
+        data[0].peraturan_isi || "";
 
-      data.forEach(item => {
+      if (data[0].foto_kades_url && previewFotoKades)
+        previewFotoKades.src = data[0].foto_kades_url;
+
+      // 🚨 Tampilkan Preview Gambar Modal dari Database
+      if (data[0].gambar_modal_url && previewGambarModal) {
+        previewGambarModal.src = data[0].gambar_modal_url;
+      }
+
+      const inputPeraturanJudul = document.getElementById("peraturanJudul");
+      const inputPeraturanIsi = document.getElementById("peraturanIsi");
+      if (inputPeraturanJudul)
+        inputPeraturanJudul.value = data[0].peraturan_judul || "";
+      if (inputPeraturanIsi)
+        inputPeraturanIsi.value = data[0].peraturan_isi || "";
+
+      data.forEach((item) => {
         buatKartuSlide(item);
       });
     } else {
@@ -71,10 +97,12 @@ function buatKartuSlide(data) {
   const idDb = data ? data.id : "";
   const judul = data && data.judul_hero ? data.judul_hero : "";
   const desk = data && data.deskripsi_hero ? data.deskripsi_hero : "";
-  const imgUrl = data && data.gambar_url ? data.gambar_url : "../img/default-avatar.png";
+  const imgUrl =
+    data && data.gambar_url ? data.gambar_url : "/img/kepala.png";
 
   const card = document.createElement("div");
-  card.className = "slide-card bg-white p-5 rounded-xl border border-gray-200 shadow-sm relative fade-up";
+  card.className =
+    "slide-card bg-white p-5 rounded-xl border border-gray-200 shadow-sm relative fade-up";
   card.setAttribute("data-id", idDb);
 
   card.innerHTML = `
@@ -87,7 +115,7 @@ function buatKartuSlide(data) {
     <div class="flex flex-col md:flex-row gap-5">
       <div class="w-full md:w-1/3">
         <div class="w-full h-40 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center overflow-hidden mb-3">
-          <img class="preview-img w-full h-full object-cover" src="${imgUrl}">
+          <img class="preview-img w-full h-full object-cover" src="${escapeHTML(imgUrl)}">
         </div>
         <input type="file" class="input-file w-full text-sm text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*">
         <p class="text-[10px] text-gray-400 mt-1">*Abaikan jika tidak ingin mengubah gambar.</p>
@@ -96,11 +124,11 @@ function buatKartuSlide(data) {
       <div class="w-full md:w-2/3 space-y-3">
         <div>
           <label class="block text-xs font-semibold text-gray-600 mb-1">Judul Hero</label>
-          <input type="text" class="input-judul w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" value="${judul}" placeholder="Tuliskan judul slide..." required>
+          <input type="text" class="input-judul w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" value="${escapeHTML(judul)}" placeholder="Tuliskan judul slide..." required>
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-600 mb-1">Deskripsi Hero</label>
-          <textarea class="input-deskripsi w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-y" rows="3" placeholder="Tuliskan deskripsi singkat..." required>${desk}</textarea>
+          <textarea class="input-deskripsi w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-y" rows="3" placeholder="Tuliskan deskripsi singkat..." required>${escapeHTML(desk)}</textarea>
         </div>
       </div>
     </div>
@@ -108,7 +136,7 @@ function buatKartuSlide(data) {
 
   const fileInput = card.querySelector(".input-file");
   const previewImg = card.querySelector(".preview-img");
-  fileInput.addEventListener("change", function(e) {
+  fileInput.addEventListener("change", function (e) {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
@@ -117,7 +145,9 @@ function buatKartuSlide(data) {
         return;
       }
       const reader = new FileReader();
-      reader.onload = (e) => { previewImg.src = e.target.result; };
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+      };
       reader.readAsDataURL(file);
     }
   });
@@ -131,32 +161,36 @@ function buatKartuSlide(data) {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Hapus",
-        confirmButtonColor: "#dc2626"
+        confirmButtonColor: "#dc2626",
       });
-      
+
       if (konfirmasi.isConfirmed) {
         try {
-          Swal.fire({ title: "Menghapus...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+          Swal.fire({
+            title: "Menghapus...",
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+          });
           const response = await fetch(`${API_URL}/${idDb}`, {
             method: "DELETE",
-            headers: { "Authorization": `Bearer ${getAdminToken()}` }
+            headers: { Authorization: `Bearer ${getAdminToken()}` },
           });
           if (!response.ok) throw new Error("Gagal menghapus!");
           Swal.close();
-          card.remove(); 
-          updatePenomoranSlide(); 
+          card.remove();
+          updatePenomoranSlide();
         } catch (error) {
           Swal.fire("Error", error.message, "error");
         }
       }
     } else {
       card.remove();
-      updatePenomoranSlide(); 
+      updatePenomoranSlide();
     }
   });
 
   wadahSlideDynamic.appendChild(card);
-  updatePenomoranSlide(); 
+  updatePenomoranSlide();
 }
 
 // ==================================================
@@ -167,21 +201,44 @@ btnTambahSlide.addEventListener("click", () => {
 });
 
 // ==================================================
-// 4. EVENT PREVIEW FOTO KADES LOKAL
+// 4. EVENT PREVIEW GAMBAR (KADES & MODAL)
 // ==================================================
-inputFotoKadesAsli.addEventListener("change", function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    if (file.size > 2 * 1024 * 1024) {
-      Swal.fire("Peringatan", "Foto Kepala Desa maksimal 2 MB!", "warning");
-      inputFotoKadesAsli.value = "";
-      return;
+if (inputFotoKadesAsli) {
+  inputFotoKadesAsli.addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        Swal.fire("Peringatan", "Foto Kepala Desa maksimal 2 MB!", "warning");
+        inputFotoKadesAsli.value = "";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewFotoKades.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
-    const reader = new FileReader();
-    reader.onload = (e) => { previewFotoKades.src = e.target.result; };
-    reader.readAsDataURL(file);
-  }
-});
+  });
+}
+
+// 🚨 Event Preview Gambar Modal
+if (inputGambarModal) {
+  inputGambarModal.addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        Swal.fire("Peringatan", "Gambar Pengumuman maksimal 2 MB!", "warning");
+        inputGambarModal.value = "";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewGambarModal.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
 
 // ==================================================
 // 5. EVENT SUBMIT FORM (SIMPAN MASSAL)
@@ -193,23 +250,44 @@ formCmsProfil.addEventListener("submit", async (e) => {
 
   const cards = document.querySelectorAll(".slide-card");
   if (cards.length === 0) {
-    return Swal.fire("Peringatan", "Anda harus menyisakan minimal 1 Slider!", "warning");
+    return Swal.fire(
+      "Peringatan",
+      "Anda harus menyisakan minimal 1 Slider!",
+      "warning",
+    );
   }
 
-  // 🚨 PENANGKAP DATA: Pastikan ID elemen di HTML sesuai dengan ini
   const elementNamaKades = document.getElementById("namaKades");
   const valNamaKades = elementNamaKades ? elementNamaKades.value.trim() : "";
   const valSambutan = document.getElementById("sambutan").value.trim();
   const valVisi = document.getElementById("visi").value.trim();
   const valMisi = document.getElementById("misi").value.trim();
-  const fileFotoKades = inputFotoKadesAsli.files[0];
+  const valPeraturanJudul = document
+    .getElementById("peraturanJudul")
+    .value.trim();
+  const valPeraturanIsi = document.getElementById("peraturanIsi").value.trim();
 
-  // Cegat jika Nama Kades kosong sebelum dikirim ke server (mencegah error 400)
+  const elPeraturanJudul = document.getElementById("peraturanJudul");
+  const elPeraturanIsi = document.getElementById("peraturanIsi");
+
+  // Tangkap file tambahan
+  const fileFotoKades = inputFotoKadesAsli ? inputFotoKadesAsli.files[0] : null;
+  const fileGambarModal = inputGambarModal ? inputGambarModal.files[0] : null;
+
   if (!valNamaKades) {
-    return Swal.fire("Peringatan", "Kolom Nama Kepala Desa wajib diisi!", "warning");
+    return Swal.fire(
+      "Peringatan",
+      "Kolom Nama Kepala Desa wajib diisi!",
+      "warning",
+    );
   }
 
-  Swal.fire({ title: "Menyimpan Data...", html: "Mohon tunggu sebentar...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+  Swal.fire({
+    title: "Menyimpan Data...",
+    html: "Mohon tunggu sebentar...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
 
   let successCount = 0;
   let errors = [];
@@ -222,30 +300,38 @@ formCmsProfil.addEventListener("submit", async (e) => {
     const file = card.querySelector(".input-file").files[0];
 
     if (!id && !file) {
-      errors.push(`Slide #${i+1} batal disimpan: Gambar Slider wajib diisi.`);
+      errors.push(`Slide #${i + 1} batal disimpan: Gambar Slider wajib diisi.`);
       continue;
     }
 
     const formData = new FormData();
     formData.append("judul_hero", judul);
     formData.append("deskripsi_hero", desk);
-    formData.append("nama_kades", valNamaKades); // 🚨 DATA DIKIRIM KE BACKEND
+    formData.append("nama_kades", valNamaKades);
     formData.append("sambutan", valSambutan);
     formData.append("visi", valVisi);
     formData.append("misi", valMisi);
+    formData.append("peraturan_judul", valPeraturanJudul);
+    formData.append("peraturan_isi", valPeraturanIsi);
+
+    // 🚨 DATA GAMBAR DI-APPEND SETELAH FORMDATA DIBUAT (DI DALAM LOOP)
     if (file) formData.append("gambar", file);
     if (fileFotoKades) formData.append("foto_kades", fileFotoKades);
+    if (fileGambarModal) formData.append("gambar_modal", fileGambarModal);
 
     const url = id ? `${API_URL}/${id}` : API_URL;
     const method = id ? "PUT" : "POST";
 
     try {
-      const res = await fetch(url, { method, headers: { "Authorization": `Bearer ${token}` }, body: formData });
-      
-      // Tangkap pesan error spesifik dari backend jika gagal
+      const res = await fetch(url, {
+        method,
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
       if (!res.ok) {
-          const resData = await res.json();
-          throw new Error(resData.message || `Gagal menyimpan slide #${i+1}`);
+        const resData = await res.json();
+        throw new Error(resData.message || `Gagal menyimpan slide #${i + 1}`);
       }
       successCount++;
     } catch (err) {
@@ -254,13 +340,22 @@ formCmsProfil.addEventListener("submit", async (e) => {
   }
 
   if (errors.length > 0) {
-    Swal.fire("Selesai dengan Catatan", `Berhasil menyimpan: ${successCount} slide.<br>Gagal: ${errors.join(", ")}`, "warning");
+    Swal.fire(
+      "Selesai dengan Catatan",
+      `Berhasil menyimpan: ${successCount} slide.<br>Gagal: ${errors.join(", ")}`,
+      "warning",
+    );
   } else {
-    Swal.fire("Berhasil", "Seluruh data Beranda berhasil diperbarui!", "success");
-    inputFotoKadesAsli.value = ""; 
+    Swal.fire(
+      "Berhasil",
+      "Seluruh data Beranda berhasil diperbarui!",
+      "success",
+    );
+    if (inputFotoKadesAsli) inputFotoKadesAsli.value = "";
+    if (inputGambarModal) inputGambarModal.value = "";
   }
 
-  loadCmsProfil(); 
+  loadCmsProfil();
 });
 
 // Load awal

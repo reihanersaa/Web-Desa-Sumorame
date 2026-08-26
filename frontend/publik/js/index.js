@@ -184,6 +184,51 @@ function escapeProdukHTML(value = "") {
   return element.innerHTML;
 }
 
+// === Modal Peraturan ===
+const bukaPeraturan = document.getElementById("bukaPeraturan");
+const peraturanModal = document.getElementById("peraturanModal");
+const peraturanModalBox = document.getElementById("peraturanModalBox");
+const tutupPeraturan = document.getElementById("tutupPeraturan");
+const tutupPeraturanBawah = document.getElementById("tutupPeraturanBawah");
+
+function bukaModalPeraturan(event) {
+  if (event) event.preventDefault();
+  if (!peraturanModal || !peraturanModalBox) return;
+
+  peraturanModal.classList.remove("hidden");
+  peraturanModal.classList.add("flex");
+  document.body.style.overflow = "hidden";
+
+  requestAnimationFrame(() => {
+    peraturanModalBox.classList.remove("opacity-0", "scale-95");
+    tutupPeraturan?.focus();
+  });
+}
+
+function tutupModalPeraturan() {
+  if (!peraturanModal || !peraturanModalBox) return;
+
+  peraturanModalBox.classList.add("opacity-0", "scale-95");
+  window.setTimeout(() => {
+    peraturanModal.classList.add("hidden");
+    peraturanModal.classList.remove("flex");
+    document.body.style.overflow = "";
+    bukaPeraturan?.focus();
+  }, 200);
+}
+
+bukaPeraturan?.addEventListener("click", bukaModalPeraturan);
+tutupPeraturan?.addEventListener("click", tutupModalPeraturan);
+tutupPeraturanBawah?.addEventListener("click", tutupModalPeraturan);
+peraturanModal?.addEventListener("click", (event) => {
+  if (event.target === peraturanModal) tutupModalPeraturan();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && peraturanModal?.classList.contains("flex")) {
+    tutupModalPeraturan();
+  }
+});
+
 async function muatProdukUnggulanBeranda() {
   if (!produkUnggulanBeranda) return;
   try {
@@ -592,6 +637,24 @@ async function loadDataBeranda() {
           }
         });
       }
+
+      // 4. UPDATE GAMBAR MODAL PENGUMUMAN
+      const imgModalEl = document.getElementById("gambarModalPublik");
+      if (imgModalEl && dataUtama.gambar_modal_url) {
+        imgModalEl.src = dataUtama.gambar_modal_url;
+      }
+
+      // 5. UPDATE TEKS MODAL PERATURAN
+      const judulPeraturanEl = document.getElementById("peraturanModalJudul");
+      const isiPeraturanEl = document.getElementById("peraturanModalIsi");
+
+      if (judulPeraturanEl && dataUtama.peraturan_judul) {
+        judulPeraturanEl.textContent = dataUtama.peraturan_judul;
+      }
+      if (isiPeraturanEl && dataUtama.peraturan_isi) {
+        isiPeraturanEl.textContent = dataUtama.peraturan_isi;
+      }
+
     }
   } catch (error) {
     console.error("Gagal menarik data CMS Beranda:", error);
@@ -601,3 +664,40 @@ async function loadDataBeranda() {
 document.addEventListener("DOMContentLoaded", () => {
   loadDataBeranda();
 });
+
+// ==========================================
+// FUNGSI BUKA/TUTUP MODAL PERATURAN
+// ==========================================
+function bukaModalPeraturan() {
+  const modal = document.getElementById("peraturanModal");
+  const modalBox = document.getElementById("peraturanModalBox");
+  if (modal && modalBox) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    // Animasi muncul
+    setTimeout(() => {
+      modalBox.classList.remove("opacity-0", "scale-95");
+      modalBox.classList.add("opacity-100", "scale-100");
+    }, 10);
+  }
+}
+
+function tutupModalPeraturan() {
+  const modal = document.getElementById("peraturanModal");
+  const modalBox = document.getElementById("peraturanModalBox");
+  if (modal && modalBox) {
+    // Animasi hilang
+    modalBox.classList.remove("opacity-100", "scale-100");
+    modalBox.classList.add("opacity-0", "scale-95");
+    setTimeout(() => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }, 200); // Menunggu transisi CSS selesai
+  }
+}
+
+// Daftarkan tombol tutup (X) dan tombol "Tutup" di bawah
+const btnTutupAtas = document.getElementById("tutupPeraturan");
+const btnTutupBawah = document.getElementById("tutupPeraturanBawah");
+if (btnTutupAtas) btnTutupAtas.addEventListener("click", tutupModalPeraturan);
+if (btnTutupBawah) btnTutupBawah.addEventListener("click", tutupModalPeraturan);

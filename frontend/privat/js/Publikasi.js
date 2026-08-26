@@ -7,6 +7,12 @@
 // ==================================================
 const API_URL = `${window.API_BASE_URL}/publikasi`;
 
+function escapeHTML(value = "") {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
+
 function getAdminToken() {
   return localStorage.getItem("token");
 }
@@ -128,11 +134,11 @@ function renderTable() {
         </td>
 
         <td class="px-4 py-3 border text-center">
-          ${item.judul || "-"}
+          ${escapeHTML(item.judul || "-")}
         </td>
 
         <td class="px-4 py-3 border text-center">
-          ${potongText(item.deskripsi, 60)}
+          ${escapeHTML(potongText(item.deskripsi, 60))}
         </td>
 
         <td class="px-4 py-3 border text-center">
@@ -533,7 +539,7 @@ function pasangEventAction() {
           <p>Publikasi berikut akan dihapus:</p>
 
           <p style="margin-top:10px;">
-            <b>${item.judul}</b>
+            <b>${escapeHTML(item.judul)}</b>
           </p>
 
           <p style="margin-top:10px; color:#dc2626;">
