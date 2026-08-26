@@ -69,7 +69,8 @@ router.post(
   verifyToken,
   upload.fields([
     { name: 'gambar', maxCount: 1 },
-    { name: 'foto_kades', maxCount: 1 }
+    { name: 'foto_kades', maxCount: 1 },
+    { name: 'gambar_modal', maxCount: 1 }
   ]),
   createCmsProfil
 );
@@ -86,7 +87,8 @@ router.put(
   verifyToken,
   upload.fields([
     { name: 'gambar', maxCount: 1 },
-    { name: 'foto_kades', maxCount: 1 }
+    { name: 'foto_kades', maxCount: 1 },
+    { name: 'gambar_modal', maxCount: 1 }
   ]),
   updateCmsProfil
 );
