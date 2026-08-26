@@ -54,7 +54,9 @@ const createCmsProfil = async (req, res) => {
       nama_kades, // 🚨 Ditambahkan di sini
       sambutan,
       visi,
-      misi
+      misi,
+      peraturan_judul,
+      peraturan_isi
     } = req.body || {};
 
     const admin_id = req.user.id;
@@ -139,7 +141,9 @@ const createCmsProfil = async (req, res) => {
           misi: misi.trim(),
           gambar_url: gambar_url,
           foto_kades_url: foto_kades_url,
-          nama_kades: nama_kades.trim() // 🚨 Ditambahkan di sini
+          nama_kades: nama_kades.trim(), // 🚨 Ditambahkan di sini
+          peraturan_judul: peraturan_judul?.trim() || null,
+          peraturan_isi: peraturan_isi?.trim() || null
         }
       ])
       .select();
@@ -184,7 +188,16 @@ const updateCmsProfil = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { judul_hero, deskripsi_hero, nama_kades, sambutan, visi, misi } = req.body || {};
+    const {
+      judul_hero,
+      deskripsi_hero,
+      nama_kades,
+      sambutan,
+      visi,
+      misi,
+      peraturan_judul,
+      peraturan_isi
+    } = req.body || {};
 
     if (!id) return res.status(400).json({ success: false, message: "ID tidak ditemukan." });
     
@@ -247,6 +260,8 @@ const updateCmsProfil = async (req, res) => {
         gambar_url: gambar_url,
         foto_kades_url: foto_kades_url,
         nama_kades: nama_kades.trim(),
+        peraturan_judul: peraturan_judul?.trim() || null,
+        peraturan_isi: peraturan_isi?.trim() || null,
         updated_at: new Date().toISOString()
       })
       .eq("id", id)
