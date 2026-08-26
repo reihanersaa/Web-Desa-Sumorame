@@ -50,6 +50,8 @@ async function loadCmsProfil() {
       document.getElementById("sambutan").value = data[0].sambutan || "";
       document.getElementById("visi").value = data[0].visi || "";
       document.getElementById("misi").value = data[0].misi || "";
+      document.getElementById("peraturanJudul").value = data[0].peraturan_judul || "";
+      document.getElementById("peraturanIsi").value = data[0].peraturan_isi || "";
       
       if (data[0].foto_kades_url) previewFotoKades.src = data[0].foto_kades_url;
 
@@ -202,6 +204,8 @@ formCmsProfil.addEventListener("submit", async (e) => {
   const valSambutan = document.getElementById("sambutan").value.trim();
   const valVisi = document.getElementById("visi").value.trim();
   const valMisi = document.getElementById("misi").value.trim();
+  const valPeraturanJudul = document.getElementById("peraturanJudul").value.trim();
+  const valPeraturanIsi = document.getElementById("peraturanIsi").value.trim();
   const fileFotoKades = inputFotoKadesAsli.files[0];
 
   // Cegat jika Nama Kades kosong sebelum dikirim ke server (mencegah error 400)
@@ -233,6 +237,8 @@ formCmsProfil.addEventListener("submit", async (e) => {
     formData.append("sambutan", valSambutan);
     formData.append("visi", valVisi);
     formData.append("misi", valMisi);
+    formData.append("peraturan_judul", valPeraturanJudul);
+    formData.append("peraturan_isi", valPeraturanIsi);
     if (file) formData.append("gambar", file);
     if (fileFotoKades) formData.append("foto_kades", fileFotoKades);
 
