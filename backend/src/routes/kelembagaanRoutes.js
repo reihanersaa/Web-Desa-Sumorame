@@ -20,9 +20,11 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
   storage: storage,
+
   limits: {
-    fileSize: 2 * 1024 * 1024
+    fileSize: 2 * 1024 * 1024 // Maksimal 2 MB
   },
+
   fileFilter: (req, file, cb) => {
     const allowedTypes = [
       "image/jpeg",
@@ -41,10 +43,63 @@ const upload = multer({
 
 
 // ==================================================
+// MIDDLEWARE UPLOAD GAMBAR
+// ==================================================
+const uploadGambar = (req, res, next) => {
+
+  upload.single("gambar")(req, res, (err) => {
+
+    // ==================================================
+    // ERROR KHUSUS MULTER
+    // ==================================================
+    if (err instanceof multer.MulterError) {
+
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({
+          success: false,
+          message: "Ukuran gambar terlalu besar. Maksimal 2 MB."
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: err.message
+      });
+
+    }
+
+
+    // ==================================================
+    // ERROR FILE FILTER / ERROR LAIN
+    // ==================================================
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message:
+          err.message ||
+          "Terjadi kesalahan saat upload gambar."
+      });
+    }
+
+
+    // ==================================================
+    // LANJUT KE CONTROLLER
+    // ==================================================
+    next();
+
+  });
+
+};
+
+
+// ==================================================
 // ROUTE GET
 // Untuk Guest / Publik
 // ==================================================
-router.get("/", getKelembagaan);
+router.get(
+  "/",
+  getKelembagaan
+);
 
 
 // ==================================================
@@ -54,7 +109,7 @@ router.get("/", getKelembagaan);
 router.post(
   "/",
   verifyToken,
-  upload.single("gambar"),
+  uploadGambar,
   createKelembagaan
 );
 
@@ -66,7 +121,7 @@ router.post(
 router.put(
   "/:id",
   verifyToken,
-  upload.single("gambar"),
+  uploadGambar,
   updateKelembagaan
 );
 
