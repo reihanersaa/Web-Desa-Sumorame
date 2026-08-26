@@ -4,11 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aduan | Website Desa Sumorame</title>
-  <link rel="icon" href="../img/logo3.png?v=20260824-1" type="image/png">
+  <link rel="icon" href="img/logo3.png?v=20260824-1" type="image/png">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link rel="stylesheet" href="css/Aduan.css">
+  <link rel="stylesheet" href="css/Aduan.css?v=20260824-2">
+  <link rel="stylesheet" href="css/hero-responsive.css?v=20260825-1">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- Tailwind Config -->
@@ -36,6 +37,7 @@
       }
     };
   </script>
+  <link rel="stylesheet" href="css/layout-responsive.css?v=20260825-1">
 </head>
 
 <body class="bg-surface font-body text-on-surface">
@@ -46,7 +48,7 @@
     <!-- Logo -->
     <div class="flex items-center gap-3">
      <div class="logo">
-      <img alt="Logo Desa Digital" height="36" src="../img/logo3.png" width="40"/>
+      <img alt="Logo Desa Digital" height="36" src="img/logo3.png" width="40"/>
      </div>
      <h1 class="font-headline text-xl font-bold text-emerald-900">
       Desa Sumorame
@@ -117,11 +119,12 @@
   </div>
 
   <!-- HERO -->
-  <section id="heroSection" class="relative overflow-hidden bg-primary h-[700px] flex items-center">
+  <section id="heroSection" class="public-hero relative overflow-hidden bg-primary flex items-center">
 
       <!-- Background -->
       <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80"
-          class="absolute inset-0 w-full h-full object-cover object-[center_40%] opacity-50">
+          alt="Layanan aspirasi dan pengaduan Desa Sumorame"
+          class="hero-background absolute inset-0 w-full h-full object-cover object-[center_40%] opacity-50">
 
       <!-- Overlay -->
       <div class="absolute inset-0 bg-black/30"></div>
@@ -292,7 +295,7 @@
           <!-- Logo & Nama -->
           <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
             <div class="inline-flex flex-col items-center">
-              <img src="../img/logo3.png" alt="Logo Desa" class="w-16 mb-3">
+              <img src="img/logo3.png" alt="Logo Desa" class="w-16 mb-3">
               <h3 class="text-lg font-bold">Desa Sumorame</h3>
             </div>
             <p class="text-sm text-gray-300">
@@ -353,6 +356,7 @@
     </div>
   </footer>
 
-  <script src="js/Aduan.js"></script>
+  <script src="js/Aduan.js?v=20260824-2"></script>
+  <script src="js/header-scroll.js?v=20260826-1"></script>
 </body>
 </html>

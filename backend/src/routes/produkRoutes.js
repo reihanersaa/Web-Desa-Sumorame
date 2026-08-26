@@ -33,6 +33,13 @@ router.put(
   produkController.updateStatusProduk,
 );
 
+// Admin memperbaiki data produk (Wajib Token Admin)
+router.put(
+  "/admin/produk/:id",
+  verifyToken,
+  produkController.updateProduk,
+);
+
 // Admin hapus produk (Wajib Token Admin)
 router.delete("/admin/produk/:id", verifyToken, produkController.hapusProduk);
 

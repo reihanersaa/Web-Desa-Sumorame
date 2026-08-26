@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="utf-8">
 
@@ -15,7 +14,7 @@
 
   <link
     rel="icon"
-    href="../img/logo3.png"
+    href="../publik/img/logo3.png"
     type="image/png"
   >
 
@@ -24,47 +23,14 @@
   <!-- TAILWIND -->
   <!-- ====================================================== -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-
-  <!-- ====================================================== -->
-  <!-- SWEETALERT2 -->
-  <!-- ====================================================== -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-  <!-- ====================================================== -->
-  <!-- FONT POPPINS -->
-  <!-- ====================================================== -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
-
-
-  <!-- ====================================================== -->
-  <!-- MATERIAL SYMBOLS -->
-  <!-- ====================================================== -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-    rel="stylesheet"
-  >
-
-
-  <!-- ====================================================== -->
-  <!-- CSS DASHBOARD -->
-  <!-- ====================================================== -->
-  <link
-    rel="stylesheet"
-    href="css/DashboardAdmin.css"
-  >
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/DashboardAdmin.css">
 </head>
-
 
 <body class="bg-gray-200 font-['Poppins']">
 
-
-  <!-- ====================================================== -->
   <!-- HEADER -->
   <!-- ====================================================== -->
 
@@ -98,1722 +64,354 @@
     >
 
       <img
-        src="../img/siad.png"
+        src="../publik/img/siad.png"
         class="h-20 object-contain"
         alt="Logo Desa Sumorame"
       >
 
     </div>
-
-
-    <!-- ================= HEADER KANAN ================= -->
-    <div
-      class="
-        flex-1
-        flex
-        items-center
-        justify-between
-        px-4
-      "
-    >
-
+    <div class="flex-1 flex items-center justify-between px-4">
       <div class="flex items-center">
-
-        <button
-          id="burgerBtn"
-          type="button"
-          class="mr-4"
-        >
-
-          <span class="material-symbols-outlined">
-            menu
-          </span>
-
-        </button>
-
-
-        <h1 class="font-semibold text-lg">
-          Kelola Beranda
-        </h1>
-
+        <button id="burgerBtn" type="button" class="mr-4"><span class="material-symbols-outlined">menu</span></button>
+        <h1 class="font-semibold text-lg">Kelola Beranda</h1>
       </div>
-
-
-      <a
-        href="LoginAdmin.html"
-        class="
-          flex
-          items-center
-          gap-2
-          text-sm
-          text-gray-600
-          hover:text-black
-          transition
-        "
-      >
-
-        <span
-          class="material-symbols-outlined text-base"
-        >
-          logout
-        </span>
-
-        <span>
-          Logout
-        </span>
-
+      <a href="LoginAdmin.html" class="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition">
+        <span class="material-symbols-outlined text-base">logout</span>
+        <span>Logout</span>
       </a>
-
     </div>
-
   </header>
 
-
-
-  <!-- ====================================================== -->
   <!-- SIDEBAR -->
-  <!-- ====================================================== -->
-
-  <aside
-    id="sidebar"
-    class="
-      fixed
-      top-16
-      left-0
-      w-64
-      h-[calc(100%-4rem)]
-      bg-black
-      text-white
-      p-4
-      transition-all
-      duration-300
-      -translate-x-full
-      md:translate-x-0
-      z-40
-    "
-  >
-
-    <nav class="space-y-2 text-sm">
-
-
-      <!-- ====================================================== -->
-      <!-- DASHBOARD -->
-      <!-- ====================================================== -->
-
-      <a
-        href="DashboardAdmin.html"
-        class="
-          flex
-          items-center
-          p-2
-          hover:bg-gray-700
-          hover:translate-x-1
-          transition-all
-          rounded
-        "
-      >
-
-        <span
-          class="material-symbols-outlined mr-3"
+  <!-- SIDEBAR -->
+    <aside
+      id="sidebar"
+      class="fixed top-16 left-0 w-64 h-[calc(100%-4rem)] bg-black text-white p-4 transition-all duration-300 -translate-x-full md:translate-x-0"
+    >
+      <nav class="space-y-2 text-sm">
+        <a
+          href="DashboardAdmin.html"
+          class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
         >
-          home
-        </span>
+          <span class="material-symbols-outlined mr-3">home</span
+          ><span class="menu-text">Dashboard</span>
+        </a>
 
-        <span class="menu-text">
-          Dashboard
-        </span>
-
-      </a>
-
-
-
-      <!-- ====================================================== -->
-      <!-- ADUAN -->
-      <!-- ====================================================== -->
-
-      <a
-        href="Pengaduan.html"
-        class="
-          flex
-          items-center
-          p-2
-          hover:bg-gray-700
-          hover:translate-x-1
-          transition-all
-          rounded
-        "
-      >
-
-        <span
-          class="material-symbols-outlined mr-3"
+        <a
+          href="Pengaduan.html"
+          class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
         >
-          campaign
-        </span>
+          <span class="material-symbols-outlined mr-3">campaign</span
+          ><span class="menu-text">Aduan</span>
+        </a>
 
-        <span class="menu-text">
-          Aduan
-        </span>
-
-      </a>
-
-
-
-      <!-- ====================================================== -->
-      <!-- SURAT MENYURAT -->
-      <!-- ====================================================== -->
-
-      <div>
-
-        <button
-          id="suratToggle"
-          type="button"
-          class="
-            flex
-            items-center
-            justify-between
-            w-full
-            p-2
-            hover:bg-gray-700
-            hover:translate-x-1
-            transition-all
-            rounded
-          "
-        >
-
-          <span class="flex items-center">
-
-            <span
-              class="material-symbols-outlined mr-3"
-            >
-              mail
-            </span>
-
-            <span class="menu-text">
-              Surat Menyurat
-            </span>
-
-          </span>
-
-
-          <span
-            id="suratIcon"
-            class="
-              material-symbols-outlined
-              text-sm
-              transition-transform
-            "
+        <div>
+          <button
+            id="suratToggle"
+            class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
           >
-            expand_more
-          </span>
-
-        </button>
-
-
-        <div
-          id="suratMenu"
-          class="
-            ml-6
-            mt-1
-            space-y-1
-            overflow-hidden
-            max-h-0
-            opacity-0
-            transition-all
-            duration-300
-            ease-in-out
-          "
-        >
-
-          <a
-            href="SKD.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-gray-300
-              hover:bg-gray-700
-              hover:translate-x-1
-              transition-all
-              rounded
-            "
-          >
-
+            <span class="flex items-center">
+              <span class="material-symbols-outlined mr-3">mail</span>
+              <span class="menu-text">Surat Menyurat</span>
+            </span>
+            <!-- UBAH ID DI SINI -->
             <span
-              class="material-symbols-outlined text-xs"
+              id="suratIcon"
+              class="material-symbols-outlined text-sm transition-transform"
             >
-              chevron_right
+              expand_more
             </span>
+          </button>
 
-            Surat Keterangan Domisili
-
-          </a>
-
-
-          <a
-            href="SKK.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-gray-300
-              hover:bg-gray-700
-              hover:translate-x-1
-              transition-all
-              rounded
-            "
+          <!-- Submenu Kelola Surat Menyurat -->
+          <div
+            id="suratMenu"
+            class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out"
           >
-
-            <span
-              class="material-symbols-outlined text-xs"
+            <a
+              href="SKD.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
             >
-              chevron_right
-            </span>
-
-            Surat Keterangan Kehilangan
-
-          </a>
-
-
-          <a
-            href="SKT.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-gray-300
-              hover:bg-gray-700
-              hover:translate-x-1
-              transition-all
-              rounded
-            "
-          >
-
-            <span
-              class="material-symbols-outlined text-xs"
-            >
-              chevron_right
-            </span>
-
-            Surat Keterangan Tanah
-
-          </a>
-
-
-          <a
-            href="SKTM.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-gray-300
-              hover:bg-gray-700
-              hover:translate-x-1
-              transition-all
-              rounded
-            "
-          >
-
-            <span
-              class="material-symbols-outlined text-xs"
-            >
-              chevron_right
-            </span>
-
-            Surat Keterangan Tidak Mampu
-
-          </a>
-
-        </div>
-
-      </div>
-
-
-
-      <!-- ====================================================== -->
-      <!-- PUBLIKASI -->
-      <!-- ====================================================== -->
-
-      <a
-        href="Publikasi.html"
-        class="
-          flex
-          items-center
-          p-2
-          hover:bg-gray-700
-          hover:translate-x-1
-          transition-all
-          rounded
-        "
-      >
-
-        <span
-          class="material-symbols-outlined mr-3"
-        >
-          linked_camera
-        </span>
-
-        <span class="menu-text">
-          Publikasi
-        </span>
-
-      </a>
-
-
-
-      <!-- ====================================================== -->
-      <!-- KELOLA WEBSITE -->
-      <!-- ====================================================== -->
-
-      <div>
-
-        <button
-          id="cmsToggle"
-          type="button"
-          class="
-            flex
-            items-center
-            justify-between
-            w-full
-            p-2
-            hover:bg-gray-700
-            hover:translate-x-1
-            transition-all
-            rounded
-          "
-        >
-
-          <span class="flex items-center">
-
-            <span
-              class="material-symbols-outlined mr-3"
-            >
-              web
-            </span>
-
-            <span class="menu-text">
-              Kelola Website
-            </span>
-
-          </span>
-
-
-          <span
-            id="cmsIcon"
-            class="
-              material-symbols-outlined
-              text-sm
-              transition-transform
-              rotate-180
-            "
-          >
-            expand_more
-          </span>
-
-        </button>
-
-
-        <div
-          id="cmsMenu"
-          class="
-            ml-6
-            mt-1
-            space-y-1
-            overflow-hidden
-            max-h-96
-            opacity-100
-            transition-all
-            duration-300
-            ease-in-out
-          "
-        >
-
-
-          <!-- ================= ACTIVE ================= -->
-
-          <a
-            href="CmsProfil.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-white
-              bg-gray-700
-              translate-x-1
-              transition-all
-              rounded
-            "
-          >
-
-            <span
-              class="material-symbols-outlined text-xs"
-            >
-              chevron_right
-            </span>
-
-            Profil & Hero
-
-          </a>
-
-
-          <a
-            href="CmsProduk.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-gray-300
-              hover:bg-gray-700
-              hover:translate-x-1
-              transition-all
-              rounded
-            "
-          >
-
-            <span
-              class="material-symbols-outlined text-xs"
-            >
-              chevron_right
-            </span>
-
-            Produk Unggulan
-
-          </a>
-
-            <a href="Statistik.html" class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded">
-              <span class="material-symbols-outlined text-xs">chevron_right</span>
-              Statistik
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Surat Keterangan Domisili
             </a>
 
-
-          <a
-            href="Kelembagaan.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-gray-300
-              hover:bg-gray-700
-              hover:translate-x-1
-              transition-all
-              rounded
-            "
-          >
-
-            <span
-              class="material-symbols-outlined text-xs"
+            <a
+              href="SKK.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
             >
-              chevron_right
-            </span>
-
-            Kelembagaan
-
-          </a>
-
-
-          <a
-            href="PPID.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-gray-300
-              hover:bg-gray-700
-              hover:translate-x-1
-              transition-all
-              rounded
-            "
-          >
-
-            <span
-              class="material-symbols-outlined text-xs"
-            >
-              chevron_right
-            </span>
-
-            PPID
-
-          </a>
-
-
-          <a
-            href="Informasi.html"
-            class="
-              flex
-              items-center
-              gap-2
-              p-2
-              text-gray-300
-              hover:bg-gray-700
-              hover:translate-x-1
-              transition-all
-              rounded
-            "
-          >
-
-            <span
-              class="material-symbols-outlined text-xs"
-            >
-              chevron_right
-            </span>
-
-            Informasi
-
-          </a>
-
-        </div>
-
-      </div>
-
-    </nav>
-
-  </aside>
-
-
-
-  <!-- ====================================================== -->
-  <!-- OVERLAY MOBILE -->
-  <!-- ====================================================== -->
-
-  <div
-    id="overlay"
-    class="
-      fixed
-      inset-0
-      bg-black/50
-      hidden
-      z-30
-      md:hidden
-    "
-  ></div>
-
-
-
-  <!-- ====================================================== -->
-  <!-- MAIN CONTENT -->
-  <!-- ====================================================== -->
-
-  <div
-    id="mainContent"
-    class="
-      pt-16
-      md:pl-64
-      transition-all
-      duration-300
-      min-h-screen
-      flex
-      flex-col
-    "
-  >
-
-
-    <main
-      class="
-        flex-1
-        p-4
-        sm:p-6
-        pb-20
-      "
-    >
-
-
-      <!-- ====================================================== -->
-      <!-- HEADER HALAMAN -->
-      <!-- ====================================================== -->
-
-      <div
-        class="mb-6 fade-up"
-      >
-
-        <h2
-          class="
-            text-2xl
-            font-bold
-            text-gray-800
-          "
-        >
-          Kelola Profil & Hero Beranda
-        </h2>
-
-
-        <p
-          class="
-            text-sm
-            text-gray-500
-            mt-1
-          "
-        >
-          Kelola Hero, informasi Kepala Desa,
-          kata sambutan, visi dan misi desa.
-        </p>
-
-      </div>
-
-
-
-      <!-- ====================================================== -->
-      <!-- CARD UTAMA -->
-      <!-- ====================================================== -->
-
-      <div
-        class="
-          bg-white
-          rounded-2xl
-          shadow-md
-          border
-          border-gray-100
-          max-w-5xl
-          overflow-hidden
-          fade-up
-          delay-1
-        "
-      >
-
-
-        <!-- ====================================================== -->
-        <!-- HEADER CARD -->
-        <!-- ====================================================== -->
-
-        <div
-          class="
-            px-6
-            py-5
-            border-b
-            bg-gradient-to-r
-            from-green-50
-            to-white
-          "
-        >
-
-          <div
-            class="
-              flex
-              items-center
-              gap-3
-            "
-          >
-
-            <div
-              class="
-                w-11
-                h-11
-                rounded-xl
-                bg-green-100
-                text-green-700
-                flex
-                items-center
-                justify-center
-              "
-            >
-
-              <span
-                class="material-symbols-outlined"
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
               >
-                edit_square
-              </span>
+              Surat Keterangan Kehilangan
+            </a>
 
-            </div>
-
-
-            <div>
-
-              <h3
-                class="
-                  font-bold
-                  text-gray-800
-                "
+            <a
+              href="SKT.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
               >
-                Informasi Beranda Desa
-              </h3>
+              Surat Keterangan Tanah
+            </a>
 
-
-              <p
-                class="
-                  text-xs
-                  text-gray-500
-                  mt-0.5
-                "
+            <a
+              href="SKTM.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
               >
-                Perbarui informasi yang tampil
-                pada halaman utama website.
-              </p>
-
-            </div>
-
+              Surat Keterangan Tidak Mampu
+            </a>
           </div>
-
         </div>
 
-
-
-        <!-- ====================================================== -->
-        <!-- FORM CMS PROFIL -->
-        <!-- ====================================================== -->
-
-        <form
-          id="formCmsProfil"
-          enctype="multipart/form-data"
-          novalidate
-          class="
-            p-6
-            space-y-8
-          "
+        <a
+          href="Publikasi.html"
+          class="flex items-center p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
         >
+          <span class="material-symbols-outlined mr-3">linked_camera</span
+          ><span class="menu-text">Publikasi</span>
+        </a>
 
-
-          <!-- ====================================================== -->
-          <!-- DATA HERO / CAROUSEL -->
-          <!-- ====================================================== -->
-
-          <section
-            class="
-              border
-              border-gray-200
-              rounded-2xl
-              overflow-hidden
-            "
+        <!-- Kelola Website (Dropdown Terbuka Permanen & Highlight pada Produk) -->
+        <div>
+          <button
+            id="cmsToggle"
+            class="flex items-center justify-between w-full p-2 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
           >
-
-            <div
-              class="
-                px-5
-                py-4
-                bg-gray-50
-                border-b
-                flex
-                flex-col
-                sm:flex-row
-                justify-between
-                sm:items-center
-                gap-3
-              "
+            <span class="flex items-center">
+              <span class="material-symbols-outlined mr-3">web</span
+              ><span class="menu-text">Kelola Website</span>
+            </span>
+            <span
+              id="cmsIcon"
+              class="material-symbols-outlined text-sm transition-transform rotate-180"
             >
-
-              <div>
-
-                <h3
-                  class="
-                    font-bold
-                    text-gray-800
-                    flex
-                    items-center
-                    gap-2
-                  "
-                >
-
-                  <span
-                    class="
-                      material-symbols-outlined
-                      text-blue-600
-                    "
-                  >
-                    view_carousel
-                  </span>
-
-                  Slider / Hero Beranda
-
-                </h3>
-
-
-                <p
-                  class="
-                    text-xs
-                    text-gray-500
-                    mt-1
-                  "
-                >
-                  Data Hero yang tersimpan akan tampil
-                  pada bagian ini.
-                </p>
-
-              </div>
-
-
-              <!-- ====================================================== -->
-              <!-- BUTTON DATA BARU -->
-              <!-- ====================================================== -->
-
-              <button
-                type="button"
-                id="btnTambahCarousel"
-                class="
-                  bg-green-600
-                  hover:bg-green-700
-                  text-white
-                  px-4
-                  py-2
-                  rounded-lg
-                  text-sm
-                  font-semibold
-                  flex
-                  items-center
-                  justify-center
-                  gap-1
-                  transition
-                  shadow-sm
-                  hover:shadow-md
-                  active:scale-95
-                "
-              >
-
-                <span
-                  class="material-symbols-outlined text-sm"
-                >
-                  add
-                </span>
-
-                Data Baru
-
-              </button>
-
-            </div>
-
-
-
-            <!-- ====================================================== -->
-            <!-- WADAH HASIL GET -->
-            <!-- ====================================================== -->
-
-            <div
-              class="p-5"
-            >
-
-              <div
-                id="wadahCarousel"
-                class="
-                  grid
-                  grid-cols-1
-                  md:grid-cols-2
-                  lg:grid-cols-3
-                  gap-4
-                "
-              >
-
-                <!--
-                  DATA AKAN DIISI OTOMATIS OLEH:
-
-                  GET
-                  http://localhost:3000/api/cmsprofil
-
-                  MELALUI:
-                  CMSProfil.js
-                -->
-
-
-                <!-- ================= LOADING DEFAULT ================= -->
-
-                <div
-                  class="
-                    col-span-full
-                    py-10
-                    text-center
-                    text-gray-400
-                  "
-                >
-
-                  <span
-                    class="
-                      material-symbols-outlined
-                      animate-spin
-                      text-blue-500
-                      text-3xl
-                    "
-                  >
-                    progress_activity
-                  </span>
-
-                  <p
-                    class="
-                      text-sm
-                      mt-2
-                    "
-                  >
-                    Memuat data...
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-
-          <!-- ====================================================== -->
-          <!-- INFORMASI HERO -->
-          <!-- ====================================================== -->
-
-          <section
-            class="
-              border
-              border-gray-200
-              rounded-2xl
-              p-5
-            "
-          >
-
-            <!-- ================= JUDUL SECTION ================= -->
-
-            <div
-              class="
-                flex
-                items-center
-                gap-3
-                mb-5
-                pb-4
-                border-b
-              "
-            >
-
-              <div
-                class="
-                  w-10
-                  h-10
-                  bg-blue-100
-                  text-blue-600
-                  rounded-xl
-                  flex
-                  items-center
-                  justify-center
-                "
-              >
-
-                <span
-                  class="material-symbols-outlined"
-                >
-                  web_asset
-                </span>
-
-              </div>
-
-
-              <div>
-
-                <h3
-                  class="
-                    font-bold
-                    text-gray-800
-                  "
-                >
-                  Informasi Hero
-                </h3>
-
-
-                <p
-                  class="
-                    text-xs
-                    text-gray-500
-                  "
-                >
-                  Judul dan deskripsi Hero Beranda.
-                </p>
-
-              </div>
-
-            </div>
-
-
-
-            <!-- ================= INPUT HERO ================= -->
-
-            <div
-              class="
-                grid
-                grid-cols-1
-                gap-4
-              "
-            >
-
-
-              <!-- ====================================================== -->
-              <!-- JUDUL HERO -->
-              <!-- ====================================================== -->
-
-              <div>
-
-                <label
-                  for="judulHero"
-                  class="
-                    block
-                    text-sm
-                    font-semibold
-                    text-gray-700
-                    mb-1.5
-                  "
-                >
-                  Judul Hero
-                </label>
-
-
-                <input
-                  type="text"
-                  id="judulHero"
-                  name="judul_hero"
-                  placeholder="Contoh: Selamat Datang di Desa Sumorame"
-                  required
-                  autocomplete="off"
-                  class="
-                    w-full
-                    px-4
-                    py-2.5
-                    border
-                    border-gray-300
-                    rounded-lg
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-green-500
-                    focus:border-green-500
-                    transition
-                  "
-                >
-
-              </div>
-
-
-
-              <!-- ====================================================== -->
-              <!-- DESKRIPSI HERO -->
-              <!-- ====================================================== -->
-
-              <div>
-
-                <label
-                  for="deskripsiHero"
-                  class="
-                    block
-                    text-sm
-                    font-semibold
-                    text-gray-700
-                    mb-1.5
-                  "
-                >
-                  Deskripsi Hero
-                </label>
-
-
-                <textarea
-                  id="deskripsiHero"
-                  name="deskripsi_hero"
-                  rows="4"
-                  placeholder="Tuliskan deskripsi singkat yang tampil pada Hero Beranda..."
-                  required
-                  class="
-                    w-full
-                    px-4
-                    py-2.5
-                    border
-                    border-gray-300
-                    rounded-lg
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-green-500
-                    focus:border-green-500
-                    resize-y
-                    transition
-                  "
-                ></textarea>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-
-          <!-- ====================================================== -->
-          <!-- FOTO & SAMBUTAN -->
-          <!-- ====================================================== -->
-
-          <section
-            class="
-              border
-              border-gray-200
-              rounded-2xl
-              p-5
-            "
-          >
-
-            <!-- ================= HEADER SECTION ================= -->
-
-            <div
-              class="
-                flex
-                items-center
-                gap-3
-                mb-5
-                pb-4
-                border-b
-              "
-            >
-
-              <div
-                class="
-                  w-10
-                  h-10
-                  bg-green-100
-                  text-green-600
-                  rounded-xl
-                  flex
-                  items-center
-                  justify-center
-                "
-              >
-
-                <span
-                  class="material-symbols-outlined"
-                >
-                  person
-                </span>
-
-              </div>
-
-
-              <div>
-
-                <h3
-                  class="
-                    font-bold
-                    text-gray-800
-                  "
-                >
-                  Sambutan Kepala Desa
-                </h3>
-
-
-                <p
-                  class="
-                    text-xs
-                    text-gray-500
-                  "
-                >
-                  Kelola gambar dan teks sambutan Kepala Desa.
-                </p>
-
-              </div>
-
-            </div>
-
-
-
-            <div
-              class="
-                flex
-                flex-col
-                md:flex-row
-                gap-6
-                items-start
-              "
-            >
-
-
-              <!-- ====================================================== -->
-              <!-- FOTO -->
-              <!-- ====================================================== -->
-
-              <div
-                class="
-                  w-full
-                  md:w-1/3
-                "
-              >
-
-                <label
-                  for="inputFotoKades"
-                  class="
-                    block
-                    text-sm
-                    font-semibold
-                    text-gray-700
-                    mb-2
-                  "
-                >
-                  Gambar
-                </label>
-
-
-                <!-- ================= PREVIEW ================= -->
-
-                <div
-                  class="
-                    w-full
-                    h-56
-                    bg-gray-100
-                    border-2
-                    border-dashed
-                    border-gray-300
-                    rounded-xl
-                    flex
-                    items-center
-                    justify-center
-                    overflow-hidden
-                    mb-3
-                    relative
-                    group
-                  "
-                >
-
-                  <img
-                    id="previewFoto"
-                    src="../img/default-avatar.png"
-                    alt="Preview Gambar"
-                    class="
-                      w-full
-                      h-full
-                      object-cover
-                    "
-                  >
-
-
-                  <div
-                    class="
-                      absolute
-                      inset-0
-                      bg-black/40
-                      flex
-                      items-center
-                      justify-center
-                      opacity-0
-                      group-hover:opacity-100
-                      transition-opacity
-                      pointer-events-none
-                    "
-                  >
-
-                    <span
-                      class="
-                        text-white
-                        text-xs
-                        font-semibold
-                      "
-                    >
-                      Pilih Gambar Baru
-                    </span>
-
-                  </div>
-
-                </div>
-
-
-
-                <!-- ================= INPUT FILE ================= -->
-
-                <input
-                  type="file"
-                  id="inputFotoKades"
-                  name="gambar"
-                  accept="image/jpeg,image/png,image/webp"
-                  class="
-                    w-full
-                    text-sm
-                    text-gray-500
-
-                    file:mr-3
-                    file:py-2
-                    file:px-3
-                    file:rounded-md
-                    file:border-0
-                    file:text-xs
-                    file:font-semibold
-                    file:bg-green-50
-                    file:text-green-700
-
-                    hover:file:bg-green-100
-                  "
-                >
-
-
-                <p
-                  class="
-                    text-xs
-                    text-gray-400
-                    mt-2
-                  "
-                >
-                  Format JPG, JPEG, PNG atau WEBP.
-                  Maksimal 2 MB.
-                </p>
-
-
-                <p
-                  class="
-                    text-xs
-                    text-gray-400
-                    mt-1
-                  "
-                >
-                  Saat edit, gambar tidak wajib dipilih
-                  jika ingin menggunakan gambar lama.
-                </p>
-
-              </div>
-
-
-
-              <!-- ====================================================== -->
-              <!-- SAMBUTAN -->
-              <!-- ====================================================== -->
-
-              <div
-                class="
-                  w-full
-                  md:w-2/3
-                "
-              >
-
-                <label
-                  for="sambutan"
-                  class="
-                    block
-                    text-sm
-                    font-semibold
-                    text-gray-700
-                    mb-1.5
-                  "
-                >
-                  Teks Sambutan
-                </label>
-
-
-                <textarea
-                  id="sambutan"
-                  name="sambutan"
-                  rows="10"
-                  placeholder="Tuliskan kata sambutan Kepala Desa..."
-                  required
-                  class="
-                    w-full
-                    px-4
-                    py-3
-                    border
-                    border-gray-300
-                    rounded-xl
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-green-500
-                    focus:border-green-500
-                    resize-y
-                    transition
-                  "
-                ></textarea>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-
-          <!-- ====================================================== -->
-          <!-- VISI MISI -->
-          <!-- ====================================================== -->
-
-          <section
-            class="
-              border
-              border-gray-200
-              rounded-2xl
-              p-5
-            "
-          >
-
-            <!-- ================= HEADER ================= -->
-
-            <div
-              class="
-                flex
-                items-center
-                gap-3
-                mb-5
-                pb-4
-                border-b
-              "
-            >
-
-              <div
-                class="
-                  w-10
-                  h-10
-                  rounded-xl
-                  bg-yellow-100
-                  text-yellow-600
-                  flex
-                  items-center
-                  justify-center
-                "
-              >
-
-                <span
-                  class="material-symbols-outlined"
-                >
-                  flag
-                </span>
-
-              </div>
-
-
-              <div>
-
-                <h3
-                  class="
-                    font-bold
-                    text-gray-800
-                  "
-                >
-                  Visi & Misi Desa
-                </h3>
-
-
-                <p
-                  class="
-                    text-xs
-                    text-gray-500
-                  "
-                >
-                  Kelola arah dan tujuan pembangunan desa.
-                </p>
-
-              </div>
-
-            </div>
-
-
-
-            <div
-              class="space-y-5"
-            >
-
-
-              <!-- ====================================================== -->
-              <!-- VISI -->
-              <!-- ====================================================== -->
-
-              <div>
-
-                <label
-                  for="visi"
-                  class="
-                    block
-                    text-sm
-                    font-semibold
-                    text-gray-700
-                    mb-1.5
-                  "
-                >
-                  Visi Desa
-                </label>
-
-
-                <textarea
-                  id="visi"
-                  name="visi"
-                  rows="3"
-                  placeholder="Contoh: Mewujudkan Desa Sumorame yang Mandiri, Sejahtera, dan Berbudaya"
-                  required
-                  class="
-                    w-full
-                    px-4
-                    py-3
-                    border
-                    border-gray-300
-                    rounded-xl
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-green-500
-                    focus:border-green-500
-                    resize-y
-                    transition
-                  "
-                ></textarea>
-
-              </div>
-
-
-
-              <!-- ====================================================== -->
-              <!-- MISI -->
-              <!-- ====================================================== -->
-
-              <div>
-
-                <label
-                  for="misi"
-                  class="
-                    block
-                    text-sm
-                    font-semibold
-                    text-gray-700
-                    mb-1
-                  "
-                >
-                  Misi Desa
-                </label>
-
-
-                <p
-                  class="
-                    text-xs
-                    text-gray-500
-                    mb-2
-                  "
-                >
-                  Pisahkan setiap poin misi menggunakan
-                  baris baru.
-                </p>
-
-
-                <textarea
-                  id="misi"
-                  name="misi"
-                  rows="7"
-                  placeholder="1. Meningkatkan pelayanan publik yang prima&#10;2. Membangun infrastruktur desa&#10;3. Meningkatkan kesejahteraan masyarakat"
-                  required
-                  class="
-                    w-full
-                    px-4
-                    py-3
-                    border
-                    border-gray-300
-                    rounded-xl
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-green-500
-                    focus:border-green-500
-                    resize-y
-                    transition
-                  "
-                ></textarea>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-
-          <!-- ====================================================== -->
-          <!-- BUTTON SIMPAN -->
-          <!-- ====================================================== -->
-
+              expand_more
+            </span>
+          </button>
+
+          <!-- Submenu Kelola Website -->
           <div
-            class="
-              flex
-              flex-col
-              sm:flex-row
-              sm:items-center
-              sm:justify-between
-              gap-3
-              pt-5
-              border-t
-              border-gray-200
-            "
+            id="cmsMenu"
+            class="ml-6 mt-1 space-y-1 overflow-hidden max-h-96 opacity-100 transition-all duration-300 ease-in-out"
           >
-
-            <p
-              class="
-                text-xs
-                text-gray-400
-              "
+            <a
+              href="CmsProfil.html"
+              class="flex items-center gap-2 p-2 text-gray-300 bg-gray-700 translate-x-1 transition-all rounded"
             >
-              Pastikan data sudah benar sebelum disimpan.
-            </p>
-
-
-            <button
-              type="submit"
-              id="btnSimpanProfil"
-              class="
-                bg-gray-800
-                hover:bg-black
-                text-white
-                font-bold
-                py-2.5
-                px-6
-                rounded-lg
-                transition
-                duration-300
-                flex
-                items-center
-                justify-center
-                gap-2
-                shadow-lg
-                hover:shadow-xl
-                active:scale-95
-                disabled:opacity-60
-                disabled:cursor-not-allowed
-              "
-            >
-
-              <span
-                class="material-symbols-outlined text-sm"
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
               >
-                save
-              </span>
+              Profil & Hero
+            </a>
 
+            <a
+              href="CmsProduk.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Produk Unggulan
+            </a>
 
-              <span id="textBtnSimpanProfil">
-                Simpan
-              </span>
+            <a
+              href="Kelembagaan.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Kelembagaan
+            </a>
 
+            <a
+              href="PPID.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              PPID
+            </a>
+
+            <a
+              href="Informasi.html"
+              class="flex items-center gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:translate-x-1 transition-all rounded"
+            >
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              Informasi
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+  <div id="overlay" class="fixed inset-0 bg-black/50 hidden z-30 md:hidden"></div>
+
+  <!-- MAIN CONTENT -->
+  <div id="mainContent" class="pt-16 md:pl-64 transition-all duration-300 min-h-screen flex flex-col">
+    <main class="flex-1 p-4 sm:p-6 pb-20">
+
+      <div class="mb-6 fade-up">
+        <h2 class="text-2xl font-bold text-gray-800">Kelola Profil & Hero Beranda</h2>
+        <p class="text-sm text-gray-500 mt-1">Kelola Hero Slider, informasi Kepala Desa, kata sambutan, visi dan misi desa.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-md border border-gray-100 max-w-5xl overflow-hidden fade-up delay-1">
+        
+        <form id="formCmsProfil" enctype="multipart/form-data" novalidate class="p-6 space-y-8">
+
+          <!-- ========================================== -->
+          <!-- 1. SLIDER BERANDA (DINAMIS DENGAN TOMBOL BIRU) -->
+          <!-- ========================================== -->
+          <section class="border border-gray-200 rounded-2xl p-5 bg-gray-50/50">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-4 border-b">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                  <span class="material-symbols-outlined">view_carousel</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-gray-800">Slider Beranda</h3>
+                  <p class="text-xs text-gray-500">Kelola gambar dan teks untuk slider.</p>
+                </div>
+              </div>
+              
+              <!-- TOMBOL BIRU PENAMBAH SLIDE -->
+              <button type="button" id="btnTambahSlide" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 shadow-sm transition active:scale-95">
+                <span class="material-symbols-outlined text-sm">add</span> Tambah Gambar/Slide
+              </button>
+            </div>
+
+            <!-- WADAH KARTU SLIDE DINAMIS -->
+            <div id="wadahSlideDynamic" class="space-y-5">
+               <div class="py-10 text-center text-gray-400">
+                  <span class="material-symbols-outlined animate-spin text-blue-500 text-3xl">progress_activity</span>
+                  <p class="text-sm mt-2">Memuat data...</p>
+               </div>
+            </div>
+          </section>
+
+          <!-- ========================================== -->
+          <!-- 2. SAMBUTAN KEPALA DESA -->
+          <!-- ========================================== -->
+          <section class="border border-gray-200 rounded-2xl p-5">
+            <div class="flex items-center gap-3 mb-5 pb-4 border-b">
+              <div class="w-10 h-10 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined">person_pin</span>
+              </div>
+              <div>
+                <h3 class="font-bold text-gray-800">Sambutan Kepala Desa</h3>
+                <p class="text-xs text-gray-500">Kelola foto dan teks sambutan Kepala Desa.</p>
+              </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-6 items-start">
+              <!-- Upload Foto Kades -->
+              <div class="w-full md:w-1/3">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Foto Kades</label>
+                <div class="w-full h-48 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center overflow-hidden mb-3 relative group">
+                  <img id="previewFotoKades" src="../img/default-avatar.png" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <span class="text-white text-xs font-semibold">Pilih Foto</span>
+                  </div>
+                </div>
+                <input type="file" id="inputFotoKadesAsli" accept="image/jpeg,image/png,image/webp" class="w-full text-sm text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                <p class="text-[10px] text-gray-400 mt-1">*Abaikan jika tidak ingin mengubah foto.</p>
+              </div>
+
+              <!-- Teks Nama & Sambutan -->
+              <div class="w-full md:w-2/3 space-y-4">
+                
+                <!-- 🚨 INPUT NAMA KADES BARU -->
+                <div>
+                  <label for="namaKades" class="block text-sm font-semibold text-gray-700 mb-1.5">Nama Kepala Desa</label>
+                  <input type="text" id="namaKades" name="nama_kades" placeholder="Contoh: Rochmanu" required autocomplete="off" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+                </div>
+
+                <div>
+                  <label for="sambutan" class="block text-sm font-semibold text-gray-700 mb-1.5">Teks Sambutan</label>
+                  <textarea id="sambutan" name="sambutan" rows="6" placeholder="Assalamu'alaikum warahmatullahi wabarakatuh..." required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition"></textarea>
+                </div>
+              </div>
+          </section>
+
+          <!-- ========================================== -->
+          <!-- 3. VISI MISI -->
+          <!-- ========================================== -->
+          <section class="border border-gray-200 rounded-2xl p-5">
+            <div class="flex items-center gap-3 mb-5 pb-4 border-b">
+              <div class="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
+                <span class="material-symbols-outlined">flag</span>
+              </div>
+              <div>
+                <h3 class="font-bold text-gray-800">Visi & Misi Desa</h3>
+                <p class="text-xs text-gray-500">Arah dan tujuan pembangunan desa.</p>
+              </div>
+            </div>
+            <div class="space-y-5">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Visi Desa</label>
+                <textarea id="visi" name="visi" rows="2" placeholder="Contoh: Mewujudkan Desa Sumorame yang Mandiri..." required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 resize-y transition"></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Misi Desa (Pisahkan dengan Enter)</label>
+                <textarea id="misi" name="misi" rows="5" placeholder="1. Meningkatkan pelayanan...&#10;2. Membangun infrastruktur..." required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 resize-y transition"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <!-- ========================================== -->
+          <!-- 4. MODAL PERATURAN -->
+          <!-- ========================================== -->
+          <section class="border border-gray-200 rounded-2xl p-5">
+            <div class="flex items-center gap-3 mb-5 pb-4 border-b">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                <span class="material-symbols-outlined">gavel</span>
+              </div>
+              <div>
+                <h3 class="font-bold text-gray-800">Modal Peraturan</h3>
+                <p class="text-xs text-gray-500">Konten yang tampil saat submenu Peraturan pada beranda diklik.</p>
+              </div>
+            </div>
+            <div class="space-y-5">
+              <div>
+                <label for="peraturanJudul" class="block text-sm font-semibold text-gray-700 mb-1.5">Judul Modal</label>
+                <input id="peraturanJudul" name="peraturan_judul" type="text" maxlength="120" placeholder="Contoh: Peraturan Desa Sumorame" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+              </div>
+              <div>
+                <label for="peraturanIsi" class="block text-sm font-semibold text-gray-700 mb-1.5">Isi Peraturan</label>
+                <textarea id="peraturanIsi" name="peraturan_isi" rows="8" placeholder="Tuliskan informasi peraturan yang ingin ditampilkan..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 resize-y transition"></textarea>
+                <p class="text-[11px] text-gray-400 mt-1">Gunakan Enter untuk memisahkan paragraf atau butir peraturan.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ========================================== -->
+          <!-- 5. BUTTON SIMPAN SEMUA -->
+          <!-- ========================================== -->
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5 border-t border-gray-200">
+            <p class="text-xs text-gray-400">Menyimpan akan memperbarui seluruh Slide, Visi, Misi, dan Sambutan.</p>
+            <button type="submit" class="bg-gray-800 hover:bg-black text-white font-bold py-2.5 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2 shadow-lg active:scale-95">
+              <span class="material-symbols-outlined text-sm">save</span>
+              <span>Simpan Semua Perubahan</span>
             </button>
-
           </div>
 
         </form>
-
       </div>
-
     </main>
-
-
-
-    <!-- ====================================================== -->
-    <!-- FOOTER -->
-    <!-- ====================================================== -->
-
-    <footer
-      class="
-        bg-white
-        border-t
-        text-center
-        p-4
-      "
-    >
-
-      <p
-        class="
-          text-sm
-          text-gray-500
-        "
-      >
-        © 2026 Instalasi Teknologi Komunikasi dan Informasi, Kantor Desa Sumorame.
-      </p>
-
-    </footer>
-
   </div>
 
-
-
-  <!-- ====================================================== -->
-  <!-- SCRIPT -->
-  <!-- ====================================================== -->
-
   <script src="js/DashboardAdmin.js"></script>
-
-  <script src="js/CMSProfil.js"></script>
-
-
+  <script src="js/CMSProfil.js?v=20260826-1"></script>
 </body>
 </html>

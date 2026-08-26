@@ -1,5 +1,120 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ===============================
+  // AMBIL & RENDER DATA INFORMASI DARI BACKEND
+  // ===============================
+  const API_BASE_URL = window.API_BASE_URL || "http://localhost:3000/api";
+
+  const heroGambar = document.getElementById("heroGambar");
+  const heroIsi = document.getElementById("heroIsi");
+  const heroTanggal = document.getElementById("heroTanggal");
+  const artikelText = document.getElementById("artikelText");
+  const contentTerkini = document.getElementById("contentTerkini");
+
+  const escapeHTML = (value = "") => {
+    const div = document.createElement("div");
+    div.textContent = value;
+    return div.innerHTML;
+  };
+
+  const formatTanggal = (tanggal) =>
+    new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+  // Tampilkan 1 item sebagai artikel utama (hero + artikel panjang)
+  function tampilkanArtikel(item) {
+    heroGambar.src = item.gambar_url;
+    heroIsi.innerText = item.isi;
+    heroTanggal.innerText = formatTanggal(item.created_at);
+
+    // "penjelasan" bisa berisi banyak paragraf dipisah baris baru,
+    // pecah jadi <p> terpisah biar rapi kayak artikel asli
+    const paragraf = item.penjelasan
+      .split(/\n+/)
+      .filter((p) => p.trim())
+      .map(
+        (p) =>
+          `<p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">${escapeHTML(p)}</p>`,
+      )
+      .join("");
+    artikelText.innerHTML = paragraf;
+
+    // Nyalakan lagi animasi scroll-reveal untuk paragraf yang baru masuk
+    document.querySelectorAll(".artikel-item").forEach((el, i) => {
+      setTimeout(
+        () => el.classList.remove("opacity-0", "translate-y-6"),
+        i * 150,
+      );
+    });
+  }
+
+  function renderArsip(items) {
+    if (!items.length) {
+      contentTerkini.innerHTML = `<p class="text-sm text-gray-400">Belum ada informasi.</p>`;
+      return;
+    }
+
+    contentTerkini.innerHTML = items
+      .map(
+        (item) => `
+      <div class="terkini-item bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
+          hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer" data-id="${item.id}">
+        <img src="${item.gambar_url}" alt="${escapeHTML(item.judul)}" class="w-16 h-16 object-cover rounded">
+        <div>
+          <h4 class="text-sm font-semibold">${escapeHTML(item.judul)}</h4>
+          <p class="text-xs text-gray-500">${formatTanggal(item.created_at)}</p>
+        </div>
+      </div>`,
+      )
+      .join("");
+
+    // Klik salah satu arsip -> tampilkan sebagai artikel utama di atas
+    contentTerkini.querySelectorAll(".terkini-item").forEach((el) => {
+      el.addEventListener("click", () => {
+        const item = items.find((i) => String(i.id) === el.dataset.id);
+        if (item) {
+          tampilkanArtikel(item);
+          document
+            .querySelector(".card-kiri")
+            .scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  }
+
+  async function loadInformasi() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/informasi`);
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Gagal memuat data informasi.");
+      }
+
+      const items = result.data || [];
+
+      if (!items.length) {
+        heroIsi.innerText = "Belum ada informasi yang dipublikasikan.";
+        artikelText.innerHTML = "";
+        renderArsip([]);
+        return;
+      }
+
+      // Backend sudah urutkan created_at DESC, jadi item pertama = terbaru
+      tampilkanArtikel(items[0]);
+      renderArsip(items);
+    } catch (error) {
+      console.error("Gagal memuat informasi:", error);
+      heroIsi.innerText = "Gagal memuat data informasi.";
+      contentTerkini.innerHTML = `<p class="text-sm text-red-500">${escapeHTML(error.message)}</p>`;
+    }
+  }
+
+  loadInformasi();
+
+  // ===============================
   // NAVBAR MOBILE
   // ===============================
   const menuBtn = document.getElementById("menuBtn");
@@ -65,51 +180,21 @@ document.addEventListener("DOMContentLoaded", () => {
   animasiCard();
 
   // ===============================
-  // ANIMASI ARTIKEL
-  // ===============================
-  const artikel = document.getElementById("artikelText");
-  const artikelItems = document.querySelectorAll(".artikel-item");
-
-  function animasiArtikel() {
-    const trigger = window.innerHeight;
-
-    if (artikel.getBoundingClientRect().top < trigger - 100) {
-      artikelItems.forEach((item, i) => {
-        setTimeout(() => {
-          item.classList.remove("opacity-0", "translate-y-6");
-        }, i * 150);
-      });
-    }
-  }
-
-  window.addEventListener("scroll", animasiArtikel);
-
-  // ===============================
-  // ANIMASI TERKINI (🔥 FIX UTAMA)
+  // NOTE: animasi fade-in untuk #artikelText dan #contentTerkini
+  // sekarang ditangani langsung di tampilkanArtikel() / loadInformasi()
+  // di atas, karena kontennya sekarang muncul belakangan (fetch async),
+  // bukan udah ada dari awal kayak dulu waktu masih hardcoded di HTML.
   // ===============================
   const content = document.getElementById("contentTerkini");
-  const items = document.querySelectorAll(".terkini-item");
-
   setTimeout(() => {
     content.classList.remove("opacity-0", "translate-x-20");
   }, 200);
-
-  items.forEach((item, i) => {
-    setTimeout(
-      () => {
-        item.classList.remove("opacity-0", "translate-x-10");
-      },
-      400 + i * 120,
-    );
-  });
 
   // ===============================
   // TAB TERKINI / KATEGORI
   // ===============================
   const btnTerkini = document.getElementById("btnTerkini");
   const btnKategori = document.getElementById("btnKategori");
-
-  const contentTerkini = document.getElementById("contentTerkini");
   const contentKategori = document.getElementById("contentKategori");
 
   if (btnKategori) {
@@ -272,7 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
 
   const judul = document.getElementById("judulBerita");
-  const teks = judul.textContent;
+  const teks = judul.textContent.trim();
 
   judul.innerHTML = "";
 

@@ -24,7 +24,7 @@ const upload = multer({
   storage: storage,
 
   limits: {
-    fileSize: 2 * 1024 * 1024
+    fileSize: 2 * 1024 * 1024 // Maksimal 2 MB
   },
 
   fileFilter: (req, file, cb) => {
@@ -62,19 +62,15 @@ router.get(
 // TAMBAH CMS PROFIL
 // POST /api/cmsprofil
 // ADMIN
-//
-// FormData:
-// judul_hero
-// deskripsi_hero
-// sambutan
-// visi
-// misi
-// gambar
 // ==================================================
+// 🚨 Menerima 2 file sekaligus: 'gambar' dan 'foto_kades'
 router.post(
   "/",
   verifyToken,
-  upload.single("gambar"),
+  upload.fields([
+    { name: 'gambar', maxCount: 1 },
+    { name: 'foto_kades', maxCount: 1 }
+  ]),
   createCmsProfil
 );
 
@@ -83,19 +79,15 @@ router.post(
 // UPDATE CMS PROFIL
 // PUT /api/cmsprofil/:id
 // ADMIN
-//
-// FormData:
-// judul_hero
-// deskripsi_hero
-// sambutan
-// visi
-// misi
-// gambar = opsional
 // ==================================================
+// 🚨 Menerima 2 file sekaligus: 'gambar' dan 'foto_kades'
 router.put(
   "/:id",
   verifyToken,
-  upload.single("gambar"),
+  upload.fields([
+    { name: 'gambar', maxCount: 1 },
+    { name: 'foto_kades', maxCount: 1 }
+  ]),
   updateCmsProfil
 );
 
@@ -122,7 +114,6 @@ router.use((err, req, res, next) => {
     err
   );
 
-
   // ==================================================
   // ERROR DARI MULTER
   // ==================================================
@@ -136,7 +127,6 @@ router.use((err, req, res, next) => {
       err.code ===
       "LIMIT_FILE_SIZE"
     ) {
-
       return res.status(400).json({
         success: false,
         message:
@@ -144,20 +134,17 @@ router.use((err, req, res, next) => {
       });
     }
 
-
     // Nama field file salah
     if (
       err.code ===
       "LIMIT_UNEXPECTED_FILE"
     ) {
-
       return res.status(400).json({
         success: false,
         message:
-          "Nama field upload gambar tidak sesuai. Gunakan field 'gambar'."
+          "Nama field upload gambar tidak sesuai."
       });
     }
-
 
     return res.status(400).json({
       success: false,
@@ -166,12 +153,10 @@ router.use((err, req, res, next) => {
     });
   }
 
-
   // ==================================================
   // ERROR FILE FILTER
   // ==================================================
   if (err) {
-
     return res.status(400).json({
       success: false,
       message:
@@ -180,9 +165,7 @@ router.use((err, req, res, next) => {
     });
   }
 
-
   next();
 });
-
 
 module.exports = router;
