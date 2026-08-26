@@ -69,6 +69,7 @@ body {
   display: block;
   width: fit-content;
   max-width: 100%;
+  font-size: clamp(1.65rem, 6vw, 3rem);
   overflow-wrap: anywhere;
   text-wrap: balance;
   animation: slideLoop 8s ease-in-out infinite;
@@ -110,7 +111,7 @@ body {
 @media (max-width: 640px) {
   .hero-title {
     width: 100%;
-    font-size: clamp(1.65rem, 8vw, 2.25rem);
+    text-align: left;
   }
 }
 
