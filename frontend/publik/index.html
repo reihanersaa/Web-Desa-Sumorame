@@ -525,7 +525,7 @@
                 <img alt="Pengaduan" class="menu-icon" src="img/PengaduanIcn.png"/>
                 <span> Pengaduan </span>
               </a>
-              <a class="menu-card" href="#peraturan">
+              <a class="menu-card cursor-pointer" onclick="bukaModalPeraturan()">
                 <img alt="Peraturan" class="menu-icon" src="img/Peraturan.png"/>
                 <span> Peraturan </span>
               </a>
@@ -553,6 +553,27 @@
           </div>
         </div>
       </section>
+
+      <!-- MODAL PERATURAN -->
+      <div id="peraturanModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="peraturanModalJudul">
+        <div id="peraturanModalBox" class="relative w-full max-w-2xl max-h-[85vh] overflow-hidden rounded-2xl bg-white shadow-2xl opacity-0 scale-95 transition duration-200">
+          <div class="flex items-center justify-between gap-4 px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-emerald-700 to-green-600">
+            <div class="flex items-center gap-3 text-white">
+              <span class="material-symbols-outlined text-3xl">gavel</span>
+              <h2 id="peraturanModalJudul" class="font-poppins text-xl sm:text-2xl font-bold">Peraturan Desa Sumorame</h2>
+            </div>
+            <button id="tutupPeraturan" type="button" class="shrink-0 w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition" aria-label="Tutup modal Peraturan">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="max-h-[65vh] overflow-y-auto px-6 py-6">
+            <p id="peraturanModalIsi" class="font-poppins text-gray-700 leading-7 whitespace-pre-line">Informasi peraturan Desa Sumorame akan ditampilkan di sini.</p>
+          </div>
+          <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 text-right">
+            <button id="tutupPeraturanBawah" type="button" class="px-5 py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-semibold transition">Tutup</button>
+          </div>
+        </div>
+      </div>
 
       <!-- STATISTIK PENDUDUK -->
       <section
@@ -752,7 +773,7 @@
             </p>
           </div>
           <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-            <img class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" src="img/Dirgahayu.png"/>
+            <img id="gambarModalPublik" class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" src="img/Dirgahayu.png"/>
           </div>
           <div class="p-4 border-t bg-white">
             <a class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="PPID.html">

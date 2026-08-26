@@ -592,6 +592,24 @@ async function loadDataBeranda() {
           }
         });
       }
+
+      // 4. UPDATE GAMBAR MODAL PENGUMUMAN
+      const imgModalEl = document.getElementById("gambarModalPublik");
+      if (imgModalEl && dataUtama.gambar_modal_url) {
+        imgModalEl.src = dataUtama.gambar_modal_url;
+      }
+
+      // 5. UPDATE TEKS MODAL PERATURAN
+      const judulPeraturanEl = document.getElementById("peraturanModalJudul");
+      const isiPeraturanEl = document.getElementById("peraturanModalIsi");
+
+      if (judulPeraturanEl && dataUtama.peraturan_judul) {
+        judulPeraturanEl.textContent = dataUtama.peraturan_judul;
+      }
+      if (isiPeraturanEl && dataUtama.peraturan_isi) {
+        isiPeraturanEl.textContent = dataUtama.peraturan_isi;
+      }
+
     }
   } catch (error) {
     console.error("Gagal menarik data CMS Beranda:", error);
@@ -601,3 +619,40 @@ async function loadDataBeranda() {
 document.addEventListener("DOMContentLoaded", () => {
   loadDataBeranda();
 });
+
+// ==========================================
+// FUNGSI BUKA/TUTUP MODAL PERATURAN
+// ==========================================
+function bukaModalPeraturan() {
+  const modal = document.getElementById("peraturanModal");
+  const modalBox = document.getElementById("peraturanModalBox");
+  if (modal && modalBox) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    // Animasi muncul
+    setTimeout(() => {
+      modalBox.classList.remove("opacity-0", "scale-95");
+      modalBox.classList.add("opacity-100", "scale-100");
+    }, 10);
+  }
+}
+
+function tutupModalPeraturan() {
+  const modal = document.getElementById("peraturanModal");
+  const modalBox = document.getElementById("peraturanModalBox");
+  if (modal && modalBox) {
+    // Animasi hilang
+    modalBox.classList.remove("opacity-100", "scale-100");
+    modalBox.classList.add("opacity-0", "scale-95");
+    setTimeout(() => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }, 200); // Menunggu transisi CSS selesai
+  }
+}
+
+// Daftarkan tombol tutup (X) dan tombol "Tutup" di bawah
+const btnTutupAtas = document.getElementById("tutupPeraturan");
+const btnTutupBawah = document.getElementById("tutupPeraturanBawah");
+if (btnTutupAtas) btnTutupAtas.addEventListener("click", tutupModalPeraturan);
+if (btnTutupBawah) btnTutupBawah.addEventListener("click", tutupModalPeraturan);
