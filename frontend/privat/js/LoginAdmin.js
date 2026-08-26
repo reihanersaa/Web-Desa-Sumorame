@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       // PORT disamakan dengan backend (index.js -> PORT || 3000)
       const response = await fetch(
-        "http://localhost:3000/api/auth/login-admin",
+        `${window.API_BASE_URL}/auth/login-admin`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -71,14 +71,13 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("token", result.token);
         localStorage.setItem("user", JSON.stringify(result.data));
         localStorage.setItem("login", "true");
-        localStorage.setItem("token", result.token);
         localStorage.setItem("admin", JSON.stringify(result.data));
 
         const redirectAduan = localStorage.getItem("redirectAduan");
 
         if (redirectAduan) {
           localStorage.removeItem("redirectAduan");
-          window.location.href = "Aduan.html";
+          window.location.href = "Pengaduan.html";
         } else {
           Swal.fire({
             title: "Login Berhasil 🎉",

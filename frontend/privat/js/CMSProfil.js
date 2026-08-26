@@ -2,7 +2,13 @@
    LOGIKA CMS PROFIL & SLIDER DINAMIS (CMSProfil.js)
 =================================================== */
 
-const API_URL = "http://localhost:3000/api/cmsprofil";
+const API_URL = `${window.API_BASE_URL}/cmsprofil`;
+
+function escapeHTML(value = "") {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
 
 function getAdminToken() {
   return localStorage.getItem("token");
@@ -92,7 +98,7 @@ function buatKartuSlide(data) {
   const judul = data && data.judul_hero ? data.judul_hero : "";
   const desk = data && data.deskripsi_hero ? data.deskripsi_hero : "";
   const imgUrl =
-    data && data.gambar_url ? data.gambar_url : "../img/default-avatar.png";
+    data && data.gambar_url ? data.gambar_url : "/img/kepala.png";
 
   const card = document.createElement("div");
   card.className =
@@ -109,7 +115,7 @@ function buatKartuSlide(data) {
     <div class="flex flex-col md:flex-row gap-5">
       <div class="w-full md:w-1/3">
         <div class="w-full h-40 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center overflow-hidden mb-3">
-          <img class="preview-img w-full h-full object-cover" src="${imgUrl}">
+          <img class="preview-img w-full h-full object-cover" src="${escapeHTML(imgUrl)}">
         </div>
         <input type="file" class="input-file w-full text-sm text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*">
         <p class="text-[10px] text-gray-400 mt-1">*Abaikan jika tidak ingin mengubah gambar.</p>
@@ -118,11 +124,11 @@ function buatKartuSlide(data) {
       <div class="w-full md:w-2/3 space-y-3">
         <div>
           <label class="block text-xs font-semibold text-gray-600 mb-1">Judul Hero</label>
-          <input type="text" class="input-judul w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" value="${judul}" placeholder="Tuliskan judul slide..." required>
+          <input type="text" class="input-judul w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" value="${escapeHTML(judul)}" placeholder="Tuliskan judul slide..." required>
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-600 mb-1">Deskripsi Hero</label>
-          <textarea class="input-deskripsi w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-y" rows="3" placeholder="Tuliskan deskripsi singkat..." required>${desk}</textarea>
+          <textarea class="input-deskripsi w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-y" rows="3" placeholder="Tuliskan deskripsi singkat..." required>${escapeHTML(desk)}</textarea>
         </div>
       </div>
     </div>

@@ -11,8 +11,10 @@ const {
 } = require("../controllers/cmsprofilController");
 
 const {
-  verifyToken
+  verifyToken,
+  requireAdmin
 } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 
 
 // ==================================================
@@ -67,11 +69,13 @@ router.get(
 router.post(
   "/",
   verifyToken,
+  requireAdmin,
   upload.fields([
     { name: 'gambar', maxCount: 1 },
     { name: 'foto_kades', maxCount: 1 },
     { name: 'gambar_modal', maxCount: 1 }
   ]),
+  verifyUploadSignatures,
   createCmsProfil
 );
 
@@ -85,11 +89,13 @@ router.post(
 router.put(
   "/:id",
   verifyToken,
+  requireAdmin,
   upload.fields([
     { name: 'gambar', maxCount: 1 },
     { name: 'foto_kades', maxCount: 1 },
     { name: 'gambar_modal', maxCount: 1 }
   ]),
+  verifyUploadSignatures,
   updateCmsProfil
 );
 
@@ -102,6 +108,7 @@ router.put(
 router.delete(
   "/:id",
   verifyToken,
+  requireAdmin,
   deleteCmsProfil
 );
 

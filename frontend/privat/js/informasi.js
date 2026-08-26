@@ -1,7 +1,13 @@
 // ==================================================
 // 1. KONFIGURASI API
 // ==================================================
-const API_URL = "http://localhost:3000/api/informasi";
+const API_URL = `${window.API_BASE_URL}/informasi`;
+
+function escapeHTML(value = "") {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
 
 function getAdminToken() {
   return localStorage.getItem("token");
@@ -225,15 +231,15 @@ function renderTable() {
         </td>
 
         <td class="px-4 py-3 text-center border">
-          ${item.judul || "-"}
+          ${escapeHTML(item.judul || "-")}
         </td>
 
         <td class="px-4 py-3 text-center border">
-          ${potongText(item.isi, 80)}
+          ${escapeHTML(potongText(item.isi, 80))}
         </td>
 
         <td class="px-4 py-3 text-center border">
-          ${potongText(item.penjelasan, 80)}
+          ${escapeHTML(potongText(item.penjelasan, 80))}
         </td>
 
         <td class="px-4 py-3 text-center border">
@@ -786,7 +792,138 @@ function pasangEventAction() {
             text: "Data informasi tidak ditemukan."
           });
 
-          return;
+        viewGambar.classList.add("hidden");
+      }
+
+      openModal(modalView, modalBox);
+    };
+  });
+
+  // ================= EDIT =================
+  document.querySelectorAll(".btnEdit").forEach((btn) => {
+    btn.onclick = () => {
+      const id = btn.dataset.id;
+
+      const item = informasiData.find((data) => {
+        return String(data.id) === String(id);
+      });
+
+      if (!item) {
+        Swal.fire({
+          icon: "error",
+          title: "Data Tidak Ditemukan",
+          text: "Data informasi tidak ditemukan.",
+        });
+
+        return;
+      }
+
+      idInformasiEdit = item.id;
+
+      judulEdit.value = item.judul || "";
+
+      isiEdit.value = item.isi || "";
+
+      penjelasanEdit.value = item.penjelasan || "";
+
+      gambarEdit.value = "";
+
+      if (item.gambar_url) {
+        previewGambarEdit.src = item.gambar_url;
+
+        previewGambarEdit.classList.remove("hidden");
+      } else {
+        previewGambarEdit.src = "";
+
+        previewGambarEdit.classList.add("hidden");
+      }
+
+      openModal(modalEdit, modalEditBox);
+    };
+  });
+
+  // ================= DELETE =================
+  document.querySelectorAll(".btnDelete").forEach((btn) => {
+    btn.onclick = async () => {
+      const id = btn.dataset.id;
+
+      const item = informasiData.find((data) => {
+        return String(data.id) === String(id);
+      });
+
+      if (!item) {
+        Swal.fire({
+          icon: "error",
+          title: "Data Tidak Ditemukan",
+          text: "Data informasi tidak ditemukan.",
+        });
+
+        return;
+      }
+
+      const token = getAdminToken();
+
+      if (!token) {
+        Swal.fire({
+          icon: "warning",
+          title: "Token Admin Tidak Ditemukan",
+          text: "Silakan login sebagai admin terlebih dahulu.",
+        });
+
+        return;
+      }
+
+      const konfirmasi = await Swal.fire({
+        title: "Yakin Hapus?",
+        html: `
+            <div style="text-align:center;">
+              <p>Data informasi berikut akan dihapus:</p>
+
+              <p style="margin-top:10px;">
+                <b>${escapeHTML(item.judul)}</b>
+              </p>
+
+              <p style="margin-top:10px; color:#dc2626;">
+                Data yang sudah dihapus tidak dapat dikembalikan.
+              </p>
+            </div>
+          `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, Hapus",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#dc2626",
+        cancelButtonColor: "#6b7280",
+      });
+
+      if (!konfirmasi.isConfirmed) {
+        return;
+      }
+
+      try {
+        Swal.fire({
+          title: "Menghapus...",
+          text: "Data informasi sedang dihapus.",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        const response = await fetch(`${API_URL}/${id}`, {
+          method: "DELETE",
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Gagal menghapus informasi.");
         }
 
 

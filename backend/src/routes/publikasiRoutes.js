@@ -10,7 +10,8 @@ const {
   deletePublikasi
 } = require("../controllers/publikasiController");
 
-const { verifyToken } = require("../middleware/authMiddleware");
+const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 
 
 // ==================================================
@@ -111,7 +112,9 @@ router.get(
 router.post(
   "/",
   verifyToken,
+  requireAdmin,
   uploadGambar,
+  verifyUploadSignatures,
   createPublikasi
 );
 
@@ -122,7 +125,9 @@ router.post(
 router.put(
   "/:id",
   verifyToken,
+  requireAdmin,
   uploadGambar,
+  verifyUploadSignatures,
   updatePublikasi
 );
 
@@ -133,6 +138,7 @@ router.put(
 router.delete(
   "/:id",
   verifyToken,
+  requireAdmin,
   deletePublikasi
 );
 

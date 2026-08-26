@@ -12,8 +12,10 @@ const {
 } = require("../controllers/ppidController");
 
 const {
-  verifyToken
+  verifyToken,
+  requireAdmin
 } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 
 
 // ==================================================
@@ -62,14 +64,14 @@ const uploadStruktur = multer({
 
 // ==================================================
 // MULTER PDF PPID
-// Maksimal 10 MB
+// Maksimal 4 MB agar tetap di bawah batas payload Vercel 4,5 MB.
 // Format PDF
 // ==================================================
 const uploadPDF = multer({
   storage,
 
   limits: {
-    fileSize: 10 * 1024 * 1024
+    fileSize: 4 * 1024 * 1024
   },
 
   fileFilter: (req, file, cb) => {
@@ -113,7 +115,9 @@ router.get(
 router.put(
   "/struktur",
   verifyToken,
+  requireAdmin,
   uploadStruktur.single("struktur"),
+  verifyUploadSignatures,
   updateStrukturPPID
 );
 
@@ -146,7 +150,9 @@ router.get(
 router.post(
   "/pdf",
   verifyToken,
+  requireAdmin,
   uploadPDF.single("file_pdf"),
+  verifyUploadSignatures,
   createPDFPPID
 );
 
@@ -161,6 +167,7 @@ router.post(
 router.delete(
   "/pdf/:id",
   verifyToken,
+  requireAdmin,
   deletePDFPPID
 );
 

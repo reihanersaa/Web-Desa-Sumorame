@@ -1,7 +1,13 @@
 // ==================================================
 // 1. KONFIGURASI API
 // ==================================================
-const API_URL = "http://localhost:3000/api/kelembagaan";
+const API_URL = `${window.API_BASE_URL}/kelembagaan`;
+
+function escapeHTML(value = "") {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
 
 function getAdminToken() {
   return localStorage.getItem("token");
@@ -256,19 +262,19 @@ function renderTable() {
           <td
             class="px-4 py-3 border text-center"
           >
-            ${item.nama || "-"}
+            ${escapeHTML(item.nama || "-")}
           </td>
 
           <td
             class="px-4 py-3 border text-center"
           >
-            ${potongText(item.pengertian, 60)}
+            ${escapeHTML(potongText(item.pengertian, 60))}
           </td>
 
           <td
             class="px-4 py-3 border text-center"
           >
-            ${potongText(item.tugas, 60)}
+            ${escapeHTML(potongText(item.tugas, 60))}
           </td>
 
           <td
@@ -1022,7 +1028,7 @@ function pasangEventAction() {
                   </p>
 
                   <p style="margin-top:10px;">
-                    <b>${item.nama}</b>
+                    <b>${escapeHTML(item.nama)}</b>
                   </p>
 
                   <p

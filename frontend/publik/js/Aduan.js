@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const escapeHTML = (value = "") => {
+    const div = document.createElement("div");
+    div.textContent = String(value ?? "");
+    return div.innerHTML;
+  };
+
   tampilkanAduan();
   cekStatusForm();
   // ================= NAVBAR MOBILE =================
@@ -318,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
           formData.append("file_bukti", bukti);
 
           // 3. KIRIM KE BACKEND BESERTA TOKEN
-          const response = await fetch("http://localhost:3000/api/aduan", {
+          const response = await fetch(`${window.API_BASE_URL}/aduan`, {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${token}` // Ini kuncinya agar lolos verifyToken
@@ -393,16 +399,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             <div class="flex items-center gap-2">
               ${icon}
-              <h4 class="font-bold text-green-700">${item.judul}</h4>
+              <h4 class="font-bold text-green-700">${escapeHTML(item.judul)}</h4>
             </div>
 
             <span class="text-xs px-2 py-1 rounded ${statusColor}">
-              ${item.status}
+              ${escapeHTML(item.status)}
             </span>
 
           </div>
 
-          <p class="text-sm text-gray-600">${item.isi}</p>
+          <p class="text-sm text-gray-600">${escapeHTML(item.isi)}</p>
 
           ${
             item.gambar
@@ -410,7 +416,7 @@ document.addEventListener("DOMContentLoaded", function () {
               : ""
           }
 
-          <p class="text-xs text-gray-400 mt-2">${item.tanggal}</p>
+          <p class="text-xs text-gray-400 mt-2">${escapeHTML(item.tanggal)}</p>
 
           <button onclick="ubahStatus(${data.length - 1 - i})"
             class="mt-2 text-xs text-blue-600 hover:underline">
