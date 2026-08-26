@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PPID | Website Desa Sumorame</title>
-  <link rel="icon" href="img/logo3.png?v=20260824-1" type="image/png">
+  <link rel="icon" href="../img/logo3.png?v=20260824-1" type="image/png">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -46,7 +46,7 @@
       <!-- Logo -->
       <div class="flex items-center gap-3">
         <div class="logo">
-          <img src="img/logo3.png" alt="Logo Desa Digital" width="40" height="36">
+          <img src="../img/logo3.png" alt="Logo Desa Digital" width="40" height="36">
         </div>
         <h1 class="font-headline text-xl font-bold text-emerald-900">Desa Sumorame</h1>
       </div>
@@ -341,28 +341,28 @@
 
                   <!-- ITEM 1 -->
                   <div class="banner-item opacity-0 translate-y-4 transition-all duration-500 delay-100 overflow-hidden z-10 inline-block">
-                    <img src="img/jatim.png"
+                    <img src="../img/jatim.png"
                       class="h-12 w-auto object-contain block rounded-xl 
                         hover:scale-110 hover:-translate-y-1 transition duration-300">
                   </div>
 
                   <!-- ITEM 2 -->
                   <div class="banner-item opacity-0 translate-y-4 transition-all duration-500 delay-100 overflow-hidden z-10 inline-block">
-                    <img src="img/lapor.png"
+                    <img src="../img/lapor.png"
                       class="h-12 w-auto object-contain block rounded-xl 
                         hover:scale-110 hover:-translate-y-1 transition duration-300">
                   </div>
 
                   <!-- ITEM 3 -->
                   <div class="banner-item opacity-0 translate-y-4 transition-all duration-500 delay-100 overflow-hidden z-10 inline-block">
-                    <img src="img/informasi.png"
+                    <img src="../img/informasi.png"
                       class="h-12 w-auto object-contain block rounded-xl 
                         hover:scale-110 hover:-translate-y-1 transition duration-300">
                   </div>
 
                   <!-- ITEM 4 -->
                   <div class="banner-item opacity-0 translate-y-4 transition-all duration-500 delay-100 overflow-hidden z-10 inline-block">
-                    <img src="img/sidoarjo.png"
+                    <img src="../img/sidoarjo.png"
                       class="h-12 w-auto object-contain block rounded-xl 
                         hover:scale-110 hover:-translate-y-1 transition duration-300">
                 </div>
@@ -392,7 +392,7 @@
           <!-- Logo & Nama -->
           <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
             <div class="inline-flex flex-col items-center">
-              <img src="img/logo3.png" alt="Logo Desa" class="w-16 mb-3">
+              <img src="../img/logo3.png" alt="Logo Desa" class="w-16 mb-3">
               <h3 class="text-lg font-bold">Desa Sumorame</h3>
             </div>
             <p class="text-sm text-gray-300">
@@ -545,208 +545,275 @@
         </div>
       </div>
 
-      <!-- MODAL PENGUMUMAN -->
+      <!-- ====================================================== -->
+      <!-- MODAL PROFILE PPID -->
+      <!-- ====================================================== -->
       <div id="modalPengumuman"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center
-        opacity-0 transition-opacity duration-300">
+        class="
+          fixed
+          inset-0
+          bg-black/60
+          backdrop-blur-sm
+          hidden
+          z-50
+          flex
+          items-center
+          justify-center
+          opacity-0
+          transition-opacity
+          duration-300
+        "
+      >
 
         <!-- BOX -->
         <div id="modalBoxPengumuman"
-          class="bg-white w-[95%] md:w-[70%] lg:w-[60%] h-auto max-h-[90%]
-          rounded-2xl shadow-2xl flex flex-col overflow-hidden
-          transform scale-90 opacity-0 transition-all duration-300">
+          class="
+            bg-white
+            w-[95%]
+            md:w-[70%]
+            lg:w-[60%]
+            h-auto
+            max-h-[90%]
+            rounded-2xl
+            shadow-2xl
+            flex
+            flex-col
+            overflow-hidden
+            transform
+            scale-90
+            opacity-0
+            transition-all
+            duration-300
+          "
+        >
 
           <!-- HEADER -->
-          <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-500 to-emerald-700 text-white">
-            <h2 class="font-semibold text-lg">Profile PPID</h2>
+          <div class="
+              flex
+              justify-between
+              items-center
+              px-6
+              py-4
+              bg-gradient-to-r
+              from-green-500
+              to-emerald-700
+              text-white
+            "
+          >
 
-            <button onclick="closeModalPengumuman()" class="hover:scale-110 transition">
+            <h2 class="font-semibold text-lg">
+              Profile PPID
+            </h2>
+
+            <button
+              onclick="closeModalPengumuman()"
+              class="hover:scale-110 transition"
+            >
               ✖
             </button>
+
           </div>
 
-          <!-- CONTENT (GAMBAR) -->
-          <div class="p-4 bg-gray-50 flex justify-center items-center overflow-auto">
-            <img src="img/StrukturDesa.jpg" 
-                alt="Pengumuman"
-                class="rounded-lg shadow-lg max-h-[75vh] w-auto object-contain">
+
+          <!-- CONTENT -->
+          <div
+            class="
+              p-4
+              bg-gray-50
+              flex
+              justify-center
+              items-center
+              overflow-auto
+              min-h-[250px]
+            "
+          >
+
+            <!-- GAMBAR STRUKTUR DARI BACKEND -->
+            <img
+              id="gambarStrukturPPID"
+              src=""
+              alt="Struktur PPID Desa Sumorame"
+              class="
+                rounded-lg
+                shadow-lg
+                max-h-[75vh]
+                max-w-full
+                w-auto
+                object-contain
+              "
+            >
+
           </div>
+
 
           <!-- FOOTER -->
           <div class="p-4 border-t flex justify-end">
-            <button onclick="closeModalPengumuman()"
-              class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+
+            <button
+              onclick="closeModalPengumuman()"
+              class="
+                bg-gray-500
+                text-white
+                px-4
+                py-2
+                rounded
+                hover:bg-gray-600
+              "
+            >
               Tutup
             </button>
+
           </div>
 
         </div>
+
       </div>
 
-      <!-- MODAL LAYANAN INFORMASI -->
-      <div id="modalLayanan"
-        class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center
-        opacity-0 transition-opacity duration-300">
+      <!-- ====================================================== -->
+      <!-- MODAL LAYANAN INFORMASI PUBLIK -->
+      <!-- ====================================================== -->
+      <div
+        id="modalLayanan"
+        class="
+          fixed
+          inset-0
+          bg-black/40
+          backdrop-blur-sm
+          hidden
+          z-50
+          flex
+          items-center
+          justify-center
+          opacity-0
+          transition-opacity
+          duration-300
+        "
+      >
 
         <!-- BOX -->
-        <div id="modalBoxLayanan"
-          class="bg-white w-[95%] md:w-[85%] lg:w-[75%] h-[85%]
-          rounded-2xl shadow-2xl flex flex-col overflow-hidden
-          transform scale-90 opacity-0 transition-all duration-300">
+        <div
+          id="modalBoxLayanan"
+          class="
+            bg-white
+            w-[95%]
+            md:w-[85%]
+            lg:w-[75%]
+            h-[85%]
+            rounded-2xl
+            shadow-2xl
+            flex
+            flex-col
+            overflow-hidden
+            transform
+            scale-90
+            opacity-0
+            transition-all
+            duration-300
+          "
+        >
 
           <!-- HEADER -->
-          <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-green-500 to-emerald-700 text-white">
-            <h2 class="font-semibold text-lg">Layanan Informasi Publik</h2>
+          <div
+            class="
+              flex
+              justify-between
+              items-center
+              px-6
+              py-4
+              bg-gradient-to-r
+              from-green-500
+              to-emerald-700
+              text-white
+            "
+          >
 
-            <button onclick="closeModalLayanan()" class="hover:scale-110 transition">
+            <h2 class="font-semibold text-lg">
+              Layanan Informasi Publik
+            </h2>
+
+            <button
+              onclick="closeModalLayanan()"
+              class="hover:scale-110 transition"
+            >
               ✖
             </button>
+
           </div>
+
 
           <!-- CONTENT -->
           <div class="relative flex-1 overflow-hidden">
 
-            <!-- SLIDE WRAPPER -->
-            <div id="slideContainer" class="flex w-full h-full transition-transform duration-500">
+            <!-- ================================================= -->
+            <!-- DATA PDF DARI BACKEND -->
+            <!-- GET /api/ppid/pdf -->
+            <!-- ================================================= -->
+            <div
+              id="daftarPDFPublik"
+              class="
+                w-full
+                h-full
+                p-6
+                overflow-y-auto
+                bg-gray-50
+              "
+            >
 
-              <!-- ================= HALAMAN 1 ================= -->
-              <div class="w-full flex-shrink-0 min-w-full p-6 overflow-y-auto bg-gray-50">
+              <!-- Loading awal -->
+              <div
+                class="
+                  py-12
+                  flex
+                  flex-col
+                  items-center
+                  justify-center
+                  text-gray-500
+                "
+              >
 
-                <p onclick="goToSlide(1)" 
-                  class="text-black text-sm cursor-pointer hover:underline mb-4">
-                  Laporan Akses Informasi
+                <span
+                  class="
+                    material-symbols-outlined
+                    animate-spin
+                    text-4xl
+                    text-green-600
+                  "
+                >
+                  progress_activity
+                </span>
+
+                <p class="mt-3">
+                  Memuat daftar informasi...
                 </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2024
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 4 MB</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2025
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 2.4 MB</p>
-                    </div>
-                  </div>
-                </div>
               </div>
 
-              <!-- ================= HALAMAN 2 ================= -->
-              <div class="w-full flex-shrink-0 min-w-full p-6 overflow-y-auto bg-gray-50">
+            </div>
 
-                <p onclick="goToSlide(0)" 
-                  class="text-black text-sm cursor-pointer hover:underline mb-4">
-                  Laporan Pelayanan Informasi Publik
-                </p>
+          </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Monitoring dan Evaluasi Keterbukaan Informasi Publik Periode Bulan Januari s.d Juni 2025
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 2,5 MB</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2021
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 0.4 MB</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2024
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 2.4 MB</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2020
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 0.7 MB</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2023
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 7 MB</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2019
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 0.8 MB</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2022
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 8,7 MB</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-xl hover:bg-gray-200 transition cursor-pointer">
-                    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="w-12">
-                    <div>
-                      <h4 class="text-blue-500 font-semibold transition duration-300 hover:text-blue-700 cursor-pointer">
-                        Laporan Pelayanan Informasi Publik Tahun 2018
-                      </h4>
-                      <p class="text-sm text-gray-600">Ukuran : 0.8 MB</p>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div> <!-- ✅ END slideContainer -->
-
-          </div> <!-- ✅ END CONTENT -->
 
           <!-- FOOTER -->
           <div class="p-4 border-t flex justify-end">
-            <button onclick="closeModalLayanan()"
-              class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+
+            <button
+              onclick="closeModalLayanan()"
+              class="
+                bg-gray-500
+                text-white
+                px-4
+                py-2
+                rounded
+                hover:bg-gray-600
+              "
+            >
               Tutup
             </button>
+
           </div>
 
         </div>
+
       </div>
 
       <script src="js/PPID.js"></script>

@@ -16,9 +16,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
-// Gambar produk dikirim sebagai data URL. Base64 menambah ukuran sekitar 33%,
-// jadi sediakan ruang yang cukup untuk batas file 2 MB di frontend.
+app.use(
+  cors({
+    origin: "https://web-desa-sumorame.vercel.app",
+  }),
+);
 app.use(express.json({ limit: "3mb" }));
 
 // Routes
@@ -40,3 +42,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`);
 });
+
+module.exports = app;

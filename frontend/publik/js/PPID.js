@@ -1,320 +1,512 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // =============================
-  // ANIMASI CARD + MAP + BANNER
-  // =============================
-  const cards = document.querySelectorAll(".ppid-menu, .ppid-card, .map-card");
-  const banners = document.querySelectorAll(".banner-item");
+const supabase = require("../config/supabase");
 
-  const observer = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.remove("opacity-0", "translate-y-10");
-          entry.target.classList.add("opacity-100", "translate-y-0");
+// ==================================================
+// KONFIGURASI BUCKET
+// ==================================================
+const PPID_BUCKET = "ppid";
 
-          if (entry.target.classList.contains("map-card")) {
-            banners.forEach((b, i) => {
-              setTimeout(() => {
-                b.classList.remove("opacity-0", "translate-y-4");
-                b.classList.add("opacity-100", "translate-y-0");
-              }, i * 150);
-            });
-          }
-
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    {
-      threshold: 0,
-      rootMargin: "0px 0px -100px 0px", // 🔥 ini kunci
-    },
-  );
-
-  cards.forEach((card) => observer.observe(card));
-
-  // =============================
-  // NAVBAR MOBILE
-  // =============================
-  const menuBtn = document.getElementById("menuBtn");
-  const mobileMenu = document.getElementById("mobileMenu");
-
-  let isOpen = false;
-
-  menuBtn.addEventListener("click", () => {
-    isOpen = !isOpen;
-
-    mobileMenu.classList.toggle("max-h-0");
-    mobileMenu.classList.toggle("opacity-0");
-    mobileMenu.classList.toggle("max-h-[600px]");
-    mobileMenu.classList.toggle("opacity-100");
-
-    menuBtn.textContent = isOpen ? "close" : "menu";
-  });
-
-  document.addEventListener("click", (e) => {
-    if (
-      isOpen &&
-      !mobileMenu.contains(e.target) &&
-      !menuBtn.contains(e.target)
-    ) {
-      mobileMenu.classList.add("max-h-0", "opacity-0");
-      mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
-      menuBtn.textContent = "menu";
-      isOpen = false;
-    }
-  });
-
-  // =============================
-  // NAVBAR ANIMATION
-  // =============================
-  const navItems = document.querySelectorAll(".nav-item");
-
-  navItems.forEach((item, i) => {
-    setTimeout(() => {
-      item.style.opacity = "1";
-      item.style.transform = "translateY(0)";
-    }, i * 100);
-  });
-
-  // =============================
-  // HERO ANIMATION
-  // =============================
-  const heroItems = document.querySelectorAll(".hero-item");
-
-  heroItems.forEach((item, i) => {
-    setTimeout(() => {
-      item.classList.remove("opacity-0", "-translate-x-16");
-    }, i * 200);
-  });
-
-  // ===============================
-  // HEADER HILANG HANYA DI PALING ATAS
-  // ===============================
-
-  const mainHeader = document.getElementById("mainHeader");
-  const heroSection = document.getElementById("heroSection");
-
-  window.addEventListener("scroll", function () {
-    if (window.scrollY <= 0) {
-      // Navbar hilang
-      mainHeader.classList.add("header-hidden");
-
-      // Hero langsung naik menutup celah
-      heroSection.classList.add("hero-top");
-    } else {
-      // Navbar muncul
-      mainHeader.classList.remove("header-hidden");
-
-      // Hero kembali ke posisi normal
-      heroSection.classList.remove("hero-top");
-    }
-  });
-
-  // =============================
-  // SCROLL ANIMATION (FOOTER + KONTAK)
-  // =============================
-  const footer = document.getElementById("footer");
-  const footerItems = document.querySelectorAll(".footer-item");
-  const kontakItems = document.querySelectorAll(".kontak-item");
-
-  window.addEventListener("scroll", () => {
-    const trigger = window.innerHeight;
-
-    if (footer.getBoundingClientRect().top < trigger - 100) {
-      footer.classList.remove("opacity-0", "translate-y-10");
-
-      footerItems.forEach((item, i) => {
-        setTimeout(() => {
-          item.classList.remove("opacity-0", "translate-y-6");
-        }, i * 200);
-      });
-
-      kontakItems.forEach((item, i) => {
-        setTimeout(() => {
-          item.classList.remove(
-            "opacity-0",
-            "-translate-y-6",
-            "-translate-x-10",
-            "translate-x-10",
-            "translate-y-10",
-          );
-        }, i * 200);
-      });
-    }
-  });
-
-  // =============================
-  // SOUND NAVBAR (FIXED - NO DUPLICATE)
-  // =============================
-  navItems.forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      const text = item.textContent.trim();
-      if (!text) return;
-
-      const speech = new SpeechSynthesisUtterance(text);
-      speech.lang = "id-ID";
-
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(speech);
+// ==================================================
+// HELPER - CEK ADMIN
+// ==================================================
+const cekAdmin = (req, res) => {
+  if (!req.user || req.user.role !== "admin") {
+    res.status(403).json({
+      success: false,
+      message: "Akses Ditolak! Hanya Admin.",
     });
-  });
-});
-// =============================
-// MODAL TIME LINE
-// =============================
-const modal = document.getElementById("modalTimeline");
-const modalBox = document.getElementById("modalBox");
 
-function openModal() {
-  modal.classList.remove("hidden");
-
-  modal.classList.add("opacity-0");
-  modalBox.classList.add("scale-90", "opacity-0");
-
-  requestAnimationFrame(() => {
-    modal.classList.remove("opacity-0");
-    modalBox.classList.remove("scale-90", "opacity-0");
-    modalBox.classList.add("scale-100", "opacity-100");
-  });
-}
-
-function closeModal() {
-  modal.classList.add("opacity-0");
-  modalBox.classList.remove("scale-100", "opacity-100");
-  modalBox.classList.add("scale-90", "opacity-0");
-
-  setTimeout(() => {
-    modal.classList.add("hidden");
-  }, 300);
-}
-
-// klik luar
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) closeModal();
-});
-
-// =============================
-// MODAL PENGUMUMAN
-// =============================
-function openModalPengumuman() {
-  const modal = document.getElementById("modalPengumuman");
-  const box = document.getElementById("modalBoxPengumuman");
-
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-
-  // reset dulu
-  modal.classList.add("opacity-0");
-  box.classList.add("scale-90", "opacity-0");
-
-  requestAnimationFrame(() => {
-    modal.classList.remove("opacity-0");
-    box.classList.remove("scale-90", "opacity-0");
-    box.classList.add("scale-100", "opacity-100");
-  });
-}
-
-function closeModalPengumuman() {
-  const modal = document.getElementById("modalPengumuman");
-  const box = document.getElementById("modalBoxPengumuman");
-
-  modal.classList.add("opacity-0");
-  box.classList.remove("scale-100", "opacity-100");
-  box.classList.add("scale-90", "opacity-0");
-
-  setTimeout(() => {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  }, 300);
-}
-
-// klik luar
-const modalPengumuman = document.getElementById("modalPengumuman");
-
-modalPengumuman.addEventListener("click", (e) => {
-  if (e.target === modalPengumuman) closeModalPengumuman();
-});
-
-function ripple(e) {
-  const button = e.currentTarget;
-
-  const circle = document.createElement("span");
-  const diameter = Math.max(button.clientWidth, button.clientHeight);
-
-  circle.style.width = circle.style.height = `${diameter}px`;
-  circle.style.left = `${e.clientX - button.offsetLeft - diameter / 2}px`;
-  circle.style.top = `${e.clientY - button.offsetTop - diameter / 2}px`;
-
-  circle.classList.add("ripple");
-
-  const ripple = button.getElementsByClassName("ripple")[0];
-  if (ripple) ripple.remove();
-
-  button.appendChild(circle);
-}
-
-// =============================
-// MODAL LAYANAN INFORMASI
-// =============================
-function openModalLayanan() {
-  const modal = document.getElementById("modalLayanan");
-  const box = document.getElementById("modalBoxLayanan");
-
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-
-  modal.classList.add("opacity-0");
-  box.classList.add("scale-90", "opacity-0");
-
-  requestAnimationFrame(() => {
-    modal.classList.remove("opacity-0");
-    box.classList.remove("scale-90", "opacity-0");
-    box.classList.add("scale-100", "opacity-100");
-  });
-}
-
-function closeModalLayanan() {
-  const modal = document.getElementById("modalLayanan");
-  const box = document.getElementById("modalBoxLayanan");
-
-  modal.classList.add("opacity-0");
-  box.classList.remove("scale-100", "opacity-100");
-  box.classList.add("scale-90", "opacity-0");
-
-  setTimeout(() => {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  }, 300);
-}
-
-// klik luar = close
-document.getElementById("modalLayanan").addEventListener("click", function (e) {
-  if (e.target === this) closeModalLayanan();
-});
-
-function goToSlide(index) {
-  const container = document.getElementById("slideContainer");
-  container.style.transform = `translateX(-${index * 100}%)`;
-}
-
-// ======================
-// SCROLL TO TOP
-// ======================
-
-const scrollTopBtn = document.getElementById("scrollTopBtn");
-
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 300) {
-    scrollTopBtn.classList.add("show");
-  } else {
-    scrollTopBtn.classList.remove("show");
+    return false;
   }
-});
 
-scrollTopBtn.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-});
+  return true;
+};
+
+// ==================================================
+// HELPER - BUAT NAMA FILE
+// ==================================================
+const buatNamaFile = (originalName) => {
+  const extension = originalName.split(".").pop().toLowerCase();
+
+  return `${Date.now()}-${Math.random()
+    .toString(36)
+    .substring(2)}.${extension}`;
+};
+
+// ==================================================
+// HELPER - AMBIL PATH FILE DARI URL SUPABASE
+// ==================================================
+const ambilPathStorage = (publicUrl, bucket) => {
+  if (!publicUrl) return null;
+
+  try {
+    const marker = `/storage/v1/object/public/${bucket}/`;
+
+    if (!publicUrl.includes(marker)) {
+      return null;
+    }
+
+    const url = new URL(publicUrl);
+
+    return decodeURIComponent(url.pathname.split(marker)[1]);
+  } catch (error) {
+    console.error("Gagal membaca URL Storage:", error);
+
+    return null;
+  }
+};
+
+// ==================================================
+// 1. GET STRUKTUR PPID
+// GET /api/ppid
+// PUBLIC
+// ==================================================
+const getStrukturPPID = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("ppid")
+      .select("*")
+      .order("created_at", {
+        ascending: false,
+      })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: data || null,
+    });
+  } catch (error) {
+    console.error("Error Get Struktur PPID:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Gagal mengambil struktur PPID.",
+    });
+  }
+};
+
+// ==================================================
+// 2. UPDATE / SIMPAN STRUKTUR PPID
+// PUT /api/ppid/struktur
+// ADMIN
+// ==================================================
+const updateStrukturPPID = async (req, res) => {
+  let filePathBaru = null;
+
+  try {
+    // ================= CEK ADMIN =================
+    if (!cekAdmin(req, res)) return;
+
+    // ================= VALIDASI FILE =================
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Gambar struktur wajib dipilih!",
+      });
+    }
+
+    // ================= VALIDASI FORMAT =================
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+    if (!allowedTypes.includes(req.file.mimetype)) {
+      return res.status(400).json({
+        success: false,
+        message: "Format gambar harus JPG, PNG, atau WEBP.",
+      });
+    }
+
+    // ================= VALIDASI UKURAN =================
+    if (req.file.size > 2 * 1024 * 1024) {
+      return res.status(400).json({
+        success: false,
+        message: "Ukuran gambar maksimal 2 MB.",
+      });
+    }
+
+    // ==================================================
+    // AMBIL DATA STRUKTUR LAMA
+    // ==================================================
+    const { data: dataLama, error: getError } = await supabase
+      .from("ppid")
+      .select("*")
+      .order("created_at", {
+        ascending: false,
+      })
+      .limit(1)
+      .maybeSingle();
+
+    if (getError) {
+      throw getError;
+    }
+
+    // ==================================================
+    // BUAT PATH FILE BARU
+    // Folder: struktur/
+    // ==================================================
+    filePathBaru = `struktur/${buatNamaFile(req.file.originalname)}`;
+
+    // ==================================================
+    // UPLOAD GAMBAR KE BUCKET PPID
+    // ==================================================
+    const { error: uploadError } = await supabase.storage
+      .from(PPID_BUCKET)
+      .upload(filePathBaru, req.file.buffer, {
+        contentType: req.file.mimetype,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error("Gagal upload struktur PPID:", uploadError);
+
+      return res.status(500).json({
+        success: false,
+        message: "Gagal upload gambar struktur: " + uploadError.message,
+      });
+    }
+
+    // ==================================================
+    // AMBIL PUBLIC URL
+    // ==================================================
+    const { data: publicUrlData } = supabase.storage
+      .from(PPID_BUCKET)
+      .getPublicUrl(filePathBaru);
+
+    const struktur = publicUrlData.publicUrl;
+
+    let data;
+    let databaseError;
+
+    // ==================================================
+    // UPDATE JIKA DATA SUDAH ADA
+    // ==================================================
+    if (dataLama) {
+      const result = await supabase
+        .from("ppid")
+        .update({
+          struktur: struktur,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", dataLama.id)
+        .select();
+
+      data = result.data;
+      databaseError = result.error;
+    }
+
+    // ==================================================
+    // INSERT JIKA BELUM ADA
+    // ==================================================
+    else {
+      const result = await supabase
+        .from("ppid")
+        .insert([
+          {
+            admin_id: req.user.id,
+            struktur: struktur,
+          },
+        ])
+        .select();
+
+      data = result.data;
+      databaseError = result.error;
+    }
+
+    // ==================================================
+    // JIKA DATABASE GAGAL
+    // HAPUS FILE BARU DARI STORAGE
+    // ==================================================
+    if (databaseError) {
+      await supabase.storage.from(PPID_BUCKET).remove([filePathBaru]);
+
+      throw databaseError;
+    }
+
+    // ==================================================
+    // HAPUS GAMBAR STRUKTUR LAMA
+    // ==================================================
+    if (dataLama && dataLama.struktur && dataLama.struktur !== struktur) {
+      const oldFilePath = ambilPathStorage(dataLama.struktur, PPID_BUCKET);
+
+      if (oldFilePath) {
+        const { error: deleteOldError } = await supabase.storage
+          .from(PPID_BUCKET)
+          .remove([oldFilePath]);
+
+        if (deleteOldError) {
+          console.error(
+            "Gagal menghapus gambar struktur lama:",
+            deleteOldError,
+          );
+        }
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Gambar struktur PPID berhasil diperbarui!",
+      data: data?.[0] || null,
+    });
+  } catch (error) {
+    console.error("Error Update Struktur PPID:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Gagal memperbarui struktur PPID.",
+    });
+  }
+};
+
+// ==================================================
+// 3. GET SEMUA PDF PPID
+// GET /api/ppid/pdf
+// PUBLIC
+// ==================================================
+const getPDFPPID = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("ppid_pdf")
+      .select("*")
+      .order("created_at", {
+        ascending: false,
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: data || [],
+    });
+  } catch (error) {
+    console.error("Error Get PDF PPID:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Gagal mengambil daftar PDF PPID.",
+    });
+  }
+};
+
+// ==================================================
+// 4. TAMBAH PDF PPID
+// POST /api/ppid/pdf
+// ADMIN
+// ==================================================
+const createPDFPPID = async (req, res) => {
+  let filePath = null;
+
+  try {
+    // ================= CEK ADMIN =================
+    if (!cekAdmin(req, res)) return;
+
+    const { judul } = req.body || {};
+
+    // ================= VALIDASI JUDUL =================
+    if (!judul || !judul.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Nama laporan wajib diisi!",
+      });
+    }
+
+    // ================= VALIDASI FILE =================
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "File PDF wajib dipilih!",
+      });
+    }
+
+    // ================= VALIDASI FORMAT =================
+    if (req.file.mimetype !== "application/pdf") {
+      return res.status(400).json({
+        success: false,
+        message: "File harus berformat PDF.",
+      });
+    }
+
+    // ================= VALIDASI UKURAN =================
+    if (req.file.size > 10 * 1024 * 1024) {
+      return res.status(400).json({
+        success: false,
+        message: "Ukuran PDF maksimal 10 MB.",
+      });
+    }
+
+    // ==================================================
+    // BUAT PATH FILE
+    // Folder: pdf/
+    // ==================================================
+    filePath = `pdf/${buatNamaFile(req.file.originalname)}`;
+
+    // ==================================================
+    // UPLOAD PDF KE BUCKET PPID
+    // ==================================================
+    const { error: uploadError } = await supabase.storage
+      .from(PPID_BUCKET)
+      .upload(filePath, req.file.buffer, {
+        contentType: req.file.mimetype,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error("Gagal upload PDF PPID:", uploadError);
+
+      return res.status(500).json({
+        success: false,
+        message: "Gagal upload PDF: " + uploadError.message,
+      });
+    }
+
+    // ==================================================
+    // AMBIL PUBLIC URL PDF
+    // ==================================================
+    const { data: publicUrlData } = supabase.storage
+      .from(PPID_BUCKET)
+      .getPublicUrl(filePath);
+
+    const fileUrl = publicUrlData.publicUrl;
+
+    // ==================================================
+    // SIMPAN DATA PDF KE DATABASE
+    // ==================================================
+    const { data, error } = await supabase
+      .from("ppid_pdf")
+      .insert([
+        {
+          admin_id: req.user.id,
+          judul: judul.trim(),
+          file: fileUrl,
+          ukuran: req.file.size,
+        },
+      ])
+      .select();
+
+    // ==================================================
+    // JIKA DATABASE GAGAL
+    // HAPUS FILE YANG SUDAH TERUPLOAD
+    // ==================================================
+    if (error) {
+      await supabase.storage.from(PPID_BUCKET).remove([filePath]);
+
+      throw error;
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: "File PDF berhasil ditambahkan!",
+      data: data?.[0] || null,
+    });
+  } catch (error) {
+    console.error("Error Create PDF PPID:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Gagal menambahkan PDF PPID.",
+    });
+  }
+};
+
+// ==================================================
+// 5. DELETE PDF PPID
+// DELETE /api/ppid/pdf/:id
+// ADMIN
+// ==================================================
+const deletePDFPPID = async (req, res) => {
+  try {
+    // ================= CEK ADMIN =================
+    if (!cekAdmin(req, res)) return;
+
+    const { id } = req.params;
+
+    // ================= VALIDASI ID =================
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "ID PDF tidak ditemukan.",
+      });
+    }
+
+    // ==================================================
+    // AMBIL DATA PDF
+    // ==================================================
+    const { data: dataPDF, error: getError } = await supabase
+      .from("ppid_pdf")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (getError) {
+      throw getError;
+    }
+
+    if (!dataPDF) {
+      return res.status(404).json({
+        success: false,
+        message: "Data PDF tidak ditemukan.",
+      });
+    }
+
+    // ==================================================
+    // HAPUS FILE PDF DARI STORAGE
+    // ==================================================
+    if (dataPDF.file) {
+      const filePath = ambilPathStorage(dataPDF.file, PPID_BUCKET);
+
+      if (filePath) {
+        const { error: storageError } = await supabase.storage
+          .from(PPID_BUCKET)
+          .remove([filePath]);
+
+        if (storageError) {
+          console.error("Gagal menghapus PDF dari Storage:", storageError);
+
+          return res.status(500).json({
+            success: false,
+            message: "Gagal menghapus file PDF dari Storage.",
+          });
+        }
+      }
+    }
+
+    // ==================================================
+    // HAPUS DATA PDF DARI DATABASE
+    // ==================================================
+    const { error: deleteError } = await supabase
+      .from("ppid_pdf")
+      .delete()
+      .eq("id", id);
+
+    if (deleteError) {
+      throw deleteError;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "File PDF berhasil dihapus!",
+    });
+  } catch (error) {
+    console.error("Error Delete PDF PPID:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Gagal menghapus PDF PPID.",
+    });
+  }
+};
+
+// ==================================================
+// EXPORT CONTROLLER
+// ==================================================
+module.exports = {
+  getStrukturPPID,
+  updateStrukturPPID,
+  getPDFPPID,
+  createPDFPPID,
+  deletePDFPPID,
+};
