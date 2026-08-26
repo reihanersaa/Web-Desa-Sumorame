@@ -19,7 +19,6 @@ const previewFotoKades = document.getElementById("previewFotoKades");
 const inputGambarModal = document.getElementById("inputGambarModal");
 const previewGambarModal = document.getElementById("previewGambarModal");
 
-
 // ==================================================
 // FUNGSI: MENGHITUNG ULANG NOMOR SLIDE
 // ==================================================
@@ -41,24 +40,27 @@ async function loadCmsProfil() {
     const response = await fetch(API_URL);
     const result = await response.json();
 
-    wadahSlideDynamic.innerHTML = ""; 
+    wadahSlideDynamic.innerHTML = "";
 
     if (result.success && result.data.length > 0) {
       let data = result.data;
-      
+
       data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-      
+
       const inputNamaKades = document.getElementById("namaKades");
-      if(inputNamaKades) inputNamaKades.value = data[0].nama_kades || "";
-      
+      if (inputNamaKades) inputNamaKades.value = data[0].nama_kades || "";
+
       document.getElementById("sambutan").value = data[0].sambutan || "";
       document.getElementById("visi").value = data[0].visi || "";
       document.getElementById("misi").value = data[0].misi || "";
-      document.getElementById("peraturanJudul").value = data[0].peraturan_judul || "";
-      document.getElementById("peraturanIsi").value = data[0].peraturan_isi || "";
-      
-      if (data[0].foto_kades_url && previewFotoKades) previewFotoKades.src = data[0].foto_kades_url;
-      
+      document.getElementById("peraturanJudul").value =
+        data[0].peraturan_judul || "";
+      document.getElementById("peraturanIsi").value =
+        data[0].peraturan_isi || "";
+
+      if (data[0].foto_kades_url && previewFotoKades)
+        previewFotoKades.src = data[0].foto_kades_url;
+
       // 🚨 Tampilkan Preview Gambar Modal dari Database
       if (data[0].gambar_modal_url && previewGambarModal) {
         previewGambarModal.src = data[0].gambar_modal_url;
@@ -66,10 +68,12 @@ async function loadCmsProfil() {
 
       const inputPeraturanJudul = document.getElementById("peraturanJudul");
       const inputPeraturanIsi = document.getElementById("peraturanIsi");
-      if (inputPeraturanJudul) inputPeraturanJudul.value = data[0].peraturan_judul || "";
-      if (inputPeraturanIsi) inputPeraturanIsi.value = data[0].peraturan_isi || "";
+      if (inputPeraturanJudul)
+        inputPeraturanJudul.value = data[0].peraturan_judul || "";
+      if (inputPeraturanIsi)
+        inputPeraturanIsi.value = data[0].peraturan_isi || "";
 
-      data.forEach(item => {
+      data.forEach((item) => {
         buatKartuSlide(item);
       });
     } else {
@@ -87,10 +91,12 @@ function buatKartuSlide(data) {
   const idDb = data ? data.id : "";
   const judul = data && data.judul_hero ? data.judul_hero : "";
   const desk = data && data.deskripsi_hero ? data.deskripsi_hero : "";
-  const imgUrl = data && data.gambar_url ? data.gambar_url : "../img/default-avatar.png";
+  const imgUrl =
+    data && data.gambar_url ? data.gambar_url : "../img/default-avatar.png";
 
   const card = document.createElement("div");
-  card.className = "slide-card bg-white p-5 rounded-xl border border-gray-200 shadow-sm relative fade-up";
+  card.className =
+    "slide-card bg-white p-5 rounded-xl border border-gray-200 shadow-sm relative fade-up";
   card.setAttribute("data-id", idDb);
 
   card.innerHTML = `
@@ -124,7 +130,7 @@ function buatKartuSlide(data) {
 
   const fileInput = card.querySelector(".input-file");
   const previewImg = card.querySelector(".preview-img");
-  fileInput.addEventListener("change", function(e) {
+  fileInput.addEventListener("change", function (e) {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
@@ -133,7 +139,9 @@ function buatKartuSlide(data) {
         return;
       }
       const reader = new FileReader();
-      reader.onload = (e) => { previewImg.src = e.target.result; };
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+      };
       reader.readAsDataURL(file);
     }
   });
@@ -147,32 +155,36 @@ function buatKartuSlide(data) {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Hapus",
-        confirmButtonColor: "#dc2626"
+        confirmButtonColor: "#dc2626",
       });
-      
+
       if (konfirmasi.isConfirmed) {
         try {
-          Swal.fire({ title: "Menghapus...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+          Swal.fire({
+            title: "Menghapus...",
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+          });
           const response = await fetch(`${API_URL}/${idDb}`, {
             method: "DELETE",
-            headers: { "Authorization": `Bearer ${getAdminToken()}` }
+            headers: { Authorization: `Bearer ${getAdminToken()}` },
           });
           if (!response.ok) throw new Error("Gagal menghapus!");
           Swal.close();
-          card.remove(); 
-          updatePenomoranSlide(); 
+          card.remove();
+          updatePenomoranSlide();
         } catch (error) {
           Swal.fire("Error", error.message, "error");
         }
       }
     } else {
       card.remove();
-      updatePenomoranSlide(); 
+      updatePenomoranSlide();
     }
   });
 
   wadahSlideDynamic.appendChild(card);
-  updatePenomoranSlide(); 
+  updatePenomoranSlide();
 }
 
 // ==================================================
@@ -185,8 +197,8 @@ btnTambahSlide.addEventListener("click", () => {
 // ==================================================
 // 4. EVENT PREVIEW GAMBAR (KADES & MODAL)
 // ==================================================
-if(inputFotoKadesAsli) {
-  inputFotoKadesAsli.addEventListener("change", function(e) {
+if (inputFotoKadesAsli) {
+  inputFotoKadesAsli.addEventListener("change", function (e) {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
@@ -195,15 +207,17 @@ if(inputFotoKadesAsli) {
         return;
       }
       const reader = new FileReader();
-      reader.onload = (e) => { previewFotoKades.src = e.target.result; };
+      reader.onload = (e) => {
+        previewFotoKades.src = e.target.result;
+      };
       reader.readAsDataURL(file);
     }
   });
 }
 
 // 🚨 Event Preview Gambar Modal
-if(inputGambarModal) {
-  inputGambarModal.addEventListener("change", function(e) {
+if (inputGambarModal) {
+  inputGambarModal.addEventListener("change", function (e) {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
@@ -212,7 +226,9 @@ if(inputGambarModal) {
         return;
       }
       const reader = new FileReader();
-      reader.onload = (e) => { previewGambarModal.src = e.target.result; };
+      reader.onload = (e) => {
+        previewGambarModal.src = e.target.result;
+      };
       reader.readAsDataURL(file);
     }
   });
@@ -228,7 +244,11 @@ formCmsProfil.addEventListener("submit", async (e) => {
 
   const cards = document.querySelectorAll(".slide-card");
   if (cards.length === 0) {
-    return Swal.fire("Peringatan", "Anda harus menyisakan minimal 1 Slider!", "warning");
+    return Swal.fire(
+      "Peringatan",
+      "Anda harus menyisakan minimal 1 Slider!",
+      "warning",
+    );
   }
 
   const elementNamaKades = document.getElementById("namaKades");
@@ -236,24 +256,32 @@ formCmsProfil.addEventListener("submit", async (e) => {
   const valSambutan = document.getElementById("sambutan").value.trim();
   const valVisi = document.getElementById("visi").value.trim();
   const valMisi = document.getElementById("misi").value.trim();
-  const valPeraturanJudul = document.getElementById("peraturanJudul").value.trim();
+  const valPeraturanJudul = document
+    .getElementById("peraturanJudul")
+    .value.trim();
   const valPeraturanIsi = document.getElementById("peraturanIsi").value.trim();
-  const fileFotoKades = inputFotoKadesAsli.files[0];
 
   const elPeraturanJudul = document.getElementById("peraturanJudul");
   const elPeraturanIsi = document.getElementById("peraturanIsi");
-  const valPeraturanJudul = elPeraturanJudul ? elPeraturanJudul.value.trim() : "";
-  const valPeraturanIsi = elPeraturanIsi ? elPeraturanIsi.value.trim() : "";
-  
+
   // Tangkap file tambahan
   const fileFotoKades = inputFotoKadesAsli ? inputFotoKadesAsli.files[0] : null;
-  const fileGambarModal = inputGambarModal ? inputGambarModal.files[0] : null; 
+  const fileGambarModal = inputGambarModal ? inputGambarModal.files[0] : null;
 
   if (!valNamaKades) {
-    return Swal.fire("Peringatan", "Kolom Nama Kepala Desa wajib diisi!", "warning");
+    return Swal.fire(
+      "Peringatan",
+      "Kolom Nama Kepala Desa wajib diisi!",
+      "warning",
+    );
   }
 
-  Swal.fire({ title: "Menyimpan Data...", html: "Mohon tunggu sebentar...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+  Swal.fire({
+    title: "Menyimpan Data...",
+    html: "Mohon tunggu sebentar...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
 
   let successCount = 0;
   let errors = [];
@@ -266,34 +294,38 @@ formCmsProfil.addEventListener("submit", async (e) => {
     const file = card.querySelector(".input-file").files[0];
 
     if (!id && !file) {
-      errors.push(`Slide #${i+1} batal disimpan: Gambar Slider wajib diisi.`);
+      errors.push(`Slide #${i + 1} batal disimpan: Gambar Slider wajib diisi.`);
       continue;
     }
 
     const formData = new FormData();
     formData.append("judul_hero", judul);
     formData.append("deskripsi_hero", desk);
-    formData.append("nama_kades", valNamaKades); 
+    formData.append("nama_kades", valNamaKades);
     formData.append("sambutan", valSambutan);
     formData.append("visi", valVisi);
     formData.append("misi", valMisi);
     formData.append("peraturan_judul", valPeraturanJudul);
     formData.append("peraturan_isi", valPeraturanIsi);
-    
+
     // 🚨 DATA GAMBAR DI-APPEND SETELAH FORMDATA DIBUAT (DI DALAM LOOP)
     if (file) formData.append("gambar", file);
     if (fileFotoKades) formData.append("foto_kades", fileFotoKades);
-    if (fileGambarModal) formData.append("gambar_modal", fileGambarModal); 
+    if (fileGambarModal) formData.append("gambar_modal", fileGambarModal);
 
     const url = id ? `${API_URL}/${id}` : API_URL;
     const method = id ? "PUT" : "POST";
 
     try {
-      const res = await fetch(url, { method, headers: { "Authorization": `Bearer ${token}` }, body: formData });
-      
+      const res = await fetch(url, {
+        method,
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
       if (!res.ok) {
-          const resData = await res.json();
-          throw new Error(resData.message || `Gagal menyimpan slide #${i+1}`);
+        const resData = await res.json();
+        throw new Error(resData.message || `Gagal menyimpan slide #${i + 1}`);
       }
       successCount++;
     } catch (err) {
@@ -302,16 +334,22 @@ formCmsProfil.addEventListener("submit", async (e) => {
   }
 
   if (errors.length > 0) {
-    Swal.fire("Selesai dengan Catatan", `Berhasil menyimpan: ${successCount} slide.<br>Gagal: ${errors.join(", ")}`, "warning");
+    Swal.fire(
+      "Selesai dengan Catatan",
+      `Berhasil menyimpan: ${successCount} slide.<br>Gagal: ${errors.join(", ")}`,
+      "warning",
+    );
   } else {
-    Swal.fire("Berhasil", "Seluruh data Beranda berhasil diperbarui!", "success");
-    if(inputFotoKadesAsli) inputFotoKadesAsli.value = ""; 
-    if(inputGambarModal) inputGambarModal.value = ""; 
+    Swal.fire(
+      "Berhasil",
+      "Seluruh data Beranda berhasil diperbarui!",
+      "success",
+    );
+    if (inputFotoKadesAsli) inputFotoKadesAsli.value = "";
+    if (inputGambarModal) inputGambarModal.value = "";
   }
 
-  
-
-  loadCmsProfil(); 
+  loadCmsProfil();
 });
 
 // Load awal
