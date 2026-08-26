@@ -2,6 +2,12 @@ const supabase = require("../config/supabase");
 
 
 // ==================================================
+// KONFIGURASI BUCKET
+// ==================================================
+const PPID_BUCKET = "ppid";
+
+
+// ==================================================
 // HELPER - CEK ADMIN
 // ==================================================
 const cekAdmin = (req, res) => {
@@ -66,6 +72,8 @@ const ambilPathStorage = (publicUrl, bucket) => {
 
 // ==================================================
 // 1. GET STRUKTUR PPID
+// GET /api/ppid
+// PUBLIC
 // ==================================================
 const getStrukturPPID = async (req, res) => {
   try {
@@ -105,6 +113,8 @@ const getStrukturPPID = async (req, res) => {
 
 // ==================================================
 // 2. UPDATE / SIMPAN STRUKTUR PPID
+// PUT /api/ppid/struktur
+// ADMIN
 // ==================================================
 const updateStrukturPPID = async (req, res) => {
   let filePathBaru = null;
@@ -150,7 +160,7 @@ const updateStrukturPPID = async (req, res) => {
 
 
     // ==================================================
-    // AMBIL DATA LAMA
+    // AMBIL DATA STRUKTUR LAMA
     // ==================================================
     const {
       data: dataLama,
@@ -171,30 +181,38 @@ const updateStrukturPPID = async (req, res) => {
 
 
     // ==================================================
-    // BUAT NAMA FILE
+    // BUAT PATH FILE BARU
+    // Folder: struktur/
     // ==================================================
-    filePathBaru = buatNamaFile(
-      req.file.originalname
-    );
+    filePathBaru =
+      `struktur/${buatNamaFile(
+        req.file.originalname
+      )}`;
 
 
     // ==================================================
-    // UPLOAD GAMBAR
+    // UPLOAD GAMBAR KE BUCKET PPID
     // ==================================================
-    const { error: uploadError } =
-      await supabase.storage
-        .from("ppid-struktur")
-        .upload(
-          filePathBaru,
-          req.file.buffer,
-          {
-            contentType: req.file.mimetype,
-            upsert: false
-          }
-        );
+    const {
+      error: uploadError
+    } = await supabase.storage
+      .from(PPID_BUCKET)
+      .upload(
+        filePathBaru,
+        req.file.buffer,
+        {
+          contentType: req.file.mimetype,
+          upsert: false
+        }
+      );
 
 
     if (uploadError) {
+      console.error(
+        "Gagal upload struktur PPID:",
+        uploadError
+      );
+
       return res.status(500).json({
         success: false,
         message:
@@ -207,10 +225,11 @@ const updateStrukturPPID = async (req, res) => {
     // ==================================================
     // AMBIL PUBLIC URL
     // ==================================================
-    const { data: publicUrlData } =
-      supabase.storage
-        .from("ppid-struktur")
-        .getPublicUrl(filePathBaru);
+    const {
+      data: publicUrlData
+    } = supabase.storage
+      .from(PPID_BUCKET)
+      .getPublicUrl(filePathBaru);
 
 
     const struktur =
@@ -222,7 +241,7 @@ const updateStrukturPPID = async (req, res) => {
 
 
     // ==================================================
-    // UPDATE DATA JIKA SUDAH ADA
+    // UPDATE JIKA DATA SUDAH ADA
     // ==================================================
     if (dataLama) {
       const result = await supabase
@@ -261,18 +280,21 @@ const updateStrukturPPID = async (req, res) => {
 
     // ==================================================
     // JIKA DATABASE GAGAL
+    // HAPUS FILE BARU DARI STORAGE
     // ==================================================
     if (databaseError) {
       await supabase.storage
-        .from("ppid-struktur")
-        .remove([filePathBaru]);
+        .from(PPID_BUCKET)
+        .remove([
+          filePathBaru
+        ]);
 
       throw databaseError;
     }
 
 
     // ==================================================
-    // HAPUS GAMBAR LAMA
+    // HAPUS GAMBAR STRUKTUR LAMA
     // ==================================================
     if (
       dataLama &&
@@ -282,7 +304,7 @@ const updateStrukturPPID = async (req, res) => {
       const oldFilePath =
         ambilPathStorage(
           dataLama.struktur,
-          "ppid-struktur"
+          PPID_BUCKET
         );
 
 
@@ -290,13 +312,15 @@ const updateStrukturPPID = async (req, res) => {
         const {
           error: deleteOldError
         } = await supabase.storage
-          .from("ppid-struktur")
-          .remove([oldFilePath]);
+          .from(PPID_BUCKET)
+          .remove([
+            oldFilePath
+          ]);
 
 
         if (deleteOldError) {
           console.error(
-            "Gagal menghapus gambar lama:",
+            "Gagal menghapus gambar struktur lama:",
             deleteOldError
           );
         }
@@ -329,6 +353,8 @@ const updateStrukturPPID = async (req, res) => {
 
 // ==================================================
 // 3. GET SEMUA PDF PPID
+// GET /api/ppid/pdf
+// PUBLIC
 // ==================================================
 const getPDFPPID = async (req, res) => {
   try {
@@ -366,6 +392,8 @@ const getPDFPPID = async (req, res) => {
 
 // ==================================================
 // 4. TAMBAH PDF PPID
+// POST /api/ppid/pdf
+// ADMIN
 // ==================================================
 const createPDFPPID = async (req, res) => {
   let filePath = null;
@@ -397,6 +425,7 @@ const createPDFPPID = async (req, res) => {
     }
 
 
+    // ================= VALIDASI FORMAT =================
     if (req.file.mimetype !== "application/pdf") {
       return res.status(400).json({
         success: false,
@@ -405,6 +434,7 @@ const createPDFPPID = async (req, res) => {
     }
 
 
+    // ================= VALIDASI UKURAN =================
     if (req.file.size > 10 * 1024 * 1024) {
       return res.status(400).json({
         success: false,
@@ -414,30 +444,38 @@ const createPDFPPID = async (req, res) => {
 
 
     // ==================================================
-    // BUAT NAMA FILE
+    // BUAT PATH FILE
+    // Folder: pdf/
     // ==================================================
-    filePath = buatNamaFile(
-      req.file.originalname
-    );
+    filePath =
+      `pdf/${buatNamaFile(
+        req.file.originalname
+      )}`;
 
 
     // ==================================================
-    // UPLOAD PDF
+    // UPLOAD PDF KE BUCKET PPID
     // ==================================================
-    const { error: uploadError } =
-      await supabase.storage
-        .from("ppid-pdf")
-        .upload(
-          filePath,
-          req.file.buffer,
-          {
-            contentType: req.file.mimetype,
-            upsert: false
-          }
-        );
+    const {
+      error: uploadError
+    } = await supabase.storage
+      .from(PPID_BUCKET)
+      .upload(
+        filePath,
+        req.file.buffer,
+        {
+          contentType: req.file.mimetype,
+          upsert: false
+        }
+      );
 
 
     if (uploadError) {
+      console.error(
+        "Gagal upload PDF PPID:",
+        uploadError
+      );
+
       return res.status(500).json({
         success: false,
         message:
@@ -448,12 +486,13 @@ const createPDFPPID = async (req, res) => {
 
 
     // ==================================================
-    // PUBLIC URL PDF
+    // AMBIL PUBLIC URL PDF
     // ==================================================
-    const { data: publicUrlData } =
-      supabase.storage
-        .from("ppid-pdf")
-        .getPublicUrl(filePath);
+    const {
+      data: publicUrlData
+    } = supabase.storage
+      .from(PPID_BUCKET)
+      .getPublicUrl(filePath);
 
 
     const fileUrl =
@@ -461,9 +500,12 @@ const createPDFPPID = async (req, res) => {
 
 
     // ==================================================
-    // SIMPAN DATABASE
+    // SIMPAN DATA PDF KE DATABASE
     // ==================================================
-    const { data, error } = await supabase
+    const {
+      data,
+      error
+    } = await supabase
       .from("ppid_pdf")
       .insert([
         {
@@ -476,10 +518,16 @@ const createPDFPPID = async (req, res) => {
       .select();
 
 
+    // ==================================================
+    // JIKA DATABASE GAGAL
+    // HAPUS FILE YANG SUDAH TERUPLOAD
+    // ==================================================
     if (error) {
       await supabase.storage
-        .from("ppid-pdf")
-        .remove([filePath]);
+        .from(PPID_BUCKET)
+        .remove([
+          filePath
+        ]);
 
       throw error;
     }
@@ -489,7 +537,7 @@ const createPDFPPID = async (req, res) => {
       success: true,
       message:
         "File PDF berhasil ditambahkan!",
-      data: data[0]
+      data: data?.[0] || null
     });
 
   } catch (error) {
@@ -510,6 +558,8 @@ const createPDFPPID = async (req, res) => {
 
 // ==================================================
 // 5. DELETE PDF PPID
+// DELETE /api/ppid/pdf/:id
+// ADMIN
 // ==================================================
 const deletePDFPPID = async (req, res) => {
   try {
@@ -521,6 +571,7 @@ const deletePDFPPID = async (req, res) => {
     const { id } = req.params;
 
 
+    // ================= VALIDASI ID =================
     if (!id) {
       return res.status(400).json({
         success: false,
@@ -556,13 +607,13 @@ const deletePDFPPID = async (req, res) => {
 
 
     // ==================================================
-    // HAPUS FILE STORAGE
+    // HAPUS FILE PDF DARI STORAGE
     // ==================================================
     if (dataPDF.file) {
       const filePath =
         ambilPathStorage(
           dataPDF.file,
-          "ppid-pdf"
+          PPID_BUCKET
         );
 
 
@@ -570,8 +621,10 @@ const deletePDFPPID = async (req, res) => {
         const {
           error: storageError
         } = await supabase.storage
-          .from("ppid-pdf")
-          .remove([filePath]);
+          .from(PPID_BUCKET)
+          .remove([
+            filePath
+          ]);
 
 
         if (storageError) {
@@ -591,13 +644,14 @@ const deletePDFPPID = async (req, res) => {
 
 
     // ==================================================
-    // HAPUS DATA DATABASE
+    // HAPUS DATA PDF DARI DATABASE
     // ==================================================
-    const { error: deleteError } =
-      await supabase
-        .from("ppid_pdf")
-        .delete()
-        .eq("id", id);
+    const {
+      error: deleteError
+    } = await supabase
+      .from("ppid_pdf")
+      .delete()
+      .eq("id", id);
 
 
     if (deleteError) {

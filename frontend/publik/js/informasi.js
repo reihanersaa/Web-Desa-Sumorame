@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
 
   const judul = document.getElementById("judulBerita");
-  const teks = judul.textContent;
+  const teks = judul.textContent.trim();
 
   judul.innerHTML = "";
 
