@@ -2,7 +2,7 @@
    LOGIKA CMS PROFIL & SLIDER DINAMIS (CMSProfil.js)
 =================================================== */
 
-const API_URL = "http://localhost:3000/api/cmsprofil";
+const API_URL = `${window.API_BASE_URL}/cmsprofil`;
 
 function getAdminToken() {
   return localStorage.getItem("token");

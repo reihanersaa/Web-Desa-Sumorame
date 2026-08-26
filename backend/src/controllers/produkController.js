@@ -1,4 +1,50 @@
 const supabase = require("../config/supabase");
+const crypto = require("crypto");
+
+const PRODUCT_BUCKET = "produk";
+
+const extensionByMime = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
+
+async function uploadGambarProduk(file) {
+  if (!file) return null;
+
+  const extension = extensionByMime[file.mimetype];
+  if (!extension) throw new Error("Format gambar produk tidak didukung.");
+
+  const filePath = `produk/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+  const { error } = await supabase.storage
+    .from(PRODUCT_BUCKET)
+    .upload(filePath, file.buffer, {
+      contentType: file.mimetype,
+      cacheControl: "31536000",
+      upsert: false,
+    });
+
+  if (error) throw error;
+
+  const { data } = supabase.storage.from(PRODUCT_BUCKET).getPublicUrl(filePath);
+  return { publicUrl: data.publicUrl, filePath };
+}
+
+function getProductStoragePath(publicUrl) {
+  if (!publicUrl || !String(publicUrl).startsWith("http")) return null;
+  const marker = `/storage/v1/object/public/${PRODUCT_BUCKET}/`;
+  const markerIndex = String(publicUrl).indexOf(marker);
+  return markerIndex === -1
+    ? null
+    : decodeURIComponent(String(publicUrl).slice(markerIndex + marker.length));
+}
+
+async function removeProductImage(publicUrl) {
+  const filePath = getProductStoragePath(publicUrl);
+  if (!filePath) return;
+  const { error } = await supabase.storage.from(PRODUCT_BUCKET).remove([filePath]);
+  if (error) console.error("Gagal menghapus gambar produk:", error.message);
+}
 
 const produkController = {
   // 1. [PUBLIK] Warga mengajukan produk (UPDATE: Tambah Deskripsi)
@@ -12,7 +58,6 @@ const produkController = {
         harga,
         nama_penjual,
         kontak_penjual,
-        gambar,
       } = req.body;
 
       if (nik && !/^\d{16}$/.test(String(nik))) {
@@ -27,12 +72,22 @@ const produkController = {
         !harga ||
         !nama_penjual ||
         !kontak_penjual ||
-        !gambar
+        !req.file
       ) {
         return res
           .status(400)
           .json({ success: false, message: "Kolom wajib belum diisi!" });
       }
+
+      const hargaProduk = Number(harga);
+      if (!Number.isFinite(hargaProduk) || hargaProduk <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Harga produk harus lebih dari 0.",
+        });
+      }
+
+      const uploadedImage = await uploadGambarProduk(req.file);
 
       const { data, error } = await supabase
         .from("produk_unggulan")
@@ -41,16 +96,19 @@ const produkController = {
             nik: nik || null,
             nama_produk,
             deskripsi,
-            harga,
+            harga: hargaProduk,
             nama_penjual,
             kontak_penjual,
-            gambar,
+            gambar: uploadedImage.publicUrl,
             status: "pending",
           },
         ])
         .select();
 
-      if (error) throw error;
+      if (error) {
+        await removeProductImage(uploadedImage.publicUrl);
+        throw error;
+      }
       return res
         .status(201)
         .json({
@@ -286,7 +344,6 @@ const produkController = {
         harga,
         nama_penjual,
         kontak_penjual,
-        gambar,
       } = req.body;
 
       if (!/^\d{16}$/.test(String(nik || ""))) {
@@ -327,7 +384,18 @@ const produkController = {
         kontak_penjual: String(kontak_penjual),
       };
 
-      if (gambar) updateData.gambar = gambar;
+      const { data: existingProduct, error: existingError } = await supabase
+        .from("produk_unggulan")
+        .select("gambar")
+        .eq("id", id)
+        .single();
+
+      if (existingError || !existingProduct) {
+        return res.status(404).json({ success: false, message: "Produk tidak ditemukan." });
+      }
+
+      const uploadedImage = await uploadGambarProduk(req.file);
+      if (uploadedImage) updateData.gambar = uploadedImage.publicUrl;
 
       const { data, error } = await supabase
         .from("produk_unggulan")
@@ -336,7 +404,12 @@ const produkController = {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        if (uploadedImage) await removeProductImage(uploadedImage.publicUrl);
+        throw error;
+      }
+
+      if (uploadedImage) await removeProductImage(existingProduct.gambar);
 
       return res.status(200).json({
         success: true,
@@ -361,12 +434,20 @@ const produkController = {
 
       const { id } = req.params;
 
+      const { data: existingProduct } = await supabase
+        .from("produk_unggulan")
+        .select("gambar")
+        .eq("id", id)
+        .maybeSingle();
+
       const { error } = await supabase
         .from("produk_unggulan")
         .delete()
         .eq("id", id);
 
       if (error) throw error;
+
+      if (existingProduct?.gambar) await removeProductImage(existingProduct.gambar);
 
       return res.status(200).json({
         success: true,

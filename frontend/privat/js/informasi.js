@@ -1,7 +1,7 @@
 // ==================================================
 // 1. KONFIGURASI API
 // ==================================================
-const API_URL = "http://localhost:3000/api/informasi";
+const API_URL = `${window.API_BASE_URL}/informasi`;
 
 function getAdminToken() {
   return localStorage.getItem("token");

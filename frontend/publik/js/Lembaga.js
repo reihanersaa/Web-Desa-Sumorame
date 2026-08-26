@@ -345,9 +345,7 @@ async function getKelembagaan() {
     // REQUEST GET KE BACKEND
     // ==================================================
 
-    const response = await fetch(
-      "http://localhost:3000/api/kelembagaan"
-    );
+    const response = await fetch(`${window.API_BASE_URL}/kelembagaan`);
 
 
     if (!response.ok) {

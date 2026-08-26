@@ -10,7 +10,7 @@ const {
   deleteKelembagaan
 } = require("../controllers/kelembagaanController");
 
-const { verifyToken } = require("../middleware/authMiddleware");
+const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
 
 
 // ==================================================
@@ -54,6 +54,7 @@ router.get("/", getKelembagaan);
 router.post(
   "/",
   verifyToken,
+  requireAdmin,
   upload.single("gambar"),
   createKelembagaan
 );
@@ -66,6 +67,7 @@ router.post(
 router.put(
   "/:id",
   verifyToken,
+  requireAdmin,
   upload.single("gambar"),
   updateKelembagaan
 );
@@ -78,6 +80,7 @@ router.put(
 router.delete(
   "/:id",
   verifyToken,
+  requireAdmin,
   deleteKelembagaan
 );
 

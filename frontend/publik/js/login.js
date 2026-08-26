@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         // Sesuaikan URL dan Port Backend kamu
-        const response = await fetch("http://localhost:3000/api/auth/login", {
+        const response = await fetch(`${window.API_BASE_URL}/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -108,10 +108,9 @@ document.addEventListener("DOMContentLoaded", function () {
               background: "#f0fff4",
               color: "#2e7d32",
             }).then(() => {
-              // Jika role admin, arahkan ke DashboardAdmin.html, jika bukan ke index.html
-              if (result.data?.role === "admin") {
-                window.location.href = "index.html";
-              }
+              window.location.href = result.data?.role === "admin"
+                ? "/admin/DashboardAdmin.html"
+                : "index.html";
             });
           }
         } else {

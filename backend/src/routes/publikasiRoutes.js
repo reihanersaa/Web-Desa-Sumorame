@@ -10,7 +10,7 @@ const {
   deletePublikasi
 } = require("../controllers/publikasiController");
 
-const { verifyToken } = require("../middleware/authMiddleware");
+const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
 
 
 // ==================================================
@@ -52,6 +52,7 @@ router.get("/", getPublikasi);
 router.post(
   "/",
   verifyToken,
+  requireAdmin,
   upload.single("gambar"),
   createPublikasi
 );
@@ -63,6 +64,7 @@ router.post(
 router.put(
   "/:id",
   verifyToken,
+  requireAdmin,
   upload.single("gambar"),
   updatePublikasi
 );
@@ -74,6 +76,7 @@ router.put(
 router.delete(
   "/:id",
   verifyToken,
+  requireAdmin,
   deletePublikasi
 );
 

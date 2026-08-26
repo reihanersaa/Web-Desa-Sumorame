@@ -24,6 +24,7 @@ const registerWarga = async (req, res) => {
       !no_kk ||
       !nama_lengkap ||
       !email ||
+      !no_hp ||
       !password ||
       !confirm_password
     ) {
@@ -42,10 +43,32 @@ const registerWarga = async (req, res) => {
     }
 
     // 3. Validasi Panjang NIK & KK (Must 16 Digits)
-    if (nik.length !== 16 || no_kk.length !== 16) {
+    if (!/^\d{16}$/.test(String(nik)) || !/^\d{16}$/.test(String(no_kk))) {
       return res.status(400).json({
         success: false,
         message: "NIK dan Nomor KK harus berjumlah 16 digit.",
+      });
+    }
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: "Format email tidak valid.",
+      });
+    }
+
+    if (!/^\d{9,15}$/.test(String(no_hp))) {
+      return res.status(400).json({
+        success: false,
+        message: "Nomor HP harus terdiri dari 9 sampai 15 angka.",
+      });
+    }
+
+    if (String(password).length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: "Password minimal 8 karakter.",
       });
     }
 
@@ -53,8 +76,10 @@ const registerWarga = async (req, res) => {
     const { data: existingUser, error: checkError } = await supabase
       .from("users")
       .select("nik, email")
-      .or(`nik.eq.${nik},email.eq.${email}`)
+      .or(`nik.eq.${nik},email.eq.${normalizedEmail}`)
       .maybeSingle();
+
+    if (checkError) throw checkError;
 
     if (existingUser) {
       const field = existingUser.nik === nik ? "NIK" : "Email";
@@ -76,7 +101,7 @@ const registerWarga = async (req, res) => {
           nik,
           no_kk,
           nama_lengkap,
-          email,
+          email: normalizedEmail,
           no_hp,
           provinsi,
           kabupaten,
@@ -105,8 +130,6 @@ const registerWarga = async (req, res) => {
   }
 };
 
-module.exports = { registerWarga };
-
 //logika login warga
 
 const loginWarga = async (req, res) => {
@@ -124,7 +147,7 @@ const loginWarga = async (req, res) => {
     // 2. Cari user di database berdasarkan NIK
     const { data: user, error } = await supabase
       .from("users")
-      .select("*")
+      .select("id, nik, nama_lengkap, email, password, role")
       .eq("nik", nik)
       .single();
 
@@ -192,7 +215,7 @@ const loginAdmin = async (req, res) => {
     // 2. Cari user berdasarkan NIK
     const { data: user, error } = await supabase
       .from("users")
-      .select("*")
+      .select("id, nik, nama_lengkap, email, password, role")
       .eq("nik", nik)
       .single();
 

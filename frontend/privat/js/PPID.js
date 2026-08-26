@@ -8,13 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================================================
   // KONFIGURASI API
   // =====================================================
-  const API_BASE_URL = "http://localhost:3000";
+  const API_BASE_URL = window.API_BASE_URL;
+  const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
 
   const API = {
-    struktur: `${API_BASE_URL}/api/ppid`,
-    updateStruktur: `${API_BASE_URL}/api/ppid/struktur`,
-    pdf: `${API_BASE_URL}/api/ppid/pdf`,
-    hapusPDF: (id) => `${API_BASE_URL}/api/ppid/pdf/${id}`
+    struktur: `${API_BASE_URL}/ppid`,
+    updateStruktur: `${API_BASE_URL}/ppid/struktur`,
+    pdf: `${API_BASE_URL}/ppid/pdf`,
+    hapusPDF: (id) => `${API_BASE_URL}/ppid/pdf/${id}`
   };
 
 
@@ -95,10 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (path.startsWith("/")) {
-      return `${API_BASE_URL}${path}`;
+      return `${API_ORIGIN}${path}`;
     }
 
-    return `${API_BASE_URL}/${path}`;
+    return `${API_ORIGIN}/${path}`;
   }
 
 
@@ -455,13 +456,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
+    if (file.size > 4 * 1024 * 1024) {
       inputFilePDF.value = "";
 
       Swal.fire({
         icon: "warning",
         title: "File terlalu besar",
-        text: "Ukuran maksimal PDF adalah 10 MB."
+        text: "Ukuran maksimal PDF adalah 4 MB."
       });
 
       return;
@@ -858,11 +859,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if (file.size > 10 * 1024 * 1024) {
+      if (file.size > 4 * 1024 * 1024) {
         Swal.fire({
           icon: "warning",
           title: "File terlalu besar",
-          text: "Ukuran maksimal PDF adalah 10 MB."
+          text: "Ukuran maksimal PDF adalah 4 MB."
         });
 
         return;

@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
         '<tr><td colspan="6" class="text-center py-4">Memuat data aduan...</td></tr>';
 
       // Sesuaikan URL ini dengan port Backend Node.js Anda (misal: 3000)
-      const response = await fetch("http://localhost:3000/api/aduan");
+      const response = await fetch(`${window.API_BASE_URL}/aduan`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
+      });
       if (!response.ok) throw new Error("Gagal mengambil data dari server");
 
       const result = await response.json();
@@ -306,10 +308,11 @@ document.addEventListener("DOMContentLoaded", () => {
           if (file) formData.append("lampiran_file", file);
 
           const response = await fetch(
-            `http://localhost:3000/api/aduan/${aduanIdYangDiedit}`,
+            `${window.API_BASE_URL}/aduan/${aduanIdYangDiedit}`,
             {
-              method: "PUT",
-              body: formData,
+            method: "PUT",
+            headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
+            body: formData,
             },
           );
 
@@ -369,8 +372,11 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
           // Lakukan request DELETE ke backend
           const response = await fetch(
-            `http://localhost:3000/api/aduan/${id}`,
-            { method: "DELETE" },
+            `${window.API_BASE_URL}/aduan/${id}`,
+            {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
+            },
           );
           if (!response.ok) throw new Error("Gagal menghapus data.");
 

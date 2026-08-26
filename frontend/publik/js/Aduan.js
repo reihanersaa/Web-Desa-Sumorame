@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
           formData.append("file_bukti", bukti);
 
           // 3. KIRIM KE BACKEND BESERTA TOKEN
-          const response = await fetch("http://localhost:3000/api/aduan", {
+          const response = await fetch(`${window.API_BASE_URL}/aduan`, {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${token}` // Ini kuncinya agar lolos verifyToken
