@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+  function getSafeRedirect(value) {
+    if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
+      return null;
+    }
+    return value;
+  }
   // ================= MODAL LUPA PASSWORD =================
   const forgotBtn = document.getElementById("forgotPassword");
   const modal = document.getElementById("modalForgot");
@@ -89,7 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           // 2. LOGIKA REDIRECT
-          const redirectAfterLogin = localStorage.getItem("redirectAfterLogin");
+          const redirectAfterLogin = getSafeRedirect(
+            localStorage.getItem("redirectAfterLogin"),
+          );
           const redirectAduan = localStorage.getItem("redirectAduan");
 
           if (redirectAfterLogin) {

@@ -52,18 +52,26 @@ const produkController = {
     try {
       // Tambahkan 'deskripsi' di tangkapan body
       const {
-        nik,
+        nik: submittedNik,
         nama_produk,
         deskripsi,
         harga,
         nama_penjual,
         kontak_penjual,
-      } = req.body;
+      } = req.body || {};
 
-      if (nik && !/^\d{16}$/.test(String(nik))) {
+      const nik = String(req.user?.nik || "");
+      if (!/^\d{16}$/.test(nik)) {
         return res.status(400).json({
           success: false,
-          message: "NIK harus terdiri dari tepat 16 angka.",
+          message: "NIK pada akun warga tidak valid.",
+        });
+      }
+
+      if (submittedNik && String(submittedNik) !== nik) {
+        return res.status(403).json({
+          success: false,
+          message: "NIK pengajuan harus sama dengan akun warga yang sedang login.",
         });
       }
 
@@ -93,7 +101,7 @@ const produkController = {
         .from("produk_unggulan")
         .insert([
           {
-            nik: nik || null,
+            nik,
             nama_produk,
             deskripsi,
             harga: hargaProduk,

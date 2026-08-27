@@ -30,7 +30,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
 // ======================================================
 // ANIMASI NAVBAR
 // ======================================================
@@ -46,7 +45,6 @@ window.addEventListener("load", () => {
   });
 });
 
-
 // ======================================================
 // MODAL CARD
 // ======================================================
@@ -61,10 +59,8 @@ const modalDate = document.getElementById("modalDate");
 
 const closeModal = document.getElementById("closeModal");
 
-
 // Tombol X
 closeModal.addEventListener("click", close);
-
 
 // Klik luar modal
 modal.addEventListener("click", (e) => {
@@ -72,7 +68,6 @@ modal.addEventListener("click", (e) => {
     close();
   }
 });
-
 
 function close() {
   modal.classList.remove("opacity-100");
@@ -85,7 +80,6 @@ function close() {
     modal.classList.add("pointer-events-none");
   }, 300);
 }
-
 
 function bukaModal(item) {
   modalImg.src = item.gambar_url;
@@ -100,7 +94,6 @@ function bukaModal(item) {
   modalContent.classList.add("scale-100", "opacity-100");
 }
 
-
 // ======================================================
 // FORMAT TANGGAL
 // ======================================================
@@ -113,7 +106,6 @@ function formatTanggal(tanggal) {
   });
 }
 
-
 // ======================================================
 // ESCAPE HTML
 // ======================================================
@@ -123,7 +115,6 @@ const escapeHTML = (value = "") => {
   div.textContent = value;
   return div.innerHTML;
 };
-
 
 // ======================================================
 // HERO SLIDER DINAMIS
@@ -138,7 +129,6 @@ let total = 0;
 let autoSlide = null;
 let startX = 0;
 
-
 // Fungsi geser slide
 function showSlide(i) {
   if (!slider || total === 0) {
@@ -149,7 +139,6 @@ function showSlide(i) {
 
   slider.style.transform = `translateX(-${index * 100}%)`;
 }
-
 
 // Aktifkan slider setelah gambar selesai dirender
 function initHeroSlider() {
@@ -163,13 +152,11 @@ function initHeroSlider() {
 
   showSlide(0);
 
-
   // Hentikan interval lama kalau ada
   if (autoSlide) {
     clearInterval(autoSlide);
     autoSlide = null;
   }
-
 
   // Jalankan auto slide jika gambar lebih dari 1
   if (total > 1) {
@@ -177,7 +164,6 @@ function initHeroSlider() {
       showSlide(index + 1);
     }, 4000);
   }
-
 
   // Sembunyikan button jika cuma 1 gambar
   if (total <= 1) {
@@ -199,7 +185,6 @@ function initHeroSlider() {
   }
 }
 
-
 // ======================================================
 // RENDER 3 GAMBAR PUBLIKASI TERBARU KE HERO
 // ======================================================
@@ -208,7 +193,6 @@ function renderHeroTerbaru(items) {
   if (!slider) {
     return;
   }
-
 
   // Urutkan data dari tanggal terbaru ke terlama
   const terbaru = [...items]
@@ -220,10 +204,8 @@ function renderHeroTerbaru(items) {
     })
     .slice(0, 3);
 
-
   // Kosongkan slider lama
   slider.innerHTML = "";
-
 
   // Masukkan maksimal 3 gambar terbaru
   terbaru.forEach((item) => {
@@ -242,11 +224,9 @@ function renderHeroTerbaru(items) {
     slider.appendChild(slide);
   });
 
-
   // Aktifkan slider setelah semua gambar masuk
   initHeroSlider();
 }
-
 
 // ======================================================
 // BUTTON NEXT
@@ -258,7 +238,6 @@ if (nextBtn) {
   });
 }
 
-
 // ======================================================
 // BUTTON PREVIOUS
 // ======================================================
@@ -268,7 +247,6 @@ if (prevBtn) {
     showSlide(index - 1);
   });
 }
-
 
 // ======================================================
 // STOP AUTO SLIDE SAAT HOVER
@@ -282,7 +260,6 @@ if (slider) {
     }
   });
 
-
   slider.addEventListener("mouseleave", () => {
     if (total > 1) {
       if (autoSlide) {
@@ -295,7 +272,6 @@ if (slider) {
     }
   });
 }
-
 
 // ======================================================
 // SWIPE MOBILE
@@ -312,18 +288,15 @@ if (slider) {
     },
   );
 
-
   slider.addEventListener(
     "touchend",
     (e) => {
       const endX = e.changedTouches[0].clientX;
 
-
       // Swipe kiri
       if (startX - endX > 50) {
         showSlide(index + 1);
       }
-
 
       // Swipe kanan
       if (endX - startX > 50) {
@@ -336,16 +309,13 @@ if (slider) {
   );
 }
 
-
 // ======================================================
 // AMBIL & RENDER DATA PUBLIKASI DARI BACKEND
 // ======================================================
 
-const API_BASE_URL =
-  window.API_BASE_URL || "http://localhost:3000/api";
+const API_BASE_URL = window.API_BASE_URL || "http://localhost:3000/api";
 
 const publikasiGrid = document.getElementById("publikasiGrid");
-
 
 async function loadPublikasi() {
   try {
@@ -353,16 +323,11 @@ async function loadPublikasi() {
 
     const result = await response.json();
 
-
     if (!response.ok || !result.success) {
-      throw new Error(
-        result.message || "Gagal memuat data publikasi.",
-      );
+      throw new Error(result.message || "Gagal memuat data publikasi.");
     }
 
-
     const items = result.data || [];
-
 
     // ==================================================
     // JIKA DATA PUBLIKASI KOSONG
@@ -375,34 +340,27 @@ async function loadPublikasi() {
         </p>
       `;
 
-
       if (slider) {
         slider.innerHTML = "";
       }
 
-
       total = 0;
-
 
       if (autoSlide) {
         clearInterval(autoSlide);
         autoSlide = null;
       }
 
-
       if (nextBtn) {
         nextBtn.classList.add("hidden");
       }
-
 
       if (prevBtn) {
         prevBtn.classList.add("hidden");
       }
 
-
       return;
     }
-
 
     // ==================================================
     // HERO
@@ -410,7 +368,6 @@ async function loadPublikasi() {
     // ==================================================
 
     renderHeroTerbaru(items);
-
 
     // ==================================================
     // RENDER MAIN CONTENT
@@ -430,22 +387,24 @@ async function loadPublikasi() {
               alt="${escapeHTML(item.judul)}"
             >
 
-            <div class="bg-green-50 p-5 shadow-md rounded-b-xl">
+            <div class="pub-card-body bg-green-50 p-5 rounded-b-xl">
 
               <h4
-                class="text-lg font-bold text-green-800 mb-2"
+                class="pub-card-title text-lg font-bold text-green-800 mb-2"
               >
                 ${escapeHTML(item.judul)}
               </h4>
 
               <p
-                class="text-gray-600 text-sm"
+                class="pub-card-description text-gray-600 text-sm"
               >
                 ${escapeHTML(item.deskripsi)}
               </p>
 
+              <span class="pub-card-more">Selengkapnya</span>
+
               <p
-                class="text-xs text-gray-400 mt-3"
+                class="pub-card-date text-xs text-gray-400"
               >
                 ${formatTanggal(item.waktu_kegiatan)}
               </p>
@@ -457,40 +416,38 @@ async function loadPublikasi() {
       )
       .join("");
 
+    // Tampilkan penanda hanya pada deskripsi yang benar-benar terpotong.
+    publikasiGrid
+      .querySelectorAll(".pub-card-description")
+      .forEach((description) => {
+        if (description.scrollHeight > description.clientHeight + 1) {
+          description.classList.add("is-truncated");
+        }
+      });
 
     // ==================================================
     // KLIK CARD → BUKA MODAL
     // ==================================================
 
-    publikasiGrid
-      .querySelectorAll(".pub-card")
-      .forEach((card) => {
-        card.addEventListener("click", () => {
-          const item = items.find(
-            (i) =>
-              String(i.id) ===
-              String(card.dataset.id),
-          );
+    publikasiGrid.querySelectorAll(".pub-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const item = items.find(
+          (i) => String(i.id) === String(card.dataset.id),
+        );
 
-          if (item) {
-            bukaModal(item);
-          }
-        });
+        if (item) {
+          bukaModal(item);
+        }
       });
-
+    });
 
     // ==================================================
     // AKTIFKAN ANIMASI CARD
     // ==================================================
 
     initScrollRevealCards();
-
   } catch (error) {
-    console.error(
-      "Gagal memuat publikasi:",
-      error,
-    );
-
+    console.error("Gagal memuat publikasi:", error);
 
     publikasiGrid.innerHTML = `
       <p class="col-span-full text-center text-red-500 py-10">
@@ -500,10 +457,8 @@ async function loadPublikasi() {
   }
 }
 
-
 // Jalankan fetch data
 loadPublikasi();
-
 
 // ======================================================
 // ANIMASI FOOTER
@@ -511,72 +466,46 @@ loadPublikasi();
 
 const footer = document.getElementById("footer");
 
-const footerItems =
-  document.querySelectorAll(".footer-item");
-
+const footerItems = document.querySelectorAll(".footer-item");
 
 window.addEventListener("scroll", () => {
   const trigger = window.innerHeight;
 
-  if (
-    footer &&
-    footer.getBoundingClientRect().top <
-      trigger - 100
-  ) {
-    footer.classList.remove(
-      "opacity-0",
-      "translate-y-10",
-    );
-
+  if (footer && footer.getBoundingClientRect().top < trigger - 100) {
+    footer.classList.remove("opacity-0", "translate-y-10");
 
     footerItems.forEach((item, i) => {
       setTimeout(() => {
-        item.classList.remove(
-          "opacity-0",
-          "translate-y-6",
-        );
+        item.classList.remove("opacity-0", "translate-y-6");
       }, i * 200);
     });
   }
 });
 
-
 // ======================================================
 // ANIMASI HEADER
 // ======================================================
 
-const heroItems =
-  document.querySelectorAll(".hero-item");
-
+const heroItems = document.querySelectorAll(".hero-item");
 
 window.addEventListener("load", () => {
   heroItems.forEach((item, i) => {
     setTimeout(() => {
-      item.classList.remove(
-        "opacity-0",
-        "-translate-x-16",
-      );
+      item.classList.remove("opacity-0", "-translate-x-16");
     }, i * 200);
   });
 });
-
 
 // ======================================================
 // ANIMASI KONTAK
 // ======================================================
 
-const kontakItems =
-  document.querySelectorAll(".kontak-item");
-
+const kontakItems = document.querySelectorAll(".kontak-item");
 
 window.addEventListener("scroll", () => {
   const trigger = window.innerHeight;
 
-  if (
-    footer &&
-    footer.getBoundingClientRect().top <
-      trigger - 100
-  ) {
+  if (footer && footer.getBoundingClientRect().top < trigger - 100) {
     kontakItems.forEach((item, i) => {
       setTimeout(() => {
         item.classList.remove(
@@ -591,52 +520,32 @@ window.addEventListener("scroll", () => {
   }
 });
 
-
 // ======================================================
 // ANIMASI SUARA NAVBAR
 // ======================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-    const navItems =
-      document.querySelectorAll(".nav-item");
+document.addEventListener("DOMContentLoaded", () => {
+  const navItems = document.querySelectorAll(".nav-item");
 
+  navItems.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      const text = item.textContent.trim();
 
-    navItems.forEach((item) => {
-      item.addEventListener(
-        "mouseenter",
-        () => {
-          const text =
-            item.textContent.trim();
+      if (!text) {
+        return;
+      }
 
+      const speech = new SpeechSynthesisUtterance(text);
 
-          if (!text) {
-            return;
-          }
+      speech.lang = "id-ID";
+      speech.rate = 1;
 
+      window.speechSynthesis.cancel();
 
-          const speech =
-            new SpeechSynthesisUtterance(
-              text,
-            );
-
-
-          speech.lang = "id-ID";
-          speech.rate = 1;
-
-
-          window.speechSynthesis.cancel();
-
-          window.speechSynthesis.speak(
-            speech,
-          );
-        },
-      );
+      window.speechSynthesis.speak(speech);
     });
-  },
-);
-
+  });
+});
 
 // ======================================================
 // ANIMASI CARD PUBLIKASI
@@ -644,50 +553,37 @@ document.addEventListener(
 // ======================================================
 
 function initScrollRevealCards() {
-  const cards =
-    document.querySelectorAll(".pub-card");
+  const cards = document.querySelectorAll(".pub-card");
 
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
 
-  const observer =
-    new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(
-              "show",
-            );
-
-
-            observer.unobserve(
-              entry.target,
-            );
-          }
-        });
-      },
-      {
-        threshold: 0.2,
-      },
-    );
-
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.2,
+    },
+  );
 
   cards.forEach((card, i) => {
     observer.observe(card);
 
-    card.style.transitionDelay =
-      `${i * 0.03}s`;
+    card.style.transitionDelay = `${i * 0.03}s`;
   });
 }
-
 
 // ======================================================
 // HEADER HILANG SAAT SCROLL TURUN, MUNCUL SAAT SCROLL NAIK
 // ======================================================
 
-const mainHeader =
-  document.getElementById("mainHeader");
+const mainHeader = document.getElementById("mainHeader");
 
-const heroSection =
-  document.getElementById("heroSection");
+const heroSection = document.getElementById("heroSection");
 
 let lastScrollY = Math.max(window.scrollY, 0);
 
@@ -697,19 +593,11 @@ window.addEventListener(
     const currentScrollY = Math.max(window.scrollY, 0);
 
     if (currentScrollY <= 0 || currentScrollY < lastScrollY) {
-      mainHeader.classList.remove(
-        "header-hidden",
-      );
-      heroSection.classList.remove(
-        "hero-top",
-      );
+      mainHeader.classList.remove("header-hidden");
+      heroSection.classList.remove("hero-top");
     } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
-      mainHeader.classList.add(
-        "header-hidden",
-      );
-      heroSection.classList.add(
-        "hero-top",
-      );
+      mainHeader.classList.add("header-hidden");
+      heroSection.classList.add("hero-top");
     }
 
     lastScrollY = currentScrollY;
@@ -717,14 +605,11 @@ window.addEventListener(
   { passive: true },
 );
 
-
 // ======================================================
 // SCROLL TO TOP
 // ======================================================
 
-const scrollTopBtn =
-  document.getElementById("scrollTopBtn");
-
+const scrollTopBtn = document.getElementById("scrollTopBtn");
 
 window.addEventListener("scroll", () => {
   if (window.scrollY > 300) {
@@ -734,50 +619,35 @@ window.addEventListener("scroll", () => {
   }
 });
 
-
-scrollTopBtn.addEventListener(
-  "click",
-  () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  },
-);
-
+scrollTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+});
 
 // ======================================================
 // CONTROL KEYBOARD HERO
 // ======================================================
 
-document.addEventListener(
-  "keydown",
-  (e) => {
-    const tag =
-      document.activeElement.tagName.toLowerCase();
+document.addEventListener("keydown", (e) => {
+  const tag = document.activeElement.tagName.toLowerCase();
 
+  if (tag === "input" || tag === "textarea") {
+    return;
+  }
 
-    if (
-      tag === "input" ||
-      tag === "textarea"
-    ) {
-      return;
-    }
+  // Slide selanjutnya
+  if (e.key === "End") {
+    e.preventDefault();
 
+    showSlide(index + 1);
+  }
 
-    // Slide selanjutnya
-    if (e.key === "End") {
-      e.preventDefault();
+  // Slide sebelumnya
+  if (e.key === "Home") {
+    e.preventDefault();
 
-      showSlide(index + 1);
-    }
-
-
-    // Slide sebelumnya
-    if (e.key === "Home") {
-      e.preventDefault();
-
-      showSlide(index - 1);
-    }
-  },
-);
+    showSlide(index - 1);
+  }
+});

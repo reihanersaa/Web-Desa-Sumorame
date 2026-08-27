@@ -36,3 +36,23 @@
 - Seluruh target link internal ditemukan dengan kapitalisasi yang sesuai.
 - Seluruh referensi DOM `informasi.js` tersedia di `Informasi.html`.
 - Seluruh JavaScript lulus pemeriksaan sintaks.
+
+## Mode Guest dan sesi warga
+
+- Halaman informasi publik tetap dapat dibaca tanpa akun.
+- Guest yang membuka `/Aduan.html` atau `/AdminP.html` diarahkan ke login, lalu kembali ke
+  layanan yang semula dipilih setelah login berhasil.
+- Katalog produk tetap publik untuk membantu promosi UMKM. Tombol `Pasarkan Produk Anda`
+  mewajibkan login warga.
+- Ikon header menampilkan `login` untuk guest dan `account_circle` untuk warga yang sedang
+  login. Menu mobile menampilkan `Masuk Warga` atau `Keluar (Nama)`.
+- Token diperiksa role dan waktu kedaluwarsanya. Flag `login=true` tanpa JWT warga yang valid
+  tidak lagi dianggap sebagai sesi login.
+- Pengajuan produk sekarang dilindungi JWT dan role `warga` pada backend. NIK pengajuan
+  harus sama dengan NIK di dalam token.
+
+## Domain dan CORS
+
+- Origin domain utama, `www`, dan domain Vercel dimasukkan ke daftar CORS backend.
+- Konfigurasi `FRONTEND_URLS` mendukung daftar URL polos yang dipisahkan koma.
+- Nilai origin berformat Markdown atau URL tidak valid akan diabaikan dan dicatat pada log.
