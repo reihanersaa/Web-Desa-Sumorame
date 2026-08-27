@@ -60,6 +60,18 @@
       left: 10%;
     }
 
+    body::before,
+    body::after,
+    .circle {
+      pointer-events: none;
+    }
+
+    .login-card,
+    .footer {
+      position: relative;
+      z-index: 1;
+    }
+
     /* CARD LOGIN */
     .login-card {
       width: 90%;
@@ -236,6 +248,12 @@
       margin-top: 10px;
       font-size: 12px;
       text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px 8px;
+      position: relative;
+      z-index: 2;
     }
 
     .extra-links p {
@@ -247,8 +265,11 @@
       color: #2196f3;
       text-decoration: none;
       font-weight: bold;
-      display: inline;
-      margin-top: 5px;
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 8px;
+      margin-top: 2px;
     }
 
     .extra-links a:hover {
@@ -274,12 +295,69 @@
       opacity: 0;
       visibility: hidden;
       transition: 0.25s ease;
+      pointer-events: none;
     }
 
     /* ketika aktif */
     .modal.show {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
+    }
+
+    .portal-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin: 0 auto 16px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.14);
+      color: #92400e;
+      border: 1px solid rgba(245, 158, 11, 0.38);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mobile-badge {
+      margin-bottom: 10px;
+    }
+
+    .security-note {
+      width: 100%;
+      margin: 14px 0 0 !important;
+      color: #64748b !important;
+      font-size: 11px !important;
+      text-align: center;
+    }
+
+    /* Tema admin dibuat berbeda dari portal warga. */
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #172554, #1d4ed8);
+    }
+
+    .card-body h3,
+    .input-label {
+      color: #1e3a8a;
+    }
+
+    .input-group input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn-login {
+      background: #1d4ed8;
+    }
+
+    .btn-login:hover {
+      background: #1e40af;
     }
 
     /* MODAL BOX */
@@ -416,7 +494,7 @@
     .card-side{
         display:flex;
         width:38%;
-        background:rgba(171,244,174,.7);
+        background:linear-gradient(160deg, #dbeafe, #eff6ff);
         flex-direction:column;
         justify-content:center;
         align-items:center;
@@ -430,7 +508,7 @@
     }
 
     .card-side h2{
-        color:#2e7d32;
+        color:#172554;
         font-size:32px;
         margin-bottom:15px;
     }
@@ -440,6 +518,14 @@
         font-size:15px;
         line-height:1.8;
         max-width:300px;
+    }
+
+    .card-side .portal-badge {
+        margin: 0 0 18px;
+    }
+
+    .mobile-badge {
+        display: none;
     }
 
     /* Panel kanan */

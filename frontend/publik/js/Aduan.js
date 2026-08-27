@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // tombol login → redirect
   btnLogin.addEventListener("click", () => {
-    window.location.href = "login.html";
+    window.location.href = "/login.html";
   });
 
   // klik luar modal

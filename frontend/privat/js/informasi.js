@@ -103,6 +103,17 @@ function potongText(text, maxLength) {
   return hasil.substring(0, maxLength) + "...";
 }
 
+function formatTanggalIndonesia(tanggal) {
+  if (!tanggal) return "-";
+  const tanggalBersih = String(tanggal).split("T")[0];
+  const date = new Date(`${tanggalBersih}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "-";
+  return date.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 // ==================================================
 // 6. FORMAT TANGGAL INDONESIA
@@ -141,17 +152,10 @@ function getFilteredData() {
     searchInput.value.trim().toLowerCase();
 
   return informasiData.filter((item) => {
-    const judul =
-      String(item.judul || "").toLowerCase();
-
-    const isi =
-      String(item.isi || "").toLowerCase();
-
-    const penjelasan =
-      String(item.penjelasan || "").toLowerCase();
-
-    const tanggal =
-      String(item.tanggal || "").toLowerCase();
+    const judul = String(item.judul || "").toLowerCase();
+    const isi = String(item.isi || "").toLowerCase();
+    const penjelasan = String(item.penjelasan || "").toLowerCase();
+    const tanggal = String(item.tanggal || "").toLowerCase();
 
     return (
       judul.includes(keyword) ||
@@ -423,46 +427,26 @@ function closeModalFunc(modal, box) {
 }
 
 
-// ==================================================
-// 14. MODAL TAMBAH
-// ==================================================
-const modalTambah =
-  document.getElementById("modalTambah");
+const judulTambah = document.getElementById("judulTambah");
+const isiTambah = document.getElementById("isiTambah");
+const penjelasanTambah = document.getElementById("penjelasanTambah");
+const tanggalTambah = document.getElementById("tanggalTambah");
+const gambarTambah = document.getElementById("gambarTambah");
 
-const modalTambahBox =
-  document.getElementById("modalTambahBox");
-
-
-const judulTambah =
-  document.getElementById("judulTambah");
-
-const isiTambah =
-  document.getElementById("isiTambah");
-
-const penjelasanTambah =
-  document.getElementById("penjelasanTambah");
-
-const tanggalTambah =
-  document.getElementById("tanggalTambah");
-
-const gambarTambah =
-  document.getElementById("gambarTambah");
-
+const tanggalTambahPicker = flatpickr(tanggalTambah, {
+  dateFormat: "Y-m-d",
+  altInput: true,
+  altFormat: "d F Y",
+  allowInput: true,
+});
 
 document.getElementById("btnTambah").onclick = () => {
-
-  // Reset form ketika modal tambah dibuka
   judulTambah.value = "";
   isiTambah.value = "";
   penjelasanTambah.value = "";
   gambarTambah.value = "";
-
   tanggalTambahPicker.clear();
-
-  openModal(
-    modalTambah,
-    modalTambahBox
-  );
+  openModal(modalTambah, modalTambahBox);
 };
 
 
@@ -484,31 +468,11 @@ document.getElementById("btnCloseTambah").onclick = () => {
 };
 
 
-// ==================================================
-// 15. MODAL VIEW
-// ==================================================
-const modalView =
-  document.getElementById("modalView");
-
-const modalBox =
-  document.getElementById("modalBox");
-
-
-const viewJudul =
-  document.getElementById("viewJudul");
-
-const viewTanggal =
-  document.getElementById("viewTanggal");
-
-const viewIsi =
-  document.getElementById("viewIsi");
-
-const viewPenjelasan =
-  document.getElementById("viewPenjelasan");
-
-const viewGambar =
-  document.getElementById("viewGambar");
-
+const viewJudul = document.getElementById("viewJudul");
+const viewIsi = document.getElementById("viewIsi");
+const viewPenjelasan = document.getElementById("viewPenjelasan");
+const viewTanggal = document.getElementById("viewTanggal");
+const viewGambar = document.getElementById("viewGambar");
 
 document.getElementById("closeModal").onclick = () => {
 
@@ -528,39 +492,21 @@ document.getElementById("btnClose2").onclick = () => {
 };
 
 
-// ==================================================
-// 16. MODAL EDIT
-// ==================================================
-const modalEdit =
-  document.getElementById("modalEdit");
-
-const modalEditBox =
-  document.getElementById("modalEditBox");
-
-
-const judulEdit =
-  document.getElementById("judulEdit");
-
-const tanggalEdit =
-  document.getElementById("tanggalEdit");
-
-const isiEdit =
-  document.getElementById("isiEdit");
-
-const penjelasanEdit =
-  document.getElementById("penjelasanEdit");
-
-const gambarEdit =
-  document.getElementById("gambarEdit");
-
-const previewGambarEdit =
-  document.getElementById(
-    "previewGambarEdit"
-  );
-
+const judulEdit = document.getElementById("judulEdit");
+const isiEdit = document.getElementById("isiEdit");
+const penjelasanEdit = document.getElementById("penjelasanEdit");
+const tanggalEdit = document.getElementById("tanggalEdit");
+const gambarEdit = document.getElementById("gambarEdit");
+const previewGambarEdit = document.getElementById("previewGambarEdit");
 
 let idInformasiEdit = null;
 
+const tanggalEditPicker = flatpickr(tanggalEdit, {
+  dateFormat: "Y-m-d",
+  altInput: true,
+  altFormat: "d F Y",
+  allowInput: true,
+});
 
 document.getElementById("closeEdit").onclick = () => {
 
@@ -777,11 +723,8 @@ function pasangEventAction() {
         const item =
           informasiData.find((data) => {
 
-            return (
-              String(data.id) ===
-              String(id)
-            );
-          });
+      viewPenjelasan.textContent = item.penjelasan || "-";
+      viewTanggal.textContent = formatTanggalIndonesia(item.tanggal);
 
 
         if (!item) {
@@ -825,6 +768,12 @@ function pasangEventAction() {
       isiEdit.value = item.isi || "";
 
       penjelasanEdit.value = item.penjelasan || "";
+
+      if (item.tanggal) {
+        tanggalEditPicker.setDate(String(item.tanggal).split("T")[0], true);
+      } else {
+        tanggalEditPicker.clear();
+      }
 
       gambarEdit.value = "";
 
@@ -1312,8 +1261,9 @@ document
     const isi =
       isiTambah.value.trim();
 
-    const penjelasan =
-      penjelasanTambah.value.trim();
+  const tanggal = tanggalTambah.value.trim();
+
+  const gambar = gambarTambah.files[0];
 
     const tanggal =
       tanggalTambah.value.trim();
@@ -1327,15 +1277,138 @@ document
     // ==================================================
     const kosong = [];
 
+  if (!tanggal) {
+    kosong.push("Tanggal Kegiatan");
+  }
 
-    if (!judul) {
-      kosong.push("Judul");
+  if (!gambar) {
+    kosong.push("Gambar");
+  }
+
+  if (kosong.length > 0) {
+    Swal.fire({
+      title: "Form Belum Lengkap ⚠️",
+      html: `
+        <div style="text-align:center;">
+          <p>Data berikut masih kosong:</p>
+
+          <ul style="list-style-position:inside;">
+            ${kosong.map((item) => `<li>${item}</li>`).join("")}
+          </ul>
+        </div>
+      `,
+      icon: "warning",
+      confirmButtonColor: "#f59e0b",
+    });
+
+    return;
+  }
+
+  const maksimalUkuran = 2 * 1024 * 1024;
+
+  if (gambar.size > maksimalUkuran) {
+    Swal.fire({
+      icon: "warning",
+      title: "Ukuran Gambar Terlalu Besar",
+      text: "Ukuran gambar maksimal 2MB.",
+    });
+
+    return;
+  }
+
+  const allowedTypes = ["image/jpeg", "image/png"];
+
+  if (!allowedTypes.includes(gambar.type)) {
+    Swal.fire({
+      icon: "warning",
+      title: "Format Gambar Tidak Valid",
+      text: "Gunakan JPG, JPEG, atau PNG.",
+    });
+
+    return;
+  }
+
+  const token = getAdminToken();
+
+  if (!token) {
+    Swal.fire({
+      icon: "warning",
+      title: "Token Admin Tidak Ditemukan",
+      text: "Silakan login sebagai admin terlebih dahulu.",
+    });
+
+    return;
+  }
+
+  const konfirmasi = await Swal.fire({
+    title: "Konfirmasi Data",
+    html: `
+        <div style="text-align:left;">
+          <p><b>Judul:</b> ${escapeHTML(judul)}</p>
+          <p><b>Tanggal:</b> ${escapeHTML(formatTanggalIndonesia(tanggal))}</p>
+          <p><b>Isi:</b> ${escapeHTML(isi)}</p>
+          <p><b>Penjelasan:</b> ${escapeHTML(penjelasan)}</p>
+          <p><b>Gambar:</b> ${escapeHTML(gambar.name)}</p>
+        </div>
+      `,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya, Simpan",
+    cancelButtonText: "Batal",
+    confirmButtonColor: "#3b82f6",
+    cancelButtonColor: "#6b7280",
+  });
+
+  if (!konfirmasi.isConfirmed) {
+    return;
+  }
+
+  try {
+    Swal.fire({
+      title: "Menyimpan...",
+      text: "Data informasi sedang disimpan.",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    const formData = new FormData();
+
+    formData.append("judul", judul);
+
+    formData.append("isi", isi);
+
+    formData.append("penjelasan", penjelasan);
+
+    formData.append("tanggal", tanggal);
+
+    formData.append("gambar", gambar);
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Gagal menambahkan informasi.");
     }
 
 
-    if (!isi) {
-      kosong.push("Isi Berita");
-    }
+    judulTambah.value = "";
+    isiTambah.value = "";
+    penjelasanTambah.value = "";
+    gambarTambah.value = "";
+    tanggalTambahPicker.clear();
 
 
     if (!penjelasan) {
@@ -1356,9 +1429,29 @@ document
       kosong.push("Gambar");
     }
 
+  const tanggal = tanggalEdit.value.trim();
+
+  const gambar = gambarEdit.files[0];
 
     if (kosong.length > 0) {
 
+    return;
+  }
+
+  if (!judul || !isi || !penjelasan || !tanggal) {
+    Swal.fire({
+      icon: "warning",
+      title: "Form Belum Lengkap",
+      text: "Judul, tanggal, isi berita, dan penjelasan berita wajib diisi.",
+    });
+
+    return;
+  }
+
+  if (gambar) {
+    const maksimalUkuran = 2 * 1024 * 1024;
+
+    if (gambar.size > maksimalUkuran) {
       Swal.fire({
 
         title:
@@ -1433,19 +1526,28 @@ document
     ];
 
 
-    if (
-      !allowedTypes.includes(
-        gambar.type
-      )
-    ) {
+  const konfirmasi = await Swal.fire({
+    title: "Konfirmasi Perubahan",
+    html: `
+        <div style="text-align:left;">
+          <p><b>Judul:</b> ${escapeHTML(judul)}</p>
+          <p><b>Tanggal:</b> ${escapeHTML(formatTanggalIndonesia(tanggal))}</p>
+          <p><b>Isi:</b> ${escapeHTML(isi)}</p>
+          <p><b>Penjelasan:</b> ${escapeHTML(penjelasan)}</p>
 
-      Swal.fire({
-        icon: "warning",
-        title:
-          "Format Gambar Tidak Valid",
-        text:
-          "Gunakan JPG, JPEG, atau PNG."
-      });
+          <p>
+            <b>Gambar:</b>
+            ${escapeHTML(gambar ? gambar.name : "Tetap menggunakan gambar lama")}
+          </p>
+        </div>
+      `,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya, Simpan",
+    cancelButtonText: "Batal",
+    confirmButtonColor: "#3b82f6",
+    cancelButtonColor: "#6b7280",
+  });
 
       return;
     }
@@ -1471,309 +1573,8 @@ document
       return;
     }
 
+    formData.append("tanggal", tanggal);
 
-    // ==================================================
-    // KONFIRMASI
-    // ==================================================
-    const konfirmasi =
-      await Swal.fire({
-
-        title:
-          "Konfirmasi Data",
-
-        html: `
-          <div style="text-align:left;">
-
-            <p>
-              <b>Judul:</b>
-              ${judul}
-            </p>
-
-            <p>
-              <b>Tanggal:</b>
-              ${formatTanggalIndonesia(tanggal)}
-            </p>
-
-            <p>
-              <b>Isi:</b>
-              ${isi}
-            </p>
-
-            <p>
-              <b>Penjelasan:</b>
-              ${penjelasan}
-            </p>
-
-            <p>
-              <b>Gambar:</b>
-              ${gambar.name}
-            </p>
-
-          </div>
-        `,
-
-        icon: "question",
-
-        showCancelButton: true,
-
-        confirmButtonText:
-          "Ya, Simpan",
-
-        cancelButtonText:
-          "Batal",
-
-        confirmButtonColor:
-          "#3b82f6",
-
-        cancelButtonColor:
-          "#6b7280"
-      });
-
-
-    if (!konfirmasi.isConfirmed) {
-      return;
-    }
-
-
-    try {
-
-      // ==================================================
-      // LOADING
-      // ==================================================
-      Swal.fire({
-
-        title:
-          "Menyimpan...",
-
-        text:
-          "Data informasi sedang disimpan.",
-
-        allowOutsideClick:
-          false,
-
-        showConfirmButton:
-          false,
-
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
-
-
-      // ==================================================
-      // FORMDATA
-      // ==================================================
-      const formData =
-        new FormData();
-
-
-      formData.append(
-        "judul",
-        judul
-      );
-
-
-      formData.append(
-        "isi",
-        isi
-      );
-
-
-      formData.append(
-        "penjelasan",
-        penjelasan
-      );
-
-
-      // ================= TANGGAL =================
-      formData.append(
-        "tanggal",
-        tanggal
-      );
-
-
-      formData.append(
-        "gambar",
-        gambar
-      );
-
-
-      // ==================================================
-      // POST
-      // ==================================================
-      const response =
-        await fetch(
-          API_URL,
-          {
-            method: "POST",
-
-            headers: {
-              Authorization:
-                `Bearer ${token}`
-            },
-
-            body:
-              formData
-          }
-        );
-
-
-      const result =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          result.message ||
-          "Gagal menambahkan informasi."
-        );
-      }
-
-
-      // ==================================================
-      // BERHASIL
-      // ==================================================
-      await Swal.fire({
-
-        title:
-          "Berhasil 🎉",
-
-        text:
-          "Informasi berhasil ditambahkan.",
-
-        icon:
-          "success",
-
-        timer:
-          1500,
-
-        showConfirmButton:
-          false
-      });
-
-
-      // ==================================================
-      // RESET FORM
-      // ==================================================
-      judulTambah.value = "";
-
-      isiTambah.value = "";
-
-      penjelasanTambah.value = "";
-
-      gambarTambah.value = "";
-
-
-      // Reset Flatpickr
-      tanggalTambahPicker.clear();
-
-
-      // ==================================================
-      // TUTUP MODAL
-      // ==================================================
-      closeModalFunc(
-        modalTambah,
-        modalTambahBox
-      );
-
-
-      // ==================================================
-      // LOAD ULANG DATA
-      // ==================================================
-      await loadInformasi();
-
-    } catch (error) {
-
-      console.error(
-        "Error tambah informasi:",
-        error
-      );
-
-
-      Swal.fire({
-
-        icon:
-          "error",
-
-        title:
-          "Gagal Menyimpan",
-
-        text:
-          error.message
-      });
-    }
-  };
-
-
-// ==================================================
-// 24. SIMPAN EDIT INFORMASI
-// ==================================================
-document
-  .getElementById("btnSimpanEdit")
-  .onclick = async () => {
-
-    // ==================================================
-    // AMBIL VALUE
-    // ==================================================
-    const judul =
-      judulEdit.value.trim();
-
-    const isi =
-      isiEdit.value.trim();
-
-    const penjelasan =
-      penjelasanEdit.value.trim();
-
-    const tanggal =
-      tanggalEdit.value.trim();
-
-    const gambar =
-      gambarEdit.files[0];
-
-
-    // ==================================================
-    // VALIDASI ID
-    // ==================================================
-    if (!idInformasiEdit) {
-
-      Swal.fire({
-        icon: "error",
-        title:
-          "Data Tidak Ditemukan",
-        text:
-          "ID informasi tidak ditemukan."
-      });
-
-      return;
-    }
-
-
-    // ==================================================
-    // VALIDASI FORM
-    // ==================================================
-    if (
-      !judul ||
-      !isi ||
-      !penjelasan ||
-      !tanggal
-    ) {
-
-      Swal.fire({
-        icon: "warning",
-        title:
-          "Form Belum Lengkap",
-        text:
-          "Judul, tanggal, isi berita, dan penjelasan berita wajib diisi."
-      });
-
-      return;
-    }
-
-
-    // ==================================================
-    // VALIDASI GAMBAR BARU
-    // ==================================================
     if (gambar) {
 
       const maksimalUkuran =
@@ -1858,8 +1659,8 @@ document
     const konfirmasi =
       await Swal.fire({
 
-        title:
-          "Konfirmasi Perubahan",
+    idInformasiEdit = null;
+    tanggalEditPicker.clear();
 
         html: `
           <div style="text-align:left;">

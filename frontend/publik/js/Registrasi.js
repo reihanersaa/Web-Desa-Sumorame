@@ -154,7 +154,7 @@ if (formRegistrasi) {
           icon: "success",
           showConfirmButton: true,
         }).then(() => {
-          window.location.href = "login.html"; // Arahkan ke halaman login warga
+          window.location.href = "/login.html"; // Arahkan ke halaman login warga
         });
       } else {
         // Menampilkan pesan error dari Backend (misal NIK ganda)

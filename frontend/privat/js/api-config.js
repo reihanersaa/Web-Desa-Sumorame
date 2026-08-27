@@ -21,19 +21,19 @@
 
       if (!token || payload?.role !== "admin" || expired) {
         clearAdminSession();
-        window.location.replace("LoginAdmin.html");
+        window.location.replace("/admin/LoginAdmin.html");
         return;
       }
     } catch (error) {
       clearAdminSession();
-      window.location.replace("LoginAdmin.html");
+      window.location.replace("/admin/LoginAdmin.html");
       return;
     }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     document
-      .querySelectorAll('a[href="LoginAdmin.html"], #btnLogout')
+      .querySelectorAll('a[href="/admin/LoginAdmin.html"], #btnLogout')
       .forEach((element) => {
         element.addEventListener("click", () => clearAdminSession());
       });

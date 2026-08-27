@@ -138,6 +138,8 @@ https://web-desa-sumorame.vercel.app/admin/LoginAdmin.html
 4. Deploy frontend.
 5. Buka browser Incognito agar cache dan token lama tidak ikut terpakai.
 6. Uji login warga, pengajuan surat, aduan, produk, login admin, dan seluruh operasi CMS.
+7. Uji perpindahan Informasi → Profile Desa, Informasi/Kelembagaan/Publikasi → CMS Profil,
+   serta CMS Profil ↔ CMS Produk.
 
 ## 6. Smoke test sebelum diumumkan
 
@@ -158,6 +160,9 @@ Periksa minimal skenario berikut:
 | File palsu yang diberi ekstensi gambar/PDF | Backend menolak dengan HTTP 400 |
 | Percobaan login berulang | Percobaan ke-11 dari IP yang sama dibatasi HTTP 429 |
 | Bukti aduan | Bucket privat; admin tetap dapat membuka signed URL |
+| Navigasi dari halaman Informasi | Tidak ada 404 dan target memakai kapitalisasi tepat |
+| CMS Informasi | Data tampil; tambah, detail, edit, dan hapus dapat digunakan |
+| Login desktop/laptop | Seluruh tautan di bawah tombol login dapat diklik tanpa membuka F12 |
 
 ## 7. Catatan data produk lama
 

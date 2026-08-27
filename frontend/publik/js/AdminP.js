@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   btnLogin.addEventListener("click", () => {
     // Simpan halaman ini biar abis login beneran, balik lagi ke sini otomatis
-    localStorage.setItem("redirectAfterLogin", "AdminP.html");
-    window.location.href = "login.html";
+    localStorage.setItem("redirectAfterLogin", "/AdminP.html");
+    window.location.href = "/login.html";
   });
 
   function tutupLoginModal() {
