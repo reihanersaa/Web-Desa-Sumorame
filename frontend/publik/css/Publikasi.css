@@ -195,3 +195,14 @@ body {
   border-radius: 0;
   background-color: #006633;
 }
+
+/* Hindari garis/celah latar hero akibat pembulatan subpiksel saat slide
+   digeser pada viewport ponsel. */
+@media (max-width: 640px) {
+  #heroSection .hero-image {
+    inset: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    max-width: none;
+  }
+}
