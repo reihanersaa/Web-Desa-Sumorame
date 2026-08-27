@@ -74,8 +74,7 @@ async function loadInformasi() {
       </tr>
     `;
 
-    tableInfo.innerText =
-      "Showing 0 to 0 of 0 entries";
+    tableInfo.innerText = "Showing 0 to 0 of 0 entries";
 
     Swal.fire({
       icon: "error",
@@ -112,9 +111,6 @@ function formatTanggalIndonesia(tanggal) {
     return "-";
   }
 
-  // Jika backend mengembalikan:
-  // 2026-08-26T00:00:00.000Z
-  // maka diambil hanya 2026-08-26
   const tanggalBersih =
     String(tanggal).split("T")[0];
 
@@ -193,7 +189,6 @@ function renderTable() {
   informasiTableBody.innerHTML = "";
 
   if (pageData.length === 0) {
-
     informasiTableBody.innerHTML = `
       <tr>
         <td
@@ -208,11 +203,8 @@ function renderTable() {
         </td>
       </tr>
     `;
-
   } else {
-
     pageData.forEach((item, index) => {
-
       const row =
         document.createElement("tr");
 
@@ -243,7 +235,6 @@ function renderTable() {
         </td>
 
         <td class="px-4 py-3 text-center border">
-
           <div class="inline-flex gap-1 rounded-lg">
 
             <button
@@ -277,7 +268,6 @@ function renderTable() {
             </button>
 
           </div>
-
         </td>
       `;
 
@@ -287,12 +277,9 @@ function renderTable() {
 
 
   if (total === 0) {
-
     tableInfo.innerText =
       "Showing 0 to 0 of 0 entries";
-
   } else {
-
     tableInfo.innerText =
       `Showing ${start + 1} to ${Math.min(end, total)} of ${total} entries`;
   }
@@ -313,9 +300,7 @@ function renderTable() {
 // 9. SEARCH
 // ==================================================
 searchInput.addEventListener("input", () => {
-
   currentPage = 1;
-
   renderTable();
 });
 
@@ -324,7 +309,6 @@ searchInput.addEventListener("input", () => {
 // 10. SHOW ENTRIES
 // ==================================================
 entriesSelect.addEventListener("change", () => {
-
   rowsPerPage =
     parseInt(entriesSelect.value);
 
@@ -338,11 +322,8 @@ entriesSelect.addEventListener("change", () => {
 // 11. PREVIOUS
 // ==================================================
 prevBtn.addEventListener("click", () => {
-
   if (currentPage > 1) {
-
     currentPage--;
-
     renderTable();
   }
 });
@@ -352,7 +333,6 @@ prevBtn.addEventListener("click", () => {
 // 12. NEXT
 // ==================================================
 nextBtn.addEventListener("click", () => {
-
   const filteredData =
     getFilteredData();
 
@@ -360,9 +340,7 @@ nextBtn.addEventListener("click", () => {
     currentPage * rowsPerPage <
     filteredData.length
   ) {
-
     currentPage++;
-
     renderTable();
   }
 });
@@ -372,7 +350,6 @@ nextBtn.addEventListener("click", () => {
 // 13. MODAL FUNCTION
 // ==================================================
 function openModal(modal, box) {
-
   modal.classList.remove("hidden");
 
   modal.classList.add("opacity-0");
@@ -382,9 +359,7 @@ function openModal(modal, box) {
     "opacity-0"
   );
 
-
   requestAnimationFrame(() => {
-
     modal.classList.remove("opacity-0");
 
     box.classList.remove(
@@ -401,7 +376,6 @@ function openModal(modal, box) {
 
 
 function closeModalFunc(modal, box) {
-
   modal.classList.add("opacity-0");
 
   box.classList.remove(
@@ -414,11 +388,8 @@ function closeModalFunc(modal, box) {
     "opacity-0"
   );
 
-
   setTimeout(() => {
-
     modal.classList.add("hidden");
-
   }, 300);
 }
 
@@ -431,7 +402,6 @@ const modalTambah =
 
 const modalTambahBox =
   document.getElementById("modalTambahBox");
-
 
 const judulTambah =
   document.getElementById("judulTambah");
@@ -449,41 +419,6 @@ const gambarTambah =
   document.getElementById("gambarTambah");
 
 
-document.getElementById("btnTambah").onclick = () => {
-
-  // Reset form ketika modal tambah dibuka
-  judulTambah.value = "";
-  isiTambah.value = "";
-  penjelasanTambah.value = "";
-  gambarTambah.value = "";
-
-  tanggalTambahPicker.clear();
-
-  openModal(
-    modalTambah,
-    modalTambahBox
-  );
-};
-
-
-document.getElementById("closeTambah").onclick = () => {
-
-  closeModalFunc(
-    modalTambah,
-    modalTambahBox
-  );
-};
-
-
-document.getElementById("btnCloseTambah").onclick = () => {
-
-  closeModalFunc(
-    modalTambah,
-    modalTambahBox
-  );
-};
-
-
 // ==================================================
 // 15. MODAL VIEW
 // ==================================================
@@ -492,7 +427,6 @@ const modalView =
 
 const modalBox =
   document.getElementById("modalBox");
-
 
 const viewJudul =
   document.getElementById("viewJudul");
@@ -510,24 +444,6 @@ const viewGambar =
   document.getElementById("viewGambar");
 
 
-document.getElementById("closeModal").onclick = () => {
-
-  closeModalFunc(
-    modalView,
-    modalBox
-  );
-};
-
-
-document.getElementById("btnClose2").onclick = () => {
-
-  closeModalFunc(
-    modalView,
-    modalBox
-  );
-};
-
-
 // ==================================================
 // 16. MODAL EDIT
 // ==================================================
@@ -536,7 +452,6 @@ const modalEdit =
 
 const modalEditBox =
   document.getElementById("modalEditBox");
-
 
 const judulEdit =
   document.getElementById("judulEdit");
@@ -554,41 +469,18 @@ const gambarEdit =
   document.getElementById("gambarEdit");
 
 const previewGambarEdit =
-  document.getElementById(
-    "previewGambarEdit"
-  );
-
+  document.getElementById("previewGambarEdit");
 
 let idInformasiEdit = null;
-
-
-document.getElementById("closeEdit").onclick = () => {
-
-  closeModalFunc(
-    modalEdit,
-    modalEditBox
-  );
-};
-
-
-document.getElementById("btnCloseEdit").onclick = () => {
-
-  closeModalFunc(
-    modalEdit,
-    modalEditBox
-  );
-};
 
 
 // ==================================================
 // 17. KONFIGURASI FLATPICKR INDONESIA
 // ==================================================
 const localeIndonesia = {
-
   firstDayOfWeek: 1,
 
   weekdays: {
-
     shorthand: [
       "Min",
       "Sen",
@@ -610,9 +502,7 @@ const localeIndonesia = {
     ]
   },
 
-
   months: {
-
     shorthand: [
       "Jan",
       "Feb",
@@ -651,19 +541,10 @@ const localeIndonesia = {
 // ==================================================
 const tanggalTambahPicker =
   flatpickr("#tanggalTambah", {
-
-    // Nilai asli:
-    // 2026-08-26
     dateFormat: "Y-m-d",
-
-    // Tampilan:
-    // 26 Agustus 2026
     altInput: true,
-
     altFormat: "d F Y",
-
     allowInput: true,
-
     locale: localeIndonesia
   });
 
@@ -673,24 +554,84 @@ const tanggalTambahPicker =
 // ==================================================
 const tanggalEditPicker =
   flatpickr("#tanggalEdit", {
-
     dateFormat: "Y-m-d",
-
     altInput: true,
-
     altFormat: "d F Y",
-
     allowInput: true,
-
     locale: localeIndonesia
   });
 
 
 // ==================================================
-// 20. PREVIEW GAMBAR EDIT
+// 20. EVENT MODAL
+// ==================================================
+document.getElementById("btnTambah").onclick = () => {
+  judulTambah.value = "";
+  isiTambah.value = "";
+  penjelasanTambah.value = "";
+  gambarTambah.value = "";
+
+  tanggalTambahPicker.clear();
+
+  openModal(
+    modalTambah,
+    modalTambahBox
+  );
+};
+
+
+document.getElementById("closeTambah").onclick = () => {
+  closeModalFunc(
+    modalTambah,
+    modalTambahBox
+  );
+};
+
+
+document.getElementById("btnCloseTambah").onclick = () => {
+  closeModalFunc(
+    modalTambah,
+    modalTambahBox
+  );
+};
+
+
+document.getElementById("closeModal").onclick = () => {
+  closeModalFunc(
+    modalView,
+    modalBox
+  );
+};
+
+
+document.getElementById("btnClose2").onclick = () => {
+  closeModalFunc(
+    modalView,
+    modalBox
+  );
+};
+
+
+document.getElementById("closeEdit").onclick = () => {
+  closeModalFunc(
+    modalEdit,
+    modalEditBox
+  );
+};
+
+
+document.getElementById("btnCloseEdit").onclick = () => {
+  closeModalFunc(
+    modalEdit,
+    modalEditBox
+  );
+};
+
+
+// ==================================================
+// 21. PREVIEW GAMBAR EDIT
 // ==================================================
 gambarEdit.addEventListener("change", () => {
-
   const file =
     gambarEdit.files[0];
 
@@ -698,15 +639,12 @@ gambarEdit.addEventListener("change", () => {
     return;
   }
 
-
   const allowedTypes = [
     "image/jpeg",
     "image/png"
   ];
 
-
   if (!allowedTypes.includes(file.type)) {
-
     Swal.fire({
       icon: "warning",
       title: "Format Gambar Tidak Valid",
@@ -718,13 +656,10 @@ gambarEdit.addEventListener("change", () => {
     return;
   }
 
-
   const maksimalUkuran =
     2 * 1024 * 1024;
 
-
   if (file.size > maksimalUkuran) {
-
     Swal.fire({
       icon: "warning",
       title: "Ukuran Gambar Terlalu Besar",
@@ -736,13 +671,10 @@ gambarEdit.addEventListener("change", () => {
     return;
   }
 
-
   const reader =
     new FileReader();
 
-
   reader.onload = (event) => {
-
     previewGambarEdit.src =
       event.target.result;
 
@@ -751,13 +683,12 @@ gambarEdit.addEventListener("change", () => {
     );
   };
 
-
   reader.readAsDataURL(file);
 });
 
 
 // ==================================================
-// 21. EVENT ACTION TABLE
+// 22. EVENT ACTION TABLE
 // ==================================================
 function pasangEventAction() {
 
@@ -769,189 +700,42 @@ function pasangEventAction() {
     .forEach((btn) => {
 
       btn.onclick = () => {
-
         const id =
           btn.dataset.id;
 
-
         const item =
           informasiData.find((data) => {
-
             return (
               String(data.id) ===
               String(id)
             );
           });
 
-
         if (!item) {
-
           Swal.fire({
             icon: "error",
             title: "Data Tidak Ditemukan",
             text: "Data informasi tidak ditemukan."
           });
 
-        viewGambar.classList.add("hidden");
-      }
-
-      openModal(modalView, modalBox);
-    };
-  });
-
-  // ================= EDIT =================
-  document.querySelectorAll(".btnEdit").forEach((btn) => {
-    btn.onclick = () => {
-      const id = btn.dataset.id;
-
-      const item = informasiData.find((data) => {
-        return String(data.id) === String(id);
-      });
-
-      if (!item) {
-        Swal.fire({
-          icon: "error",
-          title: "Data Tidak Ditemukan",
-          text: "Data informasi tidak ditemukan.",
-        });
-
-        return;
-      }
-
-      idInformasiEdit = item.id;
-
-      judulEdit.value = item.judul || "";
-
-      isiEdit.value = item.isi || "";
-
-      penjelasanEdit.value = item.penjelasan || "";
-
-      gambarEdit.value = "";
-
-      if (item.gambar_url) {
-        previewGambarEdit.src = item.gambar_url;
-
-        previewGambarEdit.classList.remove("hidden");
-      } else {
-        previewGambarEdit.src = "";
-
-        previewGambarEdit.classList.add("hidden");
-      }
-
-      openModal(modalEdit, modalEditBox);
-    };
-  });
-
-  // ================= DELETE =================
-  document.querySelectorAll(".btnDelete").forEach((btn) => {
-    btn.onclick = async () => {
-      const id = btn.dataset.id;
-
-      const item = informasiData.find((data) => {
-        return String(data.id) === String(id);
-      });
-
-      if (!item) {
-        Swal.fire({
-          icon: "error",
-          title: "Data Tidak Ditemukan",
-          text: "Data informasi tidak ditemukan.",
-        });
-
-        return;
-      }
-
-      const token = getAdminToken();
-
-      if (!token) {
-        Swal.fire({
-          icon: "warning",
-          title: "Token Admin Tidak Ditemukan",
-          text: "Silakan login sebagai admin terlebih dahulu.",
-        });
-
-        return;
-      }
-
-      const konfirmasi = await Swal.fire({
-        title: "Yakin Hapus?",
-        html: `
-            <div style="text-align:center;">
-              <p>Data informasi berikut akan dihapus:</p>
-
-              <p style="margin-top:10px;">
-                <b>${escapeHTML(item.judul)}</b>
-              </p>
-
-              <p style="margin-top:10px; color:#dc2626;">
-                Data yang sudah dihapus tidak dapat dikembalikan.
-              </p>
-            </div>
-          `,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Ya, Hapus",
-        cancelButtonText: "Batal",
-        confirmButtonColor: "#dc2626",
-        cancelButtonColor: "#6b7280",
-      });
-
-      if (!konfirmasi.isConfirmed) {
-        return;
-      }
-
-      try {
-        Swal.fire({
-          title: "Menghapus...",
-          text: "Data informasi sedang dihapus.",
-          allowOutsideClick: false,
-          showConfirmButton: false,
-
-          didOpen: () => {
-            Swal.showLoading();
-          },
-        });
-
-        const response = await fetch(`${API_URL}/${id}`, {
-          method: "DELETE",
-
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.message || "Gagal menghapus informasi.");
+          return;
         }
 
-
-        // ================= JUDUL =================
         viewJudul.textContent =
           item.judul || "-";
 
-
-        // ================= TANGGAL =================
         viewTanggal.textContent =
           formatTanggalIndonesia(
             item.tanggal
           );
 
-
-        // ================= ISI =================
         viewIsi.textContent =
           item.isi || "-";
 
-
-        // ================= PENJELASAN =================
         viewPenjelasan.textContent =
           item.penjelasan || "-";
 
-
-        // ================= GAMBAR =================
         if (item.gambar_url) {
-
           viewGambar.src =
             item.gambar_url;
 
@@ -962,16 +746,13 @@ function pasangEventAction() {
           viewGambar.classList.remove(
             "hidden"
           );
-
         } else {
-
           viewGambar.src = "";
 
           viewGambar.classList.add(
             "hidden"
           );
         }
-
 
         openModal(
           modalView,
@@ -989,23 +770,18 @@ function pasangEventAction() {
     .forEach((btn) => {
 
       btn.onclick = () => {
-
         const id =
           btn.dataset.id;
 
-
         const item =
           informasiData.find((data) => {
-
             return (
               String(data.id) ===
               String(id)
             );
           });
 
-
         if (!item) {
-
           Swal.fire({
             icon: "error",
             title: "Data Tidak Ditemukan",
@@ -1015,29 +791,19 @@ function pasangEventAction() {
           return;
         }
 
-
         idInformasiEdit =
           item.id;
 
-
-        // ================= JUDUL =================
         judulEdit.value =
           item.judul || "";
 
-
-        // ================= ISI =================
         isiEdit.value =
           item.isi || "";
 
-
-        // ================= PENJELASAN =================
         penjelasanEdit.value =
           item.penjelasan || "";
 
-
-        // ================= TANGGAL =================
         if (item.tanggal) {
-
           const tanggalBersih =
             String(item.tanggal)
               .split("T")[0];
@@ -1046,36 +812,26 @@ function pasangEventAction() {
             tanggalBersih,
             true
           );
-
         } else {
-
           tanggalEditPicker.clear();
         }
 
-
-        // ================= RESET INPUT GAMBAR =================
         gambarEdit.value = "";
 
-
-        // ================= GAMBAR LAMA =================
         if (item.gambar_url) {
-
           previewGambarEdit.src =
             item.gambar_url;
 
           previewGambarEdit.classList.remove(
             "hidden"
           );
-
         } else {
-
           previewGambarEdit.src = "";
 
           previewGambarEdit.classList.add(
             "hidden"
           );
         }
-
 
         openModal(
           modalEdit,
@@ -1093,23 +849,18 @@ function pasangEventAction() {
     .forEach((btn) => {
 
       btn.onclick = async () => {
-
         const id =
           btn.dataset.id;
 
-
         const item =
           informasiData.find((data) => {
-
             return (
               String(data.id) ===
               String(id)
             );
           });
 
-
         if (!item) {
-
           Swal.fire({
             icon: "error",
             title: "Data Tidak Ditemukan",
@@ -1119,13 +870,10 @@ function pasangEventAction() {
           return;
         }
 
-
         const token =
           getAdminToken();
 
-
         if (!token) {
-
           Swal.fire({
             icon: "warning",
             title: "Token Admin Tidak Ditemukan",
@@ -1135,10 +883,8 @@ function pasangEventAction() {
           return;
         }
 
-
         const konfirmasi =
           await Swal.fire({
-
             title: "Yakin Hapus?",
 
             html: `
@@ -1149,7 +895,9 @@ function pasangEventAction() {
                 </p>
 
                 <p style="margin-top:10px;">
-                  <b>${item.judul}</b>
+                  <b>
+                    ${escapeHTML(item.judul || "-")}
+                  </b>
                 </p>
 
                 <p
@@ -1182,14 +930,11 @@ function pasangEventAction() {
               "#6b7280"
           });
 
-
         if (!konfirmasi.isConfirmed) {
           return;
         }
 
-
         try {
-
           Swal.fire({
             title: "Menghapus...",
             text: "Data informasi sedang dihapus.",
@@ -1200,7 +945,6 @@ function pasangEventAction() {
               Swal.showLoading();
             }
           });
-
 
           const response =
             await fetch(
@@ -1215,19 +959,29 @@ function pasangEventAction() {
               }
             );
 
+          const contentType =
+            response.headers.get(
+              "content-type"
+            );
 
-          const result =
-            await response.json();
+          let result = {};
 
+          if (
+            contentType &&
+            contentType.includes(
+              "application/json"
+            )
+          ) {
+            result =
+              await response.json();
+          }
 
           if (!response.ok) {
-
             throw new Error(
               result.message ||
               "Gagal menghapus informasi."
             );
           }
-
 
           await Swal.fire({
             title: "Berhasil 🎉",
@@ -1237,39 +991,36 @@ function pasangEventAction() {
             showConfirmButton: false
           });
 
-
           await loadInformasi();
 
         } catch (error) {
-
           console.error(
             "Error delete informasi:",
             error
           );
 
-
           Swal.fire({
             icon: "error",
             title: "Gagal Menghapus",
-            text: error.message
+            text:
+              error.message ||
+              "Terjadi kesalahan saat menghapus data."
           });
         }
       };
     });
-}
+  }
 
 
 // ==================================================
-// 22. CLICK OUTSIDE MODAL
+// 23. CLICK OUTSIDE MODAL
 // ==================================================
 function enableOutsideClick(modal, box) {
-
   modal.addEventListener(
     "click",
     (event) => {
 
       if (event.target === modal) {
-
         closeModalFunc(
           modal,
           box
@@ -1297,15 +1048,12 @@ enableOutsideClick(
 
 
 // ==================================================
-// 23. SIMPAN TAMBAH INFORMASI
+// 24. SIMPAN TAMBAH INFORMASI
 // ==================================================
 document
   .getElementById("btnSimpanTambah")
   .onclick = async () => {
 
-    // ==================================================
-    // AMBIL VALUE
-    // ==================================================
     const judul =
       judulTambah.value.trim();
 
@@ -1327,16 +1075,13 @@ document
     // ==================================================
     const kosong = [];
 
-
     if (!judul) {
       kosong.push("Judul");
     }
 
-
     if (!isi) {
       kosong.push("Isi Berita");
     }
-
 
     if (!penjelasan) {
       kosong.push(
@@ -1344,23 +1089,18 @@ document
       );
     }
 
-
     if (!tanggal) {
       kosong.push(
         "Tanggal Kegiatan"
       );
     }
 
-
     if (!gambar) {
       kosong.push("Gambar");
     }
 
-
     if (kosong.length > 0) {
-
       Swal.fire({
-
         title:
           "Form Belum Lengkap ⚠️",
 
@@ -1381,7 +1121,7 @@ document
                 kosong
                   .map(
                     (item) =>
-                      `<li>${item}</li>`
+                      `<li>${escapeHTML(item)}</li>`
                   )
                   .join("")
               }
@@ -1406,12 +1146,10 @@ document
     const maksimalUkuran =
       2 * 1024 * 1024;
 
-
     if (
       gambar.size >
       maksimalUkuran
     ) {
-
       Swal.fire({
         icon: "warning",
         title:
@@ -1432,13 +1170,11 @@ document
       "image/png"
     ];
 
-
     if (
       !allowedTypes.includes(
         gambar.type
       )
     ) {
-
       Swal.fire({
         icon: "warning",
         title:
@@ -1457,9 +1193,7 @@ document
     const token =
       getAdminToken();
 
-
     if (!token) {
-
       Swal.fire({
         icon: "warning",
         title:
@@ -1477,7 +1211,6 @@ document
     // ==================================================
     const konfirmasi =
       await Swal.fire({
-
         title:
           "Konfirmasi Data",
 
@@ -1486,27 +1219,29 @@ document
 
             <p>
               <b>Judul:</b>
-              ${judul}
+              ${escapeHTML(judul)}
             </p>
 
             <p>
               <b>Tanggal:</b>
-              ${formatTanggalIndonesia(tanggal)}
+              ${escapeHTML(
+                formatTanggalIndonesia(tanggal)
+              )}
             </p>
 
             <p>
               <b>Isi:</b>
-              ${isi}
+              ${escapeHTML(isi)}
             </p>
 
             <p>
               <b>Penjelasan:</b>
-              ${penjelasan}
+              ${escapeHTML(penjelasan)}
             </p>
 
             <p>
               <b>Gambar:</b>
-              ${gambar.name}
+              ${escapeHTML(gambar.name)}
             </p>
 
           </div>
@@ -1529,19 +1264,16 @@ document
           "#6b7280"
       });
 
-
     if (!konfirmasi.isConfirmed) {
       return;
     }
 
 
     try {
-
       // ==================================================
       // LOADING
       // ==================================================
       Swal.fire({
-
         title:
           "Menyimpan...",
 
@@ -1566,31 +1298,25 @@ document
       const formData =
         new FormData();
 
-
       formData.append(
         "judul",
         judul
       );
-
 
       formData.append(
         "isi",
         isi
       );
 
-
       formData.append(
         "penjelasan",
         penjelasan
       );
 
-
-      // ================= TANGGAL =================
       formData.append(
         "tanggal",
         tanggal
       );
-
 
       formData.append(
         "gambar",
@@ -1617,13 +1343,24 @@ document
           }
         );
 
+      const contentType =
+        response.headers.get(
+          "content-type"
+        );
 
-      const result =
-        await response.json();
+      let result = {};
 
+      if (
+        contentType &&
+        contentType.includes(
+          "application/json"
+        )
+      ) {
+        result =
+          await response.json();
+      }
 
       if (!response.ok) {
-
         throw new Error(
           result.message ||
           "Gagal menambahkan informasi."
@@ -1635,7 +1372,6 @@ document
       // BERHASIL
       // ==================================================
       await Swal.fire({
-
         title:
           "Berhasil 🎉",
 
@@ -1657,15 +1393,10 @@ document
       // RESET FORM
       // ==================================================
       judulTambah.value = "";
-
       isiTambah.value = "";
-
       penjelasanTambah.value = "";
-
       gambarTambah.value = "";
 
-
-      // Reset Flatpickr
       tanggalTambahPicker.clear();
 
 
@@ -1684,15 +1415,12 @@ document
       await loadInformasi();
 
     } catch (error) {
-
       console.error(
         "Error tambah informasi:",
         error
       );
 
-
       Swal.fire({
-
         icon:
           "error",
 
@@ -1707,15 +1435,12 @@ document
 
 
 // ==================================================
-// 24. SIMPAN EDIT INFORMASI
+// 25. SIMPAN EDIT INFORMASI
 // ==================================================
 document
   .getElementById("btnSimpanEdit")
   .onclick = async () => {
 
-    // ==================================================
-    // AMBIL VALUE
-    // ==================================================
     const judul =
       judulEdit.value.trim();
 
@@ -1736,7 +1461,6 @@ document
     // VALIDASI ID
     // ==================================================
     if (!idInformasiEdit) {
-
       Swal.fire({
         icon: "error",
         title:
@@ -1758,7 +1482,6 @@ document
       !penjelasan ||
       !tanggal
     ) {
-
       Swal.fire({
         icon: "warning",
         title:
@@ -1775,16 +1498,13 @@ document
     // VALIDASI GAMBAR BARU
     // ==================================================
     if (gambar) {
-
       const maksimalUkuran =
         2 * 1024 * 1024;
-
 
       if (
         gambar.size >
         maksimalUkuran
       ) {
-
         Swal.fire({
           icon:
             "warning",
@@ -1799,19 +1519,16 @@ document
         return;
       }
 
-
       const allowedTypes = [
         "image/jpeg",
         "image/png"
       ];
-
 
       if (
         !allowedTypes.includes(
           gambar.type
         )
       ) {
-
         Swal.fire({
           icon:
             "warning",
@@ -1834,9 +1551,7 @@ document
     const token =
       getAdminToken();
 
-
     if (!token) {
-
       Swal.fire({
         icon:
           "warning",
@@ -1857,7 +1572,6 @@ document
     // ==================================================
     const konfirmasi =
       await Swal.fire({
-
         title:
           "Konfirmasi Perubahan",
 
@@ -1866,33 +1580,33 @@ document
 
             <p>
               <b>Judul:</b>
-              ${judul}
+              ${escapeHTML(judul)}
             </p>
 
             <p>
               <b>Tanggal:</b>
-              ${formatTanggalIndonesia(tanggal)}
+              ${escapeHTML(
+                formatTanggalIndonesia(tanggal)
+              )}
             </p>
 
             <p>
               <b>Isi:</b>
-              ${isi}
+              ${escapeHTML(isi)}
             </p>
 
             <p>
               <b>Penjelasan:</b>
-              ${penjelasan}
+              ${escapeHTML(penjelasan)}
             </p>
 
             <p>
               <b>Gambar:</b>
-
               ${
                 gambar
-                  ? gambar.name
+                  ? escapeHTML(gambar.name)
                   : "Tetap menggunakan gambar lama"
               }
-
             </p>
 
           </div>
@@ -1917,19 +1631,16 @@ document
           "#6b7280"
       });
 
-
     if (!konfirmasi.isConfirmed) {
       return;
     }
 
 
     try {
-
       // ==================================================
       // LOADING
       // ==================================================
       Swal.fire({
-
         title:
           "Menyimpan Perubahan...",
 
@@ -1954,35 +1665,27 @@ document
       const formData =
         new FormData();
 
-
       formData.append(
         "judul",
         judul
       );
-
 
       formData.append(
         "isi",
         isi
       );
 
-
       formData.append(
         "penjelasan",
         penjelasan
       );
 
-
-      // ================= TANGGAL =================
       formData.append(
         "tanggal",
         tanggal
       );
 
-
-      // ================= GAMBAR BARU =================
       if (gambar) {
-
         formData.append(
           "gambar",
           gambar
@@ -2010,13 +1713,24 @@ document
           }
         );
 
+      const contentType =
+        response.headers.get(
+          "content-type"
+        );
 
-      const result =
-        await response.json();
+      let result = {};
 
+      if (
+        contentType &&
+        contentType.includes(
+          "application/json"
+        )
+      ) {
+        result =
+          await response.json();
+      }
 
       if (!response.ok) {
-
         throw new Error(
           result.message ||
           "Gagal memperbarui informasi."
@@ -2028,7 +1742,6 @@ document
       // BERHASIL
       // ==================================================
       await Swal.fire({
-
         title:
           "Berhasil 🎉",
 
@@ -2056,15 +1769,18 @@ document
 
 
       // ==================================================
-      // RESET ID
+      // RESET
       // ==================================================
-      idInformasiEdit =
-        null;
+      idInformasiEdit = null;
 
+      gambarEdit.value = "";
 
-      // ==================================================
-      // RESET FLATPICKR EDIT
-      // ==================================================
+      previewGambarEdit.src = "";
+
+      previewGambarEdit.classList.add(
+        "hidden"
+      );
+
       tanggalEditPicker.clear();
 
 
@@ -2074,15 +1790,12 @@ document
       await loadInformasi();
 
     } catch (error) {
-
       console.error(
         "Error edit informasi:",
         error
       );
 
-
       Swal.fire({
-
         icon:
           "error",
 
@@ -2097,6 +1810,6 @@ document
 
 
 // ==================================================
-// 25. LOAD DATA SAAT HALAMAN DIBUKA
+// 26. LOAD DATA SAAT HALAMAN DIBUKA
 // ==================================================
 loadInformasi();
