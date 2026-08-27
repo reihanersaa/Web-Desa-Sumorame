@@ -49,7 +49,7 @@ Tambahkan variabel berikut untuk Production, Preview, dan Development bila diper
 SUPABASE_URL=https://PROJECT-REF.supabase.co
 SUPABASE_SECRET_KEY=sb_secret_xxxxxxxxxxxxxxxxx
 JWT_SECRET=RANDOM_SECRET_MINIMAL_32_KARAKTER
-FRONTEND_URLS=https://web-desa-sumorame.vercel.app
+FRONTEND_URLS=https://ppid-desasumorame.id,https://www.ppid-desasumorame.id,https://web-desa-sumorame.vercel.app
 ```
 
 `PORT` tidak diperlukan oleh Vercel. Nilai tersebut hanya dipakai saat menjalankan backend lokal.
@@ -141,6 +141,46 @@ https://web-desa-sumorame.vercel.app/admin/LoginAdmin.html
 7. Uji perpindahan Informasi → Profile Desa, Informasi/Kelembagaan/Publikasi → CMS Profil,
    serta CMS Profil ↔ CMS Produk.
 
+### Konfigurasi domain `ppid-desasumorame.id`
+
+Gunakan hanya salah satu metode berikut. Jangan mengubah keduanya bergantian selama
+propagasi:
+
+1. **DNS Domainesia:** pertahankan
+   nameserver default Domainesia, lalu gunakan `A @ -> 216.198.79.1` dan
+   `CNAME www -> 6ffcbb006bdfdce5.vercel-dns-017.com` sesuai nilai yang ditampilkan Vercel.
+2. **Vercel DNS:** gunakan `ns1.vercel-dns.com` dan `ns2.vercel-dns.com` sebagai nameserver.
+   Jika metode ini aktif, record pada menu DNS Management Domainesia tidak lagi menjadi
+   sumber DNS yang digunakan internet.
+
+Setelah memilih satu metode, jangan mengubah DNS lagi selama 24-48 jam kecuali Vercel
+menampilkan nilai target yang berbeda. Tekan `Refresh` pada halaman Domains Vercel secara
+berkala. Pastikan kedua domain berikut akhirnya berstatus `Valid Configuration`:
+
+```text
+ppid-desasumorame.id
+www.ppid-desasumorame.id
+```
+
+Di Windows, cek metode yang benar-benar aktif dengan:
+
+```powershell
+nslookup -type=NS ppid-desasumorame.id 8.8.8.8
+```
+
+Jika hasilnya `ns1.vercel-dns.com` dan `ns2.vercel-dns.com`, lanjutkan metode Vercel DNS
+dan jangan mengubah record di DNS Management Domainesia. Jika hasilnya nameserver
+Domainesia, gunakan metode record `A/CNAME`.
+
+Nilai environment backend harus berupa teks URL polos, bukan format link Markdown:
+
+```env
+FRONTEND_URLS=https://ppid-desasumorame.id,https://www.ppid-desasumorame.id,https://web-desa-sumorame.vercel.app
+```
+
+Setelah mengubah environment variable, lakukan redeploy backend. Menambah custom domain
+tidak mengubah URL backend yang dipakai `api-config.js`.
+
 ## 6. Smoke test sebelum diumumkan
 
 Periksa minimal skenario berikut:
@@ -163,6 +203,11 @@ Periksa minimal skenario berikut:
 | Navigasi dari halaman Informasi | Tidak ada 404 dan target memakai kapitalisasi tepat |
 | CMS Informasi | Data tampil; tambah, detail, edit, dan hapus dapat digunakan |
 | Login desktop/laptop | Seluruh tautan di bawah tombol login dapat diklik tanpa membuka F12 |
+| Guest membuka Aduan/Persuratan | Dialihkan ke login lalu kembali ke layanan yang dipilih |
+| Guest melihat Produk | Katalog tampil; tombol pengajuan meminta login |
+| Warga login membuka halaman lain | Ikon akun tetap tampil tanpa login ulang selama token berlaku |
+| POST produk tanpa token | Backend mengembalikan HTTP 401 |
+| POST produk memakai token admin | Backend mengembalikan HTTP 403 |
 
 ## 7. Catatan data produk lama
 
