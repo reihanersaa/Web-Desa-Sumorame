@@ -312,9 +312,9 @@
       margin: 0 auto 16px;
       padding: 7px 12px;
       border-radius: 999px;
-      background: rgba(245, 158, 11, 0.14);
-      color: #92400e;
-      border: 1px solid rgba(245, 158, 11, 0.38);
+      background: rgba(46, 125, 50, 0.12);
+      color: #1b5e20;
+      border: 1px solid rgba(46, 125, 50, 0.25);
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.08em;
@@ -331,33 +331,6 @@
       color: #64748b !important;
       font-size: 11px !important;
       text-align: center;
-    }
-
-    /* Tema admin dibuat berbeda dari portal warga. */
-    body {
-      background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
-    }
-
-    .card-header {
-      background: linear-gradient(135deg, #172554, #1d4ed8);
-    }
-
-    .card-body h3,
-    .input-label {
-      color: #1e3a8a;
-    }
-
-    .input-group input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-
-    .btn-login {
-      background: #1d4ed8;
-    }
-
-    .btn-login:hover {
-      background: #1e40af;
     }
 
     /* MODAL BOX */
@@ -494,7 +467,7 @@
     .card-side{
         display:flex;
         width:38%;
-        background:linear-gradient(160deg, #dbeafe, #eff6ff);
+        background:rgba(171,244,174,.7);
         flex-direction:column;
         justify-content:center;
         align-items:center;
@@ -508,7 +481,7 @@
     }
 
     .card-side h2{
-        color:#172554;
+        color:#2e7d32;
         font-size:32px;
         margin-bottom:15px;
     }
