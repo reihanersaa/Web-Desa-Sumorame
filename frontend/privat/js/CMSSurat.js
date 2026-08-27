@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function load() {
     if (!token) {
       tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-yellow-700">Sesi admin tidak ditemukan. Silakan login ulang.</td></tr>`;
-      window.location.href = "LoginAdmin.html";
+      window.location.href = "/admin/LoginAdmin.html";
       return;
     }
     try {

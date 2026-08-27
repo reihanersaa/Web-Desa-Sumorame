@@ -60,6 +60,18 @@
       left: 10%;
     }
 
+    body::before,
+    body::after,
+    .circle {
+      pointer-events: none;
+    }
+
+    .login-card,
+    .footer {
+      position: relative;
+      z-index: 1;
+    }
+
     /* CARD LOGIN */
     .login-card {
       width: 90%;
@@ -236,19 +248,30 @@
       margin-top: 10px;
       font-size: 12px;
       text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px 8px;
+      position: relative;
+      z-index: 2;
     }
 
     .extra-links p {
       font-size: 12px;
       color: #666;
+      flex-basis: 100%;
+      margin: 0;
     }
 
     .extra-links a {
       color: #2196f3;
       text-decoration: none;
       font-weight: bold;
-      display: inline;
-      margin-top: 5px;
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 4px 6px;
+      margin-top: 2px;
     }
 
     .extra-links a:hover {
@@ -274,12 +297,34 @@
       opacity: 0;
       visibility: hidden;
       transition: 0.25s ease;
+      pointer-events: none;
     }
 
     /* ketika aktif */
     .modal.show {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
+    }
+
+    .portal-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin: 0 auto 16px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(46, 125, 50, 0.12);
+      color: #1b5e20;
+      border: 1px solid rgba(46, 125, 50, 0.25);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mobile-badge {
+      margin-bottom: 10px;
     }
 
     /* MODAL BOX */
@@ -440,6 +485,14 @@
         font-size:15px;
         line-height:1.8;
         max-width:300px;
+    }
+
+    .card-side .portal-badge {
+        margin: 0 0 18px;
+    }
+
+    .mobile-badge {
+        display: none;
     }
 
     /* Panel kanan */

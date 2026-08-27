@@ -13,7 +13,6 @@ function getAdminToken() {
   return localStorage.getItem("token");
 }
 
-
 // ==================================================
 // 2. ELEMENT TABLE
 // ==================================================
@@ -24,14 +23,12 @@ const tableInfo = document.getElementById("tableInfo");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 
-
 // ==================================================
 // 3. DATA
 // ==================================================
 let informasiData = [];
 let currentPage = 1;
 let rowsPerPage = parseInt(entriesSelect.value);
-
 
 // ==================================================
 // 4. GET DATA INFORMASI
@@ -49,9 +46,7 @@ async function loadInformasi() {
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        result.message || "Gagal mengambil data informasi."
-      );
+      throw new Error(result.message || "Gagal mengambil data informasi.");
     }
 
     informasiData = result.data || [];
@@ -59,16 +54,12 @@ async function loadInformasi() {
     currentPage = 1;
 
     renderTable();
-
   } catch (error) {
     console.error("Error load informasi:", error);
 
     informasiTableBody.innerHTML = `
       <tr>
-        <td
-          colspan="5"
-          class="px-4 py-6 border text-center text-red-500"
-        >
+        <td colspan="5" class="px-4 py-6 border text-center text-red-500">
           Gagal mengambil data informasi
         </td>
       </tr>
@@ -79,11 +70,10 @@ async function loadInformasi() {
     Swal.fire({
       icon: "error",
       title: "Gagal Mengambil Data",
-      text: error.message
+      text: error.message,
     });
   }
 }
-
 
 // ==================================================
 // 5. POTONG TEXT
@@ -102,10 +92,6 @@ function potongText(text, maxLength) {
   return hasil.substring(0, maxLength) + "...";
 }
 
-
-// ==================================================
-// 6. FORMAT TANGGAL INDONESIA
-// ==================================================
 function formatTanggalIndonesia(tanggal) {
   if (!tanggal) {
     return "-";
@@ -124,30 +110,21 @@ function formatTanggalIndonesia(tanggal) {
   return date.toLocaleDateString("id-ID", {
     day: "2-digit",
     month: "long",
-    year: "numeric"
+    year: "numeric",
   });
 }
 
-
 // ==================================================
-// 7. FILTER DATA
+// 6. FILTER DATA
 // ==================================================
 function getFilteredData() {
-  const keyword =
-    searchInput.value.trim().toLowerCase();
+  const keyword = searchInput.value.trim().toLowerCase();
 
   return informasiData.filter((item) => {
-    const judul =
-      String(item.judul || "").toLowerCase();
-
-    const isi =
-      String(item.isi || "").toLowerCase();
-
-    const penjelasan =
-      String(item.penjelasan || "").toLowerCase();
-
-    const tanggal =
-      String(item.tanggal || "").toLowerCase();
+    const judul = String(item.judul || "").toLowerCase();
+    const isi = String(item.isi || "").toLowerCase();
+    const penjelasan = String(item.penjelasan || "").toLowerCase();
+    const tanggal = String(item.tanggal || "").toLowerCase();
 
     return (
       judul.includes(keyword) ||
@@ -158,43 +135,31 @@ function getFilteredData() {
   });
 }
 
-
 // ==================================================
-// 8. RENDER TABLE
+// 7. RENDER TABLE
 // ==================================================
 function renderTable() {
   const filteredData = getFilteredData();
 
   const total = filteredData.length;
 
-  const totalPages =
-    Math.max(
-      1,
-      Math.ceil(total / rowsPerPage)
-    );
+  const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
 
   if (currentPage > totalPages) {
     currentPage = totalPages;
   }
 
-  const start =
-    (currentPage - 1) * rowsPerPage;
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
 
-  const end =
-    start + rowsPerPage;
-
-  const pageData =
-    filteredData.slice(start, end);
+  const pageData = filteredData.slice(start, end);
 
   informasiTableBody.innerHTML = "";
 
   if (pageData.length === 0) {
     informasiTableBody.innerHTML = `
       <tr>
-        <td
-          colspan="5"
-          class="px-4 py-6 border text-center text-gray-500"
-        >
+        <td colspan="5" class="px-4 py-6 border text-center text-gray-500">
           ${
             searchInput.value.trim()
               ? "Data tidak ditemukan"
@@ -211,11 +176,9 @@ function renderTable() {
       row.className =
         "hover:bg-blue-50 hover:scale-[1.01] transition-all duration-200 cursor-pointer fade-up";
 
-      row.style.animationDelay =
-        `${index * 0.1}s`;
+      row.style.animationDelay = `${index * 0.1}s`;
 
-      const nomor =
-        start + index + 1;
+      const nomor = start + index + 1;
 
       row.innerHTML = `
         <td class="px-4 py-3 text-center border">
@@ -275,7 +238,6 @@ function renderTable() {
     });
   }
 
-
   if (total === 0) {
     tableInfo.innerText =
       "Showing 0 to 0 of 0 entries";
@@ -284,29 +246,22 @@ function renderTable() {
       `Showing ${start + 1} to ${Math.min(end, total)} of ${total} entries`;
   }
 
-
-  prevBtn.disabled =
-    currentPage === 1;
-
-  nextBtn.disabled =
-    end >= total;
-
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = end >= total;
 
   pasangEventAction();
 }
 
-
 // ==================================================
-// 9. SEARCH
+// 8. SEARCH
 // ==================================================
 searchInput.addEventListener("input", () => {
   currentPage = 1;
   renderTable();
 });
 
-
 // ==================================================
-// 10. SHOW ENTRIES
+// 9. SHOW ENTRIES
 // ==================================================
 entriesSelect.addEventListener("change", () => {
   rowsPerPage =
@@ -317,9 +272,8 @@ entriesSelect.addEventListener("change", () => {
   renderTable();
 });
 
-
 // ==================================================
-// 11. PREVIOUS
+// 10. PREVIOUS
 // ==================================================
 prevBtn.addEventListener("click", () => {
   if (currentPage > 1) {
@@ -328,9 +282,8 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-
 // ==================================================
-// 12. NEXT
+// 11. NEXT
 // ==================================================
 nextBtn.addEventListener("click", () => {
   const filteredData =
@@ -345,9 +298,8 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-
 // ==================================================
-// 13. MODAL FUNCTION
+// 12. MODAL FUNCTION
 // ==================================================
 function openModal(modal, box) {
   modal.classList.remove("hidden");
@@ -362,40 +314,24 @@ function openModal(modal, box) {
   requestAnimationFrame(() => {
     modal.classList.remove("opacity-0");
 
-    box.classList.remove(
-      "scale-90",
-      "opacity-0"
-    );
+    box.classList.remove("scale-90", "opacity-0");
 
-    box.classList.add(
-      "scale-100",
-      "opacity-100"
-    );
+    box.classList.add("scale-100", "opacity-100");
   });
 }
-
 
 function closeModalFunc(modal, box) {
   modal.classList.add("opacity-0");
 
-  box.classList.remove(
-    "scale-100",
-    "opacity-100"
-  );
-
-  box.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
+  box.classList.remove("scale-100", "opacity-100");
 
   setTimeout(() => {
     modal.classList.add("hidden");
   }, 300);
 }
 
-
 // ==================================================
-// 14. MODAL TAMBAH
+// 13. MODAL TAMBAH
 // ==================================================
 const modalTambah =
   document.getElementById("modalTambah");
@@ -409,18 +345,21 @@ const judulTambah =
 const isiTambah =
   document.getElementById("isiTambah");
 
-const penjelasanTambah =
-  document.getElementById("penjelasanTambah");
+const judulTambah = document.getElementById("judulTambah");
+const isiTambah = document.getElementById("isiTambah");
+const penjelasanTambah = document.getElementById("penjelasanTambah");
+const tanggalTambah = document.getElementById("tanggalTambah");
+const gambarTambah = document.getElementById("gambarTambah");
 
-const tanggalTambah =
-  document.getElementById("tanggalTambah");
-
-const gambarTambah =
-  document.getElementById("gambarTambah");
-
+const tanggalTambahPicker = flatpickr(tanggalTambah, {
+  dateFormat: "Y-m-d",
+  altInput: true,
+  altFormat: "d F Y",
+  allowInput: true,
+});
 
 // ==================================================
-// 15. MODAL VIEW
+// 14. MODAL VIEW
 // ==================================================
 const modalView =
   document.getElementById("modalView");
@@ -443,9 +382,14 @@ const viewPenjelasan =
 const viewGambar =
   document.getElementById("viewGambar");
 
+const viewJudul = document.getElementById("viewJudul");
+const viewIsi = document.getElementById("viewIsi");
+const viewPenjelasan = document.getElementById("viewPenjelasan");
+const viewTanggal = document.getElementById("viewTanggal");
+const viewGambar = document.getElementById("viewGambar");
 
 // ==================================================
-// 16. MODAL EDIT
+// 15. MODAL EDIT
 // ==================================================
 const modalEdit =
   document.getElementById("modalEdit");
@@ -473,6 +417,12 @@ const previewGambarEdit =
 
 let idInformasiEdit = null;
 
+const tanggalEditPicker = flatpickr(tanggalEdit, {
+  dateFormat: "Y-m-d",
+  altInput: true,
+  altFormat: "d F Y",
+  allowInput: true,
+});
 
 // ==================================================
 // 17. KONFIGURASI FLATPICKR INDONESIA
@@ -648,7 +598,7 @@ gambarEdit.addEventListener("change", () => {
     Swal.fire({
       icon: "warning",
       title: "Format Gambar Tidak Valid",
-      text: "Gunakan JPG, JPEG, atau PNG."
+      text: "Gunakan JPG, JPEG, atau PNG.",
     });
 
     gambarEdit.value = "";
@@ -663,7 +613,7 @@ gambarEdit.addEventListener("change", () => {
     Swal.fire({
       icon: "warning",
       title: "Ukuran Gambar Terlalu Besar",
-      text: "Ukuran gambar maksimal 2MB."
+      text: "Ukuran gambar maksimal 2MB.",
     });
 
     gambarEdit.value = "";
@@ -686,18 +636,18 @@ gambarEdit.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
-
 // ==================================================
 // 22. EVENT ACTION TABLE
 // ==================================================
 function pasangEventAction() {
+  // ================= VIEW =================
+  document.querySelectorAll(".btnView").forEach((btn) => {
+    btn.onclick = () => {
+      const id = btn.dataset.id;
 
-  // ==================================================
-  // VIEW
-  // ==================================================
-  document
-    .querySelectorAll(".btnView")
-    .forEach((btn) => {
+      const item = informasiData.find((data) => {
+        return String(data.id) === String(id);
+      });
 
       btn.onclick = () => {
         const id =
@@ -739,9 +689,7 @@ function pasangEventAction() {
           viewGambar.src =
             item.gambar_url;
 
-          viewGambar.alt =
-            item.judul ||
-            "Gambar informasi";
+  const kosong = [];
 
           viewGambar.classList.remove(
             "hidden"
@@ -749,10 +697,9 @@ function pasangEventAction() {
         } else {
           viewGambar.src = "";
 
-          viewGambar.classList.add(
-            "hidden"
-          );
-        }
+  if (!tanggal) {
+    kosong.push("Tanggal Kegiatan");
+  }
 
         openModal(
           modalView,
@@ -761,6 +708,8 @@ function pasangEventAction() {
       };
     });
 
+    return;
+  }
 
   // ==================================================
   // EDIT
@@ -788,8 +737,8 @@ function pasangEventAction() {
             text: "Data informasi tidak ditemukan."
           });
 
-          return;
-        }
+    return;
+  }
 
         idInformasiEdit =
           item.id;
@@ -828,10 +777,7 @@ function pasangEventAction() {
         } else {
           previewGambarEdit.src = "";
 
-          previewGambarEdit.classList.add(
-            "hidden"
-          );
-        }
+  const tanggal = tanggalEdit.value.trim();
 
         openModal(
           modalEdit,
@@ -840,6 +786,8 @@ function pasangEventAction() {
       };
     });
 
+    return;
+  }
 
   // ==================================================
   // DELETE
@@ -867,8 +815,9 @@ function pasangEventAction() {
             text: "Data informasi tidak ditemukan."
           });
 
-          return;
-        }
+      return;
+    }
+  }
 
         const token =
           getAdminToken();
@@ -1566,6 +1515,8 @@ document
       return;
     }
 
+    const response = await fetch(`${API_URL}/${idInformasiEdit}`, {
+      method: "PUT",
 
     // ==================================================
     // KONFIRMASI EDIT
@@ -1635,6 +1586,13 @@ document
       return;
     }
 
+    await Swal.fire({
+      title: "Berhasil 🎉",
+      text: "Informasi berhasil diperbarui.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
 
     try {
       // ==================================================
@@ -1799,15 +1757,20 @@ document
         icon:
           "error",
 
-        title:
-          "Gagal Memperbarui",
+    idInformasiEdit = null;
+    tanggalEditPicker.clear();
 
-        text:
-          error.message
-      });
-    }
-  };
+    await loadInformasi();
+  } catch (error) {
+    console.error("Error edit informasi:", error);
 
+    Swal.fire({
+      icon: "error",
+      title: "Gagal Memperbarui",
+      text: error.message,
+    });
+  }
+};
 
 // ==================================================
 // 26. LOAD DATA SAAT HALAMAN DIBUKA
