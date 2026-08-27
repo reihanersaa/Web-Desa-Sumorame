@@ -24,10 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
     style: "currency", currency: "IDR", maximumFractionDigits: 0,
   }).format(Number(value) || 0);
   const request = async (path, options = {}) => {
+    const isFormData = options.body instanceof FormData;
     const response = await fetch(`${API_BASE_URL}${path}`, {
       ...options,
       headers: {
-        "Content-Type": "application/json",
+        ...(!isFormData ? { "Content-Type": "application/json" } : {}),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...options.headers,
       },
@@ -66,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (window.Swal) {
         await Swal.fire("Sesi admin diperlukan", "Silakan login kembali.", "warning");
       }
-      window.location.href = "LoginAdmin.html";
+      window.location.href = "/admin/LoginAdmin.html";
       return;
     }
     try {
@@ -198,34 +199,40 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.onload = () => { const preview = document.getElementById("previewFotoProduk"); preview.src = reader.result; preview.classList.remove("hidden"); };
     reader.readAsDataURL(file);
   });
-  form?.addEventListener("submit", (event) => {
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const file = document.getElementById("inputFotoProduk").files[0];
     if (!editingProductId && !file?.type.startsWith("image/")) return Swal.fire("Foto tidak valid", "Pilih sebuah file gambar.", "warning");
     if (file && !file.type.startsWith("image/")) return Swal.fire("Foto tidak valid", "Pilih sebuah file gambar.", "warning");
     if (file && file.size > MAX_IMAGE_SIZE) return Swal.fire("Foto terlalu besar", "Ukuran gambar maksimal 2 MB.", "warning");
 
-    const simpanProduk = async (gambar = null) => {
-      try {
-        const payload = {
-          nik: document.getElementById("nikPenjual").value.trim(),
-          nama_produk: document.getElementById("namaProduk").value.trim(), harga: Number(document.getElementById("hargaProduk").value),
-          nama_penjual: document.getElementById("namaPenjual").value.trim(), kontak_penjual: document.getElementById("noHpPenjual").value.trim(),
-          deskripsi: document.getElementById("alamatPenjual").value.trim(),
-          ...(gambar ? { gambar } : {}),
-        };
-        const sedangEdit = Boolean(editingProductId);
-        const path = sedangEdit ? `/admin/produk/${editingProductId}` : "/publik/produk";
-        await request(path, { method: sedangEdit ? "PUT" : "POST", body: JSON.stringify(payload) });
-        form.reset(); showForm(false); await load();
-        Swal.fire("Berhasil", sedangEdit ? "Data produk berhasil diperbarui." : "Produk ditambahkan dengan status menunggu.", "success");
-      } catch (error) { Swal.fire("Gagal", error.message, "error"); }
-    };
+    try {
+      const formData = new FormData();
+      formData.append("nik", document.getElementById("nikPenjual").value.trim());
+      formData.append("nama_produk", document.getElementById("namaProduk").value.trim());
+      formData.append("harga", document.getElementById("hargaProduk").value);
+      formData.append("nama_penjual", document.getElementById("namaPenjual").value.trim());
+      formData.append("kontak_penjual", document.getElementById("noHpPenjual").value.trim());
+      formData.append("deskripsi", document.getElementById("alamatPenjual").value.trim());
+      if (file) formData.append("gambar", file);
 
-    if (!file) return simpanProduk();
-    const reader = new FileReader();
-    reader.onload = () => simpanProduk(reader.result);
-    reader.readAsDataURL(file);
+      const sedangEdit = Boolean(editingProductId);
+      const path = sedangEdit ? `/admin/produk/${editingProductId}` : "/publik/produk";
+      await request(path, {
+        method: sedangEdit ? "PUT" : "POST",
+        body: formData,
+      });
+      form.reset();
+      showForm(false);
+      await load();
+      Swal.fire(
+        "Berhasil",
+        sedangEdit ? "Data produk berhasil diperbarui." : "Produk ditambahkan dengan status menunggu.",
+        "success",
+      );
+    } catch (error) {
+      Swal.fire("Gagal", error.message, "error");
+    }
   });
   tbody.addEventListener("click", async (event) => {
     const button = event.target.closest("button[data-action]");

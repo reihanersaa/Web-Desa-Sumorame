@@ -3,6 +3,12 @@
 =================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
+  const escapeHTML = (value = "") => {
+    const div = document.createElement("div");
+    div.textContent = String(value ?? "");
+    return div.innerHTML;
+  };
+
   // ================= 1. INISIALISASI FLATPICKR =================
   flatpickr("#tanggalTanggapan", {
     dateFormat: "Y-m-d",
@@ -31,7 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
         '<tr><td colspan="6" class="text-center py-4">Memuat data aduan...</td></tr>';
 
       // Sesuaikan URL ini dengan port Backend Node.js Anda (misal: 3000)
-      const response = await fetch("http://localhost:3000/api/aduan");
+      const response = await fetch(`${window.API_BASE_URL}/aduan`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
+      });
       if (!response.ok) throw new Error("Gagal mengambil data dari server");
 
       const result = await response.json();
@@ -56,11 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const row = `
           <tr class="hover:bg-blue-50 transition-colors border-b">
             <td class="px-4 py-3 text-center border-r">${index + 1}</td>
-            <td class="px-4 py-3 font-semibold text-gray-800 border-r">${item.nama_pelapor}</td>
-            <td class="px-4 py-3 text-gray-700 border-r">${item.judul_aduan}</td>
-            <td class="px-4 py-3 text-gray-600 border-r truncate max-w-xs">${item.isi_aduan}</td>
+            <td class="px-4 py-3 font-semibold text-gray-800 border-r">${escapeHTML(item.nama_pelapor || "-")}</td>
+            <td class="px-4 py-3 text-gray-700 border-r">${escapeHTML(item.judul_aduan || "-")}</td>
+            <td class="px-4 py-3 text-gray-600 border-r truncate max-w-xs">${escapeHTML(item.isi_aduan || "-")}</td>
             <td class="px-4 py-3 text-center border-r">
-              <span class="${statusBadge} px-2 py-1 rounded-full text-xs font-bold">${item.status}</span>
+              <span class="${statusBadge} px-2 py-1 rounded-full text-xs font-bold">${escapeHTML(item.status || "-")}</span>
             </td>
             <td class="px-4 py-3 text-center">
               <div class="inline-flex gap-1">
@@ -84,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderTable();
     } catch (error) {
       console.error("Gagal menarik data:", error);
-      tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">${error.message}</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">${escapeHTML(error.message)}</td></tr>`;
     }
   }
 
@@ -158,12 +166,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Tampilkan gambar jika warga mengupload bukti, sembunyikan jika tidak ada
     const imgElement = document.getElementById("viewGambar");
-    if (aduan.file_bukti_url) {
+    const fileLink = document.getElementById("viewFileBukti");
+    if (aduan.file_bukti_url && !aduan.file_bukti_is_pdf) {
       imgElement.src = aduan.file_bukti_url;
       imgElement.classList.remove("hidden");
+      fileLink.href = "#";
+      fileLink.classList.add("hidden");
+    } else if (aduan.file_bukti_url && aduan.file_bukti_is_pdf) {
+      imgElement.src = "";
+      imgElement.classList.add("hidden");
+      fileLink.href = aduan.file_bukti_url;
+      fileLink.classList.remove("hidden");
     } else {
       imgElement.src = "";
       imgElement.classList.add("hidden");
+      fileLink.href = "#";
+      fileLink.classList.add("hidden");
     }
 
     // Tampilkan Modal
@@ -306,10 +324,11 @@ document.addEventListener("DOMContentLoaded", () => {
           if (file) formData.append("lampiran_file", file);
 
           const response = await fetch(
-            `http://localhost:3000/api/aduan/${aduanIdYangDiedit}`,
+            `${window.API_BASE_URL}/aduan/${aduanIdYangDiedit}`,
             {
-              method: "PUT",
-              body: formData,
+            method: "PUT",
+            headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
+            body: formData,
             },
           );
 
@@ -369,8 +388,11 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
           // Lakukan request DELETE ke backend
           const response = await fetch(
-            `http://localhost:3000/api/aduan/${id}`,
-            { method: "DELETE" },
+            `${window.API_BASE_URL}/aduan/${id}`,
+            {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
+            },
           );
           if (!response.ok) throw new Error("Gagal menghapus data.");
 

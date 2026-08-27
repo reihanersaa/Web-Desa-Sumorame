@@ -223,7 +223,7 @@ if (
   // SUBMIT FORM
   // ================================================
 
-  formProduk.addEventListener("submit", (e) => {
+  formProduk.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const nik = document.getElementById("NIK").value.trim();
@@ -287,49 +287,48 @@ if (
       return;
     }
 
-    // ========================================
-    // BACA GAMBAR
-    // ========================================
+    if (file.size > 2 * 1024 * 1024) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Gambar terlalu besar",
+        text: "Ukuran gambar maksimal 2 MB.",
+        confirmButtonColor: "#166534",
+      });
+    }
 
-    const reader = new FileReader();
+    try {
+      const formData = new FormData();
+      formData.append("nik", nik);
+      formData.append("nama_produk", nama);
+      formData.append("deskripsi", deskripsi);
+      formData.append("harga", harga);
+      formData.append("nama_penjual", penjual);
+      formData.append("kontak_penjual", kontak);
+      formData.append("gambar", file);
 
-    reader.onload = async function (event) {
-      try {
-        const response = await fetch(`${API_BASE_URL}/publik/produk`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nik,
-            nama_produk: nama,
-            deskripsi,
-            harga: Number(harga),
-            nama_penjual: penjual,
-            kontak_penjual: kontak,
-            gambar: event.target.result,
-          }),
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok)
-          throw new Error(result.message || "Produk gagal diajukan.");
-        formProduk.reset();
-        tutupModalProduk();
-        Swal.fire({
-          icon: "success",
-          title: "Produk berhasil diajukan!",
-          text: `${nama} akan tampil setelah disetujui admin.`,
-          confirmButtonColor: "#166534",
-        });
-      } catch (error) {
-        Swal.fire({
-          icon: "error",
-          title: "Pengajuan gagal",
-          text: error.message,
-          confirmButtonColor: "#166534",
-        });
-      }
-    };
-
-    reader.readAsDataURL(file);
+      const response = await fetch(`${API_BASE_URL}/publik/produk`, {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok)
+        throw new Error(result.message || "Produk gagal diajukan.");
+      formProduk.reset();
+      tutupModalProduk();
+      Swal.fire({
+        icon: "success",
+        title: "Produk berhasil diajukan!",
+        text: `${nama} akan tampil setelah disetujui admin.`,
+        confirmButtonColor: "#166534",
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Pengajuan gagal",
+        text: error.message,
+        confirmButtonColor: "#166534",
+      });
+    }
   });
 }
 

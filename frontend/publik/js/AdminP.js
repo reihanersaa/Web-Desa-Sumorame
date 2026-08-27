@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   btnLogin.addEventListener("click", () => {
     // Simpan halaman ini biar abis login beneran, balik lagi ke sini otomatis
-    localStorage.setItem("redirectAfterLogin", "AdminP.html");
-    window.location.href = "login.html";
+    localStorage.setItem("redirectAfterLogin", "/AdminP.html");
+    window.location.href = "/login.html";
   });
 
   function tutupLoginModal() {
@@ -439,7 +439,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const namaPemohon = data_form.nama || data_form.kepala || "Warga";
     const judul_surat = `${judul.textContent} - ${namaPemohon}`;
 
-    fetch("http://localhost:3000/api/surat/ajukan", {
+    fetch(`${window.API_BASE_URL}/surat/ajukan`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

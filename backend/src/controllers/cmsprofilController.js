@@ -71,26 +71,10 @@ const createCmsProfil = async (req, res) => {
       return { url: data.publicUrl, path };
     };
 
-    // ==================================================
-    // SIMPAN KE DATABASE
-    // ==================================================
-    const { data, error } = await supabase
-      .from("cmsprofil")
-      .insert([{
-          admin_id: admin_id,
-          judul_hero: judul_hero.trim(),
-          deskripsi_hero: deskripsi_hero.trim(),
-          sambutan: sambutan.trim(),
-          visi: visi.trim(),
-          misi: misi.trim(),
-          gambar_url: gambar_url,
-          foto_kades_url: foto_kades_url,
-          nama_kades: nama_kades.trim(), // 🚨 Ditambahkan di sini
-          peraturan_judul: peraturan_judul?.trim() || null,
-          peraturan_isi: peraturan_isi?.trim() || null
-        }
-      ])
-      .select();
+    // Proses Upload
+    const uploadHero = await uploadFile(fileGambar, "hero");
+    filePathGambar = uploadHero?.path;
+    const gambar_url = uploadHero?.url;
 
     const uploadKades = await uploadFile(fileFotoKades, "kades");
     filePathFotoKades = uploadKades?.path;
@@ -100,6 +84,9 @@ const createCmsProfil = async (req, res) => {
     filePathModal = uploadModal?.path;
     const gambar_modal_url = uploadModal?.url;
 
+    // ==================================================
+    // SIMPAN KE DATABASE (Hanya 1 kali insert)
+    // ==================================================
     const { data, error } = await supabase.from("cmsprofil").insert([
       {
         admin_id: req.user.id,
@@ -125,6 +112,7 @@ const createCmsProfil = async (req, res) => {
       data: data?.[0] || null
     });
   } catch (error) {
+    // Bersihkan gambar jika terjadi error
     if (filePathGambar) await supabase.storage.from("cms-profil").remove([filePathGambar]);
     if (filePathFotoKades) await supabase.storage.from("cms-profil").remove([filePathFotoKades]);
     if (filePathModal) await supabase.storage.from("cms-profil").remove([filePathModal]);
@@ -186,6 +174,9 @@ const updateCmsProfil = async (req, res) => {
     if (files["foto_kades"]) foto_kades_url = await uploadFile(files["foto_kades"][0], "kades");
     if (files["gambar_modal"]) gambar_modal_url = await uploadFile(files["gambar_modal"][0], "modal");
 
+    // ==================================================
+    // UPDATE KE DATABASE (Kunci nama_kades tidak ganda, gambar_modal_url ditambahkan)
+    // ==================================================
     const { data, error } = await supabase
       .from("cmsprofil")
       .update({
@@ -195,11 +186,11 @@ const updateCmsProfil = async (req, res) => {
         sambutan: sambutan.trim(),
         visi: visi.trim(),
         misi: misi.trim(),
-        gambar_url: gambar_url,
-        foto_kades_url: foto_kades_url,
-        nama_kades: nama_kades.trim(),
-        peraturan_judul: peraturan_judul?.trim() || null,
-        peraturan_isi: peraturan_isi?.trim() || null,
+        peraturan_judul: peraturan_judul ? peraturan_judul.trim() : null,
+        peraturan_isi: peraturan_isi ? peraturan_isi.trim() : null,
+        gambar_url,
+        foto_kades_url,
+        gambar_modal_url,
         updated_at: new Date().toISOString()
       })
       .eq("id", id)

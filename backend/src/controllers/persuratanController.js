@@ -73,6 +73,10 @@ const updateStatusSurat = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body; // Terima "disetujui" atau "ditolak"
 
+    if (!["draft", "diproses", "disetujui", "ditolak"].includes(status)) {
+      return res.status(400).json({ success: false, message: "Status surat tidak valid." });
+    }
+
     const { data, error } = await supabase
       .from("surat")
       .update({ status })
@@ -80,6 +84,9 @@ const updateStatusSurat = async (req, res) => {
       .select();
 
     if (error) throw error;
+    if (!data?.length) {
+      return res.status(404).json({ success: false, message: "Surat tidak ditemukan." });
+    }
     return res.status(200).json({
       success: true,
       message: `Surat berhasil ${status}`,
@@ -101,9 +108,12 @@ const hapusSurat = async (req, res) => {
 
     const { id } = req.params;
 
-    const { error } = await supabase.from("surat").delete().eq("id", id);
+    const { data, error } = await supabase.from("surat").delete().eq("id", id).select("id");
 
     if (error) throw error;
+    if (!data?.length) {
+      return res.status(404).json({ success: false, message: "Surat tidak ditemukan." });
+    }
     return res.status(200).json({
       success: true,
       message: "Surat berhasil dihapus.",

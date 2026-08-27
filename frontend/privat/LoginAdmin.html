@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Admin| Website Desa Sumorame</title>
-    <link rel="icon" href="../publik/img/logo3.png" type="image/png" />
+    <title>Login Admin | Website Desa Sumorame</title>
+    <link rel="icon" href="/img/logo3.png" type="image/png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="css/LoginAdmin.css?v=20260824-3" />
+    <link rel="stylesheet" href="css/LoginAdmin.css?v=20260827-1" />
   </head>
 
   <body>
@@ -22,31 +22,33 @@
     <div class="login-card">
       <!-- PANEL KIRI (Desktop) -->
       <div class="card-side">
-        <img src="../publik/img/logo3.png" alt="Logo Desa" />
+        <img src="/img/logo3.png" alt="Logo Desa" />
 
-        <h2>Desa Sumorame</h2>
+        <h2>SIAD Sumorame</h2>
 
-        <p>Selamat Datang Di Sistem Pelayanan Desa Sumorame Candi Sidoarjo.</p>
+        <span class="portal-badge">Portal Petugas</span>
+        <p>Area internal untuk pengelolaan layanan dan konten Website Desa Sumorame.</p>
       </div>
 
       <!-- PANEL KANAN -->
       <div class="card-content">
         <!-- HEADER (Hanya tampil di HP) -->
         <div class="card-header">
-          <img src="../publik/img/logo3.png" alt="Logo Desa" />
-          <h2>Desa Sumorame</h2>
+          <img src="/img/logo3.png" alt="Logo Desa" />
+          <h2>SIAD Sumorame</h2>
         </div>
 
         <!-- BODY -->
         <div class="card-body">
           <div class="text-area">
-            <h3>Selamat Datang Kembali!</h3>
-            <p>Login untuk melanjutkan ke dashboard</p>
+            <span class="portal-badge mobile-badge">Portal Petugas</span>
+            <h3>Masuk sebagai Petugas Desa</h3>
+            <p>Khusus admin dan petugas yang memiliki hak akses</p>
           </div>
 
           <form id="loginForm">
             <!-- NIK -->
-            <label class="input-label">Nomor Induk Kependudukan</label>
+            <label class="input-label">NIK Petugas</label>
             <div class="input-group">
               <i class="fa fa-user"></i>
               <input type="text" id="nip" placeholder="Masukkan NIK" />
@@ -68,12 +70,17 @@
             </div>
 
             <!-- BUTTON -->
-            <button class="btn-login">Login</button>
+            <button type="submit" class="btn-login">Login ke Dashboard Admin</button>
 
             <div class="extra-links">
               <a href="#" id="forgotPassword">Lupa Password?</a>
-              <a href="../publik/login.html">Masuk Sebagai Pemohon</a>
+              <a href="/login.html">Kembali ke Login Warga</a>
             </div>
+
+            <p class="security-note">
+              <i class="fa fa-shield-halved"></i>
+              Akses terbatas untuk petugas berwenang
+            </p>
           </form>
 
           <!-- MODAL -->
@@ -86,7 +93,7 @@
               <p>Silakan hubungi nomor admin dibawah ini</p>
 
               <img
-                src="../publik/img/peringatan.png"
+                src="/img/peringatan.png"
                 alt="Panduan"
                 class="modal-img"
               />
@@ -103,6 +110,7 @@
       </p>
     </div>
 
+    <script src="js/api-config.js"></script>
     <script src="js/LoginAdmin.js"></script>
   </body>
 </html>

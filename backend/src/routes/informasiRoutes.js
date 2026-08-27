@@ -10,7 +10,8 @@ const {
   deleteInformasi
 } = require("../controllers/informasiController");
 
-const { verifyToken } = require("../middleware/authMiddleware");
+const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
+const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 
 
 // ==================================================
@@ -57,7 +58,9 @@ router.get(
 router.post(
   "/",
   verifyToken,
+  requireAdmin,
   upload.single("gambar"),
+  verifyUploadSignatures,
   createInformasi
 );
 
@@ -69,7 +72,9 @@ router.post(
 router.put(
   "/:id",
   verifyToken,
+  requireAdmin,
   upload.single("gambar"),
+  verifyUploadSignatures,
   updateInformasi
 );
 
@@ -81,6 +86,7 @@ router.put(
 router.delete(
   "/:id",
   verifyToken,
+  requireAdmin,
   deleteInformasi
 );
 

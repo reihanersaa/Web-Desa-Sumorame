@@ -16,22 +16,32 @@ document.addEventListener("DOMContentLoaded", () => {
     return div.innerHTML;
   };
 
-  const formatTanggal = (tanggal) =>
-    new Date(tanggal).toLocaleDateString("id-ID", {
+  const formatTanggal = (tanggal) => {
+    if (!tanggal) return "-";
+
+    const tanggalBersih = String(tanggal).split("T")[0];
+    const date = new Date(`${tanggalBersih}T00:00:00`);
+
+    if (isNaN(date.getTime())) {
+      return "-";
+    }
+
+    return date.toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric",
     });
+  };
 
   // Tampilkan 1 item sebagai artikel utama (hero + artikel panjang)
   function tampilkanArtikel(item) {
-    heroGambar.src = item.gambar_url;
-    heroIsi.innerText = item.isi;
-    heroTanggal.innerText = formatTanggal(item.created_at);
+    heroGambar.src = item.gambar_url || "";
+    heroIsi.innerText = item.isi || "-";
+    heroTanggal.innerText = formatTanggal(item.tanggal);
 
     // "penjelasan" bisa berisi banyak paragraf dipisah baris baru,
     // pecah jadi <p> terpisah biar rapi kayak artikel asli
-    const paragraf = item.penjelasan
+    const paragraf = String(item.penjelasan || "")
       .split(/\n+/)
       .filter((p) => p.trim())
       .map(
@@ -39,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
           `<p class="artikel-item opacity-0 translate-y-6 transition-all duration-700 mb-4">${escapeHTML(p)}</p>`,
       )
       .join("");
+
     artikelText.innerHTML = paragraf;
 
     // Nyalakan lagi animasi scroll-reveal untuk paragraf yang baru masuk
@@ -61,10 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
         (item) => `
       <div class="terkini-item bg-white border rounded-xl p-3 flex items-center gap-4 shadow-sm 
           hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] cursor-pointer" data-id="${item.id}">
-        <img src="${item.gambar_url}" alt="${escapeHTML(item.judul)}" class="w-16 h-16 object-cover rounded">
+        <img src="${item.gambar_url || ""}" alt="${escapeHTML(item.judul || "")}" class="w-16 h-16 object-cover rounded">
         <div>
-          <h4 class="text-sm font-semibold">${escapeHTML(item.judul)}</h4>
-          <p class="text-xs text-gray-500">${formatTanggal(item.created_at)}</p>
+          <h4 class="text-sm font-semibold">${escapeHTML(item.judul || "-")}</h4>
+          <p class="text-xs text-gray-500">${formatTanggal(item.tanggal)}</p>
         </div>
       </div>`,
       )
@@ -74,11 +85,16 @@ document.addEventListener("DOMContentLoaded", () => {
     contentTerkini.querySelectorAll(".terkini-item").forEach((el) => {
       el.addEventListener("click", () => {
         const item = items.find((i) => String(i.id) === el.dataset.id);
+
         if (item) {
           tampilkanArtikel(item);
+
           document
             .querySelector(".card-kiri")
-            .scrollIntoView({ behavior: "smooth", block: "start" });
+            .scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
         }
       });
     });
@@ -97,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!items.length) {
         heroIsi.innerText = "Belum ada informasi yang dipublikasikan.";
+        heroTanggal.innerText = "-";
         artikelText.innerHTML = "";
         renderArsip([]);
         return;
@@ -107,7 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
       renderArsip(items);
     } catch (error) {
       console.error("Gagal memuat informasi:", error);
+
       heroIsi.innerText = "Gagal memuat data informasi.";
+      heroTanggal.innerText = "-";
+
       contentTerkini.innerHTML = `<p class="text-sm text-red-500">${escapeHTML(error.message)}</p>`;
     }
   }
@@ -186,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // bukan udah ada dari awal kayak dulu waktu masih hardcoded di HTML.
   // ===============================
   const content = document.getElementById("contentTerkini");
+
   setTimeout(() => {
     content.classList.remove("opacity-0", "translate-x-20");
   }, 200);
@@ -276,6 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
   navItems.forEach((item) => {
     item.addEventListener("mouseenter", () => {
       const text = item.textContent.trim();
+
       if (!text) return;
 
       const speech = new SpeechSynthesisUtterance(text);

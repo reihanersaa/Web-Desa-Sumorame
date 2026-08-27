@@ -139,7 +139,7 @@ if (formRegistrasi) {
 
     try {
       // PORT disamakan dengan backend (index.js -> PORT || 3000)
-      const response = await fetch("http://localhost:3000/api/auth/register", {
+      const response = await fetch(`${window.API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -154,7 +154,7 @@ if (formRegistrasi) {
           icon: "success",
           showConfirmButton: true,
         }).then(() => {
-          window.location.href = "login.html"; // Arahkan ke halaman login warga
+          window.location.href = "/login.html"; // Arahkan ke halaman login warga
         });
       } else {
         // Menampilkan pesan error dari Backend (misal NIK ganda)

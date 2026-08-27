@@ -3,18 +3,17 @@
    PUBLIK PPID - WEBSITE DESA SUMORAME
 ========================================================= */
 
-
 // =========================================================
 // 1. KONFIGURASI API
 // =========================================================
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = window.API_BASE_URL;
+const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
 
 const API_PPID = {
-  struktur: `${API_BASE_URL}/api/ppid`,
-  pdf: `${API_BASE_URL}/api/ppid/pdf`
+  struktur: `${API_BASE_URL}/ppid`,
+  pdf: `${API_BASE_URL}/ppid/pdf`,
 };
-
 
 // =========================================================
 // 2. HELPER RESPONSE API
@@ -26,24 +25,17 @@ async function parseResponse(response) {
   try {
     result = await response.json();
   } catch (error) {
-    throw new Error(
-      "Response dari server tidak valid."
-    );
+    throw new Error("Response dari server tidak valid.");
   }
-
 
   if (!response.ok) {
     throw new Error(
-      result.message ||
-      result.error ||
-      `HTTP Error ${response.status}`
+      result.message || result.error || `HTTP Error ${response.status}`,
     );
   }
 
-
   return result;
 }
-
 
 // =========================================================
 // 3. HELPER URL FILE
@@ -54,47 +46,34 @@ function getFileURL(path) {
     return "";
   }
 
-
-  const filePath =
-    String(path).trim();
-
+  const filePath = String(path).trim();
 
   // URL lengkap
-  if (
-    filePath.startsWith("http://") ||
-    filePath.startsWith("https://")
-  ) {
+  if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
     return filePath;
   }
-
 
   // Path diawali /
   // contoh:
   // /uploads/ppid/file.pdf
   if (filePath.startsWith("/")) {
-    return `${API_BASE_URL}${filePath}`;
+    return `${API_ORIGIN}${filePath}`;
   }
-
 
   // Path biasa
   // contoh:
   // uploads/ppid/file.pdf
-  return `${API_BASE_URL}/${filePath}`;
+  return `${API_ORIGIN}/${filePath}`;
 }
-
 
 // =========================================================
 // 4. ESCAPE HTML
 // =========================================================
 
 function escapeHTML(value) {
-  if (
-    value === null ||
-    value === undefined
-  ) {
+  if (value === null || value === undefined) {
     return "";
   }
-
 
   return String(value)
     .replace(/&/g, "&amp;")
@@ -103,7 +82,6 @@ function escapeHTML(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
-
 
 // =========================================================
 // 5. FORMAT UKURAN FILE
@@ -114,496 +92,246 @@ function formatFileSize(bytes) {
     return "0 KB";
   }
 
-
   // Jika backend sudah memberikan string
   // contoh: "2.5 MB"
   if (typeof bytes === "string") {
     return bytes;
   }
 
+  const number = Number(bytes);
 
-  const number =
-    Number(bytes);
-
-
-  if (
-    Number.isNaN(number) ||
-    number <= 0
-  ) {
+  if (Number.isNaN(number) || number <= 0) {
     return "0 KB";
   }
 
+  const units = ["Bytes", "KB", "MB", "GB"];
 
-  const units = [
-    "Bytes",
-    "KB",
-    "MB",
-    "GB"
-  ];
+  const index = Math.floor(Math.log(number) / Math.log(1024));
 
+  const size = number / Math.pow(1024, index);
 
-  const index =
-    Math.floor(
-      Math.log(number) /
-      Math.log(1024)
-    );
-
-
-  const size =
-    number /
-    Math.pow(1024, index);
-
-
-  return `${
-    size.toFixed(
-      index === 0 ? 0 : 2
-    )
-  } ${units[index]}`;
+  return `${size.toFixed(index === 0 ? 0 : 2)} ${units[index]}`;
 }
-
 
 // =========================================================
 // 6. DOM CONTENT LOADED
 // =========================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+document.addEventListener("DOMContentLoaded", () => {
+  // =====================================================
+  // LOAD DATA BACKEND
+  // =====================================================
 
-    // =====================================================
-    // LOAD DATA BACKEND
-    // =====================================================
+  loadStrukturPPID();
+  loadDaftarPDFPPID();
 
-    loadStrukturPPID();
-    loadDaftarPDFPPID();
+  // =====================================================
+  // ANIMASI CARD + MAP + BANNER
+  // =====================================================
 
+  const cards = document.querySelectorAll(".ppid-menu, .ppid-card, .map-card");
 
-    // =====================================================
-    // ANIMASI CARD + MAP + BANNER
-    // =====================================================
+  const banners = document.querySelectorAll(".banner-item");
 
-    const cards =
-      document.querySelectorAll(
-        ".ppid-menu, .ppid-card, .map-card"
-      );
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove("opacity-0", "translate-y-10");
 
-    const banners =
-      document.querySelectorAll(
-        ".banner-item"
-      );
+          entry.target.classList.add("opacity-100", "translate-y-0");
 
+          // =========================
+          // ANIMASI BANNER MAP
+          // =========================
 
-    const observer =
-      new IntersectionObserver(
-        (entries, observer) => {
+          if (entry.target.classList.contains("map-card")) {
+            banners.forEach((banner, i) => {
+              setTimeout(() => {
+                banner.classList.remove("opacity-0", "translate-y-4");
 
-          entries.forEach((entry) => {
+                banner.classList.add("opacity-100", "translate-y-0");
+              }, i * 150);
+            });
+          }
 
-            if (entry.isIntersecting) {
-
-              entry.target.classList.remove(
-                "opacity-0",
-                "translate-y-10"
-              );
-
-
-              entry.target.classList.add(
-                "opacity-100",
-                "translate-y-0"
-              );
-
-
-              // =========================
-              // ANIMASI BANNER MAP
-              // =========================
-
-              if (
-                entry.target.classList.contains(
-                  "map-card"
-                )
-              ) {
-
-                banners.forEach(
-                  (banner, i) => {
-
-                    setTimeout(() => {
-
-                      banner.classList.remove(
-                        "opacity-0",
-                        "translate-y-4"
-                      );
-
-
-                      banner.classList.add(
-                        "opacity-100",
-                        "translate-y-0"
-                      );
-
-                    }, i * 150);
-                  }
-                );
-              }
-
-
-              observer.unobserve(
-                entry.target
-              );
-            }
-          });
-        },
-
-        {
-          threshold: 0,
-
-          rootMargin:
-            "0px 0px -100px 0px"
+          observer.unobserve(entry.target);
         }
-      );
+      });
+    },
 
+    {
+      threshold: 0,
 
-    cards.forEach((card) => {
-      observer.observe(card);
+      rootMargin: "0px 0px -100px 0px",
+    },
+  );
+
+  cards.forEach((card) => {
+    observer.observe(card);
+  });
+
+  // =====================================================
+  // NAVBAR MOBILE
+  // =====================================================
+
+  const menuBtn = document.getElementById("menuBtn");
+
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  let isOpen = false;
+
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener("click", () => {
+      isOpen = !isOpen;
+
+      if (isOpen) {
+        mobileMenu.classList.remove("max-h-0", "opacity-0");
+
+        mobileMenu.classList.add("max-h-[600px]", "opacity-100");
+
+        menuBtn.textContent = "close";
+      } else {
+        mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
+
+        mobileMenu.classList.add("max-h-0", "opacity-0");
+
+        menuBtn.textContent = "menu";
+      }
     });
 
+    // Klik di luar menu
+    document.addEventListener("click", (event) => {
+      if (
+        isOpen &&
+        !mobileMenu.contains(event.target) &&
+        !menuBtn.contains(event.target)
+      ) {
+        mobileMenu.classList.add("max-h-0", "opacity-0");
 
-    // =====================================================
-    // NAVBAR MOBILE
-    // =====================================================
+        mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
 
-    const menuBtn =
-      document.getElementById(
-        "menuBtn"
-      );
+        menuBtn.textContent = "menu";
 
-    const mobileMenu =
-      document.getElementById(
-        "mobileMenu"
-      );
-
-
-    let isOpen = false;
-
-
-    if (
-      menuBtn &&
-      mobileMenu
-    ) {
-
-      menuBtn.addEventListener(
-        "click",
-        () => {
-
-          isOpen = !isOpen;
-
-
-          if (isOpen) {
-
-            mobileMenu.classList.remove(
-              "max-h-0",
-              "opacity-0"
-            );
-
-
-            mobileMenu.classList.add(
-              "max-h-[600px]",
-              "opacity-100"
-            );
-
-
-            menuBtn.textContent =
-              "close";
-
-          } else {
-
-            mobileMenu.classList.remove(
-              "max-h-[600px]",
-              "opacity-100"
-            );
-
-
-            mobileMenu.classList.add(
-              "max-h-0",
-              "opacity-0"
-            );
-
-
-            menuBtn.textContent =
-              "menu";
-          }
-        }
-      );
-
-
-      // Klik di luar menu
-      document.addEventListener(
-        "click",
-        (event) => {
-
-          if (
-            isOpen &&
-            !mobileMenu.contains(
-              event.target
-            ) &&
-            !menuBtn.contains(
-              event.target
-            )
-          ) {
-
-            mobileMenu.classList.add(
-              "max-h-0",
-              "opacity-0"
-            );
-
-
-            mobileMenu.classList.remove(
-              "max-h-[600px]",
-              "opacity-100"
-            );
-
-
-            menuBtn.textContent =
-              "menu";
-
-
-            isOpen = false;
-          }
-        }
-      );
-    }
-
-
-    // =====================================================
-    // NAVBAR ANIMATION
-    // =====================================================
-
-    const navItems =
-      document.querySelectorAll(
-        ".nav-item"
-      );
-
-
-    navItems.forEach(
-      (item, i) => {
-
-        setTimeout(() => {
-
-          item.style.opacity =
-            "1";
-
-          item.style.transform =
-            "translateY(0)";
-
-        }, i * 100);
+        isOpen = false;
       }
-    );
-
-
-    // =====================================================
-    // HERO ANIMATION
-    // =====================================================
-
-    const heroItems =
-      document.querySelectorAll(
-        ".hero-item"
-      );
-
-
-    heroItems.forEach(
-      (item, i) => {
-
-        setTimeout(() => {
-
-          item.classList.remove(
-            "opacity-0",
-            "-translate-x-16"
-          );
-
-        }, i * 200);
-      }
-    );
-
-
-    // =====================================================
-    // HEADER HILANG HANYA DI PALING ATAS
-    // =====================================================
-
-    const mainHeader =
-      document.getElementById(
-        "mainHeader"
-      );
-
-    const heroSection =
-      document.getElementById(
-        "heroSection"
-      );
-
-
-    window.addEventListener(
-      "scroll",
-      () => {
-
-        if (
-          !mainHeader ||
-          !heroSection
-        ) {
-          return;
-        }
-
-
-        if (window.scrollY <= 0) {
-
-          mainHeader.classList.add(
-            "header-hidden"
-          );
-
-
-          heroSection.classList.add(
-            "hero-top"
-          );
-
-        } else {
-
-          mainHeader.classList.remove(
-            "header-hidden"
-          );
-
-
-          heroSection.classList.remove(
-            "hero-top"
-          );
-        }
-      }
-    );
-
-
-    // =====================================================
-    // FOOTER + KONTAK ANIMATION
-    // =====================================================
-
-    const footer =
-      document.getElementById(
-        "footer"
-      );
-
-    const footerItems =
-      document.querySelectorAll(
-        ".footer-item"
-      );
-
-    const kontakItems =
-      document.querySelectorAll(
-        ".kontak-item"
-      );
-
-
-    window.addEventListener(
-      "scroll",
-      () => {
-
-        if (!footer) {
-          return;
-        }
-
-
-        const trigger =
-          window.innerHeight;
-
-
-        if (
-          footer
-            .getBoundingClientRect()
-            .top <
-          trigger - 100
-        ) {
-
-          footer.classList.remove(
-            "opacity-0",
-            "translate-y-10"
-          );
-
-
-          footerItems.forEach(
-            (item, i) => {
-
-              setTimeout(() => {
-
-                item.classList.remove(
-                  "opacity-0",
-                  "translate-y-6"
-                );
-
-              }, i * 200);
-            }
-          );
-
-
-          kontakItems.forEach(
-            (item, i) => {
-
-              setTimeout(() => {
-
-                item.classList.remove(
-                  "opacity-0",
-                  "-translate-y-6",
-                  "-translate-x-10",
-                  "translate-x-10",
-                  "translate-y-10"
-                );
-
-              }, i * 200);
-            }
-          );
-        }
-      }
-    );
-
-
-    // =====================================================
-    // SOUND NAVBAR
-    // =====================================================
-
-    navItems.forEach((item) => {
-
-      item.addEventListener(
-        "mouseenter",
-        () => {
-
-          const text =
-            item.textContent.trim();
-
-
-          if (!text) {
-            return;
-          }
-
-
-          const speech =
-            new SpeechSynthesisUtterance(
-              text
-            );
-
-
-          speech.lang =
-            "id-ID";
-
-          speech.rate =
-            1;
-
-
-          window
-            .speechSynthesis
-            .cancel();
-
-
-          window
-            .speechSynthesis
-            .speak(speech);
-        }
-      );
     });
   }
-);
 
+  // =====================================================
+  // NAVBAR ANIMATION
+  // =====================================================
+
+  const navItems = document.querySelectorAll(".nav-item");
+
+  navItems.forEach((item, i) => {
+    setTimeout(() => {
+      item.style.opacity = "1";
+
+      item.style.transform = "translateY(0)";
+    }, i * 100);
+  });
+
+  // =====================================================
+  // HERO ANIMATION
+  // =====================================================
+
+  const heroItems = document.querySelectorAll(".hero-item");
+
+  heroItems.forEach((item, i) => {
+    setTimeout(() => {
+      item.classList.remove("opacity-0", "-translate-x-16");
+    }, i * 200);
+  });
+
+  // =====================================================
+  // HEADER HILANG HANYA DI PALING ATAS
+  // =====================================================
+
+  const mainHeader = document.getElementById("mainHeader");
+
+  const heroSection = document.getElementById("heroSection");
+
+  window.addEventListener("scroll", () => {
+    if (!mainHeader || !heroSection) {
+      return;
+    }
+
+    if (window.scrollY <= 0) {
+      mainHeader.classList.add("header-hidden");
+
+      heroSection.classList.add("hero-top");
+    } else {
+      mainHeader.classList.remove("header-hidden");
+
+      heroSection.classList.remove("hero-top");
+    }
+  });
+
+  // =====================================================
+  // FOOTER + KONTAK ANIMATION
+  // =====================================================
+
+  const footer = document.getElementById("footer");
+
+  const footerItems = document.querySelectorAll(".footer-item");
+
+  const kontakItems = document.querySelectorAll(".kontak-item");
+
+  window.addEventListener("scroll", () => {
+    if (!footer) {
+      return;
+    }
+
+    const trigger = window.innerHeight;
+
+    if (footer.getBoundingClientRect().top < trigger - 100) {
+      footer.classList.remove("opacity-0", "translate-y-10");
+
+      footerItems.forEach((item, i) => {
+        setTimeout(() => {
+          item.classList.remove("opacity-0", "translate-y-6");
+        }, i * 200);
+      });
+
+      kontakItems.forEach((item, i) => {
+        setTimeout(() => {
+          item.classList.remove(
+            "opacity-0",
+            "-translate-y-6",
+            "-translate-x-10",
+            "translate-x-10",
+            "translate-y-10",
+          );
+        }, i * 200);
+      });
+    }
+  });
+
+  // =====================================================
+  // SOUND NAVBAR
+  // =====================================================
+
+  navItems.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      const text = item.textContent.trim();
+
+      if (!text) {
+        return;
+      }
+
+      const speech = new SpeechSynthesisUtterance(text);
+
+      speech.lang = "id-ID";
+
+      speech.rate = 1;
+
+      window.speechSynthesis.cancel();
+
+      window.speechSynthesis.speak(speech);
+    });
+  });
+});
 
 // =========================================================
 // 7. GET STRUKTUR / PROFILE PPID
@@ -611,7 +339,6 @@ document.addEventListener(
 // =========================================================
 
 async function loadStrukturPPID() {
-
   /*
     Mendukung dua kondisi:
 
@@ -623,55 +350,29 @@ async function loadStrukturPPID() {
   */
 
   const gambar =
-    document.getElementById(
-      "gambarStrukturPPID"
-    ) ||
-    document.querySelector(
-      "#modalPengumuman img"
-    );
-
+    document.getElementById("gambarStrukturPPID") ||
+    document.querySelector("#modalPengumuman img");
 
   if (!gambar) {
-
-    console.warn(
-      "Element gambar struktur PPID tidak ditemukan."
-    );
+    console.warn("Element gambar struktur PPID tidak ditemukan.");
 
     return;
   }
 
-
   try {
+    const response = await fetch(API_PPID.struktur, {
+      method: "GET",
+    });
 
-    const response =
-      await fetch(
-        API_PPID.struktur,
-        {
-          method: "GET"
-        }
-      );
+    const result = await parseResponse(response);
 
+    console.log("======================================");
 
-    const result =
-      await parseResponse(
-        response
-      );
-
-
-    console.log(
-      "======================================"
-    );
-
-    console.log(
-      "RESPONSE STRUKTUR PPID:"
-    );
+    console.log("RESPONSE STRUKTUR PPID:");
 
     console.log(result);
 
-    console.log(
-      "======================================"
-    );
-
+    console.log("======================================");
 
     // =====================================================
     // SESUAI RESPONSE ADMIN YANG SUDAH ADA
@@ -684,68 +385,33 @@ async function loadStrukturPPID() {
       result.data?.gambar_struktur ||
       result.data?.file;
 
-
     if (!struktur) {
+      console.warn("File struktur PPID tidak ditemukan pada response API.");
 
-      console.warn(
-        "File struktur PPID tidak ditemukan pada response API."
-      );
-
-
-      gambar.style.display =
-        "none";
-
+      gambar.style.display = "none";
 
       return;
     }
 
+    const fileURL = getFileURL(struktur);
 
-    const fileURL =
-      getFileURL(
-        struktur
-      );
+    console.log("URL Struktur PPID:", fileURL);
 
+    gambar.src = fileURL;
 
-    console.log(
-      "URL Struktur PPID:",
-      fileURL
-    );
+    gambar.alt = "Struktur PPID Desa Sumorame";
 
-
-    gambar.src =
-      fileURL;
-
-
-    gambar.alt =
-      "Struktur PPID Desa Sumorame";
-
-
-    gambar.style.display =
-      "block";
-
+    gambar.style.display = "block";
 
     gambar.onerror = () => {
-
-      console.error(
-        "Gambar struktur PPID gagal dimuat:",
-        gambar.src
-      );
+      console.error("Gambar struktur PPID gagal dimuat:", gambar.src);
     };
-
-
   } catch (error) {
+    console.error("Gagal mengambil struktur PPID:", error);
 
-    console.error(
-      "Gagal mengambil struktur PPID:",
-      error
-    );
-
-
-    gambar.style.display =
-      "none";
+    gambar.style.display = "none";
   }
 }
-
 
 // =========================================================
 // 8. GET DAFTAR PDF PPID
@@ -753,7 +419,6 @@ async function loadStrukturPPID() {
 // =========================================================
 
 async function loadDaftarPDFPPID() {
-
   /*
     Jika HTML mempunyai:
     id="daftarPDFPublik"
@@ -764,32 +429,17 @@ async function loadDaftarPDFPPID() {
     slideContainer lama Anda.
   */
 
-  const containerKhusus =
-    document.getElementById(
-      "daftarPDFPublik"
-    );
+  const containerKhusus = document.getElementById("daftarPDFPublik");
 
+  const slideContainer = document.getElementById("slideContainer");
 
-  const slideContainer =
-    document.getElementById(
-      "slideContainer"
-    );
-
-
-  const container =
-    containerKhusus ||
-    slideContainer;
-
+  const container = containerKhusus || slideContainer;
 
   if (!container) {
-
-    console.warn(
-      "Container daftar PDF PPID tidak ditemukan."
-    );
+    console.warn("Container daftar PDF PPID tidak ditemukan.");
 
     return;
   }
-
 
   // =====================================================
   // LOADING
@@ -836,38 +486,20 @@ async function loadDaftarPDFPPID() {
     </div>
   `;
 
-
   try {
+    const response = await fetch(API_PPID.pdf, {
+      method: "GET",
+    });
 
-    const response =
-      await fetch(
-        API_PPID.pdf,
-        {
-          method: "GET"
-        }
-      );
+    const result = await parseResponse(response);
 
+    console.log("======================================");
 
-    const result =
-      await parseResponse(
-        response
-      );
-
-
-    console.log(
-      "======================================"
-    );
-
-    console.log(
-      "RESPONSE PDF PPID:"
-    );
+    console.log("RESPONSE PDF PPID:");
 
     console.log(result);
 
-    console.log(
-      "======================================"
-    );
-
+    console.log("======================================");
 
     // =====================================================
     // NORMALISASI RESPONSE
@@ -876,44 +508,21 @@ async function loadDaftarPDFPPID() {
 
     let data = [];
 
-
     if (Array.isArray(result)) {
-
-      data =
-        result;
-
-    } else if (
-      Array.isArray(
-        result.data
-      )
-    ) {
-
-      data =
-        result.data;
-
-    } else if (
-      Array.isArray(
-        result.pdf
-      )
-    ) {
-
-      data =
-        result.pdf;
+      data = result;
+    } else if (Array.isArray(result.data)) {
+      data = result.data;
+    } else if (Array.isArray(result.pdf)) {
+      data = result.pdf;
     }
 
-
-    console.log(
-      "Jumlah PDF PPID:",
-      data.length
-    );
-
+    console.log("Jumlah PDF PPID:", data.length);
 
     // =====================================================
     // JIKA KOSONG
     // =====================================================
 
     if (data.length === 0) {
-
       container.innerHTML = `
         <div
           class="
@@ -956,10 +565,8 @@ async function loadDaftarPDFPPID() {
         </div>
       `;
 
-
       return;
     }
-
 
     // =====================================================
     // RENDER DATA PDF
@@ -1002,83 +609,43 @@ async function loadDaftarPDFPPID() {
       </div>
     `;
 
-
-    const grid =
-      document.getElementById(
-        "gridPDFPublik"
-      );
-
+    const grid = document.getElementById("gridPDFPublik");
 
     if (!grid) {
       return;
     }
 
+    data.forEach((item, index) => {
+      // ================================================
+      // FIELD SESUAI ADMIN PPID
+      // ================================================
 
-    data.forEach(
-      (item, index) => {
+      const judul =
+        item.judul || item.nama_laporan || item.nama || "Tanpa Judul";
 
-        // ================================================
-        // FIELD SESUAI ADMIN PPID
-        // ================================================
+      const file = item.file || item.file_pdf || item.path || item.url || "";
 
-        const judul =
-          item.judul ||
-          item.nama_laporan ||
-          item.nama ||
-          "Tanpa Judul";
+      const ukuran = item.ukuran ?? item.size ?? item.file_size ?? 0;
 
+      const fileURL = getFileURL(file);
 
-        const file =
-          item.file ||
-          item.file_pdf ||
-          item.path ||
-          item.url ||
-          "";
+      const ukuranTampil =
+        typeof ukuran === "string" ? ukuran : formatFileSize(Number(ukuran));
 
+      console.log(`PDF ke-${index + 1}:`, {
+        judul,
+        file,
+        fileURL,
+        ukuran: ukuranTampil,
+      });
 
-        const ukuran =
-          item.ukuran ??
-          item.size ??
-          item.file_size ??
-          0;
+      // ================================================
+      // CARD PDF
+      // ================================================
 
+      const card = document.createElement("div");
 
-        const fileURL =
-          getFileURL(
-            file
-          );
-
-
-        const ukuranTampil =
-          typeof ukuran === "string"
-            ? ukuran
-            : formatFileSize(
-                Number(ukuran)
-              );
-
-
-        console.log(
-          `PDF ke-${index + 1}:`,
-          {
-            judul,
-            file,
-            fileURL,
-            ukuran: ukuranTampil
-          }
-        );
-
-
-        // ================================================
-        // CARD PDF
-        // ================================================
-
-        const card =
-          document.createElement(
-            "div"
-          );
-
-
-        card.className = `
+      card.className = `
           flex
           items-center
           gap-4
@@ -1093,8 +660,7 @@ async function loadDaftarPDFPPID() {
           cursor-pointer
         `;
 
-
-        card.innerHTML = `
+      card.innerHTML = `
 
           <!-- ICON PDF -->
           <div
@@ -1153,9 +719,7 @@ async function loadDaftarPDFPPID() {
               "
             >
               Ukuran :
-              ${escapeHTML(
-                ukuranTampil
-              )}
+              ${escapeHTML(ukuranTampil)}
             </p>
 
 
@@ -1187,55 +751,26 @@ async function loadDaftarPDFPPID() {
 
         `;
 
+      // ================================================
+      // BUKA PDF
+      // ================================================
 
-        // ================================================
-        // BUKA PDF
-        // ================================================
+      card.addEventListener("click", () => {
+        if (!fileURL) {
+          console.warn("URL PDF tidak tersedia:", item);
 
-        card.addEventListener(
-          "click",
-          () => {
+          alert("File PDF tidak tersedia.");
 
-            if (!fileURL) {
+          return;
+        }
 
-              console.warn(
-                "URL PDF tidak tersedia:",
-                item
-              );
+        window.open(fileURL, "_blank", "noopener,noreferrer");
+      });
 
-
-              alert(
-                "File PDF tidak tersedia."
-              );
-
-
-              return;
-            }
-
-
-            window.open(
-              fileURL,
-              "_blank",
-              "noopener,noreferrer"
-            );
-          }
-        );
-
-
-        grid.appendChild(
-          card
-        );
-      }
-    );
-
-
+      grid.appendChild(card);
+    });
   } catch (error) {
-
-    console.error(
-      "Gagal mengambil daftar PDF PPID:",
-      error
-    );
-
+    console.error("Gagal mengambil daftar PDF PPID:", error);
 
     container.innerHTML = `
       <div
@@ -1282,9 +817,7 @@ async function loadDaftarPDFPPID() {
               mt-1
             "
           >
-            ${escapeHTML(
-              error.message
-            )}
+            ${escapeHTML(error.message)}
           </p>
 
         </div>
@@ -1294,486 +827,216 @@ async function loadDaftarPDFPPID() {
   }
 }
 
-
 // =========================================================
 // 9. MODAL TIMELINE
 // =========================================================
 
-const modal =
-  document.getElementById(
-    "modalTimeline"
-  );
+const modal = document.getElementById("modalTimeline");
 
-const modalBox =
-  document.getElementById(
-    "modalBox"
-  );
-
+const modalBox = document.getElementById("modalBox");
 
 function openModal() {
-
-  if (
-    !modal ||
-    !modalBox
-  ) {
+  if (!modal || !modalBox) {
     return;
   }
 
+  modal.classList.remove("hidden");
 
-  modal.classList.remove(
-    "hidden"
-  );
+  modal.classList.add("opacity-0");
 
+  modalBox.classList.remove("scale-100", "opacity-100");
 
-  modal.classList.add(
-    "opacity-0"
-  );
-
-
-  modalBox.classList.remove(
-    "scale-100",
-    "opacity-100"
-  );
-
-
-  modalBox.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
-
+  modalBox.classList.add("scale-90", "opacity-0");
 
   requestAnimationFrame(() => {
+    modal.classList.remove("opacity-0");
 
-    modal.classList.remove(
-      "opacity-0"
-    );
+    modalBox.classList.remove("scale-90", "opacity-0");
 
-
-    modalBox.classList.remove(
-      "scale-90",
-      "opacity-0"
-    );
-
-
-    modalBox.classList.add(
-      "scale-100",
-      "opacity-100"
-    );
+    modalBox.classList.add("scale-100", "opacity-100");
   });
 }
 
-
 function closeModal() {
-
-  if (
-    !modal ||
-    !modalBox
-  ) {
+  if (!modal || !modalBox) {
     return;
   }
 
+  modal.classList.add("opacity-0");
 
-  modal.classList.add(
-    "opacity-0"
-  );
+  modalBox.classList.remove("scale-100", "opacity-100");
 
-
-  modalBox.classList.remove(
-    "scale-100",
-    "opacity-100"
-  );
-
-
-  modalBox.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
-
+  modalBox.classList.add("scale-90", "opacity-0");
 
   setTimeout(() => {
-
-    modal.classList.add(
-      "hidden"
-    );
-
+    modal.classList.add("hidden");
   }, 300);
 }
 
-
 // Klik di luar modal
-modal?.addEventListener(
-  "click",
-  (event) => {
-
-    if (
-      event.target === modal
-    ) {
-      closeModal();
-    }
+modal?.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    closeModal();
   }
-);
-
+});
 
 // =========================================================
 // 10. MODAL PROFILE PPID
 // =========================================================
 
 function openModalPengumuman() {
+  const modalPengumuman = document.getElementById("modalPengumuman");
 
-  const modalPengumuman =
-    document.getElementById(
-      "modalPengumuman"
-    );
+  const box = document.getElementById("modalBoxPengumuman");
 
-  const box =
-    document.getElementById(
-      "modalBoxPengumuman"
-    );
-
-
-  if (
-    !modalPengumuman ||
-    !box
-  ) {
+  if (!modalPengumuman || !box) {
     return;
   }
 
+  modalPengumuman.classList.remove("hidden");
 
-  modalPengumuman.classList.remove(
-    "hidden"
-  );
+  modalPengumuman.classList.add("flex", "opacity-0");
 
+  box.classList.remove("scale-100", "opacity-100");
 
-  modalPengumuman.classList.add(
-    "flex",
-    "opacity-0"
-  );
-
-
-  box.classList.remove(
-    "scale-100",
-    "opacity-100"
-  );
-
-
-  box.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
-
+  box.classList.add("scale-90", "opacity-0");
 
   requestAnimationFrame(() => {
+    modalPengumuman.classList.remove("opacity-0");
 
-    modalPengumuman.classList.remove(
-      "opacity-0"
-    );
+    box.classList.remove("scale-90", "opacity-0");
 
-
-    box.classList.remove(
-      "scale-90",
-      "opacity-0"
-    );
-
-
-    box.classList.add(
-      "scale-100",
-      "opacity-100"
-    );
+    box.classList.add("scale-100", "opacity-100");
   });
 }
 
-
 function closeModalPengumuman() {
+  const modalPengumuman = document.getElementById("modalPengumuman");
 
-  const modalPengumuman =
-    document.getElementById(
-      "modalPengumuman"
-    );
+  const box = document.getElementById("modalBoxPengumuman");
 
-  const box =
-    document.getElementById(
-      "modalBoxPengumuman"
-    );
-
-
-  if (
-    !modalPengumuman ||
-    !box
-  ) {
+  if (!modalPengumuman || !box) {
     return;
   }
 
+  modalPengumuman.classList.add("opacity-0");
 
-  modalPengumuman.classList.add(
-    "opacity-0"
-  );
+  box.classList.remove("scale-100", "opacity-100");
 
-
-  box.classList.remove(
-    "scale-100",
-    "opacity-100"
-  );
-
-
-  box.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
-
+  box.classList.add("scale-90", "opacity-0");
 
   setTimeout(() => {
+    modalPengumuman.classList.add("hidden");
 
-    modalPengumuman.classList.add(
-      "hidden"
-    );
-
-
-    modalPengumuman.classList.remove(
-      "flex"
-    );
-
+    modalPengumuman.classList.remove("flex");
   }, 300);
 }
 
-
 // Klik luar modal Profile PPID
-const modalPengumuman =
-  document.getElementById(
-    "modalPengumuman"
-  );
+const modalPengumuman = document.getElementById("modalPengumuman");
 
-
-modalPengumuman?.addEventListener(
-  "click",
-  (event) => {
-
-    if (
-      event.target === modalPengumuman
-    ) {
-      closeModalPengumuman();
-    }
+modalPengumuman?.addEventListener("click", (event) => {
+  if (event.target === modalPengumuman) {
+    closeModalPengumuman();
   }
-);
-
+});
 
 // =========================================================
 // 11. RIPPLE EFFECT
 // =========================================================
 
 function ripple(event) {
-
-  const button =
-    event.currentTarget;
-
+  const button = event.currentTarget;
 
   if (!button) {
     return;
   }
 
+  const circle = document.createElement("span");
 
-  const circle =
-    document.createElement(
-      "span"
-    );
+  const diameter = Math.max(button.clientWidth, button.clientHeight);
 
+  const rect = button.getBoundingClientRect();
 
-  const diameter =
-    Math.max(
-      button.clientWidth,
-      button.clientHeight
-    );
+  circle.style.width = `${diameter}px`;
 
+  circle.style.height = `${diameter}px`;
 
-  const rect =
-    button.getBoundingClientRect();
+  circle.style.left = `${event.clientX - rect.left - diameter / 2}px`;
 
+  circle.style.top = `${event.clientY - rect.top - diameter / 2}px`;
 
-  circle.style.width =
-    `${diameter}px`;
+  circle.classList.add("ripple");
 
-  circle.style.height =
-    `${diameter}px`;
-
-
-  circle.style.left =
-    `${
-      event.clientX -
-      rect.left -
-      diameter / 2
-    }px`;
-
-
-  circle.style.top =
-    `${
-      event.clientY -
-      rect.top -
-      diameter / 2
-    }px`;
-
-
-  circle.classList.add(
-    "ripple"
-  );
-
-
-  const oldRipple =
-    button.querySelector(
-      ".ripple"
-    );
-
+  const oldRipple = button.querySelector(".ripple");
 
   if (oldRipple) {
     oldRipple.remove();
   }
 
-
-  button.appendChild(
-    circle
-  );
+  button.appendChild(circle);
 }
-
 
 // =========================================================
 // 12. MODAL LAYANAN INFORMASI
 // =========================================================
 
 function openModalLayanan() {
+  const modalLayanan = document.getElementById("modalLayanan");
 
-  const modalLayanan =
-    document.getElementById(
-      "modalLayanan"
-    );
+  const box = document.getElementById("modalBoxLayanan");
 
-  const box =
-    document.getElementById(
-      "modalBoxLayanan"
-    );
-
-
-  if (
-    !modalLayanan ||
-    !box
-  ) {
+  if (!modalLayanan || !box) {
     return;
   }
 
+  modalLayanan.classList.remove("hidden");
 
-  modalLayanan.classList.remove(
-    "hidden"
-  );
+  modalLayanan.classList.add("flex", "opacity-0");
 
+  box.classList.remove("scale-100", "opacity-100");
 
-  modalLayanan.classList.add(
-    "flex",
-    "opacity-0"
-  );
-
-
-  box.classList.remove(
-    "scale-100",
-    "opacity-100"
-  );
-
-
-  box.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
-
+  box.classList.add("scale-90", "opacity-0");
 
   requestAnimationFrame(() => {
+    modalLayanan.classList.remove("opacity-0");
 
-    modalLayanan.classList.remove(
-      "opacity-0"
-    );
+    box.classList.remove("scale-90", "opacity-0");
 
-
-    box.classList.remove(
-      "scale-90",
-      "opacity-0"
-    );
-
-
-    box.classList.add(
-      "scale-100",
-      "opacity-100"
-    );
+    box.classList.add("scale-100", "opacity-100");
   });
 }
 
-
 function closeModalLayanan() {
+  const modalLayanan = document.getElementById("modalLayanan");
 
-  const modalLayanan =
-    document.getElementById(
-      "modalLayanan"
-    );
+  const box = document.getElementById("modalBoxLayanan");
 
-  const box =
-    document.getElementById(
-      "modalBoxLayanan"
-    );
-
-
-  if (
-    !modalLayanan ||
-    !box
-  ) {
+  if (!modalLayanan || !box) {
     return;
   }
 
+  modalLayanan.classList.add("opacity-0");
 
-  modalLayanan.classList.add(
-    "opacity-0"
-  );
+  box.classList.remove("scale-100", "opacity-100");
 
-
-  box.classList.remove(
-    "scale-100",
-    "opacity-100"
-  );
-
-
-  box.classList.add(
-    "scale-90",
-    "opacity-0"
-  );
-
+  box.classList.add("scale-90", "opacity-0");
 
   setTimeout(() => {
+    modalLayanan.classList.add("hidden");
 
-    modalLayanan.classList.add(
-      "hidden"
-    );
-
-
-    modalLayanan.classList.remove(
-      "flex"
-    );
-
+    modalLayanan.classList.remove("flex");
   }, 300);
 }
 
-
 // Klik luar modal
-const modalLayanan =
-  document.getElementById(
-    "modalLayanan"
-  );
+const modalLayanan = document.getElementById("modalLayanan");
 
-
-modalLayanan?.addEventListener(
-  "click",
-  function (event) {
-
-    if (
-      event.target === this
-    ) {
-      closeModalLayanan();
-    }
+modalLayanan?.addEventListener("click", function (event) {
+  if (event.target === this) {
+    closeModalLayanan();
   }
-);
-
+});
 
 // =========================================================
 // 13. SLIDE
@@ -1781,65 +1044,34 @@ modalLayanan?.addEventListener(
 // =========================================================
 
 function goToSlide(index) {
-
-  const container =
-    document.getElementById(
-      "slideContainer"
-    );
-
+  const container = document.getElementById("slideContainer");
 
   if (!container) {
     return;
   }
 
-
-  container.style.transform =
-    `translateX(-${index * 100}%)`;
+  container.style.transform = `translateX(-${index * 100}%)`;
 }
-
 
 // =========================================================
 // 14. SCROLL TO TOP
 // =========================================================
 
-const scrollTopBtn =
-  document.getElementById(
-    "scrollTopBtn"
-  );
-
+const scrollTopBtn = document.getElementById("scrollTopBtn");
 
 if (scrollTopBtn) {
-
-  window.addEventListener(
-    "scroll",
-    () => {
-
-      if (
-        window.scrollY > 300
-      ) {
-
-        scrollTopBtn.classList.add(
-          "show"
-        );
-
-      } else {
-
-        scrollTopBtn.classList.remove(
-          "show"
-        );
-      }
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      scrollTopBtn.classList.add("show");
+    } else {
+      scrollTopBtn.classList.remove("show");
     }
-  );
+  });
 
-
-  scrollTopBtn.addEventListener(
-    "click",
-    () => {
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-  );
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 }
