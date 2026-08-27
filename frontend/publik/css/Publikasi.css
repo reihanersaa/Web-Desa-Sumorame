@@ -245,8 +245,11 @@ body {
   background-color: #006633;
 }
 
+<<<<<<< HEAD
 /* Hindari garis/celah latar hero akibat pembulatan subpiksel saat slide
    digeser pada viewport ponsel. */
+=======
+>>>>>>> 01607de (feat/be1-reihan: tambah fitur guest)
 @media (max-width: 640px) {
   #heroSection .hero-image {
     inset: -1px;

@@ -178,6 +178,19 @@ if (
   // ================================================
 
   btnProduk.addEventListener("click", () => {
+    const session = window.AuthSession?.get();
+    if (!session) {
+      window.AuthSession?.requireLogin("/Produk.html?action=pasarkan");
+      return;
+    }
+
+    const nikInput = document.getElementById("NIK");
+    if (nikInput && session.nik) {
+      nikInput.value = session.nik;
+      nikInput.readOnly = true;
+      nikInput.title = "NIK berasal dari akun warga yang sedang login.";
+    }
+
     produkModal.classList.remove("hidden");
 
     produkModal.classList.add("flex");
@@ -225,6 +238,12 @@ if (
 
   formProduk.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    const session = window.AuthSession?.get();
+    if (!session) {
+      window.AuthSession?.requireLogin("/Produk.html?action=pasarkan");
+      return;
+    }
 
     const nik = document.getElementById("NIK").value.trim();
 
@@ -308,9 +327,16 @@ if (
 
       const response = await fetch(`${API_BASE_URL}/publik/produk`, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
         body: formData,
       });
       const result = await response.json().catch(() => ({}));
+      if (response.status === 401 || response.status === 403) {
+        window.AuthSession?.requireLogin("/Produk.html?action=pasarkan");
+        return;
+      }
       if (!response.ok)
         throw new Error(result.message || "Produk gagal diajukan.");
       formProduk.reset();
@@ -330,6 +356,14 @@ if (
       });
     }
   });
+
+  if (
+    new URLSearchParams(window.location.search).get("action") === "pasarkan" &&
+    window.AuthSession?.isAuthenticated()
+  ) {
+    btnProduk.click();
+    window.history.replaceState({}, "", "/Produk.html");
+  }
 }
 
 // ======================================================
