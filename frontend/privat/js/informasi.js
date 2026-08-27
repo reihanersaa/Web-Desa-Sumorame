@@ -92,6 +92,18 @@ function potongText(text, maxLength) {
   return hasil.substring(0, maxLength) + "...";
 }
 
+function formatTanggalIndonesia(tanggal) {
+  if (!tanggal) return "-";
+  const tanggalBersih = String(tanggal).split("T")[0];
+  const date = new Date(`${tanggalBersih}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "-";
+  return date.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 // ==================================================
 // 6. FILTER DATA
 // ==================================================
@@ -102,11 +114,13 @@ function getFilteredData() {
     const judul = String(item.judul || "").toLowerCase();
     const isi = String(item.isi || "").toLowerCase();
     const penjelasan = String(item.penjelasan || "").toLowerCase();
+    const tanggal = String(item.tanggal || "").toLowerCase();
 
     return (
       judul.includes(keyword) ||
       isi.includes(keyword) ||
-      penjelasan.includes(keyword)
+      penjelasan.includes(keyword) ||
+      tanggal.includes(keyword)
     );
   });
 }
@@ -309,9 +323,22 @@ const modalTambahBox = document.getElementById("modalTambahBox");
 const judulTambah = document.getElementById("judulTambah");
 const isiTambah = document.getElementById("isiTambah");
 const penjelasanTambah = document.getElementById("penjelasanTambah");
+const tanggalTambah = document.getElementById("tanggalTambah");
 const gambarTambah = document.getElementById("gambarTambah");
 
+const tanggalTambahPicker = flatpickr(tanggalTambah, {
+  dateFormat: "Y-m-d",
+  altInput: true,
+  altFormat: "d F Y",
+  allowInput: true,
+});
+
 document.getElementById("btnTambah").onclick = () => {
+  judulTambah.value = "";
+  isiTambah.value = "";
+  penjelasanTambah.value = "";
+  gambarTambah.value = "";
+  tanggalTambahPicker.clear();
   openModal(modalTambah, modalTambahBox);
 };
 
@@ -332,6 +359,7 @@ const modalBox = document.getElementById("modalBox");
 const viewJudul = document.getElementById("viewJudul");
 const viewIsi = document.getElementById("viewIsi");
 const viewPenjelasan = document.getElementById("viewPenjelasan");
+const viewTanggal = document.getElementById("viewTanggal");
 const viewGambar = document.getElementById("viewGambar");
 
 document.getElementById("closeModal").onclick = () => {
@@ -351,10 +379,18 @@ const modalEditBox = document.getElementById("modalEditBox");
 const judulEdit = document.getElementById("judulEdit");
 const isiEdit = document.getElementById("isiEdit");
 const penjelasanEdit = document.getElementById("penjelasanEdit");
+const tanggalEdit = document.getElementById("tanggalEdit");
 const gambarEdit = document.getElementById("gambarEdit");
 const previewGambarEdit = document.getElementById("previewGambarEdit");
 
 let idInformasiEdit = null;
+
+const tanggalEditPicker = flatpickr(tanggalEdit, {
+  dateFormat: "Y-m-d",
+  altInput: true,
+  altFormat: "d F Y",
+  allowInput: true,
+});
 
 document.getElementById("closeEdit").onclick = () => {
   closeModalFunc(modalEdit, modalEditBox);
@@ -441,6 +477,7 @@ function pasangEventAction() {
       viewIsi.textContent = item.isi || "-";
 
       viewPenjelasan.textContent = item.penjelasan || "-";
+      viewTanggal.textContent = formatTanggalIndonesia(item.tanggal);
 
       if (item.gambar_url) {
         viewGambar.src = item.gambar_url;
@@ -484,6 +521,12 @@ function pasangEventAction() {
       isiEdit.value = item.isi || "";
 
       penjelasanEdit.value = item.penjelasan || "";
+
+      if (item.tanggal) {
+        tanggalEditPicker.setDate(String(item.tanggal).split("T")[0], true);
+      } else {
+        tanggalEditPicker.clear();
+      }
 
       gambarEdit.value = "";
 
@@ -634,6 +677,8 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
 
   const penjelasan = penjelasanTambah.value.trim();
 
+  const tanggal = tanggalTambah.value.trim();
+
   const gambar = gambarTambah.files[0];
 
   const kosong = [];
@@ -648,6 +693,10 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
 
   if (!penjelasan) {
     kosong.push("Penjelasan Berita");
+  }
+
+  if (!tanggal) {
+    kosong.push("Tanggal Kegiatan");
   }
 
   if (!gambar) {
@@ -713,10 +762,11 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
     title: "Konfirmasi Data",
     html: `
         <div style="text-align:left;">
-          <p><b>Judul:</b> ${judul}</p>
-          <p><b>Isi:</b> ${isi}</p>
-          <p><b>Penjelasan:</b> ${penjelasan}</p>
-          <p><b>Gambar:</b> ${gambar.name}</p>
+          <p><b>Judul:</b> ${escapeHTML(judul)}</p>
+          <p><b>Tanggal:</b> ${escapeHTML(formatTanggalIndonesia(tanggal))}</p>
+          <p><b>Isi:</b> ${escapeHTML(isi)}</p>
+          <p><b>Penjelasan:</b> ${escapeHTML(penjelasan)}</p>
+          <p><b>Gambar:</b> ${escapeHTML(gambar.name)}</p>
         </div>
       `,
     icon: "question",
@@ -751,6 +801,8 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
 
     formData.append("penjelasan", penjelasan);
 
+    formData.append("tanggal", tanggal);
+
     formData.append("gambar", gambar);
 
     const response = await fetch(API_URL, {
@@ -781,6 +833,7 @@ document.getElementById("btnSimpanTambah").onclick = async () => {
     isiTambah.value = "";
     penjelasanTambah.value = "";
     gambarTambah.value = "";
+    tanggalTambahPicker.clear();
 
     closeModalFunc(modalTambah, modalTambahBox);
 
@@ -806,6 +859,8 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
 
   const penjelasan = penjelasanEdit.value.trim();
 
+  const tanggal = tanggalEdit.value.trim();
+
   const gambar = gambarEdit.files[0];
 
   if (!idInformasiEdit) {
@@ -818,11 +873,11 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
     return;
   }
 
-  if (!judul || !isi || !penjelasan) {
+  if (!judul || !isi || !penjelasan || !tanggal) {
     Swal.fire({
       icon: "warning",
       title: "Form Belum Lengkap",
-      text: "Judul, isi berita, dan penjelasan berita wajib diisi.",
+      text: "Judul, tanggal, isi berita, dan penjelasan berita wajib diisi.",
     });
 
     return;
@@ -870,13 +925,14 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
     title: "Konfirmasi Perubahan",
     html: `
         <div style="text-align:left;">
-          <p><b>Judul:</b> ${judul}</p>
-          <p><b>Isi:</b> ${isi}</p>
-          <p><b>Penjelasan:</b> ${penjelasan}</p>
+          <p><b>Judul:</b> ${escapeHTML(judul)}</p>
+          <p><b>Tanggal:</b> ${escapeHTML(formatTanggalIndonesia(tanggal))}</p>
+          <p><b>Isi:</b> ${escapeHTML(isi)}</p>
+          <p><b>Penjelasan:</b> ${escapeHTML(penjelasan)}</p>
 
           <p>
             <b>Gambar:</b>
-            ${gambar ? gambar.name : "Tetap menggunakan gambar lama"}
+            ${escapeHTML(gambar ? gambar.name : "Tetap menggunakan gambar lama")}
           </p>
         </div>
       `,
@@ -912,6 +968,8 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
 
     formData.append("penjelasan", penjelasan);
 
+    formData.append("tanggal", tanggal);
+
     if (gambar) {
       formData.append("gambar", gambar);
     }
@@ -943,6 +1001,7 @@ document.getElementById("btnSimpanEdit").onclick = async () => {
     closeModalFunc(modalEdit, modalEditBox);
 
     idInformasiEdit = null;
+    tanggalEditPicker.clear();
 
     await loadInformasi();
   } catch (error) {

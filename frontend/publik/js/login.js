@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = redirectAfterLogin;
           } else if (redirectAduan) {
             localStorage.removeItem("redirectAduan");
-            window.location.href = "Aduan.html";
+            window.location.href = "/Aduan.html";
           } else {
             Swal.fire({
               title: "Login Berhasil 🎉",
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then(() => {
               window.location.href = result.data?.role === "admin"
                 ? "/admin/DashboardAdmin.html"
-                : "index.html";
+                : "/index.html";
             });
           }
         } else {
