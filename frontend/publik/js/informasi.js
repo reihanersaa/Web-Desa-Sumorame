@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+
   // ===============================
   // AMBIL & RENDER DATA INFORMASI DARI BACKEND
   // ===============================
@@ -11,16 +12,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const artikelText = document.getElementById("artikelText");
   const contentTerkini = document.getElementById("contentTerkini");
 
+
+  // ===============================
+  // ELEMENT MODAL GAMBAR
+  // ===============================
+  const modalGambar = document.getElementById("modalGambar");
+  const modalGambarPreview =
+    document.getElementById("modalGambarPreview");
+
+  const closeModalGambar =
+    document.getElementById("closeModalGambar");
+
+
+  // ===============================
+  // ESCAPE HTML
+  // ===============================
   const escapeHTML = (value = "") => {
     const div = document.createElement("div");
     div.textContent = value;
     return div.innerHTML;
   };
 
+
+  // ===============================
+  // FORMAT TANGGAL
+  // ===============================
   const formatTanggal = (tanggal) => {
     if (!tanggal) return "-";
 
-    const tanggalBersih = String(tanggal).split("T")[0];
+    const tanggalBersih =
+      String(tanggal).split("T")[0];
 
     const date =
       new Date(`${tanggalBersih}T00:00:00`);
@@ -37,31 +58,170 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
+  // ==================================================
+  // MODAL PREVIEW GAMBAR
+  // ==================================================
+  function bukaModalGambar(
+    src,
+    alt = "Preview gambar"
+  ) {
+
+    if (
+      !modalGambar ||
+      !modalGambarPreview ||
+      !src
+    ) {
+      return;
+    }
+
+    modalGambarPreview.src = src;
+    modalGambarPreview.alt = alt;
+
+    modalGambar.classList.remove("hidden");
+    modalGambar.classList.add("flex");
+
+    document.body.style.overflow = "hidden";
+  }
+
+
+  function tutupModalGambar() {
+
+    if (
+      !modalGambar ||
+      !modalGambarPreview
+    ) {
+      return;
+    }
+
+    modalGambar.classList.add("hidden");
+    modalGambar.classList.remove("flex");
+
+    modalGambarPreview.src = "";
+
+    document.body.style.overflow = "";
+  }
+
+
+  // ===============================
+  // KLIK GAMBAR HERO
+  // ===============================
+  if (heroGambar) {
+
+    heroGambar.style.cursor = "pointer";
+
+    heroGambar.addEventListener(
+      "click",
+      () => {
+
+        if (!heroGambar.src) return;
+
+        bukaModalGambar(
+          heroGambar.src,
+          heroGambar.alt ||
+          "Gambar informasi"
+        );
+
+      }
+    );
+  }
+
+
+  // ===============================
+  // TOMBOL CLOSE MODAL GAMBAR
+  // ===============================
+  if (closeModalGambar) {
+
+    closeModalGambar.addEventListener(
+      "click",
+      tutupModalGambar
+    );
+
+  }
+
+
+  // ===============================
+  // KLIK AREA GELAP MODAL
+  // ===============================
+  if (modalGambar) {
+
+    modalGambar.addEventListener(
+      "click",
+      (e) => {
+
+        if (e.target === modalGambar) {
+          tutupModalGambar();
+        }
+
+      }
+    );
+
+  }
+
+
+  // ===============================
+  // ESC UNTUK TUTUP MODAL
+  // ===============================
+  document.addEventListener(
+    "keydown",
+    (e) => {
+
+      if (e.key === "Escape") {
+        tutupModalGambar();
+      }
+
+    }
+  );
+
+
   // ===============================
   // TAMPILKAN ARTIKEL UTAMA
   // ===============================
   function tampilkanArtikel(item) {
+
     if (!item) return;
 
+
+    // ===============================
+    // GAMBAR ARTIKEL
+    // ===============================
     if (heroGambar) {
+
       heroGambar.src =
         item.gambar_url || "";
 
       heroGambar.alt =
         item.judul || "Gambar informasi";
+
     }
 
+
+    // ===============================
+    // ISI
+    // ===============================
     if (heroIsi) {
+
       heroIsi.innerText =
         item.isi || "-";
+
     }
 
+
+    // ===============================
+    // TANGGAL
+    // ===============================
     if (heroTanggal) {
+
       heroTanggal.innerText =
         formatTanggal(item.tanggal);
+
     }
 
+
+    // ===============================
+    // PENJELASAN
+    // ===============================
     if (!artikelText) return;
+
 
     const paragraf =
       String(item.penjelasan || "")
@@ -85,19 +245,29 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         .join("");
 
+
     artikelText.innerHTML =
       paragraf ||
-      `<p class="text-gray-500">Tidak ada penjelasan.</p>`;
+      `
+        <p class="text-gray-500">
+          Tidak ada penjelasan.
+        </p>
+      `;
+
 
     document
       .querySelectorAll(".artikel-item")
       .forEach((el, i) => {
+
         setTimeout(() => {
+
           el.classList.remove(
             "opacity-0",
             "translate-y-6"
           );
+
         }, i * 150);
+
       });
   }
 
@@ -106,9 +276,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // RENDER ARSIP INFORMASI
   // ===============================
   function renderArsip(items) {
+
     if (!contentTerkini) return;
 
+
+    // ===============================
+    // JIKA DATA KOSONG
+    // ===============================
     if (!items.length) {
+
       contentTerkini.innerHTML = `
         <p class="text-sm text-gray-400">
           Belum ada informasi.
@@ -118,6 +294,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
+    // ===============================
+    // RENDER CARD ARSIP
+    // ===============================
     contentTerkini.innerHTML =
       items
         .map(
@@ -146,20 +326,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 src="${item.gambar_url || ""}"
                 alt="${escapeHTML(item.judul || "")}"
                 class="
+                  gambar-arsip
                   w-16
                   h-16
                   object-cover
                   rounded
+                  cursor-pointer
+                  hover:opacity-80
+                  transition
                 "
               >
 
               <div>
 
-                <h4 class="text-sm font-semibold">
+                <h4
+                  class="
+                    text-sm
+                    font-semibold
+                  "
+                >
                   ${escapeHTML(item.judul || "-")}
                 </h4>
 
-                <p class="text-xs text-gray-500">
+                <p
+                  class="
+                    text-xs
+                    text-gray-500
+                  "
+                >
                   ${formatTanggal(item.tanggal)}
                 </p>
 
@@ -171,33 +365,77 @@ document.addEventListener("DOMContentLoaded", () => {
         .join("");
 
 
-    // Klik arsip
+    // ==================================================
+    // KLIK GAMBAR ARSIP
+    // ==================================================
+    contentTerkini
+      .querySelectorAll(".gambar-arsip")
+      .forEach((img) => {
+
+        img.addEventListener(
+          "click",
+          (e) => {
+
+            // Mencegah card arsip ikut diklik
+            e.stopPropagation();
+
+            if (!img.src) return;
+
+            bukaModalGambar(
+              img.src,
+              img.alt ||
+              "Gambar informasi"
+            );
+
+          }
+        );
+
+      });
+
+
+    // ===============================
+    // KLIK CARD ARSIP
+    // ===============================
     contentTerkini
       .querySelectorAll(".terkini-item")
       .forEach((el) => {
 
-        el.addEventListener("click", () => {
-          const item =
-            items.find(
-              (i) =>
-                String(i.id) ===
-                String(el.dataset.id)
-            );
+        el.addEventListener(
+          "click",
+          () => {
 
-          if (!item) return;
+            const item =
+              items.find(
+                (i) =>
+                  String(i.id) ===
+                  String(el.dataset.id)
+              );
 
-          tampilkanArtikel(item);
+            if (!item) return;
 
-          const cardKiri =
-            document.querySelector(".card-kiri");
 
-          if (cardKiri) {
-            cardKiri.scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
+            // Tampilkan artikel
+            tampilkanArtikel(item);
+
+
+            // Scroll ke artikel utama
+            const cardKiri =
+              document.querySelector(
+                ".card-kiri"
+              );
+
+            if (cardKiri) {
+
+              cardKiri.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+
+            }
+
           }
-        });
+        );
+
       });
   }
 
@@ -206,16 +444,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // LOAD INFORMASI
   // ===============================
   async function loadInformasi() {
+
     try {
+
       const response =
         await fetch(
           `${API_BASE_URL}/informasi`
         );
 
+
       const contentType =
         response.headers.get(
           "content-type"
         );
+
 
       if (
         !contentType ||
@@ -223,86 +465,134 @@ document.addEventListener("DOMContentLoaded", () => {
           "application/json"
         )
       ) {
+
         throw new Error(
           "Response backend bukan JSON."
         );
+
       }
+
 
       const result =
         await response.json();
+
 
       if (
         !response.ok ||
         !result.success
       ) {
+
         throw new Error(
           result.message ||
           "Gagal memuat data informasi."
         );
+
       }
+
 
       const items =
         result.data || [];
 
+
+      // ===============================
+      // JIKA DATA KOSONG
+      // ===============================
       if (!items.length) {
+
         if (heroIsi) {
+
           heroIsi.innerText =
             "Belum ada informasi yang dipublikasikan.";
+
         }
+
 
         if (heroTanggal) {
-          heroTanggal.innerText = "-";
+
+          heroTanggal.innerText =
+            "-";
+
         }
+
 
         if (heroGambar) {
-          heroGambar.src = "";
+
+          heroGambar.src =
+            "";
+
         }
 
+
         if (artikelText) {
-          artikelText.innerHTML = "";
+
+          artikelText.innerHTML =
+            "";
+
         }
+
 
         renderArsip([]);
 
         return;
       }
 
-      // Item pertama = terbaru
+
+      // ===============================
+      // ITEM PERTAMA = TERBARU
+      // ===============================
       tampilkanArtikel(
         items[0]
       );
 
+
+      // ===============================
+      // RENDER ARSIP
+      // ===============================
       renderArsip(
         items
       );
 
     } catch (error) {
+
       console.error(
         "Gagal memuat informasi:",
         error
       );
 
+
       if (heroIsi) {
+
         heroIsi.innerText =
           "Gagal memuat data informasi.";
+
       }
+
 
       if (heroTanggal) {
-        heroTanggal.innerText = "-";
+
+        heroTanggal.innerText =
+          "-";
+
       }
 
+
       if (contentTerkini) {
+
         contentTerkini.innerHTML = `
           <p class="text-sm text-red-500">
             ${escapeHTML(error.message)}
           </p>
         `;
+
       }
+
     }
   }
 
 
-  // Jalankan load data
+  // ===============================
+  // JALANKAN LOAD DATA
+  // ===============================
   loadInformasi();
 
 
@@ -317,17 +607,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let isOpen = false;
 
+
   if (
     menuBtn &&
     mobileMenu
   ) {
+
     menuBtn.addEventListener(
       "click",
       () => {
+
         isOpen =
           !isOpen;
 
+
         if (isOpen) {
+
           mobileMenu.classList.remove(
             "max-h-0",
             "opacity-0"
@@ -342,6 +637,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "close";
 
         } else {
+
           mobileMenu.classList.remove(
             "max-h-[600px]",
             "opacity-100"
@@ -354,7 +650,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           menuBtn.textContent =
             "menu";
+
         }
+
       }
     );
 
@@ -362,11 +660,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener(
       "click",
       (e) => {
+
         if (
           isOpen &&
           !mobileMenu.contains(e.target) &&
           !menuBtn.contains(e.target)
         ) {
+
           mobileMenu.classList.remove(
             "max-h-[600px]",
             "opacity-100"
@@ -382,7 +682,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           isOpen =
             false;
+
         }
+
       }
     );
   }
@@ -396,15 +698,20 @@ document.addEventListener("DOMContentLoaded", () => {
       ".nav-item"
     );
 
+
   navItems.forEach(
     (item, i) => {
+
       setTimeout(() => {
+
         item.style.opacity =
           "1";
 
         item.style.transform =
           "translateY(0)";
+
       }, i * 100);
+
     }
   );
 
@@ -422,7 +729,9 @@ document.addEventListener("DOMContentLoaded", () => {
       ".card-kanan"
     );
 
+
   function animasiCard() {
+
     if (
       !cardKiri ||
       !cardKanan
@@ -430,14 +739,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     const trigger =
       window.innerHeight * 0.85;
+
 
     if (
       cardKiri
         .getBoundingClientRect()
         .top < trigger
     ) {
+
       cardKiri.classList.remove(
         "opacity-0",
         "-translate-x-40"
@@ -447,13 +759,17 @@ document.addEventListener("DOMContentLoaded", () => {
         "opacity-0",
         "translate-x-40"
       );
+
     }
+
   }
+
 
   window.addEventListener(
     "scroll",
     animasiCard
   );
+
 
   animasiCard();
 
@@ -466,13 +782,18 @@ document.addEventListener("DOMContentLoaded", () => {
       "contentTerkini"
     );
 
+
   if (content) {
+
     setTimeout(() => {
+
       content.classList.remove(
         "opacity-0",
         "translate-x-20"
       );
+
     }, 200);
+
   }
 
 
@@ -494,21 +815,29 @@ document.addEventListener("DOMContentLoaded", () => {
       "contentKategori"
     );
 
+
   if (
     btnTerkini &&
     btnKategori &&
     contentKategori &&
     contentTerkini
   ) {
+
+    // ===============================
+    // TAB TERKINI
+    // ===============================
     btnTerkini.addEventListener(
       "click",
       () => {
+
         contentKategori.classList.add(
           "opacity-0",
           "translate-x-10"
         );
 
+
         setTimeout(() => {
+
           contentKategori.classList.add(
             "hidden"
           );
@@ -517,7 +846,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "hidden"
           );
 
+
           setTimeout(() => {
+
             contentTerkini.classList.remove(
               "opacity-0",
               "-translate-x-10"
@@ -527,36 +858,47 @@ document.addEventListener("DOMContentLoaded", () => {
               "opacity-100",
               "translate-x-0"
             );
+
           }, 50);
 
         }, 300);
+
 
         btnTerkini.classList.add(
           "bg-yellow-400",
           "text-white"
         );
 
+
         btnKategori.classList.remove(
           "bg-yellow-400",
           "text-white"
         );
 
+
         btnKategori.classList.add(
           "text-green-700"
         );
+
       }
     );
 
 
+    // ===============================
+    // TAB KATEGORI
+    // ===============================
     btnKategori.addEventListener(
       "click",
       () => {
+
         contentTerkini.classList.add(
           "opacity-0",
           "-translate-x-10"
         );
 
+
         setTimeout(() => {
+
           contentTerkini.classList.add(
             "hidden"
           );
@@ -565,7 +907,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "hidden"
           );
 
+
           setTimeout(() => {
+
             contentKategori.classList.remove(
               "opacity-0",
               "translate-x-10"
@@ -575,23 +919,28 @@ document.addEventListener("DOMContentLoaded", () => {
               "opacity-100",
               "translate-x-0"
             );
+
           }, 50);
 
         }, 300);
+
 
         btnKategori.classList.add(
           "bg-yellow-400",
           "text-white"
         );
 
+
         btnTerkini.classList.remove(
           "bg-yellow-400",
           "text-white"
         );
 
+
         btnTerkini.classList.add(
           "text-green-700"
         );
+
       }
     );
   }
@@ -605,23 +954,29 @@ document.addEventListener("DOMContentLoaded", () => {
       "footer"
     );
 
+
   const footerItems =
     document.querySelectorAll(
       ".footer-item"
     );
+
 
   const kontakItems =
     document.querySelectorAll(
       ".kontak-item"
     );
 
+
   function animasiFooter() {
+
     if (!footer) {
       return;
     }
 
+
     const trigger =
       window.innerHeight;
+
 
     if (
       footer
@@ -629,25 +984,34 @@ document.addEventListener("DOMContentLoaded", () => {
         .top <
       trigger - 100
     ) {
+
       footer.classList.remove(
         "opacity-0",
         "translate-y-10"
       );
 
+
       footerItems.forEach(
         (item, i) => {
+
           setTimeout(() => {
+
             item.classList.remove(
               "opacity-0",
               "translate-y-6"
             );
+
           }, i * 200);
+
         }
       );
 
+
       kontakItems.forEach(
         (item, i) => {
+
           setTimeout(() => {
+
             item.classList.remove(
               "opacity-0",
               "-translate-y-6",
@@ -655,16 +1019,20 @@ document.addEventListener("DOMContentLoaded", () => {
               "translate-x-10",
               "translate-y-10"
             );
+
           }, i * 200);
+
         }
       );
     }
   }
 
+
   window.addEventListener(
     "scroll",
     animasiFooter
   );
+
 
   animasiFooter();
 
@@ -673,31 +1041,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // SUARA NAVBAR
   // ===============================
   navItems.forEach((item) => {
+
     item.addEventListener(
       "mouseenter",
       () => {
+
         const text =
           item.textContent.trim();
 
+
         if (!text) return;
+
 
         const speech =
           new SpeechSynthesisUtterance(
             text
           );
 
+
         speech.lang =
           "id-ID";
+
 
         window
           .speechSynthesis
           .cancel();
 
+
         window
           .speechSynthesis
           .speak(speech);
+
       }
     );
+
   });
 
 
@@ -709,12 +1086,15 @@ document.addEventListener("DOMContentLoaded", () => {
       "mainHeader"
     );
 
+
   const heroSection =
     document.getElementById(
       "heroSection"
     );
 
+
   function handleHeaderScroll() {
+
     if (
       !mainHeader ||
       !heroSection
@@ -722,9 +1102,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     if (
       window.scrollY <= 0
     ) {
+
       mainHeader.classList.add(
         "header-hidden"
       );
@@ -734,6 +1116,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     } else {
+
       mainHeader.classList.remove(
         "header-hidden"
       );
@@ -741,13 +1124,17 @@ document.addEventListener("DOMContentLoaded", () => {
       heroSection.classList.remove(
         "hero-top"
       );
+
     }
+
   }
+
 
   window.addEventListener(
     "scroll",
     handleHeaderScroll
   );
+
 
   handleHeaderScroll();
 
@@ -760,33 +1147,45 @@ document.addEventListener("DOMContentLoaded", () => {
       "scrollTopBtn"
     );
 
+
   if (scrollTopBtn) {
+
     window.addEventListener(
       "scroll",
       () => {
+
         if (
           window.scrollY > 300
         ) {
+
           scrollTopBtn.classList.add(
             "show"
           );
+
         } else {
+
           scrollTopBtn.classList.remove(
             "show"
           );
+
         }
+
       }
     );
+
 
     scrollTopBtn.addEventListener(
       "click",
       () => {
+
         window.scrollTo({
           top: 0,
           behavior: "smooth"
         });
+
       }
     );
+
   }
 
 
@@ -798,34 +1197,45 @@ document.addEventListener("DOMContentLoaded", () => {
       ".pub-card"
     );
 
+
   const observer =
     new IntersectionObserver(
       (entries) => {
+
         entries.forEach(
           (entry) => {
+
             if (
               entry.isIntersecting
             ) {
+
               entry.target
                 .classList
                 .add("show");
+
             }
+
           }
         );
+
       },
       {
         threshold: 0.2
       }
     );
 
+
   cards.forEach(
     (card, i) => {
+
       observer.observe(
         card
       );
 
+
       card.style.transitionDelay =
         `${i * 0.15}s`;
+
     }
   );
 
@@ -838,51 +1248,68 @@ document.addEventListener("DOMContentLoaded", () => {
       "judulBerita"
     );
 
+
   if (judul) {
+
     const teks =
       judul.textContent.trim();
+
 
     judul.innerHTML =
       "";
 
+
     teks
       .split("")
       .forEach((huruf) => {
+
         const span =
           document.createElement(
             "span"
           );
 
+
         span.className =
           "letter";
+
 
         span.innerHTML =
           huruf === " "
             ? "&nbsp;"
             : escapeHTML(huruf);
 
+
         judul.appendChild(
           span
         );
+
       });
+
 
     const letters =
       document.querySelectorAll(
         "#judulBerita .letter"
       );
 
+
     function animasiHuruf() {
+
       letters.forEach(
         (letter, index) => {
+
           setTimeout(() => {
+
             letter.style.animation =
               "flipLetter 0.7s ease";
+
 
             letter.addEventListener(
               "animationend",
               () => {
+
                 letter.style.animation =
                   "";
+
               },
               {
                 once: true
@@ -890,19 +1317,25 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
           }, index * 120);
+
         }
       );
+
     }
+
 
     animasiHuruf();
 
+
     const totalDurasi =
       letters.length * 120 + 3000;
+
 
     setInterval(
       animasiHuruf,
       totalDurasi
     );
+
   }
 
 
@@ -914,14 +1347,20 @@ document.addEventListener("DOMContentLoaded", () => {
       ".hero-item"
     );
 
+
   heroItems.forEach(
     (item, i) => {
+
       setTimeout(() => {
+
         item.classList.remove(
           "opacity-0",
           "-translate-x-16"
         );
+
       }, i * 200);
+
     }
   );
+
 });
