@@ -2,11 +2,6 @@
   "use strict";
 
   const AUTH_KEYS = ["token", "login", "user_nama", "user_nik", "user_role"];
-<<<<<<< HEAD
-  const PROTECTED_PAGES = new Set(["/Aduan.html", "/AdminP.html"]);
-
-=======
->>>>>>> develop
   function decodeJwtPayload(token) {
     try {
       const payload = token.split(".")[1];
@@ -42,14 +37,14 @@
 
   function safeReturnPath(path) {
     if (typeof path !== "string" || !path.startsWith("/") || path.startsWith("//")) {
-      return "/index.html";
+      return "/";
     }
     return path;
   }
 
   function requireLogin(returnPath) {
     localStorage.setItem("redirectAfterLogin", safeReturnPath(returnPath));
-    window.location.replace("/login.html");
+    window.location.replace("/login");
   }
 
   function logout() {
@@ -57,13 +52,9 @@
     localStorage.removeItem("redirectAfterLogin");
     localStorage.removeItem("redirectAduan");
     localStorage.removeItem("jenisDipilih");
-    window.location.href = "/index.html";
+    window.location.href = "/";
   }
 
-<<<<<<< HEAD
-  function renderAuthNavigation() {
-    const session = getSession();
-=======
   function injectAccountMenuStyles() {
     if (document.getElementById("auth-menu-styles")) return;
 
@@ -130,7 +121,7 @@
     actions.className = "auth-account-actions";
     const home = document.createElement("a");
     home.className = "auth-account-action";
-    home.href = "/index.html";
+    home.href = "/";
     home.setAttribute("role", "menuitem");
     home.innerHTML = '<span class="material-symbols-outlined">home</span><span>Beranda</span>';
 
@@ -181,8 +172,7 @@
   function renderAuthNavigation() {
     const session = getSession();
     injectAccountMenuStyles();
->>>>>>> develop
-    const authLinks = document.querySelectorAll('a[href="/login.html"], [data-auth-navigation]');
+    const authLinks = document.querySelectorAll('a[href="/login"], [data-auth-navigation]');
 
     authLinks.forEach((link) => {
       const icon = link.querySelector(".material-symbols-outlined");
@@ -193,16 +183,6 @@
 
       if (session) {
         link.href = "#";
-<<<<<<< HEAD
-        link.title = `Masuk sebagai ${session.nama}. Klik untuk keluar.`;
-        link.setAttribute("aria-label", `Akun ${session.nama}. Klik untuk keluar`);
-        if (icon) icon.textContent = "account_circle";
-        if (!isIconOnly) link.textContent = `Keluar (${session.nama})`;
-        link.addEventListener("click", (event) => {
-          event.preventDefault();
-          logout();
-        });
-=======
         link.title = isIconOnly
           ? `Akun ${session.nama}. Buka menu akun.`
           : `Masuk sebagai ${session.nama}. Klik untuk keluar.`;
@@ -222,9 +202,8 @@
             logout();
           });
         }
->>>>>>> develop
       } else {
-        link.href = "/login.html";
+        link.href = "/login";
         link.title = "Masuk sebagai warga";
         link.setAttribute("aria-label", "Masuk sebagai warga");
         if (icon) icon.textContent = "login";
@@ -233,15 +212,6 @@
     });
   }
 
-<<<<<<< HEAD
-  const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
-  if (PROTECTED_PAGES.has(currentPath) && !getSession()) {
-    requireLogin(`${window.location.pathname}${window.location.search}${window.location.hash}`);
-    return;
-  }
-
-=======
->>>>>>> develop
   window.AuthSession = Object.freeze({
     get: getSession,
     isAuthenticated: () => Boolean(getSession()),

@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const load = async () => {
-    if (!token) return window.location.href = "/admin/LoginAdmin.html";
+    if (!token) return window.location.href = "/admin/LoginAdmin";
     try { dataWarga = (await request()).data || []; render(); }
     catch (error) { tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-red-600">${escapeHTML(error.message)}</td></tr>`; }
   };

@@ -4,12 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Publikasi | Website Desa Sumorame</title>
-<<<<<<< HEAD
-    <!-- Ini script guest/auth kamu yang aku balikin -->
-    <script src="/js/auth-ui.js?v=20260827-1"></script>
-=======
     <script src="/js/auth-ui.js?v=20260828-1"></script>
->>>>>>> develop
     <link rel="icon" href="img/logo3.png?v=20260824-1" type="image/png" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
@@ -23,11 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="css/hero-responsive.css?v=20260825-1" />
-<<<<<<< HEAD
-    <link rel="stylesheet" href="css/Publikasi.css?v=20260827-3" />
-=======
     <link rel="stylesheet" href="css/Publikasi.css?v=20260828-1" />
->>>>>>> develop
 
     <!-- Tailwind Config -->
     <script>
@@ -54,7 +45,7 @@
         },
       };
     </script>
-    <link rel="stylesheet" href="css/layout-responsive.css?v=20260825-1" />
+    <link rel="stylesheet" href="css/layout-responsive.css?v=20260828-2" />
   </head>
 
   <body class="bg-surface font-body text-on-surface overflow-x-hidden">
@@ -83,32 +74,32 @@
 
         <!-- NAVBAR -->
         <nav class="hidden md:flex items-center font-medium text-green-900">
-          <a href="/index.html" class="nav-item relative px-5 font-bold"
+          <a href="/" class="nav-item relative px-5 font-bold"
             >Profile Desa</a
           >
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a href="/PPID.html" class="nav-item relative px-5 font-bold">PPID</a>
+          <a href="/PPID" class="nav-item relative px-5 font-bold">PPID</a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a href="/Lembaga.html" class="nav-item relative px-5 font-bold"
+          <a href="/Lembaga" class="nav-item relative px-5 font-bold"
             >Lembaga</a
           >
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a href="/Informasi.html" class="nav-item relative px-5 font-bold"
+          <a href="/Informasi" class="nav-item relative px-5 font-bold"
             >Informasi</a
           >
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
           <a
-            href="/AdminP.html"
+            href="/AdminP"
             class="nav-item relative px-5 font-bold text-green-800"
             >Administrasi Persuratan</a
           >
           <div class="h-5 w-[1px] bg-gray-400"></div>
 
-          <a href="/Aduan.html" class="nav-item relative px-5 font-bold"
+          <a href="/Aduan" class="nav-item relative px-5 font-bold"
             >Aduan</a
           >
           <div class="h-5 w-[1px] bg-gray-400"></div>
@@ -118,7 +109,7 @@
 
         <!-- Logout -->
         <a
-          href="/login.html"
+          href="/login"
           class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition"
         >
           <span class="material-symbols-outlined">logout</span>
@@ -143,32 +134,32 @@
       class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300"
     >
       <a
-        href="/index.html"
+        href="/"
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
         >Profile Desa</a
       >
       <a
-        href="/PPID.html"
+        href="/PPID"
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
         >PPID</a
       >
       <a
-        href="/Lembaga.html"
+        href="/Lembaga"
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
         >Lembaga</a
       >
       <a
-        href="/Informasi.html"
+        href="/Informasi"
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
         >Informasi</a
       >
       <a
-        href="/AdminP.html"
+        href="/AdminP"
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
         >Administrasi Persuratan</a
       >
       <a
-        href="/Aduan.html"
+        href="/Aduan"
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
         >Aduan</a
       >
@@ -178,17 +169,15 @@
         >Publikasi</a
       >
       <a
-        href="/login.html"
+        href="/login"
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
         >Log Out</a
       >
     </div>
 
     <!-- HERO -->
-    <section
-      id="heroSection"
-      class="public-hero group relative overflow-hidden bg-primary"
-    >
+    <section id="heroSection" class="public-hero group relative overflow-hidden bg-primary">
+
       <!-- SLIDER DINAMIS -->
       <div
         id="slider"
@@ -201,7 +190,13 @@
       <button
         id="prev"
         aria-label="Slide sebelumnya"
-        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300"
+        class="absolute left-4 top-1/2 -translate-y-1/2
+              bg-white/50 hover:bg-white/80
+              px-3 py-2 rounded z-20
+              opacity-0 pointer-events-none
+              group-hover:opacity-100 group-hover:pointer-events-auto
+              focus-visible:opacity-100 focus-visible:pointer-events-auto
+              transition-opacity duration-300"
       >
         ❮
       </button>
@@ -210,13 +205,20 @@
       <button
         id="next"
         aria-label="Slide berikutnya"
-        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300"
+        class="absolute right-4 top-1/2 -translate-y-1/2
+              bg-white/50 hover:bg-white/80
+              px-3 py-2 rounded z-20
+              opacity-0 pointer-events-none
+              group-hover:opacity-100 group-hover:pointer-events-auto
+              focus-visible:opacity-100 focus-visible:pointer-events-auto
+              transition-opacity duration-300"
       >
         ❯
       </button>
+
     </section>
 
-    <!-- CONTENT -->
+    <!-- CONTENT (KOSONG) -->
     <main class="pt-28 max-w-7xl mx-auto px-6">
       <!-- TITLE -->
       <div class="text-center mb-12">
@@ -230,14 +232,25 @@
         </p>
       </div>
 
-      <!-- GRID CARD PUBLIKASI -->
+      <!-- GRID CARD PUBLIKASI (diisi otomatis lewat js/Publikasi.js) -->
       <div
         id="publikasiGrid"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center"
+        aria-live="polite"
       >
         <p class="col-span-full text-center text-gray-400 py-10">
           Memuat publikasi...
         </p>
+      </div>
+
+      <div class="mt-10 flex justify-center">
+        <button
+          id="loadMorePublikasi"
+          type="button"
+          class="hidden min-h-11 rounded-xl bg-emerald-800 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-emerald-900 disabled:cursor-wait disabled:opacity-60"
+        >
+          Muat lebih banyak
+        </button>
       </div>
 
       <!-- MODAL -->
@@ -307,7 +320,7 @@
           >
             Kontak
           </h4>
-          <!-- Alamat -->
+          <!-- Alamat (dari kiri) -->
           <p
             class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300"
           >
@@ -335,7 +348,7 @@
           </p>
         </div>
 
-        <!-- Sosial Media -->
+        <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
         <div
           class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300"
         >
@@ -352,6 +365,7 @@
                 alt="TikTok"
               />
             </a>
+
             <a
               href="https://www.instagram.com/pemdes_sumorame02/"
               target="_blank"
@@ -363,6 +377,7 @@
                 alt="Instagram"
               />
             </a>
+
             <a
               href="https://www.youtube.com/@pemdes.sumorame"
               target="_blank"
@@ -385,11 +400,7 @@
     </footer>
 
     <script src="js/api-config.js"></script>
-<<<<<<< HEAD
-    <script src="js/Publikasi.js?v=20260827-1"></script>
-=======
-    <script src="js/Publikasi.js?v=20260828-1"></script>
->>>>>>> develop
+    <script src="js/Publikasi.js?v=20260828-2"></script>
     <script src="js/header-scroll.js?v=20260826-1"></script>
     <script src="js/tiktok-link.js?v=20260828-1"></script>
   </body>

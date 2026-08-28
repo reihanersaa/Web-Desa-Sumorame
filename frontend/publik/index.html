@@ -4,11 +4,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Profil Desa | Website Desa Sumorame</title>
-<<<<<<< HEAD
-    <script src="/js/auth-ui.js?v=20260827-1"></script>
-=======
     <script src="/js/auth-ui.js?v=20260828-1"></script>
->>>>>>> develop
     <link href="img/logo3.png?v=20260824-1" rel="icon" type="image/png" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
@@ -52,7 +48,7 @@
         },
       };
     </script>
-    <link href="css/layout-responsive.css?v=20260825-1" rel="stylesheet" />
+    <link href="css/layout-responsive.css?v=20260828-2" rel="stylesheet" />
   </head>
   <body class="bg-surface font-body text-on-surface">
     <!-- HEADER -->
@@ -83,37 +79,37 @@
             Profile Desa
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/PPID.html">
+          <a class="nav-item relative px-5 font-bold" href="/PPID">
             PPID
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/Lembaga.html">
+          <a class="nav-item relative px-5 font-bold" href="/Lembaga">
             Lembaga
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/Informasi.html">
+          <a class="nav-item relative px-5 font-bold" href="/Informasi">
             Informasi
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
           <a
             class="nav-item relative px-5 font-bold text-green-800"
-            href="/AdminP.html"
+            href="/AdminP"
           >
             Administrasi Persuratan
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/Aduan.html">
+          <a class="nav-item relative px-5 font-bold" href="/Aduan">
             Aduan
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/Publikasi.html">
+          <a class="nav-item relative px-5 font-bold" href="/Publikasi">
             Publikasi
           </a>
         </nav>
         <!-- LOGOUT -->
         <a
           class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition"
-          href="/login.html"
+          href="/login"
         >
           <span class="material-symbols-outlined text-2xl"> logout </span>
         </a>
@@ -142,43 +138,43 @@
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/PPID.html"
+        href="/PPID"
       >
         PPID
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/Lembaga.html"
+        href="/Lembaga"
       >
         Lembaga
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/Informasi.html"
+        href="/Informasi"
       >
         Informasi
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/AdminP.html"
+        href="/AdminP"
       >
         Administrasi Persuratan
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/Aduan.html"
+        href="/Aduan"
       >
         Aduan
       </a>
       <a
         class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/Publikasi.html"
+        href="/Publikasi"
       >
         Publikasi
       </a>
       <a
         class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/login.html"
+        href="/login"
       >
         Log Out
       </a>
@@ -191,10 +187,10 @@
       <div
         class="flex items-start transition-transform duration-700 ease-in-out"
         id="slider"
+        aria-live="polite"
       >
-        <!-- Konten slider akan diisi oleh index.js dari database -->
-        <div class="min-w-full relative">
-          <img alt="Hero" class="hero-image" src="img/slide1.png" />
+        <div class="min-w-full relative flex items-center justify-center bg-emerald-950 text-white">
+          <p class="px-6 text-center">Memuat hero dari CMS...</p>
         </div>
       </div>
       <button
@@ -457,10 +453,10 @@
             id="fotoKadesPublik"
             alt="Kepala Desa"
             class="rounded-lg mb-3 w-full h-96 object-cover object-top hover:scale-105 transition duration-300"
-            src="img/rochmanu-red.jpg"
+            hidden
           />
           <!-- 🚨 ID NAMA KADES -->
-          <h4 id="namaKadesPublik" class="font-semibold text-base">ROCHMANU</h4>
+          <h4 id="namaKadesPublik" class="font-semibold text-base">Memuat data kepala desa...</h4>
         </div>
         <!-- TEXT AREA -->
         <div class="flex-1 flex flex-col gap-3">
@@ -474,11 +470,7 @@
             id="sambutanPublik"
             class="sambutan-item opacity-0 translate-x-16 transition-all duration-700 delay-300 text-base md:text-lg text-gray-600 leading-8 text-justify"
           >
-            Assalamu&rsquo;alaikum warahmatullahi wabarakatuh, Salam sejahtera
-            bagi kita semua. Dengan penuh rasa syukur, saya menyambut seluruh
-            warga dan pengunjung di website resmi Desa Digital. Website ini
-            diharapkan dapat menjadi sarana informasi, komunikasi, dan pelayanan
-            bagi seluruh masyarakat Desa Sumorame.
+            Memuat sambutan dari CMS...
           </p>
         </div>
       </section>
@@ -510,7 +502,7 @@
                 <img alt="Statistik" class="menu-icon" src="img/Statistik.webp"/>
                 <span> Statistik </span>
               </a>
-              <a class="menu-card" href="/PPID.html?open=profile-ppid">
+              <a class="menu-card" href="/PPID?open=profile-ppid">
                 <img alt="Pemerintah" class="menu-icon" src="img/Pemerintah.webp"/>
                 <span>Pemerintah</span>
               </a>
@@ -526,7 +518,7 @@
                 <img alt="Peraturan" class="menu-icon" src="img/Peraturan.webp"/>
                 <span> Peraturan </span>
               </a>
-              <a class="menu-card" href="/Informasi.html">
+              <a class="menu-card" href="/Informasi">
                 <img alt="Info Publik" class="menu-icon" src="img/Info Publik.webp"/>
                 <span> Info Publik </span>
               </a>
@@ -534,7 +526,7 @@
                 <img alt="Galeri Foto" class="menu-icon" src="img/Galeri_Foto.webp"/>
                 <span> Galeri Foto </span>
               </a>
-              <a class="menu-card" href="/PPID.html#maps">
+              <a class="menu-card" href="/PPID#maps">
                 <img alt="Peta" class="menu-icon" src="img/Peta.webp" />
                 <span> Peta </span>
               </a>
@@ -674,7 +666,7 @@
         <div class="text-center mt-5">
           <a
             class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out hover:bg-green-800 hover:scale-110 hover:-translate-y-1 hover:shadow-2xl active:scale-95"
-            href="/Informasi.html"
+            href="/Informasi"
           >
             Selengkapnya
           </a>
@@ -687,10 +679,7 @@
         <div class="visi-item opacity-0 -translate-x-16 transition-all duration-700 bg-green-800 text-white p-6 rounded-xl hover:scale-105 transition duration-300">
           <h3 class="text-xl font-bold mb-2">Visi</h3>
           <!-- 🚨 ID VISI -->
-          <p id="visiPublik">
-            "Terwujudnya Desa Sumorame yang Makmur dan Unggul melalui
-            pembangunan yang berkelanjutan..."
-          </p>
+          <p id="visiPublik">Memuat visi dari CMS...</p>
         </div>
         <!-- MISI -->
         <div class="visi-item opacity-0 translate-x-16 transition-all duration-700 delay-200 bg-yellow-400 p-6 rounded-xl hover:scale-105 transition duration-300">
@@ -723,7 +712,7 @@
         <div class="text-center mt-10">
           <a
             class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out"
-            href="/Produk.html"
+            href="/Produk"
             id="btnProduk"
           >
             Selengkapnya
@@ -732,7 +721,7 @@
       </section>
 
       <!-- MODAL Pengumuman -->
-      <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" id="myModal">
+      <div class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/50" id="myModal">
         <div class="relative bg-white rounded-2xl shadow-2xl w-fit max-w-[700px] max-h-[95vh] flex flex-col overflow-hidden" id="modalBox">
           <button
             class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
@@ -749,10 +738,10 @@
             </p>
           </div>
           <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-            <img id="gambarModalPublik" class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" src="img/peringatan.png"/>
+            <img id="gambarModalPublik" class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" alt="Pengumuman pelayanan" decoding="async"/>
           </div>
           <div class="p-4 border-t bg-white">
-            <a class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="/PPID.html">
+            <a class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="/PPID">
               LIHAT PENGUMUMAN
             </a>
           </div>
@@ -819,7 +808,7 @@
       </div>
     </footer>
     <script src="js/api-config.js"></script>
-    <script src="js/index.js?v=20260826-2"></script>
+    <script src="js/index.js?v=20260828-2"></script>
     <script src="js/header-scroll.js?v=20260826-1"></script>
     <script src="js/tiktok-link.js?v=20260828-1"></script>
   </body>

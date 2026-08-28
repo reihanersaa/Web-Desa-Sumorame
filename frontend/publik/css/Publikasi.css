@@ -245,10 +245,7 @@ body {
   background-color: #006633;
 }
 
-<<<<<<< HEAD
-=======
 /* Hilangkan garis satu piksel saat slide digeser pada ponsel. */
->>>>>>> develop
 @media (max-width: 640px) {
   #heroSection .hero-image {
     inset: -1px;

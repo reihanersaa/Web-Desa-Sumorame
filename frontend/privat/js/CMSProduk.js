@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (window.Swal) {
         await Swal.fire("Sesi admin diperlukan", "Silakan login kembali.", "warning");
       }
-      window.location.href = "/admin/LoginAdmin.html";
+      window.location.href = "/admin/LoginAdmin";
       return;
     }
     try {
