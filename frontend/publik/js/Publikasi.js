@@ -215,7 +215,7 @@ function renderHeroTerbaru(items) {
 
     slide.innerHTML = `
       <img
-        src="${item.gambar_url}"
+        src="${escapeHTML(item.gambar_url)}"
         alt="${escapeHTML(item.judul)}"
         class="hero-image"
       />
@@ -378,11 +378,11 @@ async function loadPublikasi() {
         (item) => `
           <div
             class="pub-card opacity-0 translate-y-10 md:translate-y-16 transition-all duration-700"
-            data-id="${item.id}"
+            data-id="${escapeHTML(item.id)}"
           >
 
             <img
-              src="${item.gambar_url}"
+              src="${escapeHTML(item.gambar_url)}"
               class="w-full h-48 object-cover"
               alt="${escapeHTML(item.judul)}"
             >
@@ -416,7 +416,11 @@ async function loadPublikasi() {
       )
       .join("");
 
+<<<<<<< HEAD
     // Tampilkan penanda hanya pada deskripsi yang benar-benar terpotong.
+=======
+    // Penanda hanya muncul jika deskripsi benar-benar dipotong.
+>>>>>>> develop
     publikasiGrid
       .querySelectorAll(".pub-card-description")
       .forEach((description) => {
@@ -424,6 +428,10 @@ async function loadPublikasi() {
           description.classList.add("is-truncated");
         }
       });
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
 
     // ==================================================
     // KLIK CARD → BUKA MODAL

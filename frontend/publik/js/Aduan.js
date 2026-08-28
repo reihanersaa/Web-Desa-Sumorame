@@ -201,44 +201,76 @@ document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("loginModal");
   const box = document.getElementById("modalBox");
   const btnLogin = document.getElementById("btnLogin");
+  const btnTutupLogin = document.getElementById("btnTutupLogin");
 
-  // 🚨 LANGSUNG CEK LOGIN SAAT MASUK HALAMAN
-  if (!localStorage.getItem("login")) {
+  function tampilkanLoginModal() {
     modal.classList.remove("opacity-0", "pointer-events-none");
     box.classList.remove("scale-95");
     box.classList.add("scale-100");
   }
 
+  function tutupLoginModal() {
+    modal.classList.add("opacity-0", "pointer-events-none");
+    box.classList.remove("scale-100");
+    box.classList.add("scale-95");
+  }
+
+  // Guest boleh melihat halaman, tetapi form tetap terkunci.
+  if (!window.AuthSession?.isAuthenticated()) {
+    tampilkanLoginModal();
+  }
+
   // tombol login → redirect
   btnLogin.addEventListener("click", () => {
-    window.location.href = "/login.html";
+    window.AuthSession?.requireLogin("/Aduan.html");
   });
+
+  btnTutupLogin.addEventListener("click", tutupLoginModal);
 
   // klik luar modal
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {
-      modal.classList.add("opacity-0", "pointer-events-none");
-      box.classList.remove("scale-100");
-      box.classList.add("scale-95");
+      tutupLoginModal();
     }
   });
 
   // ================= FORM ADUAN =================
   const formAduan = document.getElementById("formAduan");
 
+  if (!window.AuthSession?.isAuthenticated()) {
+    const lockNotice = document.createElement("div");
+    lockNotice.className =
+      "mb-5 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900";
+    lockNotice.innerHTML = `
+      <div class="flex items-start gap-3">
+        <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+        <div class="flex-1">
+          <p class="font-semibold">Form aduan terkunci untuk guest.</p>
+          <p class="mt-1">Login dengan akun warga terdaftar untuk mengisi layanan ini.</p>
+          <button type="button" id="btnLoginDariForm"
+            class="mt-3 rounded-md bg-emerald-700 px-4 py-2 font-semibold text-white hover:bg-emerald-800">
+            Login Warga
+          </button>
+        </div>
+      </div>`;
+    formAduan.parentElement.insertBefore(lockNotice, formAduan);
+    formAduan.querySelectorAll("input, textarea, button").forEach((control) => {
+      control.disabled = true;
+      control.setAttribute("aria-disabled", "true");
+    });
+    document.getElementById("btnLoginDariForm").addEventListener("click", tampilkanLoginModal);
+  }
+
   formAduan.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     // 1. CEK TOKEN LOGIN
-    // Pastikan "token" adalah nama key yang kamu gunakan saat menyimpan JWT di localStorage saat proses Login Warga
-    const token = localStorage.getItem("token"); 
-    
-    if (!token) {
-      modal.classList.remove("opacity-0", "pointer-events-none");
-      box.classList.remove("scale-95");
-      box.classList.add("scale-100");
+    const session = window.AuthSession?.get();
+    if (!session) {
+      tampilkanLoginModal();
       return;
     }
+    const token = session.token;
 
     const nama = document.getElementById("nama").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -285,11 +317,11 @@ document.addEventListener("DOMContentLoaded", function () {
       title: "Konfirmasi Aduan ❓",
       html: `
       <div style="text-align:left;font-size:13px;color:#2e7d32">
-        <b>Nama:</b> ${nama}<br>
-        <b>Email:</b> ${email}<br>
-        <b>No. WhatsApp:</b> ${no_wa}<br>
-        <b>Judul:</b> ${judul}<br>
-        <b>Isi:</b> ${isi}
+        <b>Nama:</b> ${escapeHTML(nama)}<br>
+        <b>Email:</b> ${escapeHTML(email)}<br>
+        <b>No. WhatsApp:</b> ${escapeHTML(no_wa)}<br>
+        <b>Judul:</b> ${escapeHTML(judul)}<br>
+        <b>Isi:</b> ${escapeHTML(isi)}
       </div>
       <br><b>Apakah data sudah benar?</b>
     `,
