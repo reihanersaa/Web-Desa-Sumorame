@@ -125,8 +125,9 @@
 
           <!-- Judul -->
           <h2 class="hero-title
+                    text-3xl sm:text-4xl md:text-5xl lg:text-6xl
                     font-bold text-white mb-4 leading-tight">
-              Informasi Dan Berita Desa
+            Informasi Dan Berita Desa
           </h2>
 
           <!-- Deskripsi -->
@@ -217,6 +218,31 @@
         </button>
     </main>
 
+    <!-- MODAL PREVIEW GAMBAR -->
+  <div
+    id="modalGambar"
+    class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/80 p-4"
+  >
+    <div class="relative max-w-5xl w-full flex items-center justify-center">
+
+      <button
+        id="closeModalGambar"
+        class="absolute -top-10 right-0 text-white text-3xl hover:scale-110 transition"
+        type="button"
+      >
+        &times;
+      </button>
+
+      <img
+        id="modalGambarPreview"
+        src=""
+        alt="Preview gambar"
+        class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+      >
+
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer id="footer" class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700">
     <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
@@ -287,5 +313,6 @@
   <script src="js/api-config.js"></script>
   <script src="js/informasi.js"></script>
   <script src="js/header-scroll.js?v=20260826-1"></script>
+  <script src="js/tiktok-link.js?v=20260828-1"></script>
 </body>
 </html>
