@@ -180,7 +180,7 @@ if (
   btnProduk.addEventListener("click", () => {
     const session = window.AuthSession?.get();
     if (!session) {
-      window.AuthSession?.requireLogin("/Produk.html?action=pasarkan");
+      window.AuthSession?.requireLogin("/Produk?action=pasarkan");
       return;
     }
 
@@ -241,7 +241,7 @@ if (
 
     const session = window.AuthSession?.get();
     if (!session) {
-      window.AuthSession?.requireLogin("/Produk.html?action=pasarkan");
+      window.AuthSession?.requireLogin("/Produk?action=pasarkan");
       return;
     }
 
@@ -334,7 +334,7 @@ if (
       });
       const result = await response.json().catch(() => ({}));
       if (response.status === 401 || response.status === 403) {
-        window.AuthSession?.requireLogin("/Produk.html?action=pasarkan");
+        window.AuthSession?.requireLogin("/Produk?action=pasarkan");
         return;
       }
       if (!response.ok)
@@ -362,7 +362,7 @@ if (
     window.AuthSession?.isAuthenticated()
   ) {
     btnProduk.click();
-    window.history.replaceState({}, "", "/Produk.html");
+    window.history.replaceState({}, "", "/Produk");
   }
 }
 
@@ -398,20 +398,13 @@ async function renderProduk() {
   const container = document.getElementById("produk");
 
   if (!container) return;
-
-  // ================================================
-  // AMBIL PRODUK TAMBAHAN
-  // ================================================
-
-  let produkTambahan = [];
+  container.setAttribute("aria-busy", "true");
   try {
     const response = await fetch(`${API_BASE_URL}/publik/produk`);
     const result = await response.json();
     if (!response.ok) throw new Error(result.message || "Produk gagal dimuat.");
-    container
-      .querySelectorAll(".produk-item:not(.produk-dynamic)")
-      .forEach((item) => item.remove());
-    produkTambahan = (result.data || []).map((item) => ({
+
+    const items = (result.data || []).map((item) => ({
       id: item.id,
       nama: item.nama_produk,
       harga: item.harga,
@@ -419,108 +412,26 @@ async function renderProduk() {
       kontak: item.kontak_penjual,
       deskripsi: item.deskripsi,
       gambar: item.gambar,
-    }));
-  } catch (error) {
-    console.error("Gagal memuat produk:", error.message);
-  }
+    })).sort((a, b) => a.nama.localeCompare(b.nama, "id", { sensitivity: "base" }));
 
-  // ================================================
-  // HAPUS CARD DINAMIS LAMA
-  // ================================================
-
-  container.querySelectorAll(".produk-dynamic").forEach((item) => {
-    item.remove();
-  });
-
-  // ================================================
-  // AMBIL PRODUK HTML
-  // ================================================
-
-  const produkHTML = Array.from(container.querySelectorAll(".produk-item"));
-
-  const semuaProduk = [];
-
-  // ================================================
-  // PRODUK BAWAAN HTML
-  // ================================================
-
-  produkHTML.forEach((card) => {
-    if (card.classList.contains("produk-dynamic")) {
+    container.replaceChildren();
+    if (!items.length) {
+      const empty = document.createElement("p");
+      empty.className = "col-span-full py-10 text-center text-gray-500";
+      empty.textContent = "Belum ada produk yang disetujui admin.";
+      container.appendChild(empty);
       return;
     }
 
-    const nama = card.querySelector("h3")?.textContent.trim() || "";
-
-    const penjual = card.querySelector("span")?.textContent.trim() || "";
-
-    const hargaText = card.querySelector("p")?.textContent || "";
-
-    const harga = parseInt(hargaText.replace(/\D/g, "")) || 0;
-
-    semuaProduk.push({
-      nama: nama,
-
-      harga: harga,
-
-      penjual: penjual,
-
-      element: card,
-
-      dynamic: false,
-    });
-  });
-
-  // ================================================
-  // PRODUK DARI LOCAL STORAGE
-  // ================================================
-
-  produkTambahan.forEach((item) => {
-    semuaProduk.push({
-      nama: item.nama,
-
-      harga: item.harga,
-
-      penjual: item.penjual,
-
-      gambar: item.gambar,
-
-      id: item.id,
-
-      dynamic: true,
-    });
-  });
-
-  // ================================================
-  // SORTING A-Z
-  // ================================================
-
-  semuaProduk.sort((a, b) => {
-    return a.nama.localeCompare(b.nama, "id", {
-      sensitivity: "base",
-    });
-  });
-
-  // ================================================
-  // TAMPILKAN
-  // ================================================
-
-  semuaProduk.forEach((item) => {
-    if (item.dynamic) {
-      const card = buatCardProduk(item);
-
-      container.appendChild(card);
-    } else {
-      container.appendChild(item.element);
-    }
-  });
-
-  // ================================================
-  // UPDATE
-  // ================================================
-
-  updateProdukItems();
-
-  animasiProduk();
+    items.forEach((item) => container.appendChild(buatCardProduk(item)));
+    updateProdukItems();
+    animasiProduk();
+  } catch (error) {
+    console.error("Gagal memuat produk:", error.message);
+    container.innerHTML = `<p class="col-span-full py-10 text-center text-red-600">${escapeHTML(error.message)}</p>`;
+  } finally {
+    container.removeAttribute("aria-busy");
+  }
 }
 
 // ======================================================
@@ -542,6 +453,8 @@ function buatCardProduk(item) {
       <img
         src="${item.gambar}"
         alt="${escapeHTML(item.nama)}"
+        loading="lazy"
+        decoding="async"
         class="w-full h-full object-cover"
       >
 

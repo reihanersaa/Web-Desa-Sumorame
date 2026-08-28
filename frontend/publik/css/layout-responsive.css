@@ -17,6 +17,54 @@ canvas {
   max-width: 100%;
 }
 
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+@media (max-width: 767px), (pointer: coarse) {
+  .parallax-bg {
+    transform: none !important;
+    will-change: auto !important;
+    background-attachment: scroll !important;
+  }
+
+  main > section,
+  footer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 700px;
+  }
+
+  .hero-item,
+  .footer-item,
+  .kontak-item,
+  .sambutan-item,
+  .visi-item,
+  .produk-item,
+  .pub-card {
+    transition-duration: 250ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Mencegah transform animasi memperluas scrollWidth halaman. */
 @supports (overflow: clip) {
   html,

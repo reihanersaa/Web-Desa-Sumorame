@@ -4,7 +4,7 @@
     ? "http://localhost:3000/api"
     : "https://web-desa-sumorame-backend.vercel.app/api";
 
-  const isLoginPage = /\/LoginAdmin\.html$/i.test(window.location.pathname);
+  const isLoginPage = /\/LoginAdmin(?:\.html)?$/i.test(window.location.pathname);
   const clearAdminSession = () => {
     ["token", "user", "admin", "login"].forEach((key) => localStorage.removeItem(key));
   };
@@ -21,19 +21,19 @@
 
       if (!token || payload?.role !== "admin" || expired) {
         clearAdminSession();
-        window.location.replace("/admin/LoginAdmin.html");
+        window.location.replace("/admin/LoginAdmin");
         return;
       }
     } catch (error) {
       clearAdminSession();
-      window.location.replace("/admin/LoginAdmin.html");
+      window.location.replace("/admin/LoginAdmin");
       return;
     }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     document
-      .querySelectorAll('a[href="/admin/LoginAdmin.html"], #btnLogout')
+      .querySelectorAll('a[href="/admin/LoginAdmin"], #btnLogout')
       .forEach((element) => {
         element.addEventListener("click", () => clearAdminSession());
       });

@@ -1,12 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
+  let aduanSaya = [];
   const escapeHTML = (value = "") => {
     const div = document.createElement("div");
     div.textContent = String(value ?? "");
     return div.innerHTML;
   };
 
-  tampilkanAduan();
-  cekStatusForm();
+  if (window.AuthSession?.isAuthenticated()) {
+    tampilkanAduan();
+  }
   // ================= NAVBAR MOBILE =================
   const menuBtn = document.getElementById("menuBtn");
   const mobileMenu = document.getElementById("mobileMenu");
@@ -222,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // tombol login → redirect
   btnLogin.addEventListener("click", () => {
-    window.AuthSession?.requireLogin("/Aduan.html");
+    window.AuthSession?.requireLogin("/Aduan");
   });
 
   btnTutupLogin.addEventListener("click", tutupLoginModal);
@@ -389,8 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // Kosongkan value file input secara manual
           document.getElementById("fileUpload").value = "";
 
-          // Panggil fungsi untuk merender ulang daftar aduan di halaman warga jika ada
-          // tampilkanAduan(); 
+          await tampilkanAduan();
 
         } catch (error) {
           console.error("Error submit aduan:", error);
@@ -401,18 +402,39 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ================= TAMPILKAN ADUAN =================
-  function tampilkanAduan() {
+  async function tampilkanAduan() {
     const container = document.getElementById("trackAduan");
     const list = document.getElementById("listAduan");
+    const session = window.AuthSession?.get();
 
-    const data = JSON.parse(localStorage.getItem("aduan")) || [];
+    if (!session || !container || !list) return;
 
-    if (data.length === 0) return;
+    try {
+      const response = await fetch(`${window.API_BASE_URL}/aduan/saya`, {
+        headers: { Authorization: `Bearer ${session.token}` },
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Riwayat aduan gagal dimuat.");
+      }
+      aduanSaya = result.data || [];
+    } catch (error) {
+      console.error("Gagal memuat riwayat aduan:", error);
+      container.classList.remove("hidden");
+      list.innerHTML = `<p class="rounded-lg bg-red-50 p-4 text-center text-red-700">${escapeHTML(error.message)}</p>`;
+      return;
+    }
 
     container.classList.remove("hidden");
     list.innerHTML = "";
 
-    data.reverse().forEach((item, i) => {
+    if (!aduanSaya.length) {
+      list.innerHTML = '<p class="rounded-lg bg-gray-50 p-4 text-center text-gray-500">Belum ada riwayat aduan.</p>';
+      cekStatusForm();
+      return;
+    }
+
+    aduanSaya.forEach((item, i) => {
       const icon =
         item.status === "Selesai"
           ? `<span class="material-symbols-outlined text-green-600">check_circle</span>`
@@ -431,7 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             <div class="flex items-center gap-2">
               ${icon}
-              <h4 class="font-bold text-green-700">${escapeHTML(item.judul)}</h4>
+              <h4 class="font-bold text-green-700">${escapeHTML(item.judul_aduan)}</h4>
             </div>
 
             <span class="text-xs px-2 py-1 rounded ${statusColor}">
@@ -440,60 +462,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
           </div>
 
-          <p class="text-sm text-gray-600">${escapeHTML(item.isi)}</p>
+          <p class="text-sm text-gray-600">${escapeHTML(item.isi_aduan)}</p>
 
           ${
-            item.gambar
-              ? `<img src="${item.gambar}" class="mt-3 rounded-lg max-h-40 object-cover w-full">`
+            item.file_bukti_url && !item.file_bukti_is_pdf
+              ? `<img src="${escapeHTML(item.file_bukti_url)}" alt="Bukti aduan" loading="lazy" decoding="async" class="mt-3 rounded-lg max-h-40 object-cover w-full">`
+              : item.file_bukti_url
+                ? `<a href="${escapeHTML(item.file_bukti_url)}" target="_blank" rel="noopener" class="mt-3 inline-flex text-sm font-semibold text-blue-700 hover:underline">Lihat bukti PDF</a>`
               : ""
           }
 
-          <p class="text-xs text-gray-400 mt-2">${escapeHTML(item.tanggal)}</p>
-
-          <button onclick="ubahStatus(${data.length - 1 - i})"
-            class="mt-2 text-xs text-blue-600 hover:underline">
-            Tandai Selesai
-          </button>
+          ${item.tanggapan_admin ? `<div class="mt-3 rounded-md border border-green-200 bg-green-50 p-3 text-sm"><strong>Tanggapan admin:</strong><p class="mt-1">${escapeHTML(item.tanggapan_admin)}</p></div>` : ""}
+          <p class="text-xs text-gray-400 mt-2">${escapeHTML(new Date(item.created_at).toLocaleString("id-ID"))}</p>
 
         </div>
       `;
     });
-  }
-
-  // ================= UBAH STATUS ADUAN =================
-  function ubahStatus(index) {
-    let data = JSON.parse(localStorage.getItem("aduan")) || [];
-
-    data[index].status = "Selesai";
-
-    localStorage.setItem("aduan", JSON.stringify(data));
-
-    tampilkanAduan();
-    cekStatusForm(); // ⬅️ update kondisi form
+    cekStatusForm();
   }
 
   // ================= CEK STATUS ADUAN =================
   function cekStatusForm() {
-    const data = JSON.parse(localStorage.getItem("aduan")) || [];
-
     const form = document.getElementById("formAduan");
     const inputs = form.querySelectorAll("input, textarea, button");
+    const adaAktif = aduanSaya.some((item) => ["Menunggu", "Diproses"].includes(item.status));
+    inputs.forEach((el) => { el.disabled = adaAktif; });
 
-    // cek apakah ada aduan yang masih diproses
-    const adaDiproses = data.some((item) => item.status === "Diproses");
-
-    if (adaDiproses) {
-      // FORM DIKUNCI
-      inputs.forEach((el) => (el.disabled = true));
-
-      Swal.fire({
-        title: "Aduan Sedang Diproses",
-        text: "Anda tidak bisa mengirim aduan baru sebelum aduan sebelumnya selesai.",
-        icon: "warning",
-      });
-    } else {
-      // FORM AKTIF
-      inputs.forEach((el) => (el.disabled = false));
+    let notice = document.getElementById("aduanAktifNotice");
+    if (adaAktif && !notice) {
+      notice = document.createElement("p");
+      notice.id = "aduanAktifNotice";
+      notice.className = "mb-4 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900";
+      notice.textContent = "Aduan sebelumnya masih aktif. Form akan terbuka kembali setelah statusnya Selesai.";
+      form.parentElement.insertBefore(notice, form);
+    } else if (!adaAktif && notice) {
+      notice.remove();
     }
   }
 

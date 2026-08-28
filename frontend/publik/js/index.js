@@ -184,6 +184,15 @@ function escapeProdukHTML(value = "") {
   return element.innerHTML;
 }
 
+function isSafeHttpUrl(value) {
+  try {
+    const url = new URL(String(value || ""), window.location.origin);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+  } catch (_error) {
+    return "";
+  }
+}
+
 // === Modal Peraturan ===
 const bukaPeraturan = document.getElementById("bukaPeraturan");
 const peraturanModal = document.getElementById("peraturanModal");
@@ -246,7 +255,7 @@ async function muatProdukUnggulanBeranda() {
       const pesan = encodeURIComponent(`Halo, saya tertarik dengan ${item.nama_produk}`);
       return `<article class="produk-item produk-dynamic group w-full bg-white rounded-md overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700">
         <div class="overflow-hidden">
-          <img src="${escapeProdukHTML(item.gambar)}" alt="${escapeProdukHTML(item.nama_produk)}" class="w-full h-full object-cover">
+          <img src="${escapeProdukHTML(isSafeHttpUrl(item.gambar))}" alt="${escapeProdukHTML(item.nama_produk)}" loading="lazy" decoding="async" class="w-full h-full object-cover">
         </div>
         <div class="produk-info bg-yellow-400/85 px-3 py-2">
           <h3 class="produk-nama font-bold text-lg">${escapeProdukHTML(item.nama_produk)}</h3>
@@ -285,26 +294,6 @@ window.addEventListener("load", () => {
       item.style.opacity = "1";
       item.style.transform = "translateY(0)";
     }, i * 100);
-  });
-});
-
-// === Animasi Suara Untuk Navbar ===
-document.addEventListener("DOMContentLoaded", () => {
-  const navItems = document.querySelectorAll(".nav-item");
-
-  navItems.forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      const text = item.textContent.trim();
-
-      if (!text) return;
-
-      const speech = new SpeechSynthesisUtterance(text);
-      speech.lang = "id-ID";
-      speech.rate = 1;
-
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(speech);
-    });
   });
 });
 
@@ -353,12 +342,6 @@ function closeModal() {
     modalBox.classList.remove("modal-exit-active");
   }, 250);
 }
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    openModal();
-  }, 1000);
-});
 
 if(modal) {
     modal.addEventListener("click", (e) => {
@@ -517,7 +500,7 @@ if(statistik) {
   const compactDeviceQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
   const saveData = Boolean(navigator.connection?.saveData);
 
-  if (reduceMotionQuery.matches || saveData) {
+  if (reduceMotionQuery.matches || compactDeviceQuery.matches || saveData) {
     parallaxEls.forEach((bg) => { bg.style.transform = "none"; });
     return;
   }
@@ -527,12 +510,10 @@ if(statistik) {
 
   function updateParallax() {
     const viewportCenter = window.innerHeight / 2;
-    const deviceMultiplier = compactDeviceQuery.matches ? 0.45 : 1;
-
     activeEls.forEach((bg) => {
       const wrap = bg.parentElement;
       const rect = wrap.getBoundingClientRect();
-      const speed = parseFloat(bg.dataset.parallaxSpeed || "0.25") * deviceMultiplier;
+      const speed = parseFloat(bg.dataset.parallaxSpeed || "0.25");
       const elCenter = rect.top + rect.height / 2;
       const desiredOffset = (viewportCenter - elCenter) * speed;
 
@@ -586,32 +567,45 @@ async function loadDataBeranda() {
   try {
     const response = await fetch(`${INDEX_API_BASE_URL}/cmsprofil`);
     const result = await response.json();
-    
-    if (result.success && result.data && result.data.length > 0) {
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Konten beranda gagal dimuat.");
+    }
+
+    if (result.data && result.data.length > 0) {
       const dataCMS = result.data;
       const dataUtama = dataCMS[0]; 
 
       // 1. UPDATE SLIDER / HERO
       const sliderEl = document.getElementById("slider");
       if (sliderEl) {
-        sliderEl.innerHTML = ""; 
-        
-        dataCMS.forEach(item => {
-          if (item.gambar_url) {
-            sliderEl.innerHTML += `
-              <div class="min-w-full relative">
-               <img alt="${escapeProdukHTML(item.judul_hero || 'Hero')}" class="hero-image object-cover w-full h-[100vh]" src="${item.gambar_url}"/>
-              </div>
-            `;
-          }
+        sliderEl.replaceChildren();
+        dataCMS.forEach((item, slideIndex) => {
+          const imageUrl = isSafeHttpUrl(item.gambar_url);
+          if (!imageUrl) return;
+          const slide = document.createElement("div");
+          slide.className = "min-w-full relative";
+          const image = document.createElement("img");
+          image.alt = item.judul_hero || "Hero Desa Sumorame";
+          image.className = "hero-image object-cover w-full";
+          image.src = imageUrl;
+          image.decoding = "async";
+          if (slideIndex === 0) image.fetchPriority = "high";
+          else image.loading = "lazy";
+          slide.appendChild(image);
+          sliderEl.appendChild(slide);
         });
         
         const slidesBaru = document.querySelectorAll("#slider > div");
         total = slidesBaru.length;
         index = 0;
         
-        // Render slide pertama agar tidak kosong
-        if(total > 0) showSlide(0);
+        if (total > 0) {
+          showSlide(0);
+        } else {
+          sliderEl.innerHTML = '<div class="min-w-full relative flex items-center justify-center bg-emerald-950 text-white"><p class="px-6 text-center">Hero belum diatur melalui CMS.</p></div>';
+          nextBtn?.classList.add("hidden");
+          prevBtn?.classList.add("hidden");
+        }
       }
 
       // 2. UPDATE SAMBUTAN, FOTO & NAMA KADES
@@ -619,7 +613,12 @@ async function loadDataBeranda() {
       const sambutanTeks = document.getElementById("sambutanPublik");
       const namaKadesEl = document.getElementById("namaKadesPublik");
       
-      if (fotoKades && dataUtama.foto_kades_url) fotoKades.src = dataUtama.foto_kades_url;
+      if (fotoKades && isSafeHttpUrl(dataUtama.foto_kades_url)) {
+        fotoKades.src = isSafeHttpUrl(dataUtama.foto_kades_url);
+        fotoKades.loading = "lazy";
+        fotoKades.decoding = "async";
+        fotoKades.hidden = false;
+      }
       if (sambutanTeks && dataUtama.sambutan) sambutanTeks.innerText = dataUtama.sambutan;
       if (namaKadesEl && dataUtama.nama_kades) namaKadesEl.innerText = dataUtama.nama_kades;
 
@@ -640,8 +639,10 @@ async function loadDataBeranda() {
 
       // 4. UPDATE GAMBAR MODAL PENGUMUMAN
       const imgModalEl = document.getElementById("gambarModalPublik");
-      if (imgModalEl && dataUtama.gambar_modal_url) {
-        imgModalEl.src = dataUtama.gambar_modal_url;
+      const modalImageUrl = isSafeHttpUrl(dataUtama.gambar_modal_url);
+      if (imgModalEl && modalImageUrl) {
+        imgModalEl.src = modalImageUrl;
+        window.setTimeout(openModal, 800);
       }
 
       // 5. UPDATE TEKS MODAL PERATURAN
@@ -654,10 +655,21 @@ async function loadDataBeranda() {
       if (isiPeraturanEl && dataUtama.peraturan_isi) {
         isiPeraturanEl.textContent = dataUtama.peraturan_isi;
       }
-
+    } else {
+      throw new Error("Konten beranda belum diisi melalui CMS.");
     }
   } catch (error) {
     console.error("Gagal menarik data CMS Beranda:", error);
+    const sliderEl = document.getElementById("slider");
+    const sambutanTeks = document.getElementById("sambutanPublik");
+    const namaKadesEl = document.getElementById("namaKadesPublik");
+    const visiTeks = document.getElementById("visiPublik");
+    const misiList = document.getElementById("misiPublik");
+    if (sliderEl) sliderEl.innerHTML = '<div class="min-w-full relative flex items-center justify-center bg-emerald-950 text-white"><p class="px-6 text-center">Hero belum tersedia.</p></div>';
+    if (sambutanTeks) sambutanTeks.textContent = "Sambutan belum tersedia.";
+    if (namaKadesEl) namaKadesEl.textContent = "Data kepala desa belum tersedia";
+    if (visiTeks) visiTeks.textContent = "Visi belum tersedia.";
+    if (misiList) misiList.innerHTML = "<li>Misi belum tersedia.</li>";
   }
 }
 
@@ -712,7 +724,7 @@ async function loadBeritaTerkini() {
 
   try {
     // Memanggil API Publikasi
-    const response = await fetch(`${INDEX_API_BASE_URL}/publikasi`);
+    const response = await fetch(`${INDEX_API_BASE_URL}/publikasi?limit=1&offset=0`);
     const result = await response.json();
 
     if (result.success && result.data && result.data.length > 0) {
@@ -736,17 +748,17 @@ async function loadBeritaTerkini() {
             Terbaru • ${tanggal}
           </span>
           <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 leading-snug">
-            ${beritaTerbaru.judul}
+            ${escapeProdukHTML(beritaTerbaru.judul)}
           </h3>
           <p class="text-[15px] font-medium text-gray-800 mb-5 leading-relaxed text-justify">
-            ${deskripsiSingkat}
+            ${escapeProdukHTML(deskripsiSingkat)}
           </p>
-          <a class="text-sm font-black text-green-900 hover:text-green-700 hover:underline inline-flex items-center gap-1 w-fit transition-all" href="Publikasi.html">
+          <a class="text-sm font-black text-green-900 hover:text-green-700 hover:underline inline-flex items-center gap-1 w-fit transition-all" href="/Publikasi">
             Baca Selengkapnya <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
         </div>
         <div class="flex-1 min-h-[250px]">
-          <img alt="${beritaTerbaru.judul}" class="w-full h-full object-cover" src="${beritaTerbaru.gambar_url}"/>
+          <img alt="${escapeProdukHTML(beritaTerbaru.judul)}" class="w-full h-full object-cover" src="${escapeProdukHTML(isSafeHttpUrl(beritaTerbaru.gambar_url))}" loading="lazy" decoding="async"/>
         </div>
       `;
     } else {

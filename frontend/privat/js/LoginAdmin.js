@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (redirectAduan) {
           localStorage.removeItem("redirectAduan");
-          window.location.href = "/admin/Pengaduan.html";
+          window.location.href = "/admin/Pengaduan";
         } else {
           Swal.fire({
             title: "Login Berhasil 🎉",
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
             background: "#f0fff4",
             color: "#2e7d32",
           }).then(() => {
-            window.location.href = "/admin/DashboardAdmin.html";
+            window.location.href = "/admin/DashboardAdmin";
           });
         }
       } else {

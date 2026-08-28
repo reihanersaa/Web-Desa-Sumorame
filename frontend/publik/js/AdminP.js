@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeLoginModal = document.getElementById("closeLoginModal");
 
   btnLogin.addEventListener("click", () => {
-    window.AuthSession?.requireLogin("/AdminP.html");
+    window.AuthSession?.requireLogin("/AdminP");
   });
 
   function tutupLoginModal() {

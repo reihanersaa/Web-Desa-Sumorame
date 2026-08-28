@@ -226,7 +226,7 @@ function renderHeroTerbaru(items) {
 
 
   // Masukkan maksimal 3 gambar terbaru
-  terbaru.forEach((item) => {
+  terbaru.forEach((item, itemIndex) => {
     const slide = document.createElement("div");
 
     slide.className = "min-w-full relative";
@@ -236,6 +236,8 @@ function renderHeroTerbaru(items) {
         src="${escapeHTML(item.gambar_url)}"
         alt="${escapeHTML(item.judul)}"
         class="hero-image"
+        decoding="async"
+        ${itemIndex === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
       />
     `;
 
@@ -345,175 +347,102 @@ const API_BASE_URL =
   window.API_BASE_URL || "http://localhost:3000/api";
 
 const publikasiGrid = document.getElementById("publikasiGrid");
+const loadMoreButton = document.getElementById("loadMorePublikasi");
+const PUBLIKASI_PAGE_SIZE = 6;
+let publikasiItems = [];
+let publikasiOffset = 0;
+let publikasiHasMore = false;
 
+function buatCardPublikasi(item) {
+  const card = document.createElement("article");
+  card.className = "pub-card opacity-0 translate-y-10 md:translate-y-16 transition-all duration-700";
+  card.dataset.id = String(item.id);
+  card.tabIndex = 0;
+  card.setAttribute("role", "button");
+  card.setAttribute("aria-label", `Buka publikasi ${item.judul}`);
+  card.innerHTML = `
+    <img src="${escapeHTML(item.gambar_url)}" class="w-full h-48 object-cover"
+      alt="${escapeHTML(item.judul)}" loading="lazy" decoding="async">
+    <div class="pub-card-body bg-green-50 p-5 rounded-b-xl">
+      <h4 class="pub-card-title text-lg font-bold text-green-800 mb-2">${escapeHTML(item.judul)}</h4>
+      <p class="pub-card-description text-gray-600 text-sm">${escapeHTML(item.deskripsi)}</p>
+      <span class="pub-card-more">Selengkapnya</span>
+      <p class="pub-card-date text-xs text-gray-400">${formatTanggal(item.waktu_kegiatan)}</p>
+    </div>`;
 
-async function loadPublikasi() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/publikasi`);
-
-    const result = await response.json();
-
-
-    if (!response.ok || !result.success) {
-      throw new Error(
-        result.message || "Gagal memuat data publikasi.",
-      );
+  const open = () => bukaModal(item);
+  card.addEventListener("click", open);
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      open();
     }
+  });
+  return card;
+}
 
+async function loadPublikasi({ reset = false } = {}) {
+  if (!publikasiGrid || loadMoreButton?.disabled) return;
+  if (reset) {
+    publikasiItems = [];
+    publikasiOffset = 0;
+    publikasiGrid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">Memuat publikasi...</p>';
+  }
 
+  if (loadMoreButton) {
+    loadMoreButton.disabled = true;
+    loadMoreButton.textContent = "Memuat...";
+  }
+
+  try {
+    const params = new URLSearchParams({
+      limit: String(PUBLIKASI_PAGE_SIZE),
+      offset: String(publikasiOffset),
+    });
+    const response = await fetch(`${API_BASE_URL}/publikasi?${params}`);
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Gagal memuat data publikasi.");
+    }
     const items = result.data || [];
+    if (reset) publikasiGrid.replaceChildren();
 
-
-    // ==================================================
-    // JIKA DATA PUBLIKASI KOSONG
-    // ==================================================
-
-    if (!items.length) {
-      publikasiGrid.innerHTML = `
-        <p class="col-span-full text-center text-gray-400 py-10">
-          Belum ada publikasi kegiatan.
-        </p>
-      `;
-
-
-      if (slider) {
-        slider.innerHTML = "";
-      }
-
-
+    if (!items.length && !publikasiItems.length) {
+      publikasiGrid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">Belum ada publikasi kegiatan.</p>';
+      if (slider) slider.replaceChildren();
       total = 0;
-
-
-      if (autoSlide) {
-        clearInterval(autoSlide);
-        autoSlide = null;
-      }
-
-
-      if (nextBtn) {
-        nextBtn.classList.add("hidden");
-      }
-
-
-      if (prevBtn) {
-        prevBtn.classList.add("hidden");
-      }
-
-
+      if (autoSlide) clearInterval(autoSlide);
+      nextBtn?.classList.add("hidden");
+      prevBtn?.classList.add("hidden");
       return;
     }
 
+    if (publikasiOffset === 0) renderHeroTerbaru(items);
+    publikasiItems.push(...items);
+    publikasiOffset += items.length;
+    publikasiHasMore = Boolean(result.pagination?.has_more);
+    items.forEach((item) => publikasiGrid.appendChild(buatCardPublikasi(item)));
 
-    // ==================================================
-    // HERO
-    // AMBIL 3 PUBLIKASI TERBARU
-    // ==================================================
-
-    renderHeroTerbaru(items);
-
-
-    // ==================================================
-    // RENDER MAIN CONTENT
-    // ==================================================
-
-    publikasiGrid.innerHTML = items
-      .map(
-        (item) => `
-          <div
-            class="pub-card opacity-0 translate-y-10 md:translate-y-16 transition-all duration-700"
-            data-id="${escapeHTML(item.id)}"
-          >
-
-            <img
-              src="${escapeHTML(item.gambar_url)}"
-              class="w-full h-48 object-cover"
-              alt="${escapeHTML(item.judul)}"
-            >
-
-            <div class="pub-card-body bg-green-50 p-5 rounded-b-xl">
-
-              <h4
-                class="pub-card-title text-lg font-bold text-green-800 mb-2"
-              >
-                ${escapeHTML(item.judul)}
-              </h4>
-
-              <p
-                class="pub-card-description text-gray-600 text-sm"
-              >
-                ${escapeHTML(item.deskripsi)}
-              </p>
-
-              <span class="pub-card-more">Selengkapnya</span>
-
-              <p
-                class="pub-card-date text-xs text-gray-400"
-              >
-                ${formatTanggal(item.waktu_kegiatan)}
-              </p>
-
-            </div>
-
-          </div>
-        `,
-      )
-      .join("");
-
-    // Penanda hanya muncul jika deskripsi benar-benar dipotong.
-    publikasiGrid
-      .querySelectorAll(".pub-card-description")
-      .forEach((description) => {
-        if (description.scrollHeight > description.clientHeight + 1) {
-          description.classList.add("is-truncated");
-        }
-      });
-
-
-    // ==================================================
-    // KLIK CARD → BUKA MODAL
-    // ==================================================
-
-    publikasiGrid
-      .querySelectorAll(".pub-card")
-      .forEach((card) => {
-        card.addEventListener("click", () => {
-          const item = items.find(
-            (i) =>
-              String(i.id) ===
-              String(card.dataset.id),
-          );
-
-          if (item) {
-            bukaModal(item);
-          }
-        });
-      });
-
-
-    // ==================================================
-    // AKTIFKAN ANIMASI CARD
-    // ==================================================
-
+    publikasiGrid.querySelectorAll(".pub-card-description").forEach((description) => {
+      if (description.scrollHeight > description.clientHeight + 1) description.classList.add("is-truncated");
+    });
     initScrollRevealCards();
-
   } catch (error) {
-    console.error(
-      "Gagal memuat publikasi:",
-      error,
-    );
-
-
-    publikasiGrid.innerHTML = `
-      <p class="col-span-full text-center text-red-500 py-10">
-        ${escapeHTML(error.message)}
-      </p>
-    `;
+    console.error("Gagal memuat publikasi:", error);
+    if (!publikasiItems.length) {
+      publikasiGrid.innerHTML = `<p class="col-span-full text-center text-red-500 py-10">${escapeHTML(error.message)}</p>`;
+    }
+  } finally {
+    if (loadMoreButton) {
+      loadMoreButton.disabled = false;
+      loadMoreButton.textContent = "Muat lebih banyak";
+      loadMoreButton.classList.toggle("hidden", !publikasiHasMore);
+    }
   }
 }
 
-
-// Jalankan fetch data
-loadPublikasi();
+loadMoreButton?.addEventListener("click", () => loadPublikasi());
+loadPublikasi({ reset: true });
 
 
 // ======================================================

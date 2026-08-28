@@ -86,6 +86,23 @@ const buatAduan = async (req, res) => {
       });
     }
 
+    // Aturan ini ditegakkan di server agar tidak bisa dilewati dengan
+    // memanggil endpoint secara langsung dari DevTools/Postman.
+    const { data: aduanAktif, error: aduanAktifError } = await supabase
+      .from("aduan")
+      .select("id")
+      .eq("user_id", user_id)
+      .in("status", ["Menunggu", "Diproses"])
+      .limit(1);
+
+    if (aduanAktifError) throw aduanAktifError;
+    if (aduanAktif?.length) {
+      return res.status(409).json({
+        success: false,
+        message: "Aduan sebelumnya masih aktif. Tunggu sampai aduan tersebut selesai.",
+      });
+    }
+
     let file_bukti_url = null;
 
     if (fileBukti) {
@@ -124,6 +141,44 @@ const buatAduan = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Data aduan milik warga yang sedang login. Filter selalu memakai user_id
+// dari JWT, bukan id/NIK yang dikirim browser.
+const getAduanSaya = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("aduan")
+      .select("id, judul_aduan, isi_aduan, status, tanggapan_admin, tanggal_tanggapan, file_bukti_url, lampiran_gambar_url, lampiran_file_url, created_at")
+      .eq("user_id", req.user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    const signedData = await Promise.all((data || []).map(async (item) => {
+      const [bukti, gambar, lampiran] = await Promise.all([
+        createPrivateUrl(item.file_bukti_url),
+        createPrivateUrl(item.lampiran_gambar_url),
+        createPrivateUrl(item.lampiran_file_url),
+      ]);
+
+      return {
+        ...item,
+        file_bukti_url: bukti.url,
+        file_bukti_is_pdf: Boolean(bukti.path?.toLowerCase().endsWith(".pdf")),
+        lampiran_gambar_url: gambar.url,
+        lampiran_file_url: lampiran.url,
+      };
+    }));
+
+    return res.status(200).json({ success: true, data: signedData });
+  } catch (error) {
+    console.error("Error Get Aduan Warga:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan saat mengambil riwayat aduan.",
+    });
   }
 };
 
@@ -289,4 +344,4 @@ const hapusAduan = async (req, res) => {
   }
 };
 
-module.exports = { buatAduan, getSemuaAduan, tanggapiAduan, hapusAduan };
+module.exports = { buatAduan, getAduanSaya, getSemuaAduan, tanggapiAduan, hapusAduan };

@@ -37,14 +37,14 @@
 
   function safeReturnPath(path) {
     if (typeof path !== "string" || !path.startsWith("/") || path.startsWith("//")) {
-      return "/index.html";
+      return "/";
     }
     return path;
   }
 
   function requireLogin(returnPath) {
     localStorage.setItem("redirectAfterLogin", safeReturnPath(returnPath));
-    window.location.replace("/login.html");
+    window.location.replace("/login");
   }
 
   function logout() {
@@ -52,7 +52,7 @@
     localStorage.removeItem("redirectAfterLogin");
     localStorage.removeItem("redirectAduan");
     localStorage.removeItem("jenisDipilih");
-    window.location.href = "/index.html";
+    window.location.href = "/";
   }
 
   function injectAccountMenuStyles() {
@@ -121,7 +121,7 @@
     actions.className = "auth-account-actions";
     const home = document.createElement("a");
     home.className = "auth-account-action";
-    home.href = "/index.html";
+    home.href = "/";
     home.setAttribute("role", "menuitem");
     home.innerHTML = '<span class="material-symbols-outlined">home</span><span>Beranda</span>';
 
@@ -172,7 +172,7 @@
   function renderAuthNavigation() {
     const session = getSession();
     injectAccountMenuStyles();
-    const authLinks = document.querySelectorAll('a[href="/login.html"], [data-auth-navigation]');
+    const authLinks = document.querySelectorAll('a[href="/login"], [data-auth-navigation]');
 
     authLinks.forEach((link) => {
       const icon = link.querySelector(".material-symbols-outlined");
@@ -203,7 +203,7 @@
           });
         }
       } else {
-        link.href = "/login.html";
+        link.href = "/login";
         link.title = "Masuk sebagai warga";
         link.setAttribute("aria-label", "Masuk sebagai warga");
         if (icon) icon.textContent = "login";

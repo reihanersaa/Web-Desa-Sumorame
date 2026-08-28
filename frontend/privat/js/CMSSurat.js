@@ -1,7 +1,7 @@
 /* ===================================================
    CMSSurat.js — LOGIC ASLI UNTUK CMS PERSURATAN
    (Menggantikan SKD.js / SKK.js / SKT.js / SKTM.js /
-   SuratMenyurat.js yang lama — semua masih dummy/statis)
+   Seluruh data surat diambil dari endpoint backend.
 =================================================== */
 
 // File ini SAMA PERSIS untuk ke-5 halaman, JANGAN diedit per halaman.
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function load() {
     if (!token) {
       tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-yellow-700">Sesi admin tidak ditemukan. Silakan login ulang.</td></tr>`;
-      window.location.href = "/admin/LoginAdmin.html";
+      window.location.href = "/admin/LoginAdmin";
       return;
     }
     try {
