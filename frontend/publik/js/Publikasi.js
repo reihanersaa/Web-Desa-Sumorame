@@ -233,7 +233,7 @@ function renderHeroTerbaru(items) {
 
     slide.innerHTML = `
       <img
-        src="${item.gambar_url}"
+        src="${escapeHTML(item.gambar_url)}"
         alt="${escapeHTML(item.judul)}"
         class="hero-image"
       />
@@ -421,31 +421,33 @@ async function loadPublikasi() {
         (item) => `
           <div
             class="pub-card opacity-0 translate-y-10 md:translate-y-16 transition-all duration-700"
-            data-id="${item.id}"
+            data-id="${escapeHTML(item.id)}"
           >
 
             <img
-              src="${item.gambar_url}"
+              src="${escapeHTML(item.gambar_url)}"
               class="w-full h-48 object-cover"
               alt="${escapeHTML(item.judul)}"
             >
 
-            <div class="bg-green-50 p-5 shadow-md rounded-b-xl">
+            <div class="pub-card-body bg-green-50 p-5 rounded-b-xl">
 
               <h4
-                class="text-lg font-bold text-green-800 mb-2"
+                class="pub-card-title text-lg font-bold text-green-800 mb-2"
               >
                 ${escapeHTML(item.judul)}
               </h4>
 
               <p
-                class="text-gray-600 text-sm"
+                class="pub-card-description text-gray-600 text-sm"
               >
                 ${escapeHTML(item.deskripsi)}
               </p>
 
+              <span class="pub-card-more">Selengkapnya</span>
+
               <p
-                class="text-xs text-gray-400 mt-3"
+                class="pub-card-date text-xs text-gray-400"
               >
                 ${formatTanggal(item.waktu_kegiatan)}
               </p>
@@ -456,6 +458,15 @@ async function loadPublikasi() {
         `,
       )
       .join("");
+
+    // Penanda hanya muncul jika deskripsi benar-benar dipotong.
+    publikasiGrid
+      .querySelectorAll(".pub-card-description")
+      .forEach((description) => {
+        if (description.scrollHeight > description.clientHeight + 1) {
+          description.classList.add("is-truncated");
+        }
+      });
 
 
     // ==================================================
