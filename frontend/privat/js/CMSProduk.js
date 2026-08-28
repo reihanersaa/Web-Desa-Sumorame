@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <td class="px-4 py-3 text-center border">${badge(item.status)}</td>
       <td class="px-4 py-3 text-center border"><div class="inline-flex gap-1">
         <button data-action="view" class="bg-purple-500 text-white p-1.5 rounded" title="Detail"><span class="material-symbols-outlined text-sm">visibility</span></button>
-        <button data-action="edit" class="bg-blue-500 text-white p-1.5 rounded" title="Edit Data"><span class="material-symbols-outlined text-sm">edit</span></button>
-        <button data-action="status" class="bg-green-500 text-white p-1.5 rounded" title="Ubah Status"><span class="material-symbols-outlined text-sm">edit_document</span></button>
+        <button data-action="edit" class="bg-green-500 text-white p-1.5 rounded" title="Edit Data"><span class="material-symbols-outlined text-sm">edit_document</span></button>
+        <button data-action="status" class="bg-blue-500 text-white p-1.5 rounded" title="Ubah Status"><span class="material-symbols-outlined text-sm">edit</span></button>
         <button data-action="delete" class="bg-red-500 text-white p-1.5 rounded" title="Hapus"><span class="material-symbols-outlined text-sm">delete</span></button>
       </div></td></tr>`).join("");
   };
