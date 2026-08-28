@@ -4,8 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Publikasi | Website Desa Sumorame</title>
-    <!-- Ini script guest/auth kamu yang aku balikin -->
-    <script src="/js/auth-ui.js?v=20260827-1"></script>
     <link rel="icon" href="img/logo3.png?v=20260824-1" type="image/png" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
@@ -19,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="css/hero-responsive.css?v=20260825-1" />
-    <link rel="stylesheet" href="css/Publikasi.css?v=20260827-3" />
+    <link rel="stylesheet" href="css/Publikasi.css?v=20260826-2" />
 
     <!-- Tailwind Config -->
     <script>
@@ -177,10 +175,8 @@
     </div>
 
     <!-- HERO -->
-    <section
-      id="heroSection"
-      class="public-hero group relative overflow-hidden bg-primary"
-    >
+    <section id="heroSection" class="public-hero group relative overflow-hidden bg-primary">
+
       <!-- SLIDER DINAMIS -->
       <div
         id="slider"
@@ -193,7 +189,13 @@
       <button
         id="prev"
         aria-label="Slide sebelumnya"
-        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300"
+        class="absolute left-4 top-1/2 -translate-y-1/2
+              bg-white/50 hover:bg-white/80
+              px-3 py-2 rounded z-20
+              opacity-0 pointer-events-none
+              group-hover:opacity-100 group-hover:pointer-events-auto
+              focus-visible:opacity-100 focus-visible:pointer-events-auto
+              transition-opacity duration-300"
       >
         ❮
       </button>
@@ -202,13 +204,20 @@
       <button
         id="next"
         aria-label="Slide berikutnya"
-        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white/80 px-3 py-2 rounded z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto transition-opacity duration-300"
+        class="absolute right-4 top-1/2 -translate-y-1/2
+              bg-white/50 hover:bg-white/80
+              px-3 py-2 rounded z-20
+              opacity-0 pointer-events-none
+              group-hover:opacity-100 group-hover:pointer-events-auto
+              focus-visible:opacity-100 focus-visible:pointer-events-auto
+              transition-opacity duration-300"
       >
         ❯
       </button>
+
     </section>
 
-    <!-- CONTENT -->
+    <!-- CONTENT (KOSONG) -->
     <main class="pt-28 max-w-7xl mx-auto px-6">
       <!-- TITLE -->
       <div class="text-center mb-12">
@@ -222,7 +231,7 @@
         </p>
       </div>
 
-      <!-- GRID CARD PUBLIKASI -->
+      <!-- GRID CARD PUBLIKASI (diisi otomatis lewat js/Publikasi.js) -->
       <div
         id="publikasiGrid"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center"
@@ -299,7 +308,7 @@
           >
             Kontak
           </h4>
-          <!-- Alamat -->
+          <!-- Alamat (dari kiri) -->
           <p
             class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300"
           >
@@ -327,7 +336,7 @@
           </p>
         </div>
 
-        <!-- Sosial Media -->
+        <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
         <div
           class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300"
         >
@@ -344,6 +353,7 @@
                 alt="TikTok"
               />
             </a>
+
             <a
               href="https://www.instagram.com/pemdes_sumorame02/"
               target="_blank"
@@ -355,6 +365,7 @@
                 alt="Instagram"
               />
             </a>
+
             <a
               href="https://www.youtube.com/@pemdes.sumorame"
               target="_blank"
@@ -377,7 +388,7 @@
     </footer>
 
     <script src="js/api-config.js"></script>
-    <script src="js/Publikasi.js?v=20260827-1"></script>
+    <script src="js/Publikasi.js?v=20260826-2"></script>
     <script src="js/header-scroll.js?v=20260826-1"></script>
   </body>
 </html>
