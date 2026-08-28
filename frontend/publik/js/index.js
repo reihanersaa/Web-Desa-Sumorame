@@ -701,3 +701,64 @@ const btnTutupAtas = document.getElementById("tutupPeraturan");
 const btnTutupBawah = document.getElementById("tutupPeraturanBawah");
 if (btnTutupAtas) btnTutupAtas.addEventListener("click", tutupModalPeraturan);
 if (btnTutupBawah) btnTutupBawah.addEventListener("click", tutupModalPeraturan);
+
+
+// =====================================================
+// TARIK DATA BERITA TERKINI DARI PUBLIKASI
+// =====================================================
+async function loadBeritaTerkini() {
+  const wadahBerita = document.getElementById("wadahBeritaTerkini");
+  if (!wadahBerita) return;
+
+  try {
+    // Memanggil API Publikasi
+    const response = await fetch(`${INDEX_API_BASE_URL}/publikasi`);
+    const result = await response.json();
+
+    if (result.success && result.data && result.data.length > 0) {
+      // Ambil data urutan pertama (indeks 0) karena sudah disortir terbaru oleh backend
+      const beritaTerbaru = result.data[0];
+
+      // Format tanggal menjadi format Indonesia (Contoh: 28 Agustus 2026)
+      const tanggal = new Date(beritaTerbaru.waktu_kegiatan).toLocaleDateString("id-ID", {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+
+      // Potong deskripsi jika terlalu panjang agar card tidak kepanjangan
+      const deskripsiSingkat = beritaTerbaru.deskripsi.length > 180 
+        ? beritaTerbaru.deskripsi.substring(0, 180) + "..." 
+        : beritaTerbaru.deskripsi;
+
+      // Suntikkan struktur HTML ke dalam wadah
+      wadahBerita.innerHTML = `
+        <div class="bg-yellow-400 p-5 md:p-8 flex-1 flex flex-col justify-center relative overflow-hidden">
+          <span class="inline-block bg-green-800 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
+            Terbaru • ${tanggal}
+          </span>
+          <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 leading-snug">
+            ${beritaTerbaru.judul}
+          </h3>
+          <p class="text-[15px] font-medium text-gray-800 mb-5 leading-relaxed text-justify">
+            ${deskripsiSingkat}
+          </p>
+          <a class="text-sm font-black text-green-900 hover:text-green-700 hover:underline inline-flex items-center gap-1 w-fit transition-all" href="Publikasi.html">
+            Baca Selengkapnya <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+        </div>
+        <div class="flex-1 min-h-[250px]">
+          <img alt="${beritaTerbaru.judul}" class="w-full h-full object-cover" src="${beritaTerbaru.gambar_url}"/>
+        </div>
+      `;
+    } else {
+      wadahBerita.innerHTML = `<div class="p-8 w-full text-center text-gray-500 font-medium">Belum ada publikasi berita terbaru.</div>`;
+    }
+  } catch (error) {
+    console.error("Gagal memuat berita terkini:", error);
+    wadahBerita.innerHTML = `<div class="p-8 w-full text-center text-red-500">Gagal memuat berita.</div>`;
+  }
+}
+
+// Panggil fungsinya saat halaman dimuat
+document.addEventListener("DOMContentLoaded", () => {
+  loadBeritaTerkini();
+});
