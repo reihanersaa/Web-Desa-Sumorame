@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (file) formData.append("gambar", file);
 
       const sedangEdit = Boolean(editingProductId);
-      const path = sedangEdit ? `/admin/produk/${editingProductId}` : "/publik/produk";
+      const path = sedangEdit ? `/admin/produk/${editingProductId}` : "/admin/produk";
       await request(path, {
         method: sedangEdit ? "PUT" : "POST",
         body: formData,

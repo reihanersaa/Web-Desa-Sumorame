@@ -193,6 +193,32 @@ function isSafeHttpUrl(value) {
   }
 }
 
+function getProdukImageCandidates(item) {
+  const candidates = [
+    item.gambar_url,
+    item.gambar,
+    ...(Array.isArray(item.gambar_alternatif) ? item.gambar_alternatif : []),
+  ];
+  return [...new Set(candidates.filter(Boolean).map(isSafeHttpUrl).filter(Boolean))];
+}
+
+function aktifkanFallbackProduk(img, candidates, productName) {
+  let nextIndex = 1;
+  const fallback = () => {
+    if (nextIndex < candidates.length) {
+      img.src = candidates[nextIndex++];
+      return;
+    }
+    const placeholder = document.createElement("div");
+    placeholder.className = "flex h-full min-h-52 flex-col items-center justify-center gap-2 bg-emerald-50 px-5 text-center text-gray-600";
+    placeholder.innerHTML = '<span class="material-symbols-outlined text-4xl text-green-700" aria-hidden="true">image_not_supported</span><span></span>';
+    placeholder.lastElementChild.textContent = `Foto ${productName} belum tersedia`;
+    img.replaceWith(placeholder);
+  };
+  img.addEventListener("error", fallback);
+  if (!candidates.length) fallback();
+}
+
 // === Modal Peraturan ===
 const bukaPeraturan = document.getElementById("bukaPeraturan");
 const peraturanModal = document.getElementById("peraturanModal");
@@ -253,9 +279,10 @@ async function muatProdukUnggulanBeranda() {
     produkUnggulanBeranda.innerHTML = items.map((item) => {
       const nomor = String(item.kontak_penjual || "").replace(/\D/g, "").replace(/^0/, "62");
       const pesan = encodeURIComponent(`Halo, saya tertarik dengan ${item.nama_produk}`);
+      const imageCandidates = getProdukImageCandidates(item);
       return `<article class="produk-item produk-dynamic group w-full bg-white rounded-md overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700">
-        <div class="overflow-hidden">
-          <img src="${escapeProdukHTML(isSafeHttpUrl(item.gambar))}" alt="${escapeProdukHTML(item.nama_produk)}" loading="lazy" decoding="async" class="w-full h-full object-cover">
+        <div class="h-52 overflow-hidden bg-emerald-50">
+          <img src="${escapeProdukHTML(imageCandidates[0] || "")}" alt="${escapeProdukHTML(item.nama_produk)}" loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
         <div class="produk-info bg-yellow-400/85 px-3 py-2">
           <h3 class="produk-nama font-bold text-lg">${escapeProdukHTML(item.nama_produk)}</h3>
@@ -269,6 +296,10 @@ async function muatProdukUnggulanBeranda() {
     }).join("");
 
     const cards = produkUnggulanBeranda.querySelectorAll(".produk-item");
+    cards.forEach((card, index) => {
+      const image = card.querySelector("img");
+      if (image) aktifkanFallbackProduk(image, getProdukImageCandidates(items[index]), items[index].nama_produk);
+    });
     revealOnScroll(produk, cards, ["opacity-0", "translate-y-16"], 120, (card) => card.classList.add("show"));
   } catch (error) {
     console.error("Gagal memuat produk unggulan beranda:", error.message);

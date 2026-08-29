@@ -159,7 +159,46 @@ const closeProdukModal = document.getElementById("closeProdukModal");
 const cancelProduk = document.getElementById("cancelProduk");
 
 const formProduk = document.getElementById("formProduk");
+const guestProdukModal = document.getElementById("guestProdukModal");
+const guestProdukBox = document.getElementById("guestProdukBox");
+const btnNantiProduk = document.getElementById("btnNantiProduk");
+const btnLoginProduk = document.getElementById("btnLoginProduk");
 const API_BASE_URL = window.API_BASE_URL || "http://localhost:3000/api";
+
+function bukaModalGuestProduk() {
+  if (!guestProdukModal) return;
+  guestProdukModal.classList.remove("hidden");
+  guestProdukModal.classList.add("flex");
+  document.body.style.overflow = "hidden";
+  requestAnimationFrame(() => {
+    guestProdukModal.classList.add("modal-show");
+    guestProdukBox?.focus();
+  });
+}
+
+function tutupModalGuestProduk() {
+  if (!guestProdukModal) return;
+  guestProdukModal.classList.remove("modal-show");
+  window.setTimeout(() => {
+    guestProdukModal.classList.add("hidden");
+    guestProdukModal.classList.remove("flex");
+    document.body.style.overflow = "";
+    btnProduk?.focus();
+  }, 200);
+}
+
+btnNantiProduk?.addEventListener("click", tutupModalGuestProduk);
+btnLoginProduk?.addEventListener("click", () => {
+  window.AuthSession?.requireLogin("/Produk?action=pasarkan");
+});
+guestProdukModal?.addEventListener("click", (event) => {
+  if (event.target === guestProdukModal) tutupModalGuestProduk();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && guestProdukModal?.classList.contains("flex")) {
+    tutupModalGuestProduk();
+  }
+});
 
 // ======================================================
 // CEK ELEMEN MODAL
@@ -180,15 +219,8 @@ if (
   btnProduk.addEventListener("click", () => {
     const session = window.AuthSession?.get();
     if (!session) {
-      window.AuthSession?.requireLogin("/Produk?action=pasarkan");
+      bukaModalGuestProduk();
       return;
-    }
-
-    const nikInput = document.getElementById("NIK");
-    if (nikInput && session.nik) {
-      nikInput.value = session.nik;
-      nikInput.readOnly = true;
-      nikInput.title = "NIK berasal dari akun warga yang sedang login.";
     }
 
     produkModal.classList.remove("hidden");
@@ -241,17 +273,14 @@ if (
 
     const session = window.AuthSession?.get();
     if (!session) {
-      window.AuthSession?.requireLogin("/Produk?action=pasarkan");
+      tutupModalProduk();
+      bukaModalGuestProduk();
       return;
     }
-
-    const nik = document.getElementById("NIK").value.trim();
 
     const nama = document.getElementById("namaProduk").value.trim();
 
     const harga = document.getElementById("hargaProduk").value;
-
-    const penjual = document.getElementById("penjualProduk").value.trim();
 
     const kontak = document.getElementById("kontakProduk").value.trim();
 
@@ -263,7 +292,7 @@ if (
     // VALIDASI
     // ========================================
 
-    if (!nik || !nama || !harga || !penjual || !kontak || !file) {
+    if (!nama || !harga || !kontak || !file) {
       Swal.fire({
         icon: "warning",
 
@@ -277,11 +306,11 @@ if (
       return;
     }
 
-    if (!/^\d{16}$/.test(nik)) {
+    if (!/^\d{9,15}$/.test(kontak.replace(/\D/g, ""))) {
       Swal.fire({
         icon: "warning",
-        title: "NIK tidak valid",
-        text: "NIK harus terdiri dari tepat 16 angka.",
+        title: "Nomor WhatsApp tidak valid",
+        text: "Masukkan 9 sampai 15 angka tanpa spasi atau tanda baca.",
         confirmButtonColor: "#166534",
       });
 
@@ -317,11 +346,9 @@ if (
 
     try {
       const formData = new FormData();
-      formData.append("nik", nik);
       formData.append("nama_produk", nama);
       formData.append("deskripsi", deskripsi);
       formData.append("harga", harga);
-      formData.append("nama_penjual", penjual);
       formData.append("kontak_penjual", kontak);
       formData.append("gambar", file);
 
@@ -334,7 +361,8 @@ if (
       });
       const result = await response.json().catch(() => ({}));
       if (response.status === 401 || response.status === 403) {
-        window.AuthSession?.requireLogin("/Produk?action=pasarkan");
+        tutupModalProduk();
+        bukaModalGuestProduk();
         return;
       }
       if (!response.ok)
@@ -385,9 +413,50 @@ function formatRupiah(angka) {
 function escapeHTML(text) {
   const div = document.createElement("div");
 
-  div.textContent = text;
+  div.textContent = text ?? "";
 
   return div.innerHTML;
+}
+
+function isSafeImageUrl(value) {
+  if (!value) return false;
+  try {
+    const url = new URL(String(value), window.location.origin);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
+function getProductImageCandidates(item) {
+  const candidates = [
+    item.gambar_url,
+    item.gambar,
+    ...(Array.isArray(item.gambar_alternatif) ? item.gambar_alternatif : []),
+  ];
+  return [...new Set(candidates.filter(Boolean).map(String))].filter(isSafeImageUrl);
+}
+
+function pasangFallbackGambar(img, candidates, label) {
+  let nextIndex = 1;
+  const gagal = () => {
+    if (nextIndex < candidates.length) {
+      img.src = candidates[nextIndex++];
+      return;
+    }
+    const fallback = document.createElement("div");
+    fallback.className = "produk-image-fallback";
+    const icon = document.createElement("span");
+    icon.className = "material-symbols-outlined";
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = "image_not_supported";
+    const text = document.createElement("span");
+    text.textContent = `Foto ${label} belum tersedia`;
+    fallback.append(icon, text);
+    img.replaceWith(fallback);
+  };
+  img.addEventListener("error", gagal);
+  if (!candidates.length) gagal();
 }
 
 // ======================================================
@@ -412,6 +481,8 @@ async function renderProduk() {
       kontak: item.kontak_penjual,
       deskripsi: item.deskripsi,
       gambar: item.gambar,
+      gambar_url: item.gambar_url,
+      gambar_alternatif: item.gambar_alternatif,
     })).sort((a, b) => a.nama.localeCompare(b.nama, "id", { sensitivity: "base" }));
 
     container.replaceChildren();
@@ -445,13 +516,14 @@ function buatCardProduk(item) {
     "w-full bg-white rounded-md " +
     "overflow-hidden shadow-lg";
 
+  const imageCandidates = getProductImageCandidates(item);
   card.innerHTML = `
 
     <!-- GAMBAR -->
-    <div class="overflow-hidden">
+    <div class="produk-image-wrap overflow-hidden">
 
       <img
-        src="${item.gambar}"
+        src="${escapeHTML(imageCandidates[0] || "")}"
         alt="${escapeHTML(item.nama)}"
         loading="lazy"
         decoding="async"
@@ -502,6 +574,9 @@ function buatCardProduk(item) {
 
     </div>
   `;
+
+  const productImage = card.querySelector("img");
+  if (productImage) pasangFallbackGambar(productImage, imageCandidates, item.nama);
 
   return card;
 }
