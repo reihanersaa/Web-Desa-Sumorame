@@ -2,6 +2,7 @@ const supabase = require("../config/supabase");
 const crypto = require("crypto");
 
 const PRODUCT_BUCKET = "produk";
+const LEGACY_PRODUCT_BUCKET = "produk-images";
 
 const extensionByMime = {
   "image/jpeg": "jpg",
@@ -46,6 +47,44 @@ async function removeProductImage(publicUrl) {
   if (error) console.error("Gagal menghapus gambar produk:", error.message);
 }
 
+function getProductImageCandidates(value) {
+  const rawValue = String(value || "").trim();
+  if (!rawValue) return [];
+
+  if (/^https?:\/\//i.test(rawValue)) {
+    const candidates = [rawValue];
+    if (rawValue.includes(`/object/public/${PRODUCT_BUCKET}/`)) {
+      candidates.push(rawValue.replace(`/object/public/${PRODUCT_BUCKET}/`, `/object/public/${LEGACY_PRODUCT_BUCKET}/`));
+    } else if (rawValue.includes(`/object/public/${LEGACY_PRODUCT_BUCKET}/`)) {
+      candidates.push(rawValue.replace(`/object/public/${LEGACY_PRODUCT_BUCKET}/`, `/object/public/${PRODUCT_BUCKET}/`));
+    }
+    return [...new Set(candidates)];
+  }
+
+  const normalized = rawValue.replace(/^\/+/, "");
+  const legacyPath = normalized.startsWith(`${LEGACY_PRODUCT_BUCKET}/`)
+    ? normalized.slice(LEGACY_PRODUCT_BUCKET.length + 1)
+    : normalized;
+  const currentPath = normalized.startsWith(`${PRODUCT_BUCKET}/`)
+    ? normalized
+    : normalized;
+
+  const currentUrl = supabase.storage.from(PRODUCT_BUCKET).getPublicUrl(currentPath).data.publicUrl;
+  const legacyUrl = supabase.storage.from(LEGACY_PRODUCT_BUCKET).getPublicUrl(legacyPath).data.publicUrl;
+  return [...new Set([currentUrl, legacyUrl].filter(Boolean))];
+}
+
+function serializeProduct(item) {
+  if (!item) return item;
+  const candidates = getProductImageCandidates(item.gambar_url || item.gambar);
+  return {
+    ...item,
+    gambar: candidates[0] || "",
+    gambar_url: candidates[0] || "",
+    gambar_alternatif: candidates.slice(1),
+  };
+}
+
 const produkController = {
   // 1. [PUBLIK] Warga mengajukan produk (UPDATE: Tambah Deskripsi)
   ajukanProduk: async (req, res) => {
@@ -56,11 +95,32 @@ const produkController = {
         nama_produk,
         deskripsi,
         harga,
-        nama_penjual,
-        kontak_penjual,
+        nama_penjual: submittedSellerName,
+        kontak_penjual: submittedContact,
       } = req.body || {};
 
-      const nik = String(req.user?.nik || "");
+      const isAdmin = req.user?.role === "admin";
+      let nik = String(req.user?.nik || "");
+      let nama_penjual = String(submittedSellerName || "").trim();
+      let kontak_penjual = String(submittedContact || "").trim();
+
+      if (isAdmin) {
+        nik = String(submittedNik || "").trim();
+      } else {
+        const { data: warga, error: wargaError } = await supabase
+          .from("users")
+          .select("nik, nama_lengkap, no_hp")
+          .eq("id", req.user.id)
+          .maybeSingle();
+        if (wargaError) throw wargaError;
+        if (!warga) {
+          return res.status(401).json({ success: false, message: "Akun warga tidak ditemukan." });
+        }
+        nik = String(warga.nik || req.user.nik || "");
+        nama_penjual = String(warga.nama_lengkap || "").trim();
+        kontak_penjual = kontak_penjual || String(warga.no_hp || "").trim();
+      }
+
       if (!/^\d{16}$/.test(nik)) {
         return res.status(400).json({
           success: false,
@@ -68,7 +128,7 @@ const produkController = {
         });
       }
 
-      if (submittedNik && String(submittedNik) !== nik) {
+      if (!isAdmin && submittedNik && String(submittedNik) !== nik) {
         return res.status(403).json({
           success: false,
           message: "NIK pengajuan harus sama dengan akun warga yang sedang login.",
@@ -85,6 +145,13 @@ const produkController = {
         return res
           .status(400)
           .json({ success: false, message: "Kolom wajib belum diisi!" });
+      }
+
+      if (!/^\d{9,15}$/.test(kontak_penjual)) {
+        return res.status(400).json({
+          success: false,
+          message: "Nomor WhatsApp harus terdiri dari 9 sampai 15 angka.",
+        });
       }
 
       const hargaProduk = Number(harga);
@@ -122,7 +189,7 @@ const produkController = {
         .json({
           success: true,
           message: "Produk berhasil diajukan.",
-          data: data[0],
+          data: serializeProduct(data[0]),
         });
     } catch (error) {
       return res.status(500).json({ success: false, message: error.message });
@@ -143,7 +210,7 @@ const produkController = {
         .limit(5);
 
       if (error) throw error;
-      return res.status(200).json({ success: true, data: data || [] });
+      return res.status(200).json({ success: true, data: (data || []).map(serializeProduct) });
     } catch (error) {
       return res.status(500).json({ success: false, message: error.message });
     }
@@ -160,7 +227,7 @@ const produkController = {
         .limit(3); // Batasi 3 data
 
       if (error) throw error;
-      return res.status(200).json({ success: true, data });
+      return res.status(200).json({ success: true, data: (data || []).map(serializeProduct) });
     } catch (error) {
       return res.status(500).json({ success: false, message: error.message });
     }
@@ -209,7 +276,7 @@ const produkController = {
 
       return res.status(200).json({
         success: true,
-        data: data,
+        data: (data || []).map(serializeProduct),
       });
     } catch (error) {
       console.error("Error Get Produk Publik:", error.message);
@@ -236,7 +303,7 @@ const produkController = {
 
       return res.status(200).json({
         success: true,
-        data: data,
+        data: (data || []).map(serializeProduct),
       });
     } catch (error) {
       console.error("Error Get Produk Admin:", error.message);
@@ -422,7 +489,7 @@ const produkController = {
       return res.status(200).json({
         success: true,
         message: "Data produk berhasil diperbarui.",
-        data,
+        data: serializeProduct(data),
       });
     } catch (error) {
       console.error("Error Update Produk:", error.message);

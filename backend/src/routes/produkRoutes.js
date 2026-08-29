@@ -38,6 +38,16 @@ router.post(
   produkController.ajukanProduk,
 );
 
+// Admin dapat menambahkan produk melalui CMS tanpa menyamar sebagai warga.
+router.post(
+  "/admin/produk",
+  verifyToken,
+  requireAdmin,
+  uploadProduk.single("gambar"),
+  verifyUploadSignatures,
+  produkController.ajukanProduk,
+);
+
 // --- ROUTES UNTUK PRIVAT (ADMIN CMS) ---
 // Ambil semua data produk untuk tabel CMS (Wajib Token Admin)
 router.get("/admin/produk", verifyToken, requireAdmin, produkController.getSemuaProdukAdmin);

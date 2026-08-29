@@ -9,8 +9,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link rel="stylesheet" href="css/PPID.css">
-  <link rel="stylesheet" href="css/hero-responsive.css?v=20260825-1">
+  <link rel="stylesheet" href="css/PPID.css?v=20260829-1">
+  <link rel="stylesheet" href="css/hero-responsive.css?v=20260829-1">
 
   <!-- Tailwind Config -->
   <script>
@@ -128,91 +128,82 @@ document.addEventListener("DOMContentLoaded", function () {
 
       <!-- Background -->
       <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80"
+          alt="Pelayanan informasi publik Desa Sumorame"
           class="absolute inset-0 w-full h-full object-cover object-[center_40%] opacity-50">
 
       <!-- Overlay -->
       <div class="absolute inset-0 bg-black/30"></div>
 
       <!-- Content -->
-      <div class="relative z-10 px-8 max-w-7xl mx-auto pt-20">
+      <div class="public-hero__content relative z-10">
 
           <!-- Judul -->
-          <h2 class="hero-title opacity-0 -translate-x-16 transition-all duration-700
-                    text-3xl sm:text-4xl md:text-5xl
-                    font-bold text-white mb-4 leading-tight">
-              Panduan Pelayanan<br class="sm:hidden">
-              Dan Informasi Desa
+          <h2 class="public-hero__title font-bold text-white mb-4 leading-tight">
+              Pelayanan Informasi Publik Desa
           </h2>
 
           <!-- Deskripsi -->
           <p id="heroItem"
-            class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80">
-              Selamat Datang Di Desa Sumorame.
+            class="public-hero__subtitle hero-item text-white/90">
+              Akses informasi desa yang terbuka, jelas, dan mudah bagi masyarakat.
           </p>
 
       </div>
   </section>
 
       <!-- CONTENT -->
-      <main class="pt-28 max-w-7xl mx-auto px-6">
+      <main class="ppid-shell pt-20 max-w-7xl mx-auto px-6">
 
       <!-- TITLE -->
-      <div class="text-center mb-12">
-        <h3 class="text-3xl font-bold text-green-900 mb-2">
-          Alur Panduan Pelayanan & Informasi Desa
+      <div class="text-center mb-10">
+        <span class="ppid-eyebrow">Pelayanan publik Desa Sumorame</span>
+        <h3 class="text-3xl md:text-4xl font-bold text-green-900 mt-3 mb-3">
+          Informasi yang Mudah Dijangkau
         </h3>
+        <p class="mx-auto max-w-2xl text-gray-600">Pilih layanan PPID yang dibutuhkan untuk melihat alur permohonan, profil pengelola, atau daftar informasi publik.</p>
       </div>
 
       <!-- CARD MENU PPID -->
       <div class="mt-16 opacity-0 translate-y-10 transition-all duration-700 ppid-menu">
 
-        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8">
+        <div class="ppid-menu-panel">
 
           <!-- JUDUL -->
           <h3 class="text-center text-2xl font-bold text-green-900 mb-10">
-            Layanan PPID Desa
+            Layanan PPID Desa Sumorame
           </h3>
 
           <!-- GRID MENU -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
 
             <!-- CARD 1 (MODAL) -->
-            <div class="relative overflow-hidden cursor-pointer group bg-green-50 rounded-2xl p-6 text-center 
-              hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+            <button type="button" class="ppid-action"
               onclick="ripple(event); openModal();">
-              <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-200 flex items-center justify-center text-3xl group-hover:scale-110 transition">
-                📑
+              <div class="ppid-action__icon">
+                <span class="material-symbols-outlined">route</span>
               </div>
-
               <h4 class="font-semibold text-green-800">Alur Permohonan</h4>
-            </div>
+              <p>Lihat langkah pengajuan informasi secara ringkas.</p>
+            </button>
 
             <!-- CARD 2 -->
-            <div id="profile-ppid"
-                class="relative overflow-hidden cursor-pointer group bg-green-50 rounded-2xl p-6 text-center 
-                        hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+            <button type="button" id="profile-ppid" class="ppid-action"
                 onclick="ripple(event); openModalPengumuman();">
-
-                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-200 flex items-center justify-center text-3xl group-hover:scale-110 transition">
-                    🏢
+                <div class="ppid-action__icon">
+                    <span class="material-symbols-outlined">account_tree</span>
                 </div>
-
-                <h4 class="font-semibold text-green-800">
-                    Profile PPID
-                </h4>
-            </div>
+                <h4 class="font-semibold text-green-800">Profil PPID</h4>
+                <p>Kenali struktur dan penanggung jawab layanan.</p>
+            </button>
 
             <!-- CARD 3 -->
-            <div onclick="ripple(event); openModalLayanan()"
-              class="relative overflow-hidden cursor-pointer group bg-green-50 rounded-2xl p-6 text-center 
-              hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-
-              <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-200 flex items-center justify-center text-3xl group-hover:scale-110 transition">
-                📝
+            <button type="button" onclick="ripple(event); openModalLayanan()" class="ppid-action">
+              <div class="ppid-action__icon">
+                <span class="material-symbols-outlined">description</span>
               </div>
-
               <h4 class="font-semibold text-green-800">Daftar Informasi</h4>
-            </div>
+              <p>Telusuri informasi publik yang tersedia.</p>
+            </button>
           </div>
 
         </div>
@@ -220,33 +211,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
       <!-- CARD INFORMASI PPID (ENHANCED) -->
       <div class="mt-16 opacity-0 translate-y-10 transition-all duration-700 ppid-card">
-        <div class="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden">
+        <div class="ppid-service-card">
 
           <!-- BACKGROUND GLOW -->
           <div class="absolute -top-20 -left-20 w-60 h-60 bg-green-300/30 blur-3xl rounded-full"></div>
           <div class="absolute -bottom-20 -right-20 w-60 h-60 bg-teal-300/30 blur-3xl rounded-full"></div>
 
           <!-- HEADER -->
-          <div class="flex items-center justify-between mb-6 relative z-10">
-            <h3 class="text-xl font-bold text-green-900 flex items-center gap-2">
-              <span class="bg-green-700 text-white p-2 rounded-full shadow">
-                ⏰
+          <div class="ppid-service-head relative z-10">
+            <div>
+              <span class="ppid-service-kicker">Waktu operasional</span>
+              <h3>
+              <span class="ppid-service-icon">
+                <span class="material-symbols-outlined">schedule</span>
               </span>
               Jam Pelayanan Informasi Publik
-            </h3>
+              </h3>
+              <p>Petugas PPID siap membantu permohonan informasi pada jadwal berikut.</p>
+            </div>
 
             <!-- BADGE -->
-            <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold shadow-sm">
+            <span class="ppid-active-badge">
               PPID Aktif
             </span>
           </div>
 
           <!-- TABEL -->
-          <div class="overflow-hidden rounded-2xl border border-green-200 shadow-inner relative z-10">
-            <table class="w-full text-center text-xs">
+          <div class="ppid-schedule-wrap relative z-10">
+            <table class="ppid-schedule-table">
               <thead class="bg-green-200 text-green-900 font-semibold">
                 <tr>
-                  <th class="py-3">Hari</th>
+                  <th>Hari</th>
                   <th>Jam Pelayanan</th>
                   <th>Jam Istirahat</th>
                 </tr>
@@ -255,14 +250,14 @@ document.addEventListener("DOMContentLoaded", function () {
               <tbody class="bg-green-50 text-gray-700">
 
                 <!-- ROW -->
-                <tr class="border-t hover:bg-green-100 hover:scale-[1.01] transition duration-300 cursor-pointer">
-                  <td class="py-3 font-medium">Senin - Kamis</td>
+                <tr>
+                  <td class="font-semibold">Senin - Kamis</td>
                   <td>07:30 - 15:00</td>
                   <td>12:00 - 13:00</td>
                 </tr>
 
-                <tr class="border-t hover:bg-green-100 hover:scale-[1.01] transition duration-300 cursor-pointer">
-                  <td class="py-3 font-sm">Jumat</td>
+                <tr>
+                  <td class="font-semibold">Jumat</td>
                   <td>07:30 - 14:00</td>
                   <td>11:20 - 12:30</td>
                 </tr>
@@ -272,16 +267,19 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
 
           <!-- INFO TAMBAHAN -->
-          <div class="mt-8 text-center">
-            <h4 class="text-xl font-bold text-green-900 mb-3">
+          <div class="ppid-resolution relative z-10">
+            <span class="material-symbols-outlined">task_alt</span>
+            <div>
+            <h4>
               Jangka Waktu Penyelesaian
             </h4>
-            <p class="text-gray-700 leading-relaxed">
+            <p>
               Waktu penyelesaian dilaksanakan paling lambat 10 (sepuluh) hari kerja sejak diterima permintaan.
               Pejabat Pengelola Informasi dan Dokumentasi (PPID) akan menyampaikan pemberitahuan yang berisikan
               informasi yang diminta berada di bawah penguasaannya atau tidak. Kemudian PPID dapat memperpanjang
               waktu paling lambat 7 (tujuh) hari kerja.
             </p>
+            </div>
           </div>
 
         </div>
@@ -819,7 +817,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
 
       <script src="js/api-config.js"></script>
-      <script src="js/PPID.js"></script>
+      <script src="js/PPID.js?v=20260829-1"></script>
       <script src="js/header-scroll.js?v=20260826-1"></script>
   <script src="js/tiktok-link.js?v=20260828-1"></script>
 </body>
