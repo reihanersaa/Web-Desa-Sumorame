@@ -22,6 +22,8 @@ const defaultFrontendOrigins = [
   "https://web-desa-sumorame.vercel.app",
   "https://ppid-desasumorame.id",
   "https://www.ppid-desasumorame.id",
+  "https://ppid-sumoramedesa.id",
+  "https://www.ppid-sumoramedesa.id",
   "http://localhost:3000",
   "http://127.0.0.1:5500",
   "http://localhost:5500",
