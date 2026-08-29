@@ -16,6 +16,12 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
       ]
+    },
+    {
+      "source": "/admin/:path*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+      ]
     }
   ],
   "redirects": [
@@ -28,6 +34,8 @@
   ],
   "rewrites": [
     { "source": "/", "destination": "/publik/index.html" },
+    { "source": "/robots.txt", "destination": "/publik/robots.txt" },
+    { "source": "/sitemap.xml", "destination": "/publik/sitemap.xml" },
     { "source": "/css/:path*", "destination": "/publik/css/:path*" },
     { "source": "/js/:path*", "destination": "/publik/js/:path*" },
     { "source": "/img/:path*", "destination": "/publik/img/:path*" },
