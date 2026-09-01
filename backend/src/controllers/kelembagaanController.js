@@ -9,7 +9,7 @@ const getKelembagaan = async (req, res) => {
     const { data, error } = await supabase
       .from("kelembagaan")
       .select("*")
-      .order("nama", { ascending: true });
+      .order("created_at", { ascending: false });
 
     if (error) {
       throw error;
