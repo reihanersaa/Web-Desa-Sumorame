@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchProdukUnggulan = document.getElementById("searchProdukUnggulan");
   const tableInfo = document.getElementById("tableInfo");
 
+  const modalView = document.getElementById("modalView");
+  const modalViewBox = document.getElementById("modalBox");
+
   const token = localStorage.getItem("token");
   const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
 
@@ -120,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!products.length) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="8" class="p-8 text-center text-gray-500">
+          <td colspan="7" class="p-8 text-center text-gray-500">
             Belum ada pengajuan produk.
           </td>
         </tr>
@@ -146,10 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <td class="px-4 py-3 text-center border">
           ${escapeHTML(item.kontak_penjual || "")}
-        </td>
-
-        <td class="px-4 py-3 text-center border">
-          ${escapeHTML(item.email_penjual || "")}
         </td>
 
         <td class="px-4 py-3 font-semibold text-center border">
@@ -223,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!token) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="8" class="p-8 text-center text-yellow-700">
+          <td colspan="7" class="p-8 text-center text-yellow-700">
             Sesi admin tidak ditemukan. Mengarahkan ke halaman login...
           </td>
         </tr>
@@ -248,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="8" class="p-8 text-center text-red-600">
+          <td colspan="7" class="p-8 text-center text-red-600">
             ${escapeHTML(error.message)}
           </td>
         </tr>
@@ -311,6 +310,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
       modal.classList.add("hidden");
+    }, 300);
+  };
+
+  // ==================================================
+  // MODAL VIEW PRODUK
+  // ==================================================
+  const showView = (open, item = null) => {
+    if (open && item) {
+      const gambar = document.getElementById("viewGambarProduk");
+
+      document.getElementById("viewNamaPenjual").textContent =
+        item.nama_penjual || "";
+
+      document.getElementById("viewNamaProduk").textContent =
+        item.nama_produk || "";
+
+      document.getElementById("viewNoHp").textContent =
+        item.kontak_penjual || "";
+
+      document.getElementById("viewEmail").textContent =
+        item.email_penjual || "";
+
+      document.getElementById("viewAlamat").textContent =
+        item.deskripsi || "";
+
+      if (item.gambar) {
+        gambar.src = item.gambar;
+        gambar.classList.remove("hidden");
+      } else {
+        gambar.src = "";
+        gambar.classList.add("hidden");
+      }
+
+      modalView.classList.remove("hidden");
+
+      requestAnimationFrame(() => {
+        modalView.classList.remove("opacity-0");
+        modalViewBox.classList.remove("scale-90", "opacity-0");
+      });
+
+      return;
+    }
+
+    modalView.classList.add("opacity-0");
+    modalViewBox.classList.add("scale-90", "opacity-0");
+
+    setTimeout(() => {
+      modalView.classList.add("hidden");
     }, 300);
   };
 
@@ -438,6 +485,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btnTambahProduk")?.addEventListener("click", () => showForm(true));
   document.getElementById("btnCloseModal")?.addEventListener("click", () => showForm(false));
   document.getElementById("btnBatal")?.addEventListener("click", () => showForm(false));
+
+  // ==================================================
+  // BUTTON MODAL VIEW
+  // ==================================================
+  document.getElementById("closeModal")?.addEventListener("click", () => showView(false));
+  document.getElementById("btnCloseView")?.addEventListener("click", () => showView(false));
 
   // ==================================================
   // BUTTON MODAL PRODUK UNGGULAN
@@ -648,20 +701,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // VIEW
     // ==================================================
     if (button.dataset.action === "view") {
-      return Swal.fire({
-        title: escapeHTML(item.nama_produk || ""),
-        imageUrl: item.gambar || undefined,
-        imageHeight: item.gambar ? 220 : undefined,
-
-        html: `
-          <div class="text-left">
-            <b>Penjual:</b> ${escapeHTML(item.nama_penjual || "")}<br>
-            <b>Kontak:</b> ${escapeHTML(item.kontak_penjual || "")}<br>
-            <b>Harga:</b> ${rupiah(item.harga)}<br>
-            <b>Deskripsi:</b> ${escapeHTML(item.deskripsi || "")}
-          </div>
-        `,
-      });
+      showView(true, item);
+      return;
     }
 
     // ==================================================
