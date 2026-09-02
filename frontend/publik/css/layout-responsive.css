@@ -32,8 +32,7 @@ textarea {
     background-attachment: scroll !important;
   }
 
-  main > section,
-  footer {
+  main > section {
     content-visibility: auto;
     contain-intrinsic-size: auto 700px;
   }
@@ -73,3 +72,14 @@ textarea {
   }
 }
 
+
+/* Footer mengikuti tinggi konten, termasuk kontak panjang pada layar kecil. */
+#footer,
+#globalFooter {
+  overflow-wrap: anywhere;
+}
+
+#footer .footer-item,
+#globalFooter .footer-item {
+  min-width: 0;
+}
