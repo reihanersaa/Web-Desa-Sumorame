@@ -69,6 +69,28 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ==================================================
+  // SWEETALERT LOADING + AUTO REFRESH
+  // ==================================================
+  const reloadWithLoading = (message = "Perubahan berhasil disimpan.") => {
+    Swal.fire({
+      title: "Berhasil",
+      text: `${message} Memuat ulang halaman...`,
+      icon: "success",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      timer: 1200,
+      timerProgressBar: true,
+
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    }).then(() => {
+      window.location.reload();
+    });
+  };
+
+  // ==================================================
   // BADGE STATUS
   // ==================================================
   const badge = (status) => {
@@ -98,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!products.length) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="7" class="p-8 text-center text-gray-500">
+          <td colspan="8" class="p-8 text-center text-gray-500">
             Belum ada pengajuan produk.
           </td>
         </tr>
@@ -124,6 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <td class="px-4 py-3 text-center border">
           ${escapeHTML(item.kontak_penjual || "")}
+        </td>
+
+        <td class="px-4 py-3 text-center border">
+          ${escapeHTML(item.email_penjual || "")}
         </td>
 
         <td class="px-4 py-3 font-semibold text-center border">
@@ -197,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!token) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="7" class="p-8 text-center text-yellow-700">
+          <td colspan="8" class="p-8 text-center text-yellow-700">
             Sesi admin tidak ditemukan. Mengarahkan ke halaman login...
           </td>
         </tr>
@@ -222,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="7" class="p-8 text-center text-red-600">
+          <td colspan="8" class="p-8 text-center text-red-600">
             ${escapeHTML(error.message)}
           </td>
         </tr>
@@ -260,6 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("namaPenjual").value = item.nama_penjual || "";
         document.getElementById("hargaProduk").value = item.harga || "";
         document.getElementById("noHpPenjual").value = item.kontak_penjual || "";
+        document.getElementById("emailPenjual").value = item.email_penjual || "";
         document.getElementById("alamatPenjual").value = item.deskripsi || "";
 
         preview.src = item.gambar || "";
@@ -346,6 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
         item.nama_penjual,
         item.harga,
         item.kontak_penjual,
+        item.email_penjual,
       ]
         .map((value) => String(value || "").toLocaleLowerCase("id"))
         .join(" ");
@@ -471,13 +499,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       showUnggulan(false);
-      await load();
 
-      Swal.fire(
-        "Tersimpan",
-        `${productIds.length} produk akan ditampilkan di beranda.`,
-        "success"
+      reloadWithLoading(
+        `${productIds.length} produk berhasil dipilih untuk beranda.`
       );
+
+      return;
     } catch (error) {
       Swal.fire("Gagal", error.message, "error");
     }
@@ -567,6 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append("harga", document.getElementById("hargaProduk").value);
       formData.append("nama_penjual", document.getElementById("namaPenjual").value.trim());
       formData.append("kontak_penjual", document.getElementById("noHpPenjual").value.trim());
+      formData.append("email_penjual", document.getElementById("emailPenjual").value.trim());
       formData.append("deskripsi", document.getElementById("alamatPenjual").value.trim());
 
       if (file) {
@@ -586,15 +614,13 @@ document.addEventListener("DOMContentLoaded", () => {
       form.reset();
       showForm(false);
 
-      await load();
-
-      Swal.fire(
-        "Berhasil",
+      reloadWithLoading(
         sedangEdit
           ? "Data produk berhasil diperbarui."
-          : "Produk ditambahkan dengan status menunggu.",
-        "success"
+          : "Produk berhasil ditambahkan."
       );
+
+      return;
     } catch (error) {
       Swal.fire("Gagal", error.message, "error");
     }
@@ -676,13 +702,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }),
         });
 
-        await load();
-
-        Swal.fire(
-          "Tersimpan",
-          "Status produk diperbarui.",
-          "success"
-        );
+        reloadWithLoading("Status produk berhasil diperbarui.");
+        return;
       } catch (error) {
         Swal.fire("Gagal", error.message, "error");
       }
@@ -711,13 +732,8 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "DELETE",
         });
 
-        await load();
-
-        Swal.fire(
-          "Terhapus",
-          "Produk berhasil dihapus.",
-          "success"
-        );
+        reloadWithLoading("Produk berhasil dihapus.");
+        return;
       } catch (error) {
         Swal.fire("Gagal", error.message, "error");
       }

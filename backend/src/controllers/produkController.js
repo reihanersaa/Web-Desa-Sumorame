@@ -121,15 +121,11 @@ function getProductImageCandidates(value) {
 
   const normalized = rawValue.replace(/^\/+/, "");
 
-  const legacyPath = normalized.startsWith(
-    `${LEGACY_PRODUCT_BUCKET}/`
-  )
+  const legacyPath = normalized.startsWith(`${LEGACY_PRODUCT_BUCKET}/`)
     ? normalized.slice(LEGACY_PRODUCT_BUCKET.length + 1)
     : normalized;
 
-  const currentPath = normalized.startsWith(
-    `${PRODUCT_BUCKET}/`
-  )
+  const currentPath = normalized.startsWith(`${PRODUCT_BUCKET}/`)
     ? normalized.slice(PRODUCT_BUCKET.length + 1)
     : normalized;
 
@@ -169,6 +165,16 @@ function serializeProduct(item) {
 
 
 // ==================================================
+// VALIDASI EMAIL
+// ==================================================
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+    String(email || "").trim()
+  );
+}
+
+
+// ==================================================
 // CONTROLLER PRODUK
 // ==================================================
 const produkController = {
@@ -187,6 +193,7 @@ const produkController = {
         harga,
         nama_penjual: submittedSellerName,
         kontak_penjual: submittedContact,
+        email_penjual: submittedEmail,
       } = req.body || {};
 
       const isAdmin = req.user?.role === "admin";
@@ -198,6 +205,12 @@ const produkController = {
       let kontak_penjual = String(
         submittedContact || ""
       ).trim();
+
+      let email_penjual = String(
+        submittedEmail || ""
+      )
+        .trim()
+        .toLowerCase();
 
       let user_id = null;
 
@@ -216,7 +229,7 @@ const produkController = {
         const { data: warga, error: wargaError } =
           await supabase
             .from("users")
-            .select("id, nama_lengkap, no_hp")
+            .select("id, nama_lengkap, no_hp, email")
             .eq("id", req.user.id)
             .maybeSingle();
 
@@ -240,6 +253,12 @@ const produkController = {
         kontak_penjual =
           kontak_penjual ||
           String(warga.no_hp || "").trim();
+
+        email_penjual = String(
+          warga.email || ""
+        )
+          .trim()
+          .toLowerCase();
       }
 
 
@@ -251,6 +270,7 @@ const produkController = {
         !harga ||
         !nama_penjual ||
         !kontak_penjual ||
+        !email_penjual ||
         !req.file
       ) {
         return res.status(400).json({
@@ -268,6 +288,17 @@ const produkController = {
           success: false,
           message:
             "Nomor WhatsApp harus terdiri dari 9 sampai 15 angka.",
+        });
+      }
+
+
+      // ==============================================
+      // VALIDASI EMAIL
+      // ==============================================
+      if (!isValidEmail(email_penjual)) {
+        return res.status(400).json({
+          success: false,
+          message: "Format email penjual tidak valid.",
         });
       }
 
@@ -291,8 +322,7 @@ const produkController = {
       // ==============================================
       // UPLOAD GAMBAR
       // ==============================================
-      uploadedImage =
-        await uploadGambarProduk(req.file);
+      uploadedImage = await uploadGambarProduk(req.file);
 
 
       // ==============================================
@@ -308,13 +338,13 @@ const produkController = {
             harga: hargaProduk,
             nama_penjual,
             kontak_penjual,
+            email_penjual,
             gambar: uploadedImage.publicUrl,
             status: "pending",
           },
         ])
         .select()
         .single();
-
 
       if (error) {
         if (uploadedImage) {
@@ -325,7 +355,6 @@ const produkController = {
 
         throw error;
       }
-
 
       return res.status(201).json({
         success: true,
@@ -349,7 +378,6 @@ const produkController = {
 
   // ==================================================
   // 2. GET PRODUK UNGGULAN BERANDA
-  // Maksimal 5 produk pilihan admin
   // ==================================================
   getProdukUnggulanBeranda: async (req, res) => {
     try {
@@ -367,9 +395,7 @@ const produkController = {
 
       return res.status(200).json({
         success: true,
-        data: (data || []).map(
-          serializeProduct
-        ),
+        data: (data || []).map(serializeProduct),
       });
 
     } catch (error) {
@@ -388,7 +414,6 @@ const produkController = {
 
   // ==================================================
   // 3. GET TOP 3 PRODUK
-  // Berdasarkan jumlah dilihat
   // ==================================================
   getTop3Produk: async (req, res) => {
     try {
@@ -405,9 +430,7 @@ const produkController = {
 
       return res.status(200).json({
         success: true,
-        data: (data || []).map(
-          serializeProduct
-        ),
+        data: (data || []).map(serializeProduct),
       });
 
     } catch (error) {
@@ -451,19 +474,16 @@ const produkController = {
         });
       }
 
-
       const { data, error } = await supabase
         .from("produk_unggulan")
         .update({
-          dilihat:
-            Number(produk.dilihat || 0) + 1,
+          dilihat: Number(produk.dilihat || 0) + 1,
         })
         .eq("id", id)
         .select()
         .single();
 
       if (error) throw error;
-
 
       return res.status(200).json({
         success: true,
@@ -486,7 +506,6 @@ const produkController = {
 
   // ==================================================
   // 5. GET PRODUK PUBLIK
-  // Hanya produk approved
   // ==================================================
   getProdukPublik: async (req, res) => {
     try {
@@ -500,12 +519,9 @@ const produkController = {
 
       if (error) throw error;
 
-
       return res.status(200).json({
         success: true,
-        data: (data || []).map(
-          serializeProduct
-        ),
+        data: (data || []).map(serializeProduct),
       });
 
     } catch (error) {
@@ -524,18 +540,15 @@ const produkController = {
 
   // ==================================================
   // 6. GET SEMUA PRODUK ADMIN
-  // Pending, Approved, Rejected
   // ==================================================
   getSemuaProdukAdmin: async (req, res) => {
     try {
       if (req.user?.role !== "admin") {
         return res.status(403).json({
           success: false,
-          message:
-            "Akses Ditolak! Khusus Admin.",
+          message: "Akses Ditolak! Khusus Admin.",
         });
       }
-
 
       const { data, error } = await supabase
         .from("produk_unggulan")
@@ -546,12 +559,9 @@ const produkController = {
 
       if (error) throw error;
 
-
       return res.status(200).json({
         success: true,
-        data: (data || []).map(
-          serializeProduct
-        ),
+        data: (data || []).map(serializeProduct),
       });
 
     } catch (error) {
@@ -570,48 +580,27 @@ const produkController = {
 
   // ==================================================
   // 7. UPDATE PILIHAN PRODUK BERANDA
-  // Maksimal 5 produk
   // ==================================================
-  updateProdukUnggulanBeranda: async (
-    req,
-    res
-  ) => {
+  updateProdukUnggulanBeranda: async (req, res) => {
     try {
       if (req.user?.role !== "admin") {
         return res.status(403).json({
           success: false,
-          message:
-            "Akses Ditolak! Khusus Admin.",
+          message: "Akses Ditolak! Khusus Admin.",
         });
       }
 
-
-      const ids = Array.isArray(
-        req.body?.product_ids
-      )
-        ? [
-            ...new Set(
-              req.body.product_ids.map(String)
-            ),
-          ]
+      const ids = Array.isArray(req.body?.product_ids)
+        ? [...new Set(req.body.product_ids.map(String))]
         : [];
 
-
-      // ==============================================
-      // MAKSIMAL 5 PRODUK
-      // ==============================================
       if (ids.length > 5) {
         return res.status(400).json({
           success: false,
-          message:
-            "Produk unggulan maksimal 5 item.",
+          message: "Produk unggulan maksimal 5 item.",
         });
       }
 
-
-      // ==============================================
-      // CEK SEMUA PRODUK HARUS APPROVED
-      // ==============================================
       if (ids.length) {
         const {
           data: approved,
@@ -626,10 +615,7 @@ const produkController = {
           throw validationError;
         }
 
-        if (
-          (approved || []).length !==
-          ids.length
-        ) {
+        if ((approved || []).length !== ids.length) {
           return res.status(400).json({
             success: false,
             message:
@@ -638,32 +624,19 @@ const produkController = {
         }
       }
 
-
-      // ==============================================
-      // RESET FEATURED LAMA
-      // ==============================================
-      const { error: clearError } =
-        await supabase
-          .from("produk_unggulan")
-          .update({
-            is_featured: false,
-            featured_order: null,
-          })
-          .eq("is_featured", true);
+      const { error: clearError } = await supabase
+        .from("produk_unggulan")
+        .update({
+          is_featured: false,
+          featured_order: null,
+        })
+        .eq("is_featured", true);
 
       if (clearError) {
         throw clearError;
       }
 
-
-      // ==============================================
-      // SET FEATURED BARU
-      // ==============================================
-      for (
-        let index = 0;
-        index < ids.length;
-        index += 1
-      ) {
+      for (let index = 0; index < ids.length; index += 1) {
         const { error } = await supabase
           .from("produk_unggulan")
           .update({
@@ -676,7 +649,6 @@ const produkController = {
           throw error;
         }
       }
-
 
       return res.status(200).json({
         success: true,
@@ -706,15 +678,12 @@ const produkController = {
       if (req.user?.role !== "admin") {
         return res.status(403).json({
           success: false,
-          message:
-            "Akses Ditolak! Khusus Admin.",
+          message: "Akses Ditolak! Khusus Admin.",
         });
       }
 
-
       const { id } = req.params;
       const { status } = req.body || {};
-
 
       const validStatus = [
         "pending",
@@ -722,11 +691,7 @@ const produkController = {
         "rejected",
       ];
 
-
-      if (
-        !status ||
-        !validStatus.includes(status)
-      ) {
+      if (!status || !validStatus.includes(status)) {
         return res.status(400).json({
           success: false,
           message:
@@ -734,20 +699,14 @@ const produkController = {
         });
       }
 
-
-      // Jika status bukan approved,
-      // produk otomatis dihapus dari featured.
       const updateData =
         status === "approved"
-          ? {
-              status,
-            }
+          ? { status }
           : {
               status,
               is_featured: false,
               featured_order: null,
             };
-
 
       const { data, error } = await supabase
         .from("produk_unggulan")
@@ -758,14 +717,12 @@ const produkController = {
 
       if (error) throw error;
 
-
       if (!data) {
         return res.status(404).json({
           success: false,
           message: "Produk tidak ditemukan.",
         });
       }
-
 
       return res.status(200).json({
         success: true,
@@ -790,7 +747,6 @@ const produkController = {
 
   // ==================================================
   // 9. UPDATE DATA PRODUK
-  // Tidak mengubah status
   // ==================================================
   updateProduk: async (req, res) => {
     let uploadedImage = null;
@@ -799,11 +755,9 @@ const produkController = {
       if (req.user?.role !== "admin") {
         return res.status(403).json({
           success: false,
-          message:
-            "Akses Ditolak! Khusus Admin.",
+          message: "Akses Ditolak! Khusus Admin.",
         });
       }
-
 
       const { id } = req.params;
 
@@ -813,6 +767,7 @@ const produkController = {
         harga,
         nama_penjual,
         kontak_penjual,
+        email_penjual,
       } = req.body || {};
 
 
@@ -823,6 +778,7 @@ const produkController = {
         !nama_produk ||
         !nama_penjual ||
         !kontak_penjual ||
+        !email_penjual ||
         !deskripsi
       ) {
         return res.status(400).json({
@@ -845,6 +801,24 @@ const produkController = {
           success: false,
           message:
             "Nomor HP harus terdiri dari 9 sampai 15 angka.",
+        });
+      }
+
+
+      // ==============================================
+      // VALIDASI EMAIL
+      // ==============================================
+      const email = String(
+        email_penjual
+      )
+        .trim()
+        .toLowerCase();
+
+      if (!isValidEmail(email)) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Format email penjual tidak valid.",
         });
       }
 
@@ -878,17 +852,14 @@ const produkController = {
         .eq("id", id)
         .maybeSingle();
 
-
       if (existingError) {
         throw existingError;
       }
 
-
       if (!existingProduct) {
         return res.status(404).json({
           success: false,
-          message:
-            "Produk tidak ditemukan.",
+          message: "Produk tidak ditemukan.",
         });
       }
 
@@ -911,6 +882,9 @@ const produkController = {
 
         kontak_penjual:
           kontak,
+
+        email_penjual:
+          email,
       };
 
 
@@ -936,7 +910,6 @@ const produkController = {
         .select()
         .single();
 
-
       if (error) {
         if (uploadedImage) {
           await removeProductImage(
@@ -961,7 +934,6 @@ const produkController = {
           existingProduct.gambar
         );
       }
-
 
       return res.status(200).json({
         success: true,
@@ -997,13 +969,8 @@ const produkController = {
         });
       }
 
-
       const { id } = req.params;
 
-
-      // ==============================================
-      // AMBIL GAMBAR PRODUK
-      // ==============================================
       const {
         data: existingProduct,
         error: existingError,
@@ -1013,11 +980,9 @@ const produkController = {
         .eq("id", id)
         .maybeSingle();
 
-
       if (existingError) {
         throw existingError;
       }
-
 
       if (!existingProduct) {
         return res.status(404).json({
@@ -1026,30 +991,20 @@ const produkController = {
         });
       }
 
-
-      // ==============================================
-      // DELETE DATABASE
-      // ==============================================
       const { error } = await supabase
         .from("produk_unggulan")
         .delete()
         .eq("id", id);
 
-
       if (error) {
         throw error;
       }
 
-
-      // ==============================================
-      // DELETE GAMBAR STORAGE
-      // ==============================================
       if (existingProduct.gambar) {
         await removeProductImage(
           existingProduct.gambar
         );
       }
-
 
       return res.status(200).json({
         success: true,
