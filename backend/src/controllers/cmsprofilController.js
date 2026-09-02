@@ -1,4 +1,5 @@
 const supabase = require("../config/supabase");
+const { isReferencedAnnouncementImage } = require("./pengumumanController");
 
 // ==================================================
 // 1. GET SEMUA CMS PROFIL
@@ -207,6 +208,7 @@ const updateCmsProfil = async (req, res) => {
     if (error) throw error;
 
     const hapusGambarLama = async (urlLama) => {
+      if (await isReferencedAnnouncementImage(urlLama)) return;
       const marker = "/storage/v1/object/public/cms-profil/";
       if (urlLama && urlLama.includes(marker)) {
         try {
@@ -245,6 +247,7 @@ const deleteCmsProfil = async (req, res) => {
     if (!dataCmsProfil) return res.status(404).json({ success: false, message: "Data tidak ditemukan." });
 
     const hapusGambar = async (urlGambar) => {
+      if (await isReferencedAnnouncementImage(urlGambar)) return;
       const marker = "/storage/v1/object/public/cms-profil/";
       if (urlGambar && urlGambar.includes(marker)) {
         try {

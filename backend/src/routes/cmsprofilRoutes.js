@@ -15,6 +15,7 @@ const {
   requireAdmin
 } = require("../middleware/authMiddleware");
 const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
+const pengumuman = require("../controllers/pengumumanController");
 
 
 // ==================================================
@@ -50,6 +51,11 @@ const upload = multer({
 
 
 // ==================================================
+// Pengumuman uses its own records, independent from hero slides.
+router.get("/pengumuman", pengumuman.list);
+router.post("/pengumuman", verifyToken, requireAdmin, upload.single("gambar"), verifyUploadSignatures, pengumuman.create);
+router.delete("/pengumuman/:id", verifyToken, requireAdmin, pengumuman.remove);
+
 // GET CMS PROFIL
 // GET /api/cmsprofil
 // PUBLIC

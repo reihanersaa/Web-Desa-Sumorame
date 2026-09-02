@@ -38,6 +38,7 @@
       rel="stylesheet"
     />
     <link href="css/index.css?v=20260824-2" rel="stylesheet" />
+    <link href="css/pengumuman-slider.css?v=20260902-1" rel="stylesheet" />
     <!-- Tailwind Config -->
     <script>
       tailwind.config = {
@@ -765,32 +766,29 @@
       </section>
 
       <!-- MODAL Pengumuman -->
-      <div class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/50" id="myModal">
-        <div class="relative bg-white rounded-2xl shadow-2xl w-fit max-w-[700px] max-h-[95vh] flex flex-col overflow-hidden" id="modalBox">
-          <button
-            class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
-            onclick="closeModal()"
-          >
-            ✕
-          </button>
-          <div class="p-6 border-b">
-            <h2 class="text-xl font-semibold text-green-800">
-              Pengumuman Pelayanan
-            </h2>
-            <p class="text-sm text-gray-600 mt-1">
-              Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
-            </p>
+      <dialog id="announcementDialog" aria-labelledby="announcementHeading" aria-describedby="announcementDescription">
+        <header class="announcement-header">
+          <div>
+            <span class="announcement-eyebrow">KABAR DESA SUMORAME</span>
+            <h2 id="announcementHeading">Pengumuman Pelayanan</h2>
+            <p id="announcementDescription">Informasi terbaru dari Kantor Desa Sumorame.</p>
           </div>
-          <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-            <img id="gambarModalPublik" class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" alt="Pengumuman pelayanan" decoding="async"/>
-          </div>
-          <div class="p-4 border-t bg-white">
-            <a class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="/PPID">
-              LIHAT PENGUMUMAN
-            </a>
-          </div>
+          <button id="announcementClose" type="button" aria-label="Tutup pengumuman" autofocus>✕</button>
+        </header>
+        <div id="announcementStage" class="announcement-stage" aria-roledescription="karusel" aria-label="Gambar pengumuman">
+          <img id="announcementImage" alt="" decoding="async" />
+          <p id="announcementImageError" hidden>Gambar belum dapat dimuat. Silakan coba lagi nanti atau buka pengumuman berikutnya.</p>
         </div>
-      </div>
+        <footer class="announcement-footer">
+          <p id="announcementTitle" class="announcement-title"></p>
+          <div id="announcementControls" class="announcement-controls" hidden>
+            <button id="announcementPrev" type="button" aria-label="Pengumuman sebelumnya">←</button>
+            <span id="announcementCounter" aria-live="off"></span>
+            <button id="announcementNext" type="button" aria-label="Pengumuman berikutnya">→</button>
+            <button id="announcementPause" type="button" aria-pressed="false">Jeda otomatis</button>
+          </div>
+        </footer>
+      </dialog>
     </main>
 
     <!-- Scroll To Top -->
@@ -856,6 +854,7 @@
       </div>
     </footer>
     <script src="js/api-config.js"></script>
+    <script src="js/pengumuman-slider.js?v=20260902-1"></script>
     <script src="js/index.js?v=20260829-1"></script>
     <script src="js/header-scroll.js?v=20260826-1"></script>
     <script src="js/tiktok-link.js?v=20260828-1"></script>
