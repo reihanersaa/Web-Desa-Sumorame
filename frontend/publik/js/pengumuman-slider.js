@@ -11,10 +11,9 @@
   const pause = get("announcementPause");
   const close = get("announcementClose");
   const imageError = get("announcementImageError");
-  const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const AUTO_SLIDE_MS = 6000;
   let slides = [], current = 0, timer = null, openTimer = null;
-  let paused = motion.matches, imageReady = false, previousFocus, oldOverflow;
+  let paused = false, imageReady = false, previousFocus, oldOverflow;
 
   function stop() { window.clearTimeout(timer); timer = null; }
   function schedule() {
@@ -36,6 +35,8 @@
     image.hidden = false;
     image.alt = slide.judul || "Pengumuman Pelayanan";
     image.src = slide.gambar_url;
+    // Gambar cache dapat siap sebelum event load diterima.
+    imageReady = image.complete && image.naturalWidth > 0;
     title.textContent = image.alt;
     counter.textContent = `${current + 1} / ${slides.length}`;
     stage.setAttribute("aria-label", `Pengumuman ${current + 1} dari ${slides.length}`);
@@ -82,7 +83,6 @@
   }, { passive: true });
   stage.addEventListener("touchcancel", () => { touchStart = null; schedule(); }, { passive: true });
   document.addEventListener("visibilitychange", schedule);
-  motion.addEventListener("change", () => { if (motion.matches) { paused = true; updatePause(); } });
   window.addEventListener("pagehide", () => { stop(); window.clearTimeout(openTimer); });
   window.addEventListener("pageshow", schedule);
 
