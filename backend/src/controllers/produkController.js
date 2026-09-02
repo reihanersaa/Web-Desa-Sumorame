@@ -4,6 +4,22 @@ const crypto = require("crypto");
 const PRODUCT_BUCKET = "produk";
 const LEGACY_PRODUCT_BUCKET = "produk-images";
 
+const PUBLIC_PRODUCT_FIELDS = `
+  id,
+  user_id,
+  nama_produk,
+  harga,
+  deskripsi,
+  gambar,
+  status,
+  created_at,
+  nama_penjual,
+  kontak_penjual,
+  dilihat,
+  is_featured,
+  featured_order
+`;
+
 const extensionByMime = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -378,12 +394,13 @@ const produkController = {
 
   // ==================================================
   // 2. GET PRODUK UNGGULAN BERANDA
+  // EMAIL TIDAK DIKIRIM KE PUBLIK
   // ==================================================
   getProdukUnggulanBeranda: async (req, res) => {
     try {
       const { data, error } = await supabase
         .from("produk_unggulan")
-        .select("*")
+        .select(PUBLIC_PRODUCT_FIELDS)
         .eq("status", "approved")
         .eq("is_featured", true)
         .order("featured_order", {
@@ -414,12 +431,13 @@ const produkController = {
 
   // ==================================================
   // 3. GET TOP 3 PRODUK
+  // EMAIL TIDAK DIKIRIM KE PUBLIK
   // ==================================================
   getTop3Produk: async (req, res) => {
     try {
       const { data, error } = await supabase
         .from("produk_unggulan")
-        .select("*")
+        .select(PUBLIC_PRODUCT_FIELDS)
         .eq("status", "approved")
         .order("dilihat", {
           ascending: false,
@@ -480,7 +498,7 @@ const produkController = {
           dilihat: Number(produk.dilihat || 0) + 1,
         })
         .eq("id", id)
-        .select()
+        .select(PUBLIC_PRODUCT_FIELDS)
         .single();
 
       if (error) throw error;
@@ -506,12 +524,13 @@ const produkController = {
 
   // ==================================================
   // 5. GET PRODUK PUBLIK
+  // EMAIL TIDAK DIKIRIM KE PUBLIK
   // ==================================================
   getProdukPublik: async (req, res) => {
     try {
       const { data, error } = await supabase
         .from("produk_unggulan")
-        .select("*")
+        .select(PUBLIC_PRODUCT_FIELDS)
         .eq("status", "approved")
         .order("created_at", {
           ascending: false,
@@ -540,6 +559,7 @@ const produkController = {
 
   // ==================================================
   // 6. GET SEMUA PRODUK ADMIN
+  // EMAIL TETAP DIKIRIM KE ADMIN
   // ==================================================
   getSemuaProdukAdmin: async (req, res) => {
     try {
@@ -701,7 +721,9 @@ const produkController = {
 
       const updateData =
         status === "approved"
-          ? { status }
+          ? {
+              status,
+            }
           : {
               status,
               is_featured: false,
