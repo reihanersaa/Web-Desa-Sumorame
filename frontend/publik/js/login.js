@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+  function getSafeRedirect(value) {
+    if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//") || /[\\\u0000-\u0020]/.test(value)) {
+      return null;
+    }
+    return value;
+  }
   // ================= MODAL LUPA PASSWORD =================
   const forgotBtn = document.getElementById("forgotPassword");
   const modal = document.getElementById("modalForgot");
@@ -44,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
 
       const nip = document.getElementById("nip").value.trim();
-      const pass = document.getElementById("password").value.trim();
+      const pass = document.getElementById("password").value;
 
       if (!nip || !pass) {
         Swal.fire({
@@ -79,8 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
           // 1. JIKA BERHASIL: SIMPAN TOKEN & DATA USER
-          localStorage.setItem("token", result.token);
-          localStorage.setItem("login", "true");
+          // Sesi warga terpisah dari CMS; login warga tidak menimpa token admin.
+          localStorage.setItem("warga_token", result.token);
 
           if (result.data) {
             localStorage.setItem("user_nama", result.data.nama_lengkap || "");
@@ -89,7 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           // 2. LOGIKA REDIRECT
-          const redirectAfterLogin = localStorage.getItem("redirectAfterLogin");
+          const redirectAfterLogin = getSafeRedirect(
+            localStorage.getItem("redirectAfterLogin"),
+          );
           const redirectAduan = localStorage.getItem("redirectAduan");
 
           if (redirectAfterLogin) {
@@ -97,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = redirectAfterLogin;
           } else if (redirectAduan) {
             localStorage.removeItem("redirectAduan");
-            window.location.href = "/Aduan.html";
+            window.location.href = "/Aduan";
           } else {
             Swal.fire({
               title: "Login Berhasil 🎉",
@@ -109,8 +117,8 @@ document.addEventListener("DOMContentLoaded", function () {
               color: "#2e7d32",
             }).then(() => {
               window.location.href = result.data?.role === "admin"
-                ? "/admin/DashboardAdmin.html"
-                : "/index.html";
+                ? "/admin/DashboardAdmin"
+                : "/";
             });
           }
         } else {

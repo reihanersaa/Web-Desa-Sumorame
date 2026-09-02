@@ -22,10 +22,13 @@ const upload = multer({
 
 const { verifyToken, requireRole, requireAdmin } = require("../middleware/authMiddleware");
 const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
-const { buatAduan, getSemuaAduan, tanggapiAduan, hapusAduan } = require('../controllers/aduanController');
+const { buatAduan, getAduanSaya, getSemuaAduan, tanggapiAduan, hapusAduan } = require('../controllers/aduanController');
 
 // 1. Rute POST (Warga) -> HARUS ADA upload.single("file_bukti")
 router.post("/", verifyToken, requireRole("warga"), upload.single("file_bukti"), verifyUploadSignatures, buatAduan);
+
+// Riwayat hanya untuk pemilik akun yang sedang login.
+router.get("/saya", verifyToken, requireRole("warga"), getAduanSaya);
 
 // 2. Rute GET (Admin)
 router.get("/", verifyToken, requireAdmin, getSemuaAduan);

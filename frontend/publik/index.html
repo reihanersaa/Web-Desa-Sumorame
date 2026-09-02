@@ -3,7 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Profil Desa | Website Desa Sumorame</title>
+    <title>Website Resmi Desa Sumorame | Candi, Sidoarjo</title>
+    <meta name="description" content="Website resmi Desa Sumorame, Kecamatan Candi, Kabupaten Sidoarjo. Akses profil desa, informasi publik, layanan persuratan, pengaduan, dan produk UMKM." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://ppid-sumoramedesa.id/" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Desa Sumorame" />
+    <meta property="og:title" content="Website Resmi Desa Sumorame | Candi, Sidoarjo" />
+    <meta property="og:description" content="Portal resmi Desa Sumorame untuk profil desa, informasi publik, administrasi persuratan, pengaduan warga, publikasi, dan produk UMKM." />
+    <meta property="og:url" content="https://ppid-sumoramedesa.id/" />
+    <meta property="og:image" content="https://ppid-sumoramedesa.id/img/BalaiDesa.jpg" />
+    <meta property="og:image:alt" content="Balai Desa Sumorame, Kecamatan Candi, Kabupaten Sidoarjo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Website Resmi Desa Sumorame" />
+    <meta name="twitter:description" content="Portal informasi dan layanan resmi Desa Sumorame, Kecamatan Candi, Kabupaten Sidoarjo." />
+    <meta name="twitter:image" content="https://ppid-sumoramedesa.id/img/BalaiDesa.jpg" />
+    <script src="/js/auth-ui.js?v=20260828-1"></script>
     <link href="img/logo3.png?v=20260824-1" rel="icon" type="image/png" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
@@ -22,6 +38,7 @@
       rel="stylesheet"
     />
     <link href="css/index.css?v=20260824-2" rel="stylesheet" />
+    <link href="css/pengumuman-slider.css?v=20260902-1" rel="stylesheet" />
     <!-- Tailwind Config -->
     <script>
       tailwind.config = {
@@ -47,7 +64,39 @@
         },
       };
     </script>
-    <link href="css/layout-responsive.css?v=20260825-1" rel="stylesheet" />
+    <link href="css/layout-responsive.css?v=20260828-2" rel="stylesheet" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "GovernmentOrganization",
+            "@id": "https://ppid-sumoramedesa.id/#organization",
+            "name": "Pemerintah Desa Sumorame",
+            "alternateName": "Desa Sumorame",
+            "url": "https://ppid-sumoramedesa.id/",
+            "logo": "https://ppid-sumoramedesa.id/img/logo3.png",
+            "email": "PemdesSumorame@gmail.com",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Jl. Singokarso No.01, Kerawean",
+              "addressLocality": "Sumorame",
+              "addressRegion": "Jawa Timur",
+              "postalCode": "61271",
+              "addressCountry": "ID"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ppid-sumoramedesa.id/#website",
+            "url": "https://ppid-sumoramedesa.id/",
+            "name": "Website Resmi Desa Sumorame",
+            "inLanguage": "id-ID",
+            "publisher": { "@id": "https://ppid-sumoramedesa.id/#organization" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body class="bg-surface font-body text-on-surface">
     <!-- HEADER -->
@@ -78,37 +127,37 @@
             Profile Desa
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/PPID.html">
+          <a class="nav-item relative px-5 font-bold" href="/PPID">
             PPID
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/Lembaga.html">
+          <a class="nav-item relative px-5 font-bold" href="/Lembaga">
             Lembaga
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/Informasi.html">
+          <a class="nav-item relative px-5 font-bold" href="/Informasi">
             Informasi
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
           <a
             class="nav-item relative px-5 font-bold text-green-800"
-            href="/AdminP.html"
+            href="/AdminP"
           >
             Administrasi Persuratan
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/Aduan.html">
+          <a class="nav-item relative px-5 font-bold" href="/Aduan">
             Aduan
           </a>
           <div class="h-5 w-[1px] bg-gray-400"></div>
-          <a class="nav-item relative px-5 font-bold" href="/Publikasi.html">
+          <a class="nav-item relative px-5 font-bold" href="/Publikasi">
             Publikasi
           </a>
         </nav>
         <!-- LOGOUT -->
         <a
           class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition"
-          href="/login.html"
+          href="/login"
         >
           <span class="material-symbols-outlined text-2xl"> logout </span>
         </a>
@@ -137,43 +186,43 @@
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/PPID.html"
+        href="/PPID"
       >
         PPID
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/Lembaga.html"
+        href="/Lembaga"
       >
         Lembaga
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/Informasi.html"
+        href="/Informasi"
       >
         Informasi
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/AdminP.html"
+        href="/AdminP"
       >
         Administrasi Persuratan
       </a>
       <a
         class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/Aduan.html"
+        href="/Aduan"
       >
         Aduan
       </a>
       <a
         class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/Publikasi.html"
+        href="/Publikasi"
       >
         Publikasi
       </a>
       <a
         class="py-4 px-6 font-semibold text-emerald-900 hover:bg-gray-100 transition"
-        href="/login.html"
+        href="/login"
       >
         Log Out
       </a>
@@ -186,10 +235,10 @@
       <div
         class="flex items-start transition-transform duration-700 ease-in-out"
         id="slider"
+        aria-live="polite"
       >
-        <!-- Konten slider akan diisi oleh index.js dari database -->
-        <div class="min-w-full relative">
-          <img alt="Hero" class="hero-image" src="img/slide1.png" />
+        <div class="min-w-full relative flex items-center justify-center bg-emerald-950 text-white">
+          <p class="px-6 text-center">Memuat hero dari CMS...</p>
         </div>
       </div>
       <button
@@ -452,10 +501,10 @@
             id="fotoKadesPublik"
             alt="Kepala Desa"
             class="rounded-lg mb-3 w-full h-96 object-cover object-top hover:scale-105 transition duration-300"
-            src="img/rochmanu-red.jpg"
+            hidden
           />
           <!-- 🚨 ID NAMA KADES -->
-          <h4 id="namaKadesPublik" class="font-semibold text-base">ROCHMANU</h4>
+          <h4 id="namaKadesPublik" class="font-semibold text-base">Memuat data kepala desa...</h4>
         </div>
         <!-- TEXT AREA -->
         <div class="flex-1 flex flex-col gap-3">
@@ -469,11 +518,7 @@
             id="sambutanPublik"
             class="sambutan-item opacity-0 translate-x-16 transition-all duration-700 delay-300 text-base md:text-lg text-gray-600 leading-8 text-justify"
           >
-            Assalamu&rsquo;alaikum warahmatullahi wabarakatuh, Salam sejahtera
-            bagi kita semua. Dengan penuh rasa syukur, saya menyambut seluruh
-            warga dan pengunjung di website resmi Desa Digital. Website ini
-            diharapkan dapat menjadi sarana informasi, komunikasi, dan pelayanan
-            bagi seluruh masyarakat Desa Sumorame.
+            Memuat sambutan dari CMS...
           </p>
         </div>
       </section>
@@ -505,7 +550,7 @@
                 <img alt="Statistik" class="menu-icon" src="img/Statistik.webp"/>
                 <span> Statistik </span>
               </a>
-              <a class="menu-card" href="/PPID.html?open=profile-ppid">
+              <a class="menu-card" href="/PPID?open=profile-ppid">
                 <img alt="Pemerintah" class="menu-icon" src="img/Pemerintah.webp"/>
                 <span>Pemerintah</span>
               </a>
@@ -521,7 +566,7 @@
                 <img alt="Peraturan" class="menu-icon" src="img/Peraturan.webp"/>
                 <span> Peraturan </span>
               </a>
-              <a class="menu-card" href="/Informasi.html">
+              <a class="menu-card" href="/Informasi">
                 <img alt="Info Publik" class="menu-icon" src="img/Info Publik.webp"/>
                 <span> Info Publik </span>
               </a>
@@ -529,7 +574,7 @@
                 <img alt="Galeri Foto" class="menu-icon" src="img/Galeri_Foto.webp"/>
                 <span> Galeri Foto </span>
               </a>
-              <a class="menu-card" href="/PPID.html#maps">
+              <a class="menu-card" href="/PPID#maps">
                 <img alt="Peta" class="menu-icon" src="img/Peta.webp" />
                 <span> Peta </span>
               </a>
@@ -654,35 +699,19 @@
         >
           Berita Terkini
         </h1>
-        <div
-          class="berita-item opacity-0 translate-y-10 transition-all duration-700 delay-200 max-w-4xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-md min-h-[220px]"
-        >
-          <div
-            class="berita-item opacity-0 -translate-x-16 transition-all duration-700 delay-300 bg-yellow-400 p-4 flex-1 flex flex-col justify-center"
-          >
-            <p class="text-lg font-bold text-gray-800 mb-3">
-              Kegiatan Kuliah Kerja Nyata (KKN) di Desa Sumorame yang diikuti
-              oleh mahasiswa Universitas Maarif Hasyim Latif (UMAHA). Berbagai
-              program kerja dilaksanakan bersama pemerintah desa dan masyarakat
-              sebagai bentuk pengabdian kepada masyarakat...
-            </p>
-            <a
-              class="text-sm font-semibold text-green-900 hover:underline"
-              href="/Informasi.html"
-            >
-              Lebih Lanjut
-            </a>
-          </div>
-          <div
-            class="berita-item opacity-0 translate-x-16 transition-all duration-700 delay-500 flex-1"
-          >
-            <img alt="Berita" class="w-full h-full object-cover" src="img/kegiatan.jpg"/>
+        
+        <!-- Wadah yang akan diisi oleh index.js -->
+        <div id="wadahBeritaTerkini" class="berita-item opacity-0 translate-y-10 transition-all duration-700 delay-200 max-w-4xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-md min-h-[220px]">
+          <div class="p-8 w-full text-center text-gray-500">
+             Memuat berita terbaru...
           </div>
         </div>
+        
+        <!-- Tombol Selengkapnya -->
         <div class="text-center mt-5">
           <a
             class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out hover:bg-green-800 hover:scale-110 hover:-translate-y-1 hover:shadow-2xl active:scale-95"
-            href="/Informasi.html"
+            href="/Informasi"
           >
             Selengkapnya
           </a>
@@ -695,10 +724,7 @@
         <div class="visi-item opacity-0 -translate-x-16 transition-all duration-700 bg-green-800 text-white p-6 rounded-xl hover:scale-105 transition duration-300">
           <h3 class="text-xl font-bold mb-2">Visi</h3>
           <!-- 🚨 ID VISI -->
-          <p id="visiPublik">
-            "Terwujudnya Desa Sumorame yang Makmur dan Unggul melalui
-            pembangunan yang berkelanjutan..."
-          </p>
+          <p id="visiPublik">Memuat visi dari CMS...</p>
         </div>
         <!-- MISI -->
         <div class="visi-item opacity-0 translate-x-16 transition-all duration-700 delay-200 bg-yellow-400 p-6 rounded-xl hover:scale-105 transition duration-300">
@@ -731,7 +757,7 @@
         <div class="text-center mt-10">
           <a
             class="inline-block bg-green-700 text-white text-lg px-6 py-2 rounded-md transition-all duration-300 ease-out"
-            href="/Produk.html"
+            href="/Produk"
             id="btnProduk"
           >
             Selengkapnya
@@ -740,32 +766,29 @@
       </section>
 
       <!-- MODAL Pengumuman -->
-      <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" id="myModal">
-        <div class="relative bg-white rounded-2xl shadow-2xl w-fit max-w-[700px] max-h-[95vh] flex flex-col overflow-hidden" id="modalBox">
-          <button
-            class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-md bg-white/70 backdrop-blur-md text-gray-700 hover:text-white hover:bg-green-400 hover:scale-105 transition-all duration-200 shadow-md"
-            onclick="closeModal()"
-          >
-            ✕
-          </button>
-          <div class="p-6 border-b">
-            <h2 class="text-xl font-semibold text-green-800">
-              Pengumuman Pelayanan
-            </h2>
-            <p class="text-sm text-gray-600 mt-1">
-              Informasi dan Pengumuman Pelayanan Kantor Desa Sumorame
-            </p>
+      <dialog id="announcementDialog" aria-labelledby="announcementHeading" aria-describedby="announcementDescription">
+        <header class="announcement-header">
+          <div>
+            <span class="announcement-eyebrow">KABAR DESA SUMORAME</span>
+            <h2 id="announcementHeading">Pengumuman Pelayanan</h2>
+            <p id="announcementDescription">Informasi terbaru dari Kantor Desa Sumorame.</p>
           </div>
-          <div class="flex-1 overflow-y-auto p-6 flex justify-center">
-            <img id="gambarModalPublik" class="block w-auto max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg" src="img/peringatan.png"/>
-          </div>
-          <div class="p-4 border-t bg-white">
-            <a class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition" href="/PPID.html">
-              LIHAT PENGUMUMAN
-            </a>
-          </div>
+          <button id="announcementClose" type="button" aria-label="Tutup pengumuman" autofocus>✕</button>
+        </header>
+        <div id="announcementStage" class="announcement-stage" aria-roledescription="karusel" aria-label="Gambar pengumuman">
+          <img id="announcementImage" alt="" decoding="async" />
+          <p id="announcementImageError" hidden>Gambar belum dapat dimuat. Silakan coba lagi nanti atau buka pengumuman berikutnya.</p>
         </div>
-      </div>
+        <footer class="announcement-footer">
+          <p id="announcementTitle" class="announcement-title"></p>
+          <div id="announcementControls" class="announcement-controls" hidden>
+            <button id="announcementPrev" type="button" aria-label="Pengumuman sebelumnya">←</button>
+            <span id="announcementCounter" aria-live="off"></span>
+            <button id="announcementNext" type="button" aria-label="Pengumuman berikutnya">→</button>
+            <button id="announcementPause" type="button" aria-pressed="false">Jeda otomatis</button>
+          </div>
+        </footer>
+      </dialog>
     </main>
 
     <!-- Scroll To Top -->
@@ -790,23 +813,27 @@
             Desa mandiri berbasis teknologi untuk masa depan yang lebih baik.
           </p>
         </div>
+
         <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200">
           <h4 class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold">
             Kontak
           </h4>
-          <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300">
+          <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300 mb-2">
             <span class="material-symbols-outlined text-lg mt-[2px]">location_on</span>
             <span>Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271</span>
           </p>
-          <p class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300">
+          <p class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300 mb-2">
             <span class="material-symbols-outlined text-lg"> call </span>
-            0812-3456-7890 (Hanya Menerima Pengaduan).
+            <!-- 🚨 ID NO TELP -->
+            <span id="noTelpFooter">Memuat nomor telepon...</span>
           </p>
           <p class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300">
             <span class="material-symbols-outlined text-lg"> mail </span>
-            PemdesSumorame@gmail.com
+            <!-- 🚨 ID EMAIL -->
+            <span id="emailFooter">Memuat email...</span>
           </p>
         </div>
+
         <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300">
           <h4 class="font-semibold mb-3">Ikuti Kami</h4>
           <div class="flex gap-4 items-center">
@@ -827,7 +854,9 @@
       </div>
     </footer>
     <script src="js/api-config.js"></script>
-    <script src="js/index.js?v=20260826-2"></script>
+    <script src="js/pengumuman-slider.js?v=20260902-1"></script>
+    <script src="js/index.js?v=20260829-1"></script>
     <script src="js/header-scroll.js?v=20260826-1"></script>
+    <script src="js/tiktok-link.js?v=20260828-1"></script>
   </body>
 </html>

@@ -47,20 +47,23 @@
           </div>
 
           <form id="loginForm">
-            <!-- NIK -->
-            <label class="input-label">NIK Petugas</label>
+            <!-- Username khusus admin; NIK warga tidak diubah. -->
+            <label class="input-label" for="username">Username Petugas</label>
             <div class="input-group">
               <i class="fa fa-user"></i>
-              <input type="text" id="nip" placeholder="Masukkan NIK" />
+              <input type="text" id="username" name="username" placeholder="Contoh: admin.sumorame"
+                autocomplete="username" autocapitalize="none" spellcheck="false"
+                minlength="3" maxlength="40" pattern="[a-zA-Z0-9][a-zA-Z0-9._\-]{2,39}" required />
             </div>
 
             <!-- PASSWORD -->
-            <label class="input-label">Password</label>
+            <label class="input-label" for="password">Password</label>
             <div class="input-group">
               <i class="fa fa-lock"></i>
               <input
                 type="password"
                 id="password"
+                name="password" autocomplete="current-password" required
                 placeholder="Masukkan Password"
               />
               <i
@@ -74,7 +77,7 @@
 
             <div class="extra-links">
               <a href="#" id="forgotPassword">Lupa Password?</a>
-              <a href="/login.html">Kembali ke Login Warga</a>
+              <a href="/login">Kembali ke Login Warga</a>
             </div>
 
             <p class="security-note">
@@ -90,7 +93,7 @@
 
               <h3>Lupa Password?</h3>
 
-              <p>Silakan hubungi nomor admin dibawah ini</p>
+              <p>Hubungi pengelola website atau penanggung jawab perangkat desa untuk pemulihan username/password. Jangan membagikan password kepada pihak lain.</p>
 
               <img
                 src="/img/peringatan.png"
@@ -110,7 +113,7 @@
       </p>
     </div>
 
-    <script src="js/api-config.js"></script>
-    <script src="js/LoginAdmin.js"></script>
+    <script src="js/api-config.js?v=20260902-1"></script>
+    <script src="js/LoginAdmin.js?v=20260902-1"></script>
   </body>
 </html>

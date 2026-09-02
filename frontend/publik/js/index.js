@@ -184,6 +184,41 @@ function escapeProdukHTML(value = "") {
   return element.innerHTML;
 }
 
+function isSafeHttpUrl(value) {
+  try {
+    const url = new URL(String(value || ""), window.location.origin);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+  } catch (_error) {
+    return "";
+  }
+}
+
+function getProdukImageCandidates(item) {
+  const candidates = [
+    item.gambar_url,
+    item.gambar,
+    ...(Array.isArray(item.gambar_alternatif) ? item.gambar_alternatif : []),
+  ];
+  return [...new Set(candidates.filter(Boolean).map(isSafeHttpUrl).filter(Boolean))];
+}
+
+function aktifkanFallbackProduk(img, candidates, productName) {
+  let nextIndex = 1;
+  const fallback = () => {
+    if (nextIndex < candidates.length) {
+      img.src = candidates[nextIndex++];
+      return;
+    }
+    const placeholder = document.createElement("div");
+    placeholder.className = "flex h-full min-h-52 flex-col items-center justify-center gap-2 bg-emerald-50 px-5 text-center text-gray-600";
+    placeholder.innerHTML = '<span class="material-symbols-outlined text-4xl text-green-700" aria-hidden="true">image_not_supported</span><span></span>';
+    placeholder.lastElementChild.textContent = `Foto ${productName} belum tersedia`;
+    img.replaceWith(placeholder);
+  };
+  img.addEventListener("error", fallback);
+  if (!candidates.length) fallback();
+}
+
 // === Modal Peraturan ===
 const bukaPeraturan = document.getElementById("bukaPeraturan");
 const peraturanModal = document.getElementById("peraturanModal");
@@ -244,9 +279,10 @@ async function muatProdukUnggulanBeranda() {
     produkUnggulanBeranda.innerHTML = items.map((item) => {
       const nomor = String(item.kontak_penjual || "").replace(/\D/g, "").replace(/^0/, "62");
       const pesan = encodeURIComponent(`Halo, saya tertarik dengan ${item.nama_produk}`);
+      const imageCandidates = getProdukImageCandidates(item);
       return `<article class="produk-item produk-dynamic group w-full bg-white rounded-md overflow-hidden shadow-lg opacity-0 translate-y-16 transition-all duration-700">
-        <div class="overflow-hidden">
-          <img src="${escapeProdukHTML(item.gambar)}" alt="${escapeProdukHTML(item.nama_produk)}" class="w-full h-full object-cover">
+        <div class="h-52 overflow-hidden bg-emerald-50">
+          <img src="${escapeProdukHTML(imageCandidates[0] || "")}" alt="${escapeProdukHTML(item.nama_produk)}" loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
         <div class="produk-info bg-yellow-400/85 px-3 py-2">
           <h3 class="produk-nama font-bold text-lg">${escapeProdukHTML(item.nama_produk)}</h3>
@@ -260,6 +296,10 @@ async function muatProdukUnggulanBeranda() {
     }).join("");
 
     const cards = produkUnggulanBeranda.querySelectorAll(".produk-item");
+    cards.forEach((card, index) => {
+      const image = card.querySelector("img");
+      if (image) aktifkanFallbackProduk(image, getProdukImageCandidates(items[index]), items[index].nama_produk);
+    });
     revealOnScroll(produk, cards, ["opacity-0", "translate-y-16"], 120, (card) => card.classList.add("show"));
   } catch (error) {
     console.error("Gagal memuat produk unggulan beranda:", error.message);
@@ -285,26 +325,6 @@ window.addEventListener("load", () => {
       item.style.opacity = "1";
       item.style.transform = "translateY(0)";
     }, i * 100);
-  });
-});
-
-// === Animasi Suara Untuk Navbar ===
-document.addEventListener("DOMContentLoaded", () => {
-  const navItems = document.querySelectorAll(".nav-item");
-
-  navItems.forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      const text = item.textContent.trim();
-
-      if (!text) return;
-
-      const speech = new SpeechSynthesisUtterance(text);
-      speech.lang = "id-ID";
-      speech.rate = 1;
-
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(speech);
-    });
   });
 });
 
@@ -353,12 +373,6 @@ function closeModal() {
     modalBox.classList.remove("modal-exit-active");
   }, 250);
 }
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    openModal();
-  }, 1000);
-});
 
 if(modal) {
     modal.addEventListener("click", (e) => {
@@ -517,7 +531,7 @@ if(statistik) {
   const compactDeviceQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
   const saveData = Boolean(navigator.connection?.saveData);
 
-  if (reduceMotionQuery.matches || saveData) {
+  if (reduceMotionQuery.matches || compactDeviceQuery.matches || saveData) {
     parallaxEls.forEach((bg) => { bg.style.transform = "none"; });
     return;
   }
@@ -527,12 +541,10 @@ if(statistik) {
 
   function updateParallax() {
     const viewportCenter = window.innerHeight / 2;
-    const deviceMultiplier = compactDeviceQuery.matches ? 0.45 : 1;
-
     activeEls.forEach((bg) => {
       const wrap = bg.parentElement;
       const rect = wrap.getBoundingClientRect();
-      const speed = parseFloat(bg.dataset.parallaxSpeed || "0.25") * deviceMultiplier;
+      const speed = parseFloat(bg.dataset.parallaxSpeed || "0.25");
       const elCenter = rect.top + rect.height / 2;
       const desiredOffset = (viewportCenter - elCenter) * speed;
 
@@ -586,32 +598,45 @@ async function loadDataBeranda() {
   try {
     const response = await fetch(`${INDEX_API_BASE_URL}/cmsprofil`);
     const result = await response.json();
-    
-    if (result.success && result.data && result.data.length > 0) {
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Konten beranda gagal dimuat.");
+    }
+
+    if (result.data && result.data.length > 0) {
       const dataCMS = result.data;
       const dataUtama = dataCMS[0]; 
 
       // 1. UPDATE SLIDER / HERO
       const sliderEl = document.getElementById("slider");
       if (sliderEl) {
-        sliderEl.innerHTML = ""; 
-        
-        dataCMS.forEach(item => {
-          if (item.gambar_url) {
-            sliderEl.innerHTML += `
-              <div class="min-w-full relative">
-               <img alt="${escapeProdukHTML(item.judul_hero || 'Hero')}" class="hero-image object-cover w-full h-[100vh]" src="${item.gambar_url}"/>
-              </div>
-            `;
-          }
+        sliderEl.replaceChildren();
+        dataCMS.forEach((item, slideIndex) => {
+          const imageUrl = isSafeHttpUrl(item.gambar_url);
+          if (!imageUrl) return;
+          const slide = document.createElement("div");
+          slide.className = "min-w-full relative";
+          const image = document.createElement("img");
+          image.alt = item.judul_hero || "Hero Desa Sumorame";
+          image.className = "hero-image object-cover w-full";
+          image.src = imageUrl;
+          image.decoding = "async";
+          if (slideIndex === 0) image.fetchPriority = "high";
+          else image.loading = "lazy";
+          slide.appendChild(image);
+          sliderEl.appendChild(slide);
         });
         
         const slidesBaru = document.querySelectorAll("#slider > div");
         total = slidesBaru.length;
         index = 0;
         
-        // Render slide pertama agar tidak kosong
-        if(total > 0) showSlide(0);
+        if (total > 0) {
+          showSlide(0);
+        } else {
+          sliderEl.innerHTML = '<div class="min-w-full relative flex items-center justify-center bg-emerald-950 text-white"><p class="px-6 text-center">Hero belum diatur melalui CMS.</p></div>';
+          nextBtn?.classList.add("hidden");
+          prevBtn?.classList.add("hidden");
+        }
       }
 
       // 2. UPDATE SAMBUTAN, FOTO & NAMA KADES
@@ -619,7 +644,12 @@ async function loadDataBeranda() {
       const sambutanTeks = document.getElementById("sambutanPublik");
       const namaKadesEl = document.getElementById("namaKadesPublik");
       
-      if (fotoKades && dataUtama.foto_kades_url) fotoKades.src = dataUtama.foto_kades_url;
+      if (fotoKades && isSafeHttpUrl(dataUtama.foto_kades_url)) {
+        fotoKades.src = isSafeHttpUrl(dataUtama.foto_kades_url);
+        fotoKades.loading = "lazy";
+        fotoKades.decoding = "async";
+        fotoKades.hidden = false;
+      }
       if (sambutanTeks && dataUtama.sambutan) sambutanTeks.innerText = dataUtama.sambutan;
       if (namaKadesEl && dataUtama.nama_kades) namaKadesEl.innerText = dataUtama.nama_kades;
 
@@ -640,8 +670,10 @@ async function loadDataBeranda() {
 
       // 4. UPDATE GAMBAR MODAL PENGUMUMAN
       const imgModalEl = document.getElementById("gambarModalPublik");
-      if (imgModalEl && dataUtama.gambar_modal_url) {
-        imgModalEl.src = dataUtama.gambar_modal_url;
+      const modalImageUrl = isSafeHttpUrl(dataUtama.gambar_modal_url);
+      if (imgModalEl && modalImageUrl) {
+        imgModalEl.src = modalImageUrl;
+        window.setTimeout(openModal, 800);
       }
 
       // 5. UPDATE TEKS MODAL PERATURAN
@@ -654,11 +686,35 @@ async function loadDataBeranda() {
       if (isiPeraturanEl && dataUtama.peraturan_isi) {
         isiPeraturanEl.textContent = dataUtama.peraturan_isi;
       }
-
+    } else {
+      throw new Error("Konten beranda belum diisi melalui CMS.");
     }
   } catch (error) {
     console.error("Gagal menarik data CMS Beranda:", error);
+    const sliderEl = document.getElementById("slider");
+    const sambutanTeks = document.getElementById("sambutanPublik");
+    const namaKadesEl = document.getElementById("namaKadesPublik");
+    const visiTeks = document.getElementById("visiPublik");
+    const misiList = document.getElementById("misiPublik");
+    if (sliderEl) sliderEl.innerHTML = '<div class="min-w-full relative flex items-center justify-center bg-emerald-950 text-white"><p class="px-6 text-center">Hero belum tersedia.</p></div>';
+    if (sambutanTeks) sambutanTeks.textContent = "Sambutan belum tersedia.";
+    if (namaKadesEl) namaKadesEl.textContent = "Data kepala desa belum tersedia";
+    if (visiTeks) visiTeks.textContent = "Visi belum tersedia.";
+    if (misiList) misiList.innerHTML = "<li>Misi belum tersedia.</li>";
   }
+
+  // 6. UPDATE KONTAK FOOTER
+      const emailFooterEl = document.getElementById("emailFooter");
+      const noTelpFooterEl = document.getElementById("noTelpFooter");
+
+      if (emailFooterEl) {
+        emailFooterEl.textContent = dataUtama.email_desa || "PemdesSumorame@gmail.com";
+      }
+      if (noTelpFooterEl) {
+        // Tampilkan nomor telepon jika ada, jika tidak tampilkan pesan default
+        noTelpFooterEl.textContent = dataUtama.no_telp_desa || "Gunakan menu Aduan untuk menyampaikan laporan.";
+      }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -701,3 +757,74 @@ const btnTutupAtas = document.getElementById("tutupPeraturan");
 const btnTutupBawah = document.getElementById("tutupPeraturanBawah");
 if (btnTutupAtas) btnTutupAtas.addEventListener("click", tutupModalPeraturan);
 if (btnTutupBawah) btnTutupBawah.addEventListener("click", tutupModalPeraturan);
+
+
+// =====================================================
+// TARIK DATA BERITA TERKINI DARI INFORMASI
+// =====================================================
+// =====================================================
+// TARIK DATA BERITA TERKINI DARI INFORMASI
+// =====================================================
+async function loadBeritaTerkini() {
+  const wadahBerita = document.getElementById("wadahBeritaTerkini");
+  if (!wadahBerita) return;
+
+  try {
+    // 1. Memanggil API Informasi (bukan Publikasi lagi)
+    const response = await fetch(`${INDEX_API_BASE_URL}/informasi`);
+    const result = await response.json();
+
+    if (result.success && result.data && result.data.length > 0) {
+      // Ambil data urutan pertama (indeks 0) karena backend sudah mengurutkan yang terbaru
+      const beritaTerbaru = result.data[0];
+
+      // 2. Format tanggal (Gunakan kolom 'tanggal' dari DB, jika kosong pakai 'created_at')
+      const tanggalBerita = beritaTerbaru.tanggal || beritaTerbaru.created_at || new Date().toISOString();
+      const tanggal = new Date(tanggalBerita).toLocaleDateString("id-ID", {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+
+      // 3. Gunakan kolom 'isi' berita dan potong teksnya jika terlalu panjang
+      const teksIsi = beritaTerbaru.isi || beritaTerbaru.penjelasan || "";
+      const deskripsiSingkat = teksIsi.length > 180 
+        ? teksIsi.substring(0, 180) + "..." 
+        : teksIsi;
+
+      // 4. Suntikkan HTML (Tautan diarahkan ke Informasi.html)
+      wadahBerita.innerHTML = `
+        <div class="bg-yellow-400 p-5 md:p-8 flex-1 flex flex-col justify-center relative overflow-hidden">
+          <span class="inline-block bg-green-800 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
+            Terbaru • ${tanggal}
+          </span>
+          <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 leading-snug">
+            ${escapeProdukHTML(beritaTerbaru.judul)}
+          </h3>
+          <p class="text-[15px] font-medium text-gray-800 mb-5 leading-relaxed text-justify">
+            ${escapeProdukHTML(deskripsiSingkat)}
+          </p>
+          <a class="text-sm font-black text-green-900 hover:text-green-700 hover:underline inline-flex items-center gap-1 w-fit transition-all" href="Informasi.html">
+            Baca Selengkapnya <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+        </div>
+        <div class="flex-1 min-h-[250px]">
+          <img alt="${escapeProdukHTML(beritaTerbaru.judul)}" class="w-full h-full object-cover" src="${escapeProdukHTML(isSafeHttpUrl(beritaTerbaru.gambar_url))}" loading="lazy" decoding="async"/>
+        </div>
+      `;
+    } else {
+      wadahBerita.innerHTML = `<div class="p-8 w-full text-center text-gray-500 font-medium">Belum ada informasi terbaru.</div>`;
+    }
+  } catch (error) {
+    console.error("Gagal memuat berita terkini:", error);
+    wadahBerita.innerHTML = `<div class="p-8 w-full text-center text-red-500">Gagal memuat berita.</div>`;
+  }
+}
+
+// Panggil fungsinya saat halaman dimuat
+document.addEventListener("DOMContentLoaded", () => {
+  loadBeritaTerkini();
+});
+
+// Panggil fungsinya saat halaman dimuat
+document.addEventListener("DOMContentLoaded", () => {
+  loadBeritaTerkini();
+});

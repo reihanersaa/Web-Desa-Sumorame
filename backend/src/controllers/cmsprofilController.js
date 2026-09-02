@@ -1,4 +1,5 @@
 const supabase = require("../config/supabase");
+const { isReferencedAnnouncementImage } = require("./pengumumanController");
 
 // ==================================================
 // 1. GET SEMUA CMS PROFIL
@@ -44,7 +45,9 @@ const createCmsProfil = async (req, res) => {
       visi,
       misi,
       peraturan_judul,
-      peraturan_isi
+      peraturan_isi,
+      email_desa,
+      no_telp_desa
     } = req.body || {};
 
     if (!judul_hero || !deskripsi_hero || !nama_kades || !sambutan || !visi || !misi) {
@@ -98,6 +101,8 @@ const createCmsProfil = async (req, res) => {
         misi: misi.trim(),
         peraturan_judul: peraturan_judul ? peraturan_judul.trim() : null,
         peraturan_isi: peraturan_isi ? peraturan_isi.trim() : null,
+        email_desa: email_desa ? email_desa.trim() : null,
+        no_telp_desa: no_telp_desa ? no_telp_desa.trim() : null,
         gambar_url,
         foto_kades_url,
         gambar_modal_url
@@ -140,7 +145,9 @@ const updateCmsProfil = async (req, res) => {
       visi,
       misi,
       peraturan_judul,
-      peraturan_isi
+      peraturan_isi,
+      email_desa,
+      no_telp_desa
     } = req.body || {};
 
     if (!id || !judul_hero || !deskripsi_hero || !nama_kades || !sambutan || !visi || !misi) {
@@ -188,6 +195,8 @@ const updateCmsProfil = async (req, res) => {
         misi: misi.trim(),
         peraturan_judul: peraturan_judul ? peraturan_judul.trim() : null,
         peraturan_isi: peraturan_isi ? peraturan_isi.trim() : null,
+        email_desa: email_desa ? email_desa.trim() : null,
+        no_telp_desa: no_telp_desa ? no_telp_desa.trim() : null,
         gambar_url,
         foto_kades_url,
         gambar_modal_url,
@@ -199,6 +208,7 @@ const updateCmsProfil = async (req, res) => {
     if (error) throw error;
 
     const hapusGambarLama = async (urlLama) => {
+      if (await isReferencedAnnouncementImage(urlLama)) return;
       const marker = "/storage/v1/object/public/cms-profil/";
       if (urlLama && urlLama.includes(marker)) {
         try {
@@ -237,6 +247,7 @@ const deleteCmsProfil = async (req, res) => {
     if (!dataCmsProfil) return res.status(404).json({ success: false, message: "Data tidak ditemukan." });
 
     const hapusGambar = async (urlGambar) => {
+      if (await isReferencedAnnouncementImage(urlGambar)) return;
       const marker = "/storage/v1/object/public/cms-profil/";
       if (urlGambar && urlGambar.includes(marker)) {
         try {

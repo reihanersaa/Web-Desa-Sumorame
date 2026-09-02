@@ -3,13 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aduan | Website Desa Sumorame</title>
+  <title>Pengaduan Warga Desa Sumorame | Layanan Aspirasi</title>
+  <meta name="description" content="Sampaikan aspirasi dan pengaduan warga kepada Pemerintah Desa Sumorame melalui layanan pengaduan resmi untuk warga terverifikasi." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://ppid-sumoramedesa.id/Aduan" />
+  <meta property="og:title" content="Pengaduan Warga Desa Sumorame" />
+  <meta property="og:description" content="Kanal resmi aspirasi dan pengaduan warga Desa Sumorame." />
+  <meta property="og:url" content="https://ppid-sumoramedesa.id/Aduan" />
+  <meta property="og:type" content="website" />
+  <script src="/js/auth-ui.js?v=20260828-1"></script>
   <link rel="icon" href="img/logo3.png?v=20260824-1" type="image/png">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <link rel="stylesheet" href="css/Aduan.css?v=20260824-2">
-  <link rel="stylesheet" href="css/hero-responsive.css?v=20260825-1">
+  <link rel="stylesheet" href="css/hero-responsive.css?v=20260829-1">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- Tailwind Config -->
@@ -37,7 +45,7 @@
       }
     };
   </script>
-  <link rel="stylesheet" href="css/layout-responsive.css?v=20260825-1">
+  <link rel="stylesheet" href="css/layout-responsive.css?v=20260828-2">
 </head>
 
 <body class="bg-surface font-body text-on-surface">
@@ -56,42 +64,42 @@
     </div>
     <!-- Menu -->
     <nav class="hidden md:flex items-center font-medium text-green-900">
-     <a class="nav-item relative px-5 font-bold" href="/index.html">
+     <a class="nav-item relative px-5 font-bold" href="/">
       Profile Desa
      </a>
      <div class="h-5 w-[1px] bg-gray-400">
      </div>
-     <a class="nav-item relative px-5 font-bold" href="/PPID.html">
+     <a class="nav-item relative px-5 font-bold" href="/PPID">
       PPID
      </a>
      <div class="h-5 w-[1px] bg-gray-400">
      </div>
-     <a class="nav-item relative px-5 font-bold" href="/Lembaga.html">
+     <a class="nav-item relative px-5 font-bold" href="/Lembaga">
       Lembaga
      </a>
      <div class="h-5 w-[1px] bg-gray-400">
      </div>
-     <a class="nav-item relative px-5 font-bold" href="/Informasi.html">
+     <a class="nav-item relative px-5 font-bold" href="/Informasi">
       Informasi
      </a>
      <div class="h-5 w-[1px] bg-gray-400">
      </div>
-     <a class="nav-item relative px-5 font-bold text-green-800" href="/AdminP.html">
+     <a class="nav-item relative px-5 font-bold text-green-800" href="/AdminP">
       Administrasi Persuratan
      </a>
      <div class="h-5 w-[1px] bg-gray-400">
      </div>
-     <a class="nav-item relative px-5 font-bold" href="/Aduan.html">
+     <a class="nav-item relative px-5 font-bold" href="/Aduan">
       Aduan
      </a>
      <div class="h-5 w-[1px] bg-gray-400">
      </div>
-     <a class="nav-item relative px-5 font-bold" href="/Publikasi.html">
+     <a class="nav-item relative px-5 font-bold" href="/Publikasi">
       Publikasi
      </a>
     </nav>
     <!-- LOGOUT -->
-    <a class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition" href="/login.html">
+    <a class="nav-item hidden md:flex items-center text-black hover:text-black-700 transition" href="/login">
      <span class="material-symbols-outlined text-2xl">
       logout
      </span>
@@ -108,14 +116,14 @@
 
   <!-- MOBILE MENU -->
   <div id="mobileMenu" class="flex flex-col bg-white md:hidden fixed top-16 left-0 w-full z-40 shadow-md max-h-0 overflow-hidden opacity-0 transition-all duration-300">
-    <a href="/index.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Profile Desa</a>
-    <a href="/PPID.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">PPID</a>
-    <a href="/Lembaga.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Lembaga</a>
-    <a href="/Informasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Informasi</a>
-    <a href="/AdminP.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Administrasi Persuratan</a>
-    <a href="/Aduan.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Aduan</a>
-    <a href="/Publikasi.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Publikasi</a>
-    <a href="/login.html" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Log Out</a>
+    <a href="/" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Profile Desa</a>
+    <a href="/PPID" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">PPID</a>
+    <a href="/Lembaga" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Lembaga</a>
+    <a href="/Informasi" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Informasi</a>
+    <a href="/AdminP" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Administrasi Persuratan</a>
+    <a href="/Aduan" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Aduan</a>
+    <a href="/Publikasi" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Publikasi</a>
+    <a href="/login" class="py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition">Log Out</a>
   </div>
 
   <!-- HERO -->
@@ -130,19 +138,16 @@
       <div class="absolute inset-0 bg-black/30"></div>
 
       <!-- Content -->
-      <div class="relative z-10 px-8 max-w-7xl mx-auto pt-20">
+      <div class="public-hero__content relative z-10">
 
           <!-- Judul -->
-          <h2 class="hero-title opacity-0 -translate-x-16 transition-all duration-700
-                    text-3xl sm:text-4xl md:text-5xl
-                    font-bold text-white mb-4 leading-tight">
-                Layanan Aspirasi<br class="sm:hidden">
-                Dan Pengaduan Desa
+          <h2 class="public-hero__title font-bold text-white mb-4 leading-tight">
+                Layanan Aspirasi dan Pengaduan Desa
           </h2>
 
           <!-- Deskripsi -->
           <p id="heroItem"
-            class="hero-item opacity-0 -translate-x-16 transition-all duration-700 delay-200 text-white/80">
+            class="public-hero__subtitle hero-item text-white/90">
               Selamat Datang Di Desa Sumorame.
           </p>
 
@@ -262,15 +267,21 @@
           </div>
           
           <!-- MODAL LOGIN -->
-          <div id="loginModal" class="fixed inset-0 bg-black/50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
-            <div class="bg-white rounded-xl p-6 w-[300px] text-center shadow-lg scale-95 transition-all duration-300" id="modalBox">
+          <div id="loginModal" class="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+            <div class="bg-white rounded-xl p-6 w-[min(22rem,calc(100vw-2rem))] text-center shadow-lg scale-95 transition-all duration-300" id="modalBox">
               
-              <h2 class="text-lg font-bold mb-2">Harus Login</h2>
-              <p class="text-sm text-gray-600 mb-4">Silakan login terlebih dahulu untuk mengirim aduan</p>
+              <span class="material-symbols-outlined text-4xl text-emerald-700 mb-2">lock</span>
+              <h2 id="loginModalTitle" class="text-lg font-bold mb-2">Login Warga Diperlukan</h2>
+              <p class="text-sm text-gray-600 mb-4">Hanya warga terdaftar yang dapat mengisi dan mengirim aduan.</p>
 
               <button id="btnLogin"
                 class="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-800 transition w-full">
-                Login Sekarang
+                Login Warga
+              </button>
+
+              <button id="btnTutupLogin" type="button"
+                class="mt-3 text-sm text-gray-500 hover:text-emerald-800 transition">
+                Nanti Saja
               </button>
             </div>
           </div>
@@ -289,75 +300,12 @@
 
         </button>
 
-  <!-- FOOTER -->
-  <footer id="footer" class="bg-green-900 text-white mt-16 px-6 py-10 opacity-0 translate-y-10 transition-all duration-700">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-          <!-- Logo & Nama -->
-          <div class="footer-item opacity-0 translate-y-6 transition-all duration-700">
-            <div class="inline-flex flex-col items-center">
-              <img src="img/logo3.png" alt="Logo Desa" class="w-16 mb-3">
-              <h3 class="text-lg font-bold">Desa Sumorame</h3>
-            </div>
-            <p class="text-sm text-gray-300">
-              Makmur dan Unggul.
-            </p>
-          </div>
-
-      <!-- Kontak -->
-          <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-200">
-              <!-- Judul -->
-              <h4 class="kontak-item opacity-0 -translate-y-6 transition-all duration-700 mb-3 font-semibold">
-                Kontak
-              </h4>
-              <!-- Alamat (dari kiri) -->
-              <p class="kontak-item flex items-start gap-2 opacity-0 -translate-x-10 transition-all duration-700 delay-100 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg mt-[2px]">location_on</span>
-                <span>
-                  Jl. Singokarso No.01, Kerawean, Sumorame, Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271
-                </span>
-              </p>
-
-              <p class="kontak-item flex items-center gap-2 opacity-0 translate-y-10 transition-all duration-700 delay-200 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg">call</span>
-                0812-3456-7890 (Hanya Menerima Pengaduan).
-              </p>
-
-              <p class="kontak-item flex items-center gap-2 opacity-0 translate-x-10 transition-all duration-700 delay-300 text-sm text-gray-300">
-                <span class="material-symbols-outlined text-lg">mail</span>
-                PemdesSumorame@gmail.com
-              </p>
-          </div>
-
-      <!-- Sosial Media (KANAN - tetap seperti punyamu) -->
-        <div class="footer-item opacity-0 translate-y-6 transition-all duration-700 delay-300">
-            <h4 class="font-semibold mb-3">Ikuti Kami</h4>
-          <div class="flex gap-4 items-center">
-
-              <a href="https://www.tiktok.com/search?q=pemdes%20sumorame&t=1785759591160" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" 
-                    class="w-6 h-6 invert" alt="TikTok">
-              </a>
-
-              <a href="https://www.instagram.com/pemdes_sumorame02/" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" 
-                    class="w-6 h-6 invert" alt="Instagram">
-              </a>
-
-              <a href="https://www.youtube.com/@pemdes.sumorame" target="_blank" class="hover:scale-125 transition duration-300">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" 
-                    class="w-6 h-6 invert" alt="YouTube">
-              </a>
-          </div>
-        </div>
-      </div>
-
-    <div class="text-center mt-6 text-sm text-gray-400">
-      ©2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa Sumorame.
-    </div>
-  </footer>
+  
 
   <script src="js/api-config.js"></script>
-  <script src="js/Aduan.js?v=20260826-2"></script>
+  <script src="js/Aduan.js?v=20260828-2"></script>
   <script src="js/header-scroll.js?v=20260826-1"></script>
+  <script src="js/tiktok-link.js?v=20260828-1"></script>
+  <script src="js/footer.js"></script>
 </body>
 </html>

@@ -6,10 +6,20 @@ const supabase = require("../config/supabase");
 // ==================================================
 const getPublikasi = async (req, res) => {
   try {
-    const { data, error } = await supabase
+    const hasPagination = req.query.limit !== undefined || req.query.offset !== undefined;
+    const limit = Math.min(Math.max(Number.parseInt(req.query.limit, 10) || 6, 1), 24);
+    const offset = Math.max(Number.parseInt(req.query.offset, 10) || 0, 0);
+
+    let query = supabase
       .from("publikasi")
-      .select("*")
+      .select("*", hasPagination ? { count: "exact" } : undefined)
       .order("waktu_kegiatan", { ascending: false });
+
+    if (hasPagination) {
+      query = query.range(offset, offset + limit - 1);
+    }
+
+    const { data, error, count } = await query;
 
     if (error) {
       throw error;
@@ -17,7 +27,15 @@ const getPublikasi = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: data
+      data: data,
+      ...(hasPagination && {
+        pagination: {
+          limit,
+          offset,
+          total: count || 0,
+          has_more: offset + (data?.length || 0) < (count || 0),
+        },
+      }),
     });
 
   } catch (error) {

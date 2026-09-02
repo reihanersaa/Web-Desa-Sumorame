@@ -18,21 +18,39 @@ const PORT = process.env.PORT || 3000;
 // Vercel meneruskan IP pengunjung lewat proxy. Diperlukan untuk rate limit.
 app.set("trust proxy", 1);
 
-const productionFrontend = "https://web-desa-sumorame.vercel.app";
-const allowedOrigins = (
-  process.env.FRONTEND_URLS ||
-  `${productionFrontend},http://localhost:3000,http://127.0.0.1:5500,http://localhost:5500`
-)
+const defaultFrontendOrigins = [
+  "https://web-desa-sumorame.vercel.app",
+  "https://ppid-desasumorame.id",
+  "https://www.ppid-desasumorame.id",
+  "https://ppid-sumoramedesa.id",
+  "https://www.ppid-sumoramedesa.id",
+  "http://localhost:3000",
+  "http://127.0.0.1:5500",
+  "http://localhost:5500",
+];
+
+const configuredFrontendOrigins = (process.env.FRONTEND_URLS || "")
   .split(",")
   .map((origin) => origin.trim().replace(/\/$/, ""))
   .filter(Boolean);
+
+const allowedOrigins = new Set(
+  [...defaultFrontendOrigins, ...configuredFrontendOrigins].filter((origin) => {
+    try {
+      return new URL(origin).origin === origin;
+    } catch (_error) {
+      console.warn(`Origin CORS diabaikan karena format tidak valid: ${origin}`);
+      return false;
+    }
+  }),
+);
 
 // Middleware
 app.use(
   cors({
     origin(origin, callback) {
       // Request tanpa Origin berasal dari server, health check, atau REST client.
-      if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+      if (!origin || allowedOrigins.has(origin.replace(/\/$/, ""))) {
         return callback(null, true);
       }
 

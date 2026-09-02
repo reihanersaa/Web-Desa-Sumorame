@@ -12,16 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.addEventListener("load", () => {
     const jenisPending = localStorage.getItem("jenisDipilih");
-    if (jenisPending && localStorage.getItem("login") === "true") {
+    if (jenisPending && window.AuthSession?.isAuthenticated()) {
       localStorage.removeItem("jenisDipilih");
       tampilForm(jenisPending);
     }
   });
-
-  // ================= SET DEFAULT LOGIN =================
-  if (!localStorage.getItem("login")) {
-    localStorage.setItem("login", "false");
-  }
 
   // ================= LOGIN MODAL =================
   const loginModal = document.getElementById("loginModal");
@@ -30,9 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeLoginModal = document.getElementById("closeLoginModal");
 
   btnLogin.addEventListener("click", () => {
-    // Simpan halaman ini biar abis login beneran, balik lagi ke sini otomatis
-    localStorage.setItem("redirectAfterLogin", "/AdminP.html");
-    window.location.href = "/login.html";
+    window.AuthSession?.requireLogin("/AdminP");
   });
 
   function tutupLoginModal() {
@@ -164,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
   window.tampilForm = function (jenis) {
     // 🔒 CEK LOGIN
     currentJenis = jenis;
-    if (localStorage.getItem("login") !== "true") {
+    if (!window.AuthSession?.isAuthenticated()) {
       localStorage.setItem("jenisDipilih", jenis);
       // simpen jenis surat aktif buat dipake pas submit
       setTimeout(() => {
@@ -424,8 +417,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const session = window.AuthSession?.get();
+    if (!session) {
       Swal.fire({
         title: "Sesi Habis",
         text: "Silakan login ulang sebelum mengajukan surat.",
@@ -434,6 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       return;
     }
+    const token = session.token;
 
     // judul_surat wajib diisi di backend, kita generate otomatis
     const namaPemohon = data_form.nama || data_form.kepala || "Warga";
