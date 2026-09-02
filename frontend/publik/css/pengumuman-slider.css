@@ -1,0 +1,69 @@
+/* Scoped to the announcement dialog; no hero, product, or statistics rules. */
+#announcementDialog {
+  width: min(660px, calc(100% - 28px));
+  max-width: none;
+  max-height: calc(100vh - 28px);
+  max-height: calc(100dvh - 28px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid #d8e8df;
+  border-radius: 22px;
+  background: #fff;
+  color: #193a2b;
+  box-shadow: 0 24px 80px #001f2559;
+  overflow: auto;
+  overscroll-behavior: contain;
+  font-family: inherit;
+}
+#announcementDialog::backdrop { background: rgb(4 25 21 / 68%); }
+#announcementDialog [hidden] { display: none !important; }
+#announcementDialog button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid #d4e4db;
+  border-radius: 12px;
+  background: #f0f7f3;
+  color: #12603e;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+#announcementDialog button:hover { background: #dceddf; }
+#announcementDialog button:focus-visible { outline: 3px solid #137849; outline-offset: 3px; }
+#announcementDialog .announcement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 22px 16px;
+  background: linear-gradient(115deg, #effaf2, #f6fcfb);
+  border-bottom: 1px solid #e0eee5;
+}
+#announcementDialog .announcement-eyebrow { font-size: 10px; letter-spacing: .14em; font-weight: 700; color: #297852; }
+#announcementDialog h2 { margin: 5px 0; font-size: clamp(18px, 3vw, 22px); font-weight: 700; line-height: 1.3; }
+#announcementDialog .announcement-header p { margin: 0; font-size: 12px; color: #53655c; }
+#announcementClose { flex-shrink: 0; }
+#announcementDialog .announcement-stage {
+  margin: 16px 18px 0;
+  height: min(50vh, 400px);
+  height: min(50dvh, 400px);
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #f3f6f4;
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom;
+}
+#announcementImage { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+#announcementImageError { padding: 24px; text-align: center; font-size: 14px; color: #53655c; }
+#announcementDialog .announcement-footer { padding: 14px 22px 18px; }
+#announcementDialog .announcement-title { margin: 0 0 12px; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+#announcementDialog .announcement-controls { display: flex; align-items: center; justify-content: center; gap: 10px; }
+#announcementCounter { min-width: 44px; text-align: center; font-size: 13px; font-variant-numeric: tabular-nums; }
+#announcementPause { margin-left: auto; padding: 6px 12px; font-size: 12px !important; }
+@media (max-width: 420px) {
+  #announcementDialog .announcement-header { padding: 16px; gap: 8px; }
+  #announcementDialog .announcement-stage { margin: 12px 12px 0; height: 40dvh; }
+  #announcementDialog .announcement-footer { padding: 12px; }
+  #announcementDialog .announcement-controls { gap: 6px; flex-wrap: wrap; }
+}
