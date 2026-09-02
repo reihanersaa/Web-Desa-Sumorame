@@ -14,12 +14,12 @@
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const AUTO_SLIDE_MS = 6000;
   let slides = [], current = 0, timer = null, openTimer = null;
-  let paused = motion.matches, hovered = false, imageReady = false, previousFocus, oldOverflow;
+  let paused = motion.matches, imageReady = false, previousFocus, oldOverflow;
 
   function stop() { window.clearTimeout(timer); timer = null; }
   function schedule() {
     stop();
-    if (!dialog.open || slides.length < 2 || !imageReady || paused || hovered || document.hidden) return;
+    if (!dialog.open || slides.length < 2 || !imageReady || paused || document.hidden) return;
     timer = window.setTimeout(() => show(current + 1), AUTO_SLIDE_MS);
   }
   function updatePause() {
@@ -63,18 +63,10 @@
   dialog.addEventListener("keydown", (event) => {
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
-      paused = true;
-      updatePause();
       manualStep(event.key === "ArrowLeft" ? -1 : 1);
     }
   });
-  // Keyboard focus on navigation pauses rotation; the play button can explicitly resume it.
-  controls.addEventListener("focusin", (event) => {
-    if (event.target === pause) return;
-    paused = true; updatePause();
-  });
-  dialog.addEventListener("pointerenter", (event) => { if (event.pointerType === "mouse") { hovered = true; stop(); } });
-  dialog.addEventListener("pointerleave", (event) => { if (event.pointerType === "mouse") { hovered = false; schedule(); } });
+  // Navigasi manual mengganti slide lalu menjadwalkan rotasi berikutnya.
   let touchStart = null;
   stage.addEventListener("touchstart", (event) => {
     touchStart = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
