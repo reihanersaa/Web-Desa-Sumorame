@@ -1,0 +1,110 @@
+{
+  "source_zip_sha256": "d2c8fadb8631e81e6c299b0aa79b8f9983ff335645076a232376bc1967e46c70",
+  "scope": "Admin authentication only; Produk/Statistik source files unchanged",
+  "protected_files_verified_identical": [
+    "backend/src/controllers/produkController.js",
+    "backend/src/controllers/statistikController.js",
+    "backend/src/routes/produkRoutes.js",
+    "backend/src/routes/statistikRoutes.js",
+    "backend/supabase/migrations/20260824_produk_nik.sql",
+    "backend/supabase/migrations/20260824_produk_unggulan_beranda.sql",
+    "backend/supabase/migrations/20260824_statistik_hapus_no_hp.sql",
+    "backend/supabase/migrations/20260824_statistik_jenis_kelamin.sql",
+    "backend/supabase/migrations/20260824_statistik_perbaiki_rls.sql",
+    "backend/supabase/migrations/20260824_statistik_warga.sql",
+    "backend/supabase/migrations/20260826_produk_storage.sql",
+    "frontend/privat/CMSProduk.html",
+    "frontend/privat/js/CMSProduk.js",
+    "frontend/privat/js/Statistik.js",
+    "frontend/privat/Statistik.html",
+    "frontend/publik/css/Produk.css",
+    "frontend/publik/js/Produk.js",
+    "frontend/publik/Produk.html"
+  ],
+  "files": [
+    {
+      "path": "PANDUAN_PATCH_ADMIN_20260902.md",
+      "action": "add",
+      "old_sha256": null,
+      "new_sha256": "8c2cbcd472840a7603dcb395a2fd4b3f2c1a07df660e9a0f1d01977156df6140"
+    },
+    {
+      "path": "backend/src/controllers/adminAuthController.js",
+      "action": "add",
+      "old_sha256": null,
+      "new_sha256": "91666341ca9ce3639559f40733064b24afd93cb8d4d86bd89620b6fe8f9e07d7"
+    },
+    {
+      "path": "backend/src/controllers/authController.js",
+      "action": "replace",
+      "old_sha256": "f83607912d0c6b7aaf2a68a7f9c2a8e3cc18705b5cdfc6037c1c2b3c7cd792ab",
+      "new_sha256": "4cd2ba89023d91b98e2a2c04ea35cac603d2d2b1c1fd9772bdf4d43d8682c7a5"
+    },
+    {
+      "path": "backend/src/middleware/authMiddleware.js",
+      "action": "replace",
+      "old_sha256": "c86cae075fe75c0c7a1e73470f1262298114145cd2991364daec66e9c471518d",
+      "new_sha256": "764bc33748f92cf62330b86cfe823765239fdb284444d804368b56b48af6ed01"
+    },
+    {
+      "path": "backend/src/routes/authRoutes.js",
+      "action": "replace",
+      "old_sha256": "db9a14f06f9bfdab54d5451030551ed790a17ad808adc7d60cac31f91e99c705",
+      "new_sha256": "1928153f72bb85164456788f430c54e8785582c2860ea0f27c7f3fa550134bb2"
+    },
+    {
+      "path": "backend/src/services/adminSessionService.js",
+      "action": "add",
+      "old_sha256": null,
+      "new_sha256": "904ee15e5ea8ab287f17287e51ccdf248760c9d71cc3516c96f08e3295647d55"
+    },
+    {
+      "path": "backend/supabase/migrations/20260902_admin_username_sessions.sql",
+      "action": "add",
+      "old_sha256": null,
+      "new_sha256": "67dc3fa5c6023a7780e6c3a815b1ba2ff491f9990393209b69e71dc73534349a"
+    },
+    {
+      "path": "backend/tests/admin-session.test.js",
+      "action": "add",
+      "old_sha256": null,
+      "new_sha256": "5302a3a406ef374e5e01a8857c77fb72d5f5d4254a754e9b9fe7c18977589bdb"
+    },
+    {
+      "path": "backend/tests/frontend-auth.test.js",
+      "action": "add",
+      "old_sha256": null,
+      "new_sha256": "60943de6560191641b58c289f9d90e9a4e96dda41a1834e08fda4c03b6a5ca80"
+    },
+    {
+      "path": "frontend/privat/LoginAdmin.html",
+      "action": "replace",
+      "old_sha256": "e1759b045ea9be9a59d72c187125e89c6c8e95b03c689cb467f92659d3065272",
+      "new_sha256": "4429f5de1933047284d0df0f7924b8665a13da9c5ae33ce8229c6970ad5fbd0e"
+    },
+    {
+      "path": "frontend/privat/js/LoginAdmin.js",
+      "action": "replace",
+      "old_sha256": "fb65fb2243d80cbe8e68db21b8a32da351e44c7f525da0e2885dde4cdeff851c",
+      "new_sha256": "de2194e780d2c8581018c10c5ea7d92c7afd86ce9e0e9761b28e811fb6f47022"
+    },
+    {
+      "path": "frontend/privat/js/api-config.js",
+      "action": "replace",
+      "old_sha256": "12b7dccdaa53d5c72dfb13050b9265d12780f167fe9578b3dad1c01ec8a5b04e",
+      "new_sha256": "662d16abf96a93664bd92e3178b217ccd6dfdfaad031b6de524f75df87dde4a9"
+    },
+    {
+      "path": "frontend/publik/js/auth-ui.js",
+      "action": "replace",
+      "old_sha256": "41005bdbdacd708851a75eb8b7b99a138be4d00a8c135a58bcc3203c2685f5c0",
+      "new_sha256": "e2be3ad31565d7849a4c764ba92c84b065013813f531e7e2862182583456e932"
+    },
+    {
+      "path": "frontend/publik/js/login.js",
+      "action": "replace",
+      "old_sha256": "bfc944cedeb7c01c1ec045bbe8740d57779cb4f86d8156e564afaa34820dc4a5",
+      "new_sha256": "8cf6ff6752f47cb897354cfa0e519d931dbf9eb67311ef141af545ec004e56ac"
+    }
+  ]
+}

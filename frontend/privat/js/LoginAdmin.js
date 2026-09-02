@@ -37,13 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const nik = document.getElementById("nip").value; // input id="nip" berisi NIK
+    const username = document.getElementById("username").value.trim().toLowerCase();
     const pass = document.getElementById("password").value;
 
-    if (!nik || !pass) {
+    if (!username || !pass) {
       return Swal.fire({
         title: "Login Gagal",
-        text: "NIK dan Password wajib diisi",
+        text: "Username dan password wajib diisi",
         icon: "error",
         confirmButtonText: "Coba Lagi",
         confirmButtonColor: "#d33",
@@ -52,6 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton.disabled) return;
+    submitButton.disabled = true;
+    const oldLabel = submitButton.textContent;
+    submitButton.textContent = "Memeriksa akun...";
     try {
       // PORT disamakan dengan backend (index.js -> PORT || 3000)
       const response = await fetch(
@@ -59,19 +64,16 @@ document.addEventListener("DOMContentLoaded", function () {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nik, password: pass }),
+          body: JSON.stringify({ username, password: pass }),
         },
       );
 
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
 
       if (response.ok && result.success) {
         // Simpan token & data admin untuk dipakai di halaman lain
         // (kirim di header: Authorization: Bearer <token>)
-        localStorage.setItem("token", result.token);
-        localStorage.setItem("user", JSON.stringify(result.data));
-        localStorage.setItem("login", "true");
-        localStorage.setItem("admin", JSON.stringify(result.data));
+        window.AdminSession.saveLogin(result);
 
         const redirectAduan = localStorage.getItem("redirectAduan");
 
@@ -92,10 +94,10 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
-        // Pesan error dari backend, misal: "Akses ditolak. NIK ini terdaftar sebagai Warga, bukan Admin!"
+        // Password tetap sama; username berasal dari akun admin hasil migration.
         Swal.fire({
           title: "Login Gagal",
-          text: result.message || "NIK atau Password yang Anda masukkan salah",
+          text: result.message || "Username atau password salah",
           icon: "error",
           confirmButtonText: "Coba Lagi",
           confirmButtonColor: "#d33",
@@ -113,6 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
         background: "#fff5f5",
         color: "#b91c1c",
       });
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = oldLabel;
     }
   });
 });

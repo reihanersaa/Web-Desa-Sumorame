@@ -1,7 +1,7 @@
 (function initializePublicAuth() {
   "use strict";
 
-  const AUTH_KEYS = ["token", "login", "user_nama", "user_nik", "user_role"];
+  const AUTH_KEYS = ["warga_token", "user_nama", "user_nik", "user_role"];
   function decodeJwtPayload(token) {
     try {
       const payload = token.split(".")[1];
@@ -15,7 +15,14 @@
   }
 
   function getSession() {
-    const token = localStorage.getItem("token");
+    // Migrasikan hanya token WARGA lama. Jangan pernah hapus token milik admin.
+    const legacyToken = localStorage.getItem("token");
+    const legacyWarga = decodeJwtPayload(legacyToken || "")?.role === "warga";
+    if (!localStorage.getItem("warga_token") && legacyWarga) {
+      localStorage.setItem("warga_token", legacyToken);
+    }
+    if (legacyWarga) localStorage.removeItem("token");
+    const token = localStorage.getItem("warga_token");
     const payload = token ? decodeJwtPayload(token) : null;
     const isExpired = !payload?.exp || payload.exp * 1000 <= Date.now();
     const isWarga = payload?.role === "warga";
@@ -25,7 +32,6 @@
       return null;
     }
 
-    localStorage.setItem("login", "true");
     localStorage.setItem("user_role", payload.role);
     return {
       token,
@@ -36,7 +42,7 @@
   }
 
   function safeReturnPath(path) {
-    if (typeof path !== "string" || !path.startsWith("/") || path.startsWith("//")) {
+    if (typeof path !== "string" || !path.startsWith("/") || path.startsWith("//") || /[\\\u0000-\u0020]/.test(path)) {
       return "/";
     }
     return path;
@@ -49,6 +55,9 @@
 
   function logout() {
     AUTH_KEYS.forEach((key) => localStorage.removeItem(key));
+    if (decodeJwtPayload(localStorage.getItem("token") || "")?.role === "warga") {
+      localStorage.removeItem("token");
+    }
     localStorage.removeItem("redirectAfterLogin");
     localStorage.removeItem("redirectAduan");
     localStorage.removeItem("jenisDipilih");

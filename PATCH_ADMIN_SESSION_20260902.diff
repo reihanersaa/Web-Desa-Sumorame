@@ -1,0 +1,1483 @@
+--- /dev/null
++++ b/PANDUAN_PATCH_ADMIN_20260902.md
+@@ -0,0 +1,196 @@
++# Patch login username & sesi admin — 2 September 2026
++
++## Ringkasan
++
++Ini **bukan ZIP seluruh website**. Isinya hanya file autentikasi yang berubah,
++file pendukung baru, migration, tes, dan panduan. Dasarnya adalah ZIP terbaru
++yang dikirim pada 2 September 2026, bukan versi lama hasil percakapan sebelumnya.
++
++- Login admin memakai **username + password lama**. Login warga tetap NIK.
++- Tidak ada password default baru. Akun dan data warga tidak diubah.
++- Sesi admin diperpanjang tiap sekitar 10 menit selama halaman digunakan.
++- Login ulang diperlukan setelah sekitar 8 jam tidak aktif atau paling lambat
++  30 hari sejak login awal. Tab tersembunyi/tidak aktif tidak diperpanjang terus.
++- Logout mencabut sesi di server. Password berubah atau role bukan admin lagi
++  juga membuat sesi tidak dapat dipakai.
++- Gangguan jaringan/503/403 tidak dianggap sebagai alasan menghapus sesi.
++- Jika sesi berakhir saat mengetik, banner menyediakan login di tab baru:
++  form pada tab lama tidak sengaja dihapus dengan redirect paksa.
++
++**Batas lingkup:** semua 18 file sumber terkait Produk dan Statistik sama persis
++dengan ZIP kiriman. Tidak ada file modul tersebut dalam patch. Middleware backend
++dan `frontend/privat/js/api-config.js` memang dipakai bersama oleh semua CMS,
++jadi cara autentikasi seluruh CMS ikut diperbaiki tanpa mengubah data/fiturnya.
++
++## Penyebab logout yang ditemukan
++
++1. Token admin semula berlaku 2 jam dan tidak diperpanjang otomatis.
++2. Admin dan warga memakai key `localStorage.token` yang sama. Kode halaman
++   publik menghapus key tersebut bila role bukan warga. Membuka beranda saat
++   admin login dapat menghapus token admin sebelum batas 2 jam.
++3. Sejumlah modul menyimpan salinan token sejak halaman dimuat. Pengaturan API
++   bersama sekarang mengirim token admin terkini untuk request terautentikasi.
++
++Kini sesi admin disimpan di `sumorame_admin_session`, token warga di `warga_token`.
++Alias lama `token` tetap tersedia untuk kompatibilitas modul CMS yang tidak diedit.
++Token pada browser hanya untuk UI/transport; backend tetap memverifikasi tanda
++tangan JWT, kedaluwarsa, role terkini, password akun, dan status sesi di database.
++
++## 1. Pasang perubahan ke branch tim
++
++Simpan dulu perubahan lokal atau commit milik tim. Buat branch tersendiri:
++
++```bash
++git switch -c fix/admin-username-session
++```
++
++Pilih SATU cara pemasangan:
++
++### Cara A — salin file sesuai folder
++
++Ekstrak ZIP ke folder sementara. Salin folder `backend` dan `frontend` dari patch
++ke root repository dengan cara **merge folder**, bukan menghapus folder lama.
++Hanya replace file yang tercantum di manifest. Jangan menghapus file Produk,
++Statistik, gambar, konfigurasi, atau file lain yang tidak ada di patch.
++
++`MANIFEST_PATCH_ADMIN_20260902.json` memuat hash file lama dan baru. Jika file yang
++sama sudah diedit tim setelah ZIP dikirim, lakukan merge perubahan tersebut.
++
++### Cara B — patch Git (lebih cocok bila ada perubahan tim)
++
++Dari root repository, jalankan pengecekan memakai file diff di folder ekstraksi:
++
++```bash
++git apply --check PATH_KE_FOLDER_PATCH/PATCH_ADMIN_SESSION_20260902.diff
++git apply PATH_KE_FOLDER_PATCH/PATCH_ADMIN_SESSION_20260902.diff
++```
++
++Ganti `PATH_KE_FOLDER_PATCH` dengan path sebenarnya. Jangan jalankan Cara B jika
++sudah menyalin file dengan Cara A. Jika pengecekan gagal, jangan dipaksa; merge
++bagian konflik bersama tim. Diff mencakup semua file yang diperlukan patch.
++
++## 2. Jalankan migration SEBELUM deploy backend
++
++Di Supabase SQL Editor sebagai pemilik project/postgres, jalankan:
++
++`backend/supabase/migrations/20260902_admin_username_sessions.sql`
++
++Migration membuat dua tabel TERPISAH, `admin_accounts` dan `admin_sessions`.
++Tidak menambahkan/mengubah kolom pada tabel users, produk, atau statistik.
++Hanya akun ber-role admin yang mendapatkan mapping username. Kedua tabel baru
++memakai RLS dan tidak dapat dibaca/ditulis oleh role anon maupun authenticated;
++backend memakai service-role/secret key yang memang sudah dikonfigurasi.
++
++Hasil query terakhir menampilkan username, nama, dan email admin tanpa password.
++
++- Jika hanya satu admin dan belum memakai username lain, username otomatis
++  menjadi **admin.sumorame**.
++- Bila admin lebih dari satu, username awal unik berbentuk `petugas_...`.
++  Pilih username yang lebih mudah dengan SQL di bawah.
++- **Password tetap password admin sebelumnya.**
++- Migration aman dijalankan ulang dan tidak menimpa username pilihan sendiri.
++
++Contoh mengganti username berdasarkan email admin yang sudah ada:
++
++```sql
++UPDATE public.admin_accounts a
++SET username = 'nama.petugas'
++FROM public.users u
++WHERE a.user_id = u.id
++  AND u.role = 'admin'
++  AND u.email = 'GANTI_DENGAN_EMAIL_ADMIN_YANG_BENAR'
++RETURNING a.username;
++```
++
++Username harus unik, huruf kecil, panjang 3–40 karakter; boleh huruf, angka,
++titik, garis bawah, dan tanda hubung. Frontend/backend menormalkan huruf besar.
++Gunakan akun masing-masing petugas; hindari berbagi satu password.
++
++Jika admin BARU ditambahkan setelah migration, tambahkan mappingnya:
++
++```sql
++INSERT INTO public.admin_accounts(user_id, username)
++SELECT id, 'petugas.baru'
++FROM public.users
++WHERE email = 'GANTI_EMAIL_ADMIN_BARU' AND role = 'admin';
++```
++
++## 3. Deploy
++
++1. Jalankan migration dan catat username hasilnya.
++2. Deploy backend yang berisi SEMUA file backend dari patch.
++3. Deploy frontend yang berisi SEMUA file frontend dari patch.
++4. Tutup tab situs lama lalu buka ulang, atau hard refresh `Ctrl+F5`.
++5. Login ulang admin satu kali dengan username dan password lama.
++
++Admin yang masih memakai token versi lama akan diminta login ulang setelah
++backend diperbarui. Ini disengaja: token lama tidak memiliki sesi server yang
++bisa dicabut. Lakukan deployment pada waktu layanan admin sedang sepi.
++
++Tidak perlu environment variable baru dan tidak perlu dependency baru.
++Jangan mengganti `JWT_SECRET` saat deploy rutin, karena akan membatalkan token.
++Jangan menaruh `SUPABASE_SECRET_KEY` atau JWT secret di frontend.
++
++## 4. Tes setelah deploy
++
++- Login admin dengan username dan password lama; input NIK bukan metode login admin lagi.
++- Buka beranda/public dalam tab kedua: CMS tetap bekerja.
++- Login/logout warga pada tab kedua: sesi admin tetap ada.
++- Gunakan CMS lebih dari 10 menit. Di Network akan ada POST
++  `/api/auth/admin/session/renew`; token baru tersimpan otomatis.
++- Putuskan internet sementara: tidak terjadi redirect logout otomatis karena gangguan jaringan.
++- Logout admin: POST `/api/auth/admin/session/logout` harus sukses. Token sesi
++  sebelumnya harus mendapat 401 jika dicoba kembali pada API admin.
++- Coba admin tanpa token dan dengan token warga: ditolak, termasuk API CMS.
++- Periksa modul Produk/Statistik bersama tim: tidak ada perubahan UI/data,
++  hanya lapisan autentikasi bersama yang diperbarui.
++
++## Tes otomatis yang disertakan
++
++Dari folder backend, sesudah dependency terpasang:
++
++```bash
++node --test tests/*.test.js
++```
++
++Hasil pemeriksaan saat patch dibuat: **26 tes lulus**, termasuk HTTP lokal
++Express, validasi JWT nyata, login username, renewal, pencabutan sesi, batas 30
++hari, role/password berubah, jaringan gagal, session lintas tab, dan form upload.
++Tes menggunakan database tiruan; tidak mengakses data warga atau Supabase produksi.
++Semua JavaScript lolos `node --check`. Seluruh 18 file Produk/Statistik identik
++dengan sumber. SQL dan tampilan browser produksi masih perlu diverifikasi saat
++deployment; tidak ada klaim bahwa migration sudah dijalankan di project Supabase.
++
++## Pencabutan akses darurat
++
++Untuk mencabut semua sesi admin (misalnya perangkat hilang/serah-terima):
++
++```sql
++UPDATE public.admin_sessions
++SET revoked_at = now()
++WHERE revoked_at IS NULL;
++```
++
++Ini tidak menghapus akun atau data warga. Admin bisa login lagi menggunakan
++kredensial yang benar. Jika password diduga bocor, ganti password juga.
++
++## Catatan keamanan dan pemeliharaan
++
++- Token masih berada di localStorage untuk kompatibilitas modul CMS tim.
++  Karena itu keamanan terhadap XSS tetap penting; patch ini bukan audit keamanan menyeluruh.
++  Migrasi cookie HttpOnly memerlukan pekerjaan terpisah pada alur API lintas domain.
++- Rate limit login yang sudah ada tetap dipertahankan. Penyimpanan limit masih
++  per-instance, sehingga belum menjadi pembatas global yang kuat di Vercel serverless.
++  Pertimbangkan rate limit tersentralisasi sebelum trafik meningkat.
++- Baris sesi usang dapat dibersihkan berkala. Contoh SQL opsional tersedia pada
++  bagian komentar migration; tidak ada penghapusan otomatis data lain.
++- ZIP sumber memuat `backend/.env`; isinya sengaja tidak dibuka dan tidak disertakan
++  dalam patch. Jangan sertakan lagi. Jika secret pernah masuk GitHub atau dibagikan
++  ke pihak yang tidak berwenang, lakukan rotasi secret terkait.
++
++## Rollback
++
++Kembalikan perubahan kode melalui commit branch patch bersama tim. Tabel baru
++dapat dibiarkan karena tidak mengubah tabel lama; tidak perlu menghapus data untuk
++rollback. Admin perlu login ulang. Jangan menghapus tabel users atau menjalankan
++`DATABASE_SCHEMA_REFERENCE.sql` sebagai migration.
+--- /dev/null
++++ b/backend/src/controllers/adminAuthController.js
+@@ -0,0 +1,59 @@
++const bcrypt = require("bcryptjs");
++const supabase = require("../config/supabase");
++const sessions = require("../services/adminSessionService");
++
++function sendSession(res, status, result, user, username) {
++  res.set("Cache-Control", "no-store");
++  return res.status(status).json({ success: true, token: result.token,
++    expires_at: result.session.expires_at,
++    absolute_expires_at: result.session.absolute_expires_at,
++    data: sessions.publicAdmin(user, username) });
++}
++
++function serverError(res, error) {
++  if (error.status === 401) {
++    return res.status(401).json({ success: false, code: error.code, message: error.message });
++  }
++  console.error("Admin authentication failed:", error.code || error.name || "database error");
++  return res.status(503).json({ success: false,
++    message: "Layanan autentikasi sementara tidak tersedia. Coba lagi; sesi tidak dihapus." });
++}
++
++async function loginAdmin(req, res) {
++  try {
++    const username = typeof req.body?.username === "string" ? req.body.username.trim().toLowerCase() : "";
++    const password = req.body?.password;
++    if (!/^[a-z0-9][a-z0-9._-]{2,39}$/.test(username) || typeof password !== "string" ||
++        !password || Buffer.byteLength(password, "utf8") > 72) {
++      return res.status(400).json({ success: false,
++        message: "Isi username (3–40 karakter: huruf, angka, titik, garis bawah atau tanda hubung) dan password." });
++    }
++    const { data: account, error } = await supabase.from("admin_accounts")
++      .select("username,users!inner(id,nik,nama_lengkap,email,password,role)")
++      .eq("username", username).maybeSingle();
++    if (error) throw error;
++    const user = account?.users;
++    if (!user || user.role !== "admin" || !(await bcrypt.compare(password, user.password))) {
++      return res.status(401).json({ success: false, message: "Username atau password admin salah." });
++    }
++    const result = await sessions.createSession(user);
++    return sendSession(res, 200, result, user, account.username);
++  } catch (error) { return serverError(res, error); }
++}
++
++async function renewAdmin(req, res) {
++  try {
++    const result = await sessions.renewSession(req.adminSession);
++    return sendSession(res, 200, result, req.adminSession.user);
++  } catch (error) { return serverError(res, error); }
++}
++
++async function logoutAdmin(req, res) {
++  try {
++    await sessions.revokeSession(req.adminSession.session);
++    res.set("Cache-Control", "no-store");
++    return res.json({ success: true, message: "Sesi admin telah dicabut." });
++  } catch (error) { return serverError(res, error); }
++}
++
++module.exports = { loginAdmin, renewAdmin, logoutAdmin };
+--- a/backend/src/controllers/authController.js
++++ b/backend/src/controllers/authController.js
+@@ -225,78 +225,6 @@
+   }
+ };
+ 
+-// logika login admin (Menggunakan NIK & Password)
+-const loginAdmin = async (req, res) => {
+-  try {
+-    const nik = String(req.body.nik || "").trim();
+-    const password = req.body.password;
+-
+-    // 1. Validasi input
+-    if (!nik || !password) {
+-      return res.status(400).json({
+-        success: false,
+-        message: "NIK dan password admin wajib diisi!",
+-      });
+-    }
+-
+-    // 2. Cari user berdasarkan NIK
+-    const { data: user, error } = await supabase
+-      .from("users")
+-      .select("id, nik, nama_lengkap, email, password, role")
+-      .eq("nik", nik)
+-      .single();
+-
+-    if (error || !user) {
+-      return res.status(401).json({
+-        success: false,
+-        message: "NIK atau password admin salah.",
+-      });
+-    }
+-
+-    // 3. Cek password sebelum role agar endpoint tidak membocorkan jenis akun.
+-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+-    if (!isPasswordMatch) {
+-      return res.status(401).json({
+-        success: false,
+-        message: "NIK atau password admin salah.",
+-      });
+-    }
+-
+-    // 4. Pastikan akun yang kredensialnya benar memang berperan admin.
+-    if (user.role !== "admin") {
+-      return res.status(403).json({
+-        success: false,
+-        message: "Akses ditolak. Akun ini bukan akun admin.",
+-      });
+-    }
+-
+-    // 5. Buat Token JWT khusus Admin
+-    const token = jwt.sign(
+-      { id: user.id, nik: user.nik, role: user.role },
+-      process.env.JWT_SECRET,
+-      { expiresIn: "2h" },
+-    );
+-
+-    return res.status(200).json({
+-      success: true,
+-      message: "Login Admin berhasil!",
+-      token: token,
+-      data: {
+-        id: user.id,
+-        nik: user.nik,
+-        nama_lengkap: user.nama_lengkap,
+-        email: user.email,
+-        role: user.role,
+-      },
+-    });
+-  } catch (error) {
+-    console.error("Login Admin Error:", error.message);
+-    return res.status(500).json({
+-      success: false,
+-      message: "Terjadi kesalahan internal pada server.",
+-    });
+-  }
+-};
+-
+-// Sertakan loginAdmin di exports
+-module.exports = { registerWarga, loginWarga, loginAdmin };
++// Login admin memakai username dan sesi server terpisah.
++const { loginAdmin } = require("./adminAuthController");
++module.exports = { registerWarga, loginWarga, loginAdmin };
+--- a/backend/src/middleware/authMiddleware.js
++++ b/backend/src/middleware/authMiddleware.js
+@@ -1,10 +1,11 @@
+ const jwt = require("jsonwebtoken");
++const { validateSession } = require("../services/adminSessionService");
+ 
+ if (!process.env.JWT_SECRET) {
+   throw new Error("JWT_SECRET wajib tersedia di environment backend.");
+ }
+ 
+-const verifyToken = (req, res, next) => {
++const verifyToken = async (req, res, next) => {
+   const authHeader = req.header("Authorization");
+ 
+   if (!authHeader?.startsWith("Bearer ")) {
+@@ -19,12 +20,21 @@
+     if (!token) {
+       return res.status(401).json({ success: false, message: "Token tidak ditemukan." });
+     }
+-    const verified = jwt.verify(token, process.env.JWT_SECRET);
++    const verified = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ["HS256"] });
++    if (verified.role === "admin") {
++      req.adminSession = await validateSession(verified);
++    }
+     req.user = verified;
+     return next();
+   } catch (error) {
++    if (!(error instanceof jwt.JsonWebTokenError) && error.status !== 401) {
++      console.error("Admin session validation unavailable:", error.code || error.name);
++      return res.status(503).json({ success: false,
++        message: "Validasi sesi sementara tidak tersedia. Silakan coba lagi." });
++    }
+     return res.status(401).json({
+       success: false,
++      code: "SESSION_INVALID",
+       message: "Token tidak valid atau sudah kedaluwarsa.",
+     });
+   }
+--- a/backend/src/routes/authRoutes.js
++++ b/backend/src/routes/authRoutes.js
+@@ -6,6 +6,8 @@
+   loginAdmin,
+ } = require("../controllers/authController");
+ const { createRateLimiter } = require("../middleware/rateLimitMiddleware");
++const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
++const { renewAdmin, logoutAdmin } = require("../controllers/adminAuthController");
+ 
+ const loginLimiter = createRateLimiter({
+   windowMs: 15 * 60 * 1000,
+@@ -27,5 +29,8 @@
+ 
+ // Endpoint: POST /api/auth/login-admin
+ router.post("/login-admin", loginLimiter, loginAdmin);
++// Renewal memakai token admin yang masih valid; tidak menerima token kedaluwarsa.
++router.post("/admin/session/renew", verifyToken, requireAdmin, renewAdmin);
++router.post("/admin/session/logout", verifyToken, requireAdmin, logoutAdmin);
+ 
+ module.exports = router;
+--- /dev/null
++++ b/backend/src/services/adminSessionService.js
+@@ -0,0 +1,89 @@
++const crypto = require("node:crypto");
++const jwt = require("jsonwebtoken");
++const supabase = require("../config/supabase");
++
++// Sesi bergulir: 8 jam sejak renewal terakhir, maksimal 30 hari sejak login.
++const IDLE_SECONDS = 8 * 60 * 60;
++const MAX_SECONDS = 30 * 24 * 60 * 60;
++const ISSUER = "sumorame-api";
++const AUDIENCE = "sumorame-admin";
++
++function authError(message = "Sesi admin berakhir. Silakan login kembali.") {
++  return Object.assign(new Error(message), { status: 401, code: "ADMIN_SESSION_INVALID" });
++}
++
++function credentialTag(passwordHash) {
++  return crypto.createHmac("sha256", process.env.JWT_SECRET).update(passwordHash).digest("hex");
++}
++
++function publicAdmin(user, username) {
++  return { id: user.id, nik: user.nik, nama_lengkap: user.nama_lengkap,
++    email: user.email, role: "admin", ...(username ? { username } : {}) };
++}
++
++function issueToken(user, session) {
++  const exp = Math.floor(new Date(session.expires_at).getTime() / 1000);
++  return jwt.sign({ id: user.id, nik: user.nik, role: "admin", sid: session.id,
++    type: "admin_access", exp }, process.env.JWT_SECRET,
++  { algorithm: "HS256", issuer: ISSUER, audience: AUDIENCE });
++}
++
++async function createSession(user) {
++  const now = Date.now();
++  const session = {
++    id: crypto.randomUUID(), user_id: user.id,
++    credential_tag: credentialTag(user.password),
++    expires_at: new Date(now + IDLE_SECONDS * 1000).toISOString(),
++    absolute_expires_at: new Date(now + MAX_SECONDS * 1000).toISOString(),
++  };
++  const { error } = await supabase.from("admin_sessions").insert(session);
++  if (error) throw error;
++  return { session, token: issueToken(user, session) };
++}
++
++async function validateSession(payload) {
++  if (payload.role !== "admin" || payload.type !== "admin_access" ||
++      payload.iss !== ISSUER || payload.aud !== AUDIENCE ||
++      typeof payload.sid !== "string" || !/^[a-f0-9-]{36}$/i.test(payload.sid)) {
++    throw authError();
++  }
++  const { data: session, error } = await supabase.from("admin_sessions")
++    .select("id,user_id,expires_at,absolute_expires_at,revoked_at,credential_tag,users!inner(id,nik,nama_lengkap,email,password,role)")
++    .eq("id", payload.sid).eq("user_id", payload.id).maybeSingle();
++  if (error) throw error; // DB/network failure is NOT an authentication failure.
++  const now = Date.now();
++  const user = session?.users;
++  if (!session || session.revoked_at || !user || user.role !== "admin" ||
++      !(Date.parse(session.expires_at) > now) ||
++      !(Date.parse(session.absolute_expires_at) > now) ||
++      session.credential_tag !== credentialTag(user.password)) {
++    throw authError();
++  }
++  return { session, user };
++}
++
++async function renewSession({ session, user }) {
++  const now = Date.now();
++  const expiresAt = new Date(Math.min(now + IDLE_SECONDS * 1000,
++    Date.parse(session.absolute_expires_at))).toISOString();
++  // Conditional update prevents a concurrent logout from resurrecting a session.
++  const { data, error } = await supabase.from("admin_sessions")
++    .update({ expires_at: expiresAt })
++    .eq("id", session.id).eq("user_id", user.id).is("revoked_at", null)
++    .gt("expires_at", new Date(now).toISOString())
++    .gt("absolute_expires_at", new Date(now).toISOString())
++    .select("id,expires_at,absolute_expires_at").maybeSingle();
++  if (error) throw error;
++  if (!data) throw authError();
++  return { session: data, token: issueToken(user, data) };
++}
++
++async function revokeSession(session) {
++  const { error } = await supabase.from("admin_sessions")
++    .update({ revoked_at: new Date().toISOString() })
++    .eq("id", session.id).eq("user_id", session.user_id);
++  if (error) throw error;
++}
++
++module.exports = { createSession, validateSession, renewSession, revokeSession,
++  publicAdmin, IDLE_SECONDS, MAX_SECONDS };
+--- /dev/null
++++ b/backend/supabase/migrations/20260902_admin_username_sessions.sql
+@@ -0,0 +1,58 @@
++-- Jalankan sekali di Supabase SQL Editor sebagai project owner/postgres.
++-- TIDAK mengubah data/kolom warga, produk, atau statistik. Password lama tetap.
++BEGIN;
++
++CREATE TABLE IF NOT EXISTS public.admin_accounts (
++  user_id uuid PRIMARY KEY REFERENCES public.users(id) ON DELETE CASCADE,
++  username text NOT NULL UNIQUE,
++  CONSTRAINT admin_username_format CHECK (username ~ '^[a-z0-9][a-z0-9._-]{2,39}$')
++);
++
++CREATE TABLE IF NOT EXISTS public.admin_sessions (
++  id uuid PRIMARY KEY,
++  user_id uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
++  credential_tag text NOT NULL,
++  created_at timestamptz NOT NULL DEFAULT now(),
++  expires_at timestamptz NOT NULL,
++  absolute_expires_at timestamptz NOT NULL,
++  revoked_at timestamptz,
++  CONSTRAINT admin_session_time_order CHECK (expires_at <= absolute_expires_at)
++);
++CREATE INDEX IF NOT EXISTS admin_sessions_user_idx ON public.admin_sessions(user_id);
++CREATE INDEX IF NOT EXISTS admin_sessions_expiry_idx ON public.admin_sessions(expires_at);
++
++ALTER TABLE public.admin_accounts ENABLE ROW LEVEL SECURITY;
++ALTER TABLE public.admin_sessions ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON public.admin_accounts, public.admin_sessions FROM anon, authenticated;
++GRANT SELECT, INSERT, UPDATE, DELETE ON public.admin_accounts, public.admin_sessions TO service_role;
++
++-- Username unik untuk admin yang sudah ada; aman dijalankan kembali.
++INSERT INTO public.admin_accounts(user_id, username)
++SELECT id, 'petugas_' || replace(id::text, '-', '') FROM public.users
++WHERE role = 'admin'
++ON CONFLICT (user_id) DO NOTHING;
++
++-- Jika hanya satu admin dan belum diberi username sendiri, gunakan nama mudah.
++UPDATE public.admin_accounts a SET username = 'admin.sumorame'
++WHERE a.username = 'petugas_' || replace(a.user_id::text, '-', '')
++AND a.user_id IN (SELECT id FROM public.users WHERE role = 'admin')
++AND (SELECT count(*) FROM public.users WHERE role = 'admin') = 1
++AND NOT EXISTS (SELECT 1 FROM public.admin_accounts WHERE username = 'admin.sumorame');
++
++COMMIT;
++
++-- Hasil: lihat username yang akan dipakai login (password TIDAK ditampilkan).
++SELECT a.username, u.nama_lengkap, u.email
++FROM public.admin_accounts a JOIN public.users u ON u.id = a.user_id
++WHERE u.role = 'admin' ORDER BY a.username;
++
++-- Opsional: tentukan username per petugas lewat email admin yang benar.
++-- UPDATE public.admin_accounts SET username = 'nama.petugas'
++-- WHERE user_id = (SELECT id FROM public.users
++--   WHERE email = 'GANTI_EMAIL_ADMIN_YANG_BENAR' AND role = 'admin');
++
++-- Mencabut SELURUH sesi admin (darurat atau serah-terima perangkat):
++-- UPDATE public.admin_sessions SET revoked_at = now() WHERE revoked_at IS NULL;
++
++-- Opsional pemeliharaan: hapus catatan sesi usang, bukan akun/admin/warga.
++-- DELETE FROM public.admin_sessions WHERE absolute_expires_at < now() - interval '7 days';
+--- /dev/null
++++ b/backend/tests/admin-session.test.js
+@@ -0,0 +1,200 @@
++// Run from backend: node --test tests/*.test.js
++// No production credentials, real accounts, or external network used.
++const { test, beforeEach } = require("node:test");
++const assert = require("node:assert/strict");
++const jwt = require("jsonwebtoken");
++const bcrypt = require("bcryptjs");
++process.env.JWT_SECRET = "test-only-not-a-production-secret";
++
++let tables;
++let databaseError;
++const userId = "11111111-1111-4111-8111-111111111111";
++const admin = { id: userId, nik: "1234567890123456", role: "admin", email: "test@example.invalid",
++  nama_lengkap: "Petugas Uji", password: bcrypt.hashSync("password-test", 4) };
++
++// Supabase query double: executes all eq/is/gt filters, including revoke races.
++const fakeSupabase = {
++  from(table) {
++    let mode = "read", body, single = false;
++    const filters = [];
++    const q = {
++      select() { return q; },
++      insert(value) { mode = "insert"; body = value; return q; },
++      update(value) { mode = "update"; body = value; return q; },
++      eq(key, value) { filters.push(r => r[key] === value); return q; },
++      is(key, value) { filters.push(r => (r[key] ?? null) === value); return q; },
++      gt(key, value) { filters.push(r => r[key] > value); return q; },
++      maybeSingle() { single = true; return q; },
++      then(resolve, reject) {
++        try {
++          if (databaseError) return Promise.resolve({ data: null, error: databaseError }).then(resolve, reject);
++          const records = tables[table];
++          if (!records) throw Error(`Unexpected table access: ${table}`);
++          if (mode === "insert") records.push(...(Array.isArray(body) ? body : [body]).map(r => ({ ...r })));
++          const found = records.filter(r => filters.every(f => f(r)));
++          if (mode === "update") found.forEach(r => Object.assign(r, body));
++          const joined = found.map(r => ({ ...r, users: tables.users.find(u => u.id === r.user_id) }));
++          return Promise.resolve({ data: single ? (joined[0] || null) : joined, error: null }).then(resolve, reject);
++        } catch (e) { return Promise.reject(e).then(resolve, reject); }
++      },
++    };
++    return q;
++  },
++};
++
++require.cache[require.resolve("../src/config/supabase")] = { exports: fakeSupabase };
++const service = require("../src/services/adminSessionService");
++const controllers = require("../src/controllers/adminAuthController");
++const { verifyToken, requireAdmin } = require("../src/middleware/authMiddleware");
++const realNow = Date.now;
++beforeEach(() => {
++  Date.now = realNow;
++  databaseError = null;
++  tables = { users: [{ ...admin }], admin_accounts: [{ username: "admin.sumorame", user_id: userId }], admin_sessions: [] };
++});
++
++function response() {
++  return { statusCode: 200, headers: {}, body: null,
++    status(code) { this.statusCode = code; return this; },
++    set(k,v) { this.headers[k] = v; return this; },
++    json(body) { this.body = body; return this; } };
++}
++
++async function authenticate(token) {
++  const req = { header: () => token ? `Bearer ${token}` : undefined };
++  const res = response();
++  let passed = false;
++  await verifyToken(req, res, () => { passed = true; });
++  return { req, res, passed };
++}
++
++test("username normalized, existing password reused, session expires in 8h", async () => {
++  const res = response();
++  await controllers.loginAdmin({ body: { username: " ADMIN.SUMORAME ", password: "password-test" } }, res);
++  assert.equal(res.statusCode, 200);
++  assert.equal(res.body.data.username, "admin.sumorame");
++  assert.equal(res.body.data.password, undefined);
++  assert.equal(tables.users[0].password, admin.password);
++  const claims = jwt.verify(res.body.token, process.env.JWT_SECRET);
++  assert.equal(claims.exp - claims.iat, 8 * 3600);
++  assert.equal(claims.type, "admin_access");
++  assert.equal(tables.admin_sessions.length, 1);
++  assert.equal(res.headers["Cache-Control"], "no-store");
++  assert.equal((await authenticate(res.body.token)).passed, true);
++});
++
++test("NIK-only login, malformed input and wrong passwords rejected", async () => {
++  for (const body of [{ nik: admin.nik, password: "password-test" }, { username: {}, password: "x" },
++    { username: "admin.sumorame", password: "x".repeat(73) }]) {
++    const res = response(); await controllers.loginAdmin({ body }, res); assert.equal(res.statusCode, 400);
++  }
++  for (const username of ["unknown", "admin.sumorame"]) {
++    const res = response(); await controllers.loginAdmin({ body: { username, password: "wrong" } }, res);
++    assert.equal(res.statusCode, 401);
++    assert.equal(res.body.message, "Username atau password admin salah.");
++  }
++  assert.equal(tables.admin_sessions.length, 0);
++});
++
++test("warga cannot use admin login even if an account mapping exists", async () => {
++  tables.users[0].role = "warga";
++  const res = response();
++  await controllers.loginAdmin({ body: { username: "admin.sumorame", password: "password-test" } }, res);
++  assert.equal(res.statusCode, 401);
++});
++
++test("active session renews without password; hard 30-day cap applies", async () => {
++  const start = realNow();
++  const created = await service.createSession(admin);
++  Date.now = () => start + 7 * 3600 * 1000;
++  try {
++    const validated = await service.validateSession(jwt.verify(created.token, process.env.JWT_SECRET));
++    const renewed = await service.renewSession(validated);
++    const claims = jwt.verify(renewed.token, process.env.JWT_SECRET);
++    assert.ok(claims.exp * 1000 > start + 14 * 3600 * 1000);
++    assert.equal(claims.sid, validated.session.id);
++    // Simulate an otherwise valid session near its hard deadline.
++    const nearCap = start + (30 * 24 - 1) * 3600 * 1000;
++    Date.now = () => nearCap;
++    tables.admin_sessions[0].expires_at = tables.admin_sessions[0].absolute_expires_at;
++    const next = await service.renewSession({ session: tables.admin_sessions[0], user: admin });
++    assert.equal(next.session.expires_at, created.session.absolute_expires_at);
++    Date.now = () => start + 31 * 24 * 3600 * 1000;
++    await assert.rejects(() => service.renewSession({ session: tables.admin_sessions[0], user: admin }), { status: 401 });
++  } finally { Date.now = realNow; }
++});
++
++test("expired JWT, tampered token, absent token and legacy admin JWT are rejected", async () => {
++  const legacy = jwt.sign({ id: userId, role: "admin" }, process.env.JWT_SECRET, { expiresIn: "2h" });
++  const expired = jwt.sign({ id: userId, role: "admin", exp: 1 }, process.env.JWT_SECRET);
++  for (const token of [null, "tampered.invalid.token", legacy, expired]) {
++    const result = await authenticate(token);
++    assert.equal(result.passed, false); assert.equal(result.res.statusCode, 401);
++  }
++});
++
++test("logout revokes all tokens for that session; racing renewal cannot resurrect it", async () => {
++  const created = await service.createSession(admin);
++  const active = await authenticate(created.token);
++  const validated = active.req.adminSession;
++  const res = response(); await controllers.logoutAdmin(active.req, res);
++  assert.equal(res.statusCode, 200);
++  assert.equal((await authenticate(created.token)).res.statusCode, 401);
++  await assert.rejects(() => service.renewSession(validated), { status: 401 });
++});
++
++test("password change and role downgrade invalidate existing sessions", async () => {
++  const created = await service.createSession(admin);
++  tables.users[0].password = bcrypt.hashSync("new-password", 4);
++  assert.equal((await authenticate(created.token)).res.statusCode, 401);
++  tables.users[0].password = admin.password;
++  tables.users[0].role = "warga";
++  assert.equal((await authenticate(created.token)).res.statusCode, 401);
++});
++
++test("DB outage fails closed with 503, not an invalid-session 401", async () => {
++  const created = await service.createSession(admin);
++  databaseError = { code: "TEST_DB_UNAVAILABLE" };
++  const failed = await authenticate(created.token);
++  assert.equal(failed.res.statusCode, 503); assert.equal(failed.passed, false);
++  const res = response();
++  await controllers.loginAdmin({ body: { username: "admin.sumorame", password: "password-test" } }, res);
++  assert.equal(res.statusCode, 503);
++});
++
++test("warga JWT contract unchanged; cannot pass admin role check", async () => {
++  const token = jwt.sign({ id: userId, role: "warga", nik: admin.nik }, process.env.JWT_SECRET, { expiresIn: "1d" });
++  databaseError = { code: "TEST_DB_UNAVAILABLE" }; // Warga validation does not query admin tables.
++  const result = await authenticate(token);
++  assert.equal(result.passed, true);
++  requireAdmin(result.req, result.res, () => assert.fail("warga reached admin"));
++  assert.equal(result.res.statusCode, 403);
++});
++
++test("HTTP routes: login, renewal, logout and revoked JWT round trip", async (t) => {
++  const app = require("../index");
++  const server = require("node:http").createServer(app);
++  await new Promise((resolve, reject) => { server.once("error", reject); server.listen(0, "127.0.0.1", resolve); });
++  t.after(() => { server.closeAllConnections(); server.close(); });
++  const base = `http://127.0.0.1:${server.address().port}/api`;
++  assert.equal((await fetch(`${base}/health`)).status, 200);
++  const login = await fetch(`${base}/auth/login-admin`, { method: "POST",
++    headers: { "Content-Type": "application/json" },
++    body: JSON.stringify({ username: "admin.sumorame", password: "password-test" }) });
++  assert.equal(login.status, 200);
++  const original = await login.json();
++  const renewed = await fetch(`${base}/auth/admin/session/renew`, { method: "POST",
++    headers: { Authorization: `Bearer ${original.token}` } });
++  assert.equal(renewed.status, 200);
++  const next = await renewed.json();
++  const logout = await fetch(`${base}/auth/admin/session/logout`, { method: "POST",
++    headers: { Authorization: `Bearer ${next.token}` } });
++  assert.equal(logout.status, 200);
++  const replay = await fetch(`${base}/auth/admin/session/renew`, { method: "POST",
++    headers: { Authorization: `Bearer ${original.token}` } });
++  assert.equal(replay.status, 401);
++  assert.equal((await fetch(`${base}/auth/admin/session/renew`, { method: "POST" })).status, 401);
++  const warga = jwt.sign({ id: userId, role: "warga" }, process.env.JWT_SECRET, { expiresIn: "1d" });
++  assert.equal((await fetch(`${base}/auth/admin/session/renew`, { method: "POST",
++    headers: { Authorization: `Bearer ${warga}` } })).status, 403);
++});
+--- /dev/null
++++ b/backend/tests/frontend-auth.test.js
+@@ -0,0 +1,232 @@
++const { test } = require("node:test");
++const assert = require("node:assert/strict");
++const fs = require("node:fs");
++const path = require("node:path");
++const vm = require("node:vm");
++const adminSource = fs.readFileSync(path.join(__dirname, "../../frontend/privat/js/api-config.js"), "utf8");
++const publicSource = fs.readFileSync(path.join(__dirname, "../../frontend/publik/js/auth-ui.js"), "utf8");
++const KEY = "sumorame_admin_session";
++const baseTime = Date.UTC(2026, 8, 2, 9);
++
++function token(role = "admin", options = {}) {
++  const payload = { id: "test-admin", sid: "test-session", role, type: "admin_access",
++    iat: baseTime / 1000, exp: baseTime / 1000 + 8 * 3600, ...options };
++  return `header.${Buffer.from(JSON.stringify(payload)).toString("base64url")}.signature`;
++}
++function stored(accessToken) { return JSON.stringify({ token: accessToken, data: { nama_lengkap: "Test" } }); }
++function json(body, status = 200) { return new Response(JSON.stringify(body), { status }); }
++
++function browser(initial = {}) {
++  const state = new Map(Object.entries(initial));
++  const ids = new Map();
++  const events = new Map();
++  const windowEvents = new Map();
++  let time = baseTime;
++  function element() {
++    return { style: {}, children: [],
++      setAttribute() {},
++      appendChild(child) { this.children.push(child); if (child.id) ids.set(child.id, child); },
++      append(...children) { children.forEach(c => this.appendChild(c)); },
++      replaceChildren(...children) { this.children = []; this.append(...children); },
++      remove() { ids.delete(this.id); },
++      addEventListener() {},
++    };
++  }
++  const ctx = {
++    console, URL, Request, Response, Headers, AbortController,
++    Date: class extends Date { static now() { return time; } },
++    atob: s => Buffer.from(s, "base64").toString("binary"),
++    localStorage: {
++      getItem: key => state.get(key) ?? null,
++      setItem: (key, value) => state.set(key, String(value)),
++      removeItem: key => state.delete(key),
++    },
++    location: { hostname: "desa.example", origin: "https://desa.example", pathname: "/admin/DashboardAdmin",
++      href: "https://desa.example/admin/DashboardAdmin", replace(url) { this.redirect = url; },
++      assign(url) { this.redirect = url; } },
++    document: { readyState: "loading", visibilityState: "visible", body: element(),
++      createElement: element, createTextNode: text => ({ textContent: text }),
++      getElementById: id => ids.get(id) || null,
++      addEventListener(name, cb) { const list = events.get(name) || []; list.push(cb); events.set(name, list); },
++    },
++    addEventListener(name, cb) { windowEvents.set(name, cb); },
++    setTimeout, clearTimeout, setInterval: () => 1,
++    fetch: async (...args) => ctx.network(...args),
++    network: async () => json({ success: true }),
++  };
++  ctx.window = ctx;
++  vm.createContext(ctx);
++  return { ctx, state, ids,
++    loadAdmin: () => vm.runInContext(adminSource, ctx),
++    loadPublic: () => vm.runInContext(publicSource, ctx),
++    advance(ms) { time += ms; },
++    event(name, detail = {}) { for (const fn of events.get(name) || []) fn(detail); },
++    storageEvent() { windowEvents.get("storage")?.({ key: KEY }); },
++  };
++}
++
++test("opening public page as admin does not delete CMS token", () => {
++  const t = token(); const b = browser({ token: t, [KEY]: stored(t) });
++  b.loadPublic();
++  assert.equal(b.ctx.AuthSession.get(), null);
++  assert.equal(b.state.get("token"), t);
++  assert.ok(b.state.has(KEY));
++});
++
++test("warga session migration and logout preserve separate admin session", () => {
++  const t = token(); const warga = token("warga");
++  const b = browser({ token: warga, [KEY]: stored(t), user_nama: "Warga" });
++  b.loadPublic();
++  assert.equal(b.ctx.AuthSession.get().token, warga);
++  assert.equal(b.state.get("warga_token"), warga);
++  assert.equal(b.state.has("token"), false);
++  b.ctx.AuthSession.logout();
++  assert.equal(b.state.has("warga_token"), false);
++  assert.ok(b.state.has(KEY));
++});
++
++test("admin compatibility alias preserves a preexisting warga login", () => {
++  const t = token(); const warga = token("warga");
++  const b = browser({ token: warga, [KEY]: stored(t) });
++  b.loadAdmin();
++  assert.equal(b.state.get("token"), t);
++  assert.equal(b.state.get("warga_token"), warga);
++});
++
++test("guest does not get CMS access; old admin tokens require one new login", () => {
++  for (const state of [{}, { token: token("warga") }, { token: token() }]) {
++    const b = browser(state); b.loadAdmin();
++    assert.equal(b.ctx.location.redirect, "/admin/LoginAdmin");
++  }
++});
++
++test("authenticated fetch replaces captured stale token without touching feature files", async () => {
++  const t = token(); const b = browser({ [KEY]: stored(t) });
++  const captured = [];
++  b.ctx.network = async (input, options) => { captured.push(options); return json({ success: true }); };
++  b.loadAdmin();
++  await b.ctx.fetch(`${b.ctx.API_BASE_URL}/admin/produk`, { headers: { Authorization: "Bearer old-at-page-load" } });
++  assert.equal(captured[0].headers.get("Authorization"), `Bearer ${t}`);
++  assert.equal(captured.length, 1);
++});
++
++test("requests without auth and third-party requests are not rewritten", async () => {
++  const t = token(); const b = browser({ [KEY]: stored(t) }); const received = [];
++  b.ctx.network = async (...args) => { received.push(args); return json({}); };
++  b.loadAdmin();
++  await b.ctx.fetch("https://third-party.example/api/test", { headers: { Authorization: "External key" } });
++  await b.ctx.fetch(`${b.ctx.API_BASE_URL}/publik/produk`);
++  assert.equal(received[0][1].headers.Authorization, "External key");
++  assert.equal(received[1][1], undefined);
++});
++
++test("concurrent renewal is single-flight and updates all legacy aliases", async () => {
++  const t = token(); const b = browser({ [KEY]: stored(t) });
++  const renewed = token("admin", { iat: baseTime / 1000 + 660, exp: baseTime / 1000 + 8 * 3600 + 660 });
++  let calls = 0;
++  b.ctx.network = async () => { calls++; return json({ success: true, token: renewed, data: { nama_lengkap: "Test" } }); };
++  b.loadAdmin(); b.advance(11 * 60000);
++  await Promise.all([b.ctx.AdminSession.renew(), b.ctx.AdminSession.renew(), b.ctx.AdminSession.renew()]);
++  assert.equal(calls, 1);
++  assert.equal(b.state.get("token"), renewed);
++  assert.equal(b.ctx.AdminSession.get().token, renewed);
++});
++
++test("offline/503 renewal preserves login and form rather than redirecting", async () => {
++  for (const mode of ["offline", "503"]) {
++    const t = token(); const b = browser({ [KEY]: stored(t) });
++    b.ctx.network = async () => { if (mode === "offline") throw new Error("offline"); return json({}, 503); };
++    b.loadAdmin(); b.advance(11 * 60000); await b.ctx.AdminSession.renew();
++    assert.ok(b.state.has(KEY)); assert.equal(b.ctx.location.redirect, undefined);
++    assert.ok(b.ids.has("admin-session-notice"));
++  }
++});
++
++test("API 403 does not clear session, but 401 does; POST is never replayed", async () => {
++  for (const status of [401, 403]) {
++    const t = token(); const b = browser({ [KEY]: stored(t) }); let calls = 0;
++    b.ctx.network = async () => { calls++; return json({}, status); };
++    b.loadAdmin();
++    await b.ctx.fetch(`${b.ctx.API_BASE_URL}/informasi`, { method: "POST", headers: { Authorization: `Bearer ${t}` }, body: "test" });
++    assert.equal(calls, 1);
++    assert.equal(b.state.has(KEY), status !== 401);
++    assert.equal(b.ctx.location.redirect, undefined);
++  }
++});
++
++test("expired token cannot renew and no request leaves browser", async () => {
++  const b = browser({ [KEY]: stored(token()) }); let calls = 0;
++  b.ctx.network = async () => { calls++; return json({}); };
++  b.loadAdmin(); b.advance(9 * 3600 * 1000);
++  const res = await b.ctx.fetch(`${b.ctx.API_BASE_URL}/aduan`, { headers: { Authorization: "Bearer stale" } });
++  assert.equal(res.status, 401); assert.equal(calls, 0);
++});
++
++test("hidden or inactive tabs do not keep renewing indefinitely", async () => {
++  const b = browser({ [KEY]: stored(token()) }); let calls = 0;
++  b.ctx.network = async () => { calls++; return json({}); };
++  b.loadAdmin(); b.advance(11 * 60000); b.ctx.document.visibilityState = "hidden";
++  await b.ctx.AdminSession.renew();
++  b.ctx.document.visibilityState = "visible"; b.advance(25 * 60000);
++  await b.ctx.AdminSession.renew();
++  assert.equal(calls, 0);
++});
++
++test("delayed renewal after logout cannot resurrect browser session", async () => {
++  const b = browser({ [KEY]: stored(token()) }); let finish;
++  b.ctx.network = () => new Promise(resolve => { finish = resolve; });
++  b.loadAdmin(); b.advance(11 * 60000);
++  const renewing = b.ctx.AdminSession.renew();
++  b.state.delete(KEY);
++  finish(json({ success: true, token: token("admin", { exp: baseTime / 1000 + 9 * 3600 }), data: {} }));
++  await renewing;
++  assert.equal(b.state.has(KEY), false);
++});
++
++test("server-confirmed admin logout preserves warga token; offline logout warns", async () => {
++  for (const status of [200, 503]) {
++    const warga = token("warga");
++    const b = browser({ [KEY]: stored(token()), warga_token: warga });
++    b.ctx.network = async () => json({}, status);
++    b.loadAdmin(); await b.ctx.AdminSession.logout();
++    assert.equal(b.state.get("warga_token"), warga);
++    assert.equal(b.state.has(KEY), status !== 200);
++    assert.equal(b.ctx.location.redirect, status === 200 ? "/admin/LoginAdmin" : undefined);
++  }
++});
++
++test("public return URL rejects protocol-relative/backslash redirect tricks", () => {
++  const b = browser(); b.loadPublic();
++  for (const input of ["//evil.example", "/\\evil.example", "/\nevil.example"]) {
++    b.ctx.AuthSession.requireLogin(input);
++    assert.equal(b.state.get("redirectAfterLogin"), "/");
++  }
++  b.ctx.AuthSession.requireLogin("/Aduan");
++  assert.equal(b.state.get("redirectAfterLogin"), "/Aduan");
++});
++
++test("delayed 401 for an older token cannot delete newer login", async () => {
++  const b = browser({ [KEY]: stored(token()) }); let finish;
++  b.ctx.network = () => new Promise(resolve => { finish = resolve; });
++  b.loadAdmin();
++  const request = b.ctx.fetch(`${b.ctx.API_BASE_URL}/ppid`, { headers: { Authorization: "Bearer old" } });
++  await new Promise(resolve => setImmediate(resolve));
++  const next = token("admin", { sid: "different-session", exp: baseTime / 1000 + 9 * 3600 });
++  b.ctx.AdminSession.saveLogin({ token: next, data: {} });
++  finish(json({}, 401)); await request;
++  assert.equal(b.ctx.AdminSession.get().token, next);
++});
++
++test("multipart body and Request options survive auth header replacement", async () => {
++  const b = browser({ [KEY]: stored(token()) }); let captured;
++  b.ctx.network = async (...args) => { captured = args; return json({}); };
++  b.loadAdmin();
++  const form = new FormData(); form.append("judul", "test");
++  const original = new Request(`${b.ctx.API_BASE_URL}/informasi`, { method: "POST", body: form,
++    headers: { Authorization: "Bearer captured-token", "X-Test": "keep" } });
++  await b.ctx.fetch(original);
++  assert.equal(captured[0], original);
++  assert.equal(captured[1].headers.get("X-Test"), "keep");
++  assert.match(captured[1].headers.get("Content-Type"), /^multipart\/form-data; boundary=/);
++  assert.equal(captured[1].headers.get("Authorization"), `Bearer ${token()}`);
++});
+--- a/frontend/privat/LoginAdmin.html
++++ b/frontend/privat/LoginAdmin.html
+@@ -47,20 +47,23 @@
+           </div>
+ 
+           <form id="loginForm">
+-            <!-- NIK -->
+-            <label class="input-label">NIK Petugas</label>
++            <!-- Username khusus admin; NIK warga tidak diubah. -->
++            <label class="input-label" for="username">Username Petugas</label>
+             <div class="input-group">
+               <i class="fa fa-user"></i>
+-              <input type="text" id="nip" placeholder="Masukkan NIK" />
++              <input type="text" id="username" name="username" placeholder="Contoh: admin.sumorame"
++                autocomplete="username" autocapitalize="none" spellcheck="false"
++                minlength="3" maxlength="40" pattern="[a-zA-Z0-9][a-zA-Z0-9._\-]{2,39}" required />
+             </div>
+ 
+             <!-- PASSWORD -->
+-            <label class="input-label">Password</label>
++            <label class="input-label" for="password">Password</label>
+             <div class="input-group">
+               <i class="fa fa-lock"></i>
+               <input
+                 type="password"
+-                id="password"
++                id="password"
++                name="password" autocomplete="current-password" required
+                 placeholder="Masukkan Password"
+               />
+               <i
+@@ -90,7 +93,7 @@
+ 
+               <h3>Lupa Password?</h3>
+ 
+-              <p>Silakan hubungi nomor admin dibawah ini</p>
++              <p>Hubungi pengelola website atau penanggung jawab perangkat desa untuk pemulihan username/password. Jangan membagikan password kepada pihak lain.</p>
+ 
+               <img
+                 src="/img/peringatan.png"
+@@ -110,7 +113,7 @@
+       </p>
+     </div>
+ 
+-    <script src="js/api-config.js"></script>
+-    <script src="js/LoginAdmin.js"></script>
++    <script src="js/api-config.js?v=20260902-1"></script>
++    <script src="js/LoginAdmin.js?v=20260902-1"></script>
+   </body>
+ </html>
+--- a/frontend/privat/js/LoginAdmin.js
++++ b/frontend/privat/js/LoginAdmin.js
+@@ -37,13 +37,13 @@
+   form.addEventListener("submit", async function (e) {
+     e.preventDefault();
+ 
+-    const nik = document.getElementById("nip").value; // input id="nip" berisi NIK
++    const username = document.getElementById("username").value.trim().toLowerCase();
+     const pass = document.getElementById("password").value;
+ 
+-    if (!nik || !pass) {
++    if (!username || !pass) {
+       return Swal.fire({
+         title: "Login Gagal",
+-        text: "NIK dan Password wajib diisi",
++        text: "Username dan password wajib diisi",
+         icon: "error",
+         confirmButtonText: "Coba Lagi",
+         confirmButtonColor: "#d33",
+@@ -52,26 +52,28 @@
+       });
+     }
+ 
+-    try {
++    const submitButton = form.querySelector('button[type="submit"]');
++    if (submitButton.disabled) return;
++    submitButton.disabled = true;
++    const oldLabel = submitButton.textContent;
++    submitButton.textContent = "Memeriksa akun...";
++    try {
+       // PORT disamakan dengan backend (index.js -> PORT || 3000)
+       const response = await fetch(
+         `${window.API_BASE_URL}/auth/login-admin`,
+         {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+-          body: JSON.stringify({ nik, password: pass }),
++          body: JSON.stringify({ username, password: pass }),
+         },
+       );
+ 
+-      const result = await response.json();
++      const result = await response.json().catch(() => ({}));
+ 
+       if (response.ok && result.success) {
+         // Simpan token & data admin untuk dipakai di halaman lain
+         // (kirim di header: Authorization: Bearer <token>)
+-        localStorage.setItem("token", result.token);
+-        localStorage.setItem("user", JSON.stringify(result.data));
+-        localStorage.setItem("login", "true");
+-        localStorage.setItem("admin", JSON.stringify(result.data));
++        window.AdminSession.saveLogin(result);
+ 
+         const redirectAduan = localStorage.getItem("redirectAduan");
+ 
+@@ -92,10 +94,10 @@
+           });
+         }
+       } else {
+-        // Pesan error dari backend, misal: "Akses ditolak. NIK ini terdaftar sebagai Warga, bukan Admin!"
++        // Password tetap sama; username berasal dari akun admin hasil migration.
+         Swal.fire({
+           title: "Login Gagal",
+-          text: result.message || "NIK atau Password yang Anda masukkan salah",
++          text: result.message || "Username atau password salah",
+           icon: "error",
+           confirmButtonText: "Coba Lagi",
+           confirmButtonColor: "#d33",
+@@ -113,6 +115,9 @@
+         background: "#fff5f5",
+         color: "#b91c1c",
+       });
+-    }
+-  });
+-});
++    } finally {
++      submitButton.disabled = false;
++      submitButton.textContent = oldLabel;
++    }
++  });
++});
+--- a/frontend/privat/js/api-config.js
++++ b/frontend/privat/js/api-config.js
+@@ -1,41 +1,230 @@
+-(function configureApi() {
++(function configureAdminApi() {
++  "use strict";
+   const localHosts = new Set(["localhost", "127.0.0.1"]);
+   window.API_BASE_URL = localHosts.has(window.location.hostname)
+     ? "http://localhost:3000/api"
+     : "https://web-desa-sumorame-backend.vercel.app/api";
+-
+-  const isLoginPage = /\/LoginAdmin(?:\.html)?$/i.test(window.location.pathname);
+-  const clearAdminSession = () => {
+-    ["token", "user", "admin", "login"].forEach((key) => localStorage.removeItem(key));
++  const api = new URL(window.API_BASE_URL);
++  const KEY = "sumorame_admin_session";
++  const LOGIN_URL = "/admin/LoginAdmin";
++  const isLoginPage = /\/LoginAdmin(?:\.html)?\/?$/i.test(window.location.pathname);
++  const nativeFetch = window.fetch.bind(window);
++  const RENEW_EVERY = 10 * 60 * 1000;
++  const ACTIVE_WINDOW = 20 * 60 * 1000;
++  let lastActivity = Date.now();
++  let lastAttempt = 0;
++  let renewing = null;
++  let loggingOut = false;
++
++  function decode(token) {
++    try {
++      const part = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
++      return JSON.parse(atob(part.padEnd(Math.ceil(part.length / 4) * 4, "=")));
++    } catch (_) { return null; }
++  }
++
++  function read() {
++    try {
++      const stored = JSON.parse(localStorage.getItem(KEY));
++      const payload = decode(stored?.token);
++      return payload?.role === "admin" && payload.type === "admin_access" && payload.sid
++        ? { ...stored, payload } : null;
++    } catch (_) { return null; }
++  }
++
++  function get() {
++    const session = read();
++    return session?.payload.exp * 1000 > Date.now() ? session : null;
++  }
++
++  // Legacy aliases keep existing CMS modules compatible WITHOUT changing their files.
++  // Only this dedicated key is authoritative; public pages never clear it.
++  function mirror(session) {
++    const legacy = localStorage.getItem("token");
++    if (decode(legacy)?.role === "warga" && !localStorage.getItem("warga_token")) {
++      localStorage.setItem("warga_token", legacy);
++    }
++    localStorage.setItem("token", session.token);
++    localStorage.setItem("user", JSON.stringify(session.data || {}));
++    localStorage.setItem("admin", JSON.stringify(session.data || {}));
++  }
++
++  function clear() {
++    localStorage.removeItem(KEY);
++    if (decode(localStorage.getItem("token"))?.role === "admin") {
++      localStorage.removeItem("token");
++    }
++    localStorage.removeItem("admin");
++    localStorage.removeItem("user");
++  }
++
++  function notice(message, loginRequired = false) {
++    if (isLoginPage) return;
++    if (!document.body) {
++      document.addEventListener("DOMContentLoaded", () => notice(message, loginRequired), { once: true });
++      return;
++    }
++    let bar = document.getElementById("admin-session-notice");
++    if (!bar) {
++      bar = document.createElement("div");
++      bar.id = "admin-session-notice";
++      bar.setAttribute("role", "alert");
++      bar.style.cssText = "position:fixed;bottom:16px;left:16px;right:16px;z-index:10000;padding:14px 18px;background:#fff7ed;border:1px solid #fdba74;border-radius:12px;color:#7c2d12;font:14px/1.5 sans-serif;box-shadow:0 6px 24px #0002";
++      document.body.appendChild(bar);
++    }
++    bar.replaceChildren(document.createTextNode(message));
++    if (loginRequired) {
++      const link = document.createElement("a");
++      link.href = LOGIN_URL;
++      link.target = "_blank";
++      link.rel = "noopener";
++      link.textContent = " Login di tab baru";
++      link.style.cssText = "font-weight:bold;text-decoration:underline;margin-left:8px";
++      bar.appendChild(link);
++    }
++  }
++
++  function removeNotice() { document.getElementById("admin-session-notice")?.remove(); }
++
++  function saveLogin(result) {
++    const payload = decode(result?.token);
++    if (payload?.role !== "admin" || payload.type !== "admin_access" || !payload.sid ||
++        !(payload.exp * 1000 > Date.now())) throw new Error("Sesi admin dari server tidak valid.");
++    const stored = { token: result.token, data: result.data,
++      expires_at: result.expires_at, absolute_expires_at: result.absolute_expires_at };
++    localStorage.setItem(KEY, JSON.stringify(stored));
++    mirror(stored);
++    removeNotice();
++    return stored;
++  }
++
++  function invalidate(sentToken) {
++    // A delayed response must not delete a newer login/renewal from another tab.
++    if (read()?.token !== sentToken) return;
++    clear();
++    notice("Sesi admin berakhir atau dicabut. Form di halaman ini tidak dihapus.", true);
++  }
++
++  async function renewIfDue() {
++    if (renewing) return renewing;
++    const current = get();
++    if (!current || loggingOut || document.visibilityState === "hidden" ||
++        Date.now() - lastActivity > ACTIVE_WINDOW ||
++        Date.now() - current.payload.iat * 1000 < RENEW_EVERY ||
++        Date.now() - lastAttempt < 60000) return current;
++    lastAttempt = Date.now();
++    renewing = (async () => {
++      const controller = new AbortController();
++      const timeout = setTimeout(() => controller.abort(), 10000);
++      try {
++        const response = await nativeFetch(`${api.href}/auth/admin/session/renew`, {
++          method: "POST", cache: "no-store", signal: controller.signal,
++          headers: { Authorization: `Bearer ${current.token}` },
++        });
++        if (response.status === 401) { invalidate(current.token); return null; }
++        if (!response.ok) throw new Error("Renewal sementara gagal");
++        const result = await response.json();
++        const latest = read();
++        const next = decode(result.token);
++        if (!loggingOut && latest?.payload.sid === current.payload.sid &&
++            next?.sid === latest.payload.sid && next.exp >= latest.payload.exp) {
++          saveLogin({ ...result, data: { ...latest.data, ...result.data } });
++        }
++        return get();
++      } catch (_) {
++        // Offline, timeouts, 429 and 5xx must not log the user out.
++        notice("Perpanjangan sesi sementara tertunda. Periksa koneksi; akun dan form tidak dihapus.");
++        return get();
++      } finally { clearTimeout(timeout); }
++    })().finally(() => { renewing = null; });
++    return renewing;
++  }
++
++  async function logout() {
++    if (loggingOut) return;
++    const current = read();
++    if (!current) { clear(); window.location.assign(LOGIN_URL); return; }
++    loggingOut = true;
++    const controller = new AbortController();
++    const timeout = setTimeout(() => controller.abort(), 10000);
++    try {
++      const response = await nativeFetch(`${api.href}/auth/admin/session/logout`, {
++        method: "POST", cache: "no-store", signal: controller.signal,
++        headers: { Authorization: `Bearer ${current.token}` },
++      });
++      if (!response.ok && response.status !== 401) throw new Error("Logout belum tercatat di server");
++      if (read()?.payload.sid === current.payload.sid) clear();
++      window.location.assign(LOGIN_URL);
++    } catch (_) {
++      notice("Logout belum berhasil dikonfirmasi server. Periksa koneksi dan tekan Logout kembali.");
++    } finally { clearTimeout(timeout); loggingOut = false; }
++  }
++
++  // Use current token even when an old CMS module captured a token at page load.
++  // Intercept only authenticated requests to the configured backend, never third parties.
++  window.fetch = async function adminFetch(input, options) {
++    const isRequest = input instanceof Request;
++    const url = new URL(isRequest ? input.url : input, window.location.href);
++    const headers = new Headers(options?.headers !== undefined ? options.headers : (isRequest ? input.headers : undefined));
++    const belongsToApi = url.origin === api.origin && url.pathname.startsWith(`${api.pathname}/`);
++    if (!belongsToApi || !headers.has("Authorization")) return nativeFetch(input, options);
++    await renewIfDue();
++    const current = get();
++    if (!current) {
++      notice("Sesi admin berakhir. Login kembali tanpa menutup form ini.", true);
++      return new Response(JSON.stringify({ success: false, message: "Sesi admin berakhir. Silakan login kembali." }),
++        { status: 401, headers: { "Content-Type": "application/json" } });
++    }
++    headers.set("Authorization", `Bearer ${current.token}`);
++    const response = await nativeFetch(input, { ...options, headers });
++    if (response.status === 401) invalidate(current.token);
++    // Never automatically repeat POST/PUT/DELETE; avoid duplicate submissions.
++    return response;
+   };
+ 
++  window.AdminSession = Object.freeze({ get, saveLogin, renew: renewIfDue, logout });
++
+   if (!isLoginPage) {
+-    try {
+-      const token = localStorage.getItem("token");
+-      const payloadPart = token?.split(".")[1];
+-      const normalized = payloadPart?.replace(/-/g, "+").replace(/_/g, "/");
+-      const payload = normalized
+-        ? JSON.parse(atob(normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=")))
+-        : null;
+-      const expired = !payload?.exp || payload.exp * 1000 <= Date.now();
+-
+-      if (!token || payload?.role !== "admin" || expired) {
+-        clearAdminSession();
+-        window.location.replace("/admin/LoginAdmin");
+-        return;
++    const current = get();
++    if (!current) {
++      clear();
++      window.location.replace(LOGIN_URL);
++      return;
++    }
++    mirror(current);
++    void renewIfDue();
++    ["pointerdown", "keydown", "scroll", "touchstart"].forEach((event) => {
++      document.addEventListener(event, () => {
++        if (Date.now() - lastActivity < 15000) return;
++        lastActivity = Date.now();
++        void renewIfDue();
++      }, { passive: true });
++    });
++    document.addEventListener("visibilitychange", () => {
++      if (document.visibilityState === "visible") {
++        lastActivity = Date.now();
++        if (get()) void renewIfDue();
++        else notice("Sesi admin sudah berakhir. Form tidak dihapus; silakan login kembali.", true);
+       }
+-    } catch (error) {
+-      clearAdminSession();
+-      window.location.replace("/admin/LoginAdmin");
+-      return;
+-    }
+-  }
+-
+-  document.addEventListener("DOMContentLoaded", () => {
+-    document
+-      .querySelectorAll('a[href="/admin/LoginAdmin"], #btnLogout')
+-      .forEach((element) => {
+-        element.addEventListener("click", () => clearAdminSession());
+-      });
++    });
++    setInterval(() => {
++      if (get()) void renewIfDue();
++      else notice("Sesi admin sudah berakhir. Form tidak dihapus; silakan login kembali.", true);
++    }, 60000);
++  }
++
++  window.addEventListener("storage", (event) => {
++    if (event.key !== KEY) return;
++    const current = get();
++    if (current) { mirror(current); removeNotice(); }
++    else notice("Sesi admin berakhir atau sudah logout dari tab lain.", true);
+   });
++
++  document.addEventListener("click", (event) => {
++    const element = event.target.closest?.('a[href="/admin/LoginAdmin"], a[href="/admin/LoginAdmin.html"], #btnLogout');
++    if (!element || isLoginPage || element.closest("#admin-session-notice")) return;
++    event.preventDefault();
++    event.stopImmediatePropagation();
++    void logout();
++  }, true);
+ })();
+--- a/frontend/publik/js/auth-ui.js
++++ b/frontend/publik/js/auth-ui.js
+@@ -1,7 +1,7 @@
+ (function initializePublicAuth() {
+   "use strict";
+ 
+-  const AUTH_KEYS = ["token", "login", "user_nama", "user_nik", "user_role"];
++  const AUTH_KEYS = ["warga_token", "user_nama", "user_nik", "user_role"];
+   function decodeJwtPayload(token) {
+     try {
+       const payload = token.split(".")[1];
+@@ -14,8 +14,15 @@
+     }
+   }
+ 
+-  function getSession() {
+-    const token = localStorage.getItem("token");
++  function getSession() {
++    // Migrasikan hanya token WARGA lama. Jangan pernah hapus token milik admin.
++    const legacyToken = localStorage.getItem("token");
++    const legacyWarga = decodeJwtPayload(legacyToken || "")?.role === "warga";
++    if (!localStorage.getItem("warga_token") && legacyWarga) {
++      localStorage.setItem("warga_token", legacyToken);
++    }
++    if (legacyWarga) localStorage.removeItem("token");
++    const token = localStorage.getItem("warga_token");
+     const payload = token ? decodeJwtPayload(token) : null;
+     const isExpired = !payload?.exp || payload.exp * 1000 <= Date.now();
+     const isWarga = payload?.role === "warga";
+@@ -25,8 +32,7 @@
+       return null;
+     }
+ 
+-    localStorage.setItem("login", "true");
+-    localStorage.setItem("user_role", payload.role);
++    localStorage.setItem("user_role", payload.role);
+     return {
+       token,
+       role: payload.role,
+@@ -35,8 +41,8 @@
+     };
+   }
+ 
+-  function safeReturnPath(path) {
+-    if (typeof path !== "string" || !path.startsWith("/") || path.startsWith("//")) {
++  function safeReturnPath(path) {
++    if (typeof path !== "string" || !path.startsWith("/") || path.startsWith("//") || /[\\\u0000-\u0020]/.test(path)) {
+       return "/";
+     }
+     return path;
+@@ -47,8 +53,11 @@
+     window.location.replace("/login");
+   }
+ 
+-  function logout() {
+-    AUTH_KEYS.forEach((key) => localStorage.removeItem(key));
++  function logout() {
++    AUTH_KEYS.forEach((key) => localStorage.removeItem(key));
++    if (decodeJwtPayload(localStorage.getItem("token") || "")?.role === "warga") {
++      localStorage.removeItem("token");
++    }
+     localStorage.removeItem("redirectAfterLogin");
+     localStorage.removeItem("redirectAduan");
+     localStorage.removeItem("jenisDipilih");
+--- a/frontend/publik/js/login.js
++++ b/frontend/publik/js/login.js
+@@ -1,6 +1,6 @@
+ document.addEventListener("DOMContentLoaded", function () {
+   function getSafeRedirect(value) {
+-    if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
++    if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//") || /[\\\u0000-\u0020]/.test(value)) {
+       return null;
+     }
+     return value;
+@@ -50,7 +50,7 @@
+       e.preventDefault();
+ 
+       const nip = document.getElementById("nip").value.trim();
+-      const pass = document.getElementById("password").value.trim();
++      const pass = document.getElementById("password").value;
+ 
+       if (!nip || !pass) {
+         Swal.fire({
+@@ -85,8 +85,8 @@
+ 
+         if (response.ok) {
+           // 1. JIKA BERHASIL: SIMPAN TOKEN & DATA USER
+-          localStorage.setItem("token", result.token);
+-          localStorage.setItem("login", "true");
++          // Sesi warga terpisah dari CMS; login warga tidak menimpa token admin.
++          localStorage.setItem("warga_token", result.token);
+ 
+           if (result.data) {
+             localStorage.setItem("user_nama", result.data.nama_lengkap || "");
