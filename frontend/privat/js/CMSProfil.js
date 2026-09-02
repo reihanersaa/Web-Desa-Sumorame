@@ -63,6 +63,8 @@ async function loadCmsProfil() {
         data[0].peraturan_judul || "";
       document.getElementById("peraturanIsi").value =
         data[0].peraturan_isi || "";
+      document.getElementById("emailDesa").value = data[0].email_desa || "";
+      document.getElementById("noTelpDesa").value = data[0].no_telp_desa || "";
 
       if (data[0].foto_kades_url && previewFotoKades)
         previewFotoKades.src = data[0].foto_kades_url;
@@ -266,7 +268,8 @@ formCmsProfil.addEventListener("submit", async (e) => {
     .getElementById("peraturanJudul")
     .value.trim();
   const valPeraturanIsi = document.getElementById("peraturanIsi").value.trim();
-
+  const valEmailDesa = document.getElementById("emailDesa").value.trim();
+  const valNoTelpDesa = document.getElementById("noTelpDesa").value.trim();
   const elPeraturanJudul = document.getElementById("peraturanJudul");
   const elPeraturanIsi = document.getElementById("peraturanIsi");
 
@@ -313,6 +316,8 @@ formCmsProfil.addEventListener("submit", async (e) => {
     formData.append("misi", valMisi);
     formData.append("peraturan_judul", valPeraturanJudul);
     formData.append("peraturan_isi", valPeraturanIsi);
+    formData.append("email_desa", valEmailDesa);
+    formData.append("no_telp_desa", valNoTelpDesa);
 
     // 🚨 DATA GAMBAR DI-APPEND SETELAH FORMDATA DIBUAT (DI DALAM LOOP)
     if (file) formData.append("gambar", file);

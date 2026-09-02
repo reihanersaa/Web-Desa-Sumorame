@@ -44,7 +44,9 @@ const createCmsProfil = async (req, res) => {
       visi,
       misi,
       peraturan_judul,
-      peraturan_isi
+      peraturan_isi,
+      email_desa,
+      no_telp_desa
     } = req.body || {};
 
     if (!judul_hero || !deskripsi_hero || !nama_kades || !sambutan || !visi || !misi) {
@@ -98,6 +100,8 @@ const createCmsProfil = async (req, res) => {
         misi: misi.trim(),
         peraturan_judul: peraturan_judul ? peraturan_judul.trim() : null,
         peraturan_isi: peraturan_isi ? peraturan_isi.trim() : null,
+        email_desa: email_desa ? email_desa.trim() : null,
+        no_telp_desa: no_telp_desa ? no_telp_desa.trim() : null,
         gambar_url,
         foto_kades_url,
         gambar_modal_url
@@ -140,7 +144,9 @@ const updateCmsProfil = async (req, res) => {
       visi,
       misi,
       peraturan_judul,
-      peraturan_isi
+      peraturan_isi,
+      email_desa,
+      no_telp_desa
     } = req.body || {};
 
     if (!id || !judul_hero || !deskripsi_hero || !nama_kades || !sambutan || !visi || !misi) {
@@ -188,6 +194,8 @@ const updateCmsProfil = async (req, res) => {
         misi: misi.trim(),
         peraturan_judul: peraturan_judul ? peraturan_judul.trim() : null,
         peraturan_isi: peraturan_isi ? peraturan_isi.trim() : null,
+        email_desa: email_desa ? email_desa.trim() : null,
+        no_telp_desa: no_telp_desa ? no_telp_desa.trim() : null,
         gambar_url,
         foto_kades_url,
         gambar_modal_url,

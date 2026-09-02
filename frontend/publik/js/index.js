@@ -702,6 +702,19 @@ async function loadDataBeranda() {
     if (visiTeks) visiTeks.textContent = "Visi belum tersedia.";
     if (misiList) misiList.innerHTML = "<li>Misi belum tersedia.</li>";
   }
+
+  // 6. UPDATE KONTAK FOOTER
+      const emailFooterEl = document.getElementById("emailFooter");
+      const noTelpFooterEl = document.getElementById("noTelpFooter");
+
+      if (emailFooterEl) {
+        emailFooterEl.textContent = dataUtama.email_desa || "PemdesSumorame@gmail.com";
+      }
+      if (noTelpFooterEl) {
+        // Tampilkan nomor telepon jika ada, jika tidak tampilkan pesan default
+        noTelpFooterEl.textContent = dataUtama.no_telp_desa || "Gunakan menu Aduan untuk menyampaikan laporan.";
+      }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -747,32 +760,37 @@ if (btnTutupBawah) btnTutupBawah.addEventListener("click", tutupModalPeraturan);
 
 
 // =====================================================
-// TARIK DATA BERITA TERKINI DARI PUBLIKASI
+// TARIK DATA BERITA TERKINI DARI INFORMASI
+// =====================================================
+// =====================================================
+// TARIK DATA BERITA TERKINI DARI INFORMASI
 // =====================================================
 async function loadBeritaTerkini() {
   const wadahBerita = document.getElementById("wadahBeritaTerkini");
   if (!wadahBerita) return;
 
   try {
-    // Memanggil API Publikasi
-    const response = await fetch(`${INDEX_API_BASE_URL}/publikasi?limit=1&offset=0`);
+    // 1. Memanggil API Informasi (bukan Publikasi lagi)
+    const response = await fetch(`${INDEX_API_BASE_URL}/informasi`);
     const result = await response.json();
 
     if (result.success && result.data && result.data.length > 0) {
-      // Ambil data urutan pertama (indeks 0) karena sudah disortir terbaru oleh backend
+      // Ambil data urutan pertama (indeks 0) karena backend sudah mengurutkan yang terbaru
       const beritaTerbaru = result.data[0];
 
-      // Format tanggal menjadi format Indonesia (Contoh: 28 Agustus 2026)
-      const tanggal = new Date(beritaTerbaru.waktu_kegiatan).toLocaleDateString("id-ID", {
+      // 2. Format tanggal (Gunakan kolom 'tanggal' dari DB, jika kosong pakai 'created_at')
+      const tanggalBerita = beritaTerbaru.tanggal || beritaTerbaru.created_at || new Date().toISOString();
+      const tanggal = new Date(tanggalBerita).toLocaleDateString("id-ID", {
         day: 'numeric', month: 'long', year: 'numeric'
       });
 
-      // Potong deskripsi jika terlalu panjang agar card tidak kepanjangan
-      const deskripsiSingkat = beritaTerbaru.deskripsi.length > 180 
-        ? beritaTerbaru.deskripsi.substring(0, 180) + "..." 
-        : beritaTerbaru.deskripsi;
+      // 3. Gunakan kolom 'isi' berita dan potong teksnya jika terlalu panjang
+      const teksIsi = beritaTerbaru.isi || beritaTerbaru.penjelasan || "";
+      const deskripsiSingkat = teksIsi.length > 180 
+        ? teksIsi.substring(0, 180) + "..." 
+        : teksIsi;
 
-      // Suntikkan struktur HTML ke dalam wadah
+      // 4. Suntikkan HTML (Tautan diarahkan ke Informasi.html)
       wadahBerita.innerHTML = `
         <div class="bg-yellow-400 p-5 md:p-8 flex-1 flex flex-col justify-center relative overflow-hidden">
           <span class="inline-block bg-green-800 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
@@ -784,7 +802,7 @@ async function loadBeritaTerkini() {
           <p class="text-[15px] font-medium text-gray-800 mb-5 leading-relaxed text-justify">
             ${escapeProdukHTML(deskripsiSingkat)}
           </p>
-          <a class="text-sm font-black text-green-900 hover:text-green-700 hover:underline inline-flex items-center gap-1 w-fit transition-all" href="/Publikasi">
+          <a class="text-sm font-black text-green-900 hover:text-green-700 hover:underline inline-flex items-center gap-1 w-fit transition-all" href="Informasi.html">
             Baca Selengkapnya <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
         </div>
@@ -793,13 +811,18 @@ async function loadBeritaTerkini() {
         </div>
       `;
     } else {
-      wadahBerita.innerHTML = `<div class="p-8 w-full text-center text-gray-500 font-medium">Belum ada publikasi berita terbaru.</div>`;
+      wadahBerita.innerHTML = `<div class="p-8 w-full text-center text-gray-500 font-medium">Belum ada informasi terbaru.</div>`;
     }
   } catch (error) {
     console.error("Gagal memuat berita terkini:", error);
     wadahBerita.innerHTML = `<div class="p-8 w-full text-center text-red-500">Gagal memuat berita.</div>`;
   }
 }
+
+// Panggil fungsinya saat halaman dimuat
+document.addEventListener("DOMContentLoaded", () => {
+  loadBeritaTerkini();
+});
 
 // Panggil fungsinya saat halaman dimuat
 document.addEventListener("DOMContentLoaded", () => {
