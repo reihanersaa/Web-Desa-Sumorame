@@ -533,3 +533,48 @@ body {
     transform: none !important;
   }
 }
+
+/* Panel dan menu Jelajah tetap berdampingan pada HP dan tablet. */
+@media (max-width: 1023px) {
+  #jelajah .jelajah-layout {
+    grid-template-columns: minmax(90px, 0.3fr) minmax(0, 0.7fr);
+    gap: 8px;
+  }
+
+  #jelajah .jelajah-panel {
+    min-height: 0;
+  }
+
+  #jelajahTitle {
+    font-size: clamp(0.875rem, 3vw, 1.75rem);
+  }
+
+  #jelajah .jelajah-menu {
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 4px 0 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #006633 #e5e7eb;
+  }
+
+  #jelajah .jelajah-menu > div {
+    grid-template-columns: repeat(4, minmax(96px, 1fr));
+    gap: 8px;
+  }
+
+  #jelajah .menu-card {
+    height: 112px;
+    padding: 8px 4px;
+  }
+
+  #jelajah .menu-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 6px;
+  }
+
+  #jelajah .menu-card span {
+    font-size: 11px;
+  }
+}
