@@ -234,6 +234,18 @@ body {
 }
 
 @media (max-width: 640px) {
+  .ppid-schedule-table {
+    min-width: 0;
+    table-layout: fixed;
+    font-size: 0.75rem;
+  }
+
+  .ppid-schedule-table th,
+  .ppid-schedule-table td {
+    padding: 0.85rem 0.35rem;
+    overflow-wrap: anywhere;
+  }
+
   .ppid-service-head {
     flex-direction: column;
     gap: 1rem;
