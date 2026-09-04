@@ -184,7 +184,8 @@ body {
 .ppid-schedule-table {
   border-collapse: collapse;
   font-size: clamp(0.88rem, 1.5vw, 1.05rem);
-  min-width: 36rem;
+  min-width: 0;
+  table-layout: fixed;
   text-align: center;
   width: 100%;
 }
@@ -234,16 +235,25 @@ body {
 }
 
 @media (max-width: 640px) {
+  .ppid-service-card {
+    padding: 1.25rem 0.75rem;
+  }
+
   .ppid-schedule-table {
-    min-width: 0;
-    table-layout: fixed;
-    font-size: 0.75rem;
+    font-size: clamp(0.6875rem, 2.8vw, 0.875rem);
   }
 
   .ppid-schedule-table th,
   .ppid-schedule-table td {
-    padding: 0.85rem 0.35rem;
-    overflow-wrap: anywhere;
+    padding: 0.85rem 0.25rem;
+  }
+
+  .ppid-schedule-table th {
+    overflow-wrap: normal;
+  }
+
+  .ppid-schedule-table td {
+    white-space: nowrap;
   }
 
   .ppid-service-head {
