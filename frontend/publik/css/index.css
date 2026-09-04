@@ -537,7 +537,7 @@ body {
 /* Panel dan menu Jelajah tetap berdampingan pada HP dan tablet. */
 @media (max-width: 1023px) {
   #jelajah .jelajah-layout {
-    grid-template-columns: minmax(90px, 0.3fr) minmax(0, 0.7fr);
+    grid-template-columns: minmax(64px, 0.23fr) minmax(0, 0.77fr);
     gap: 8px;
   }
 
@@ -551,15 +551,11 @@ body {
 
   #jelajah .jelajah-menu {
     min-width: 0;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
     padding: 4px 0 8px;
-    scrollbar-width: thin;
-    scrollbar-color: #006633 #e5e7eb;
   }
 
   #jelajah .jelajah-menu > div {
-    grid-template-columns: repeat(4, minmax(96px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -577,4 +573,41 @@ body {
   #jelajah .menu-card span {
     font-size: 11px;
   }
+}
+
+@media (max-width: 639px) {
+  #jelajah .jelajah-menu > div { gap: 4px; }
+  #jelajah .menu-card { height: 84px; min-width: 0; padding: 6px 2px; border-radius: 8px; }
+  #jelajah .menu-icon { width: 32px; height: 32px; margin-bottom: 4px; }
+  #jelajah .menu-card span { font-size: 9px; line-height: 1.3; overflow-wrap: anywhere; }
+  #jelajahTitle { font-size: 12px; }
+
+  #statistik { padding-top: 32px; padding-bottom: 32px; }
+  #statistik > h2 { font-size: 24px; }
+  #statistik > h3 { font-size: 11px; padding: 0 12px; margin-bottom: 20px; }
+  #statistik > div.relative { padding-left: 6px; padding-right: 6px; }
+  #statistik .statistik-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    padding: 4px 0;
+  }
+  #statistik .stat-card {
+    min-width: 0;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 2px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  #statistik .stat-card > div:first-child { width: 28px; height: 28px; }
+  #statistik .stat-card > div:last-child { min-width: 0; width: 100%; }
+  #statistik .stat-card > div:first-child img { width: 22px; height: 22px; }
+  #statistik .stat-card h3 {
+    font-size: clamp(7px, 2vw, 11px);
+    line-height: 1.4;
+    min-height: 2.8em;
+    overflow-wrap: anywhere;
+  }
+  #statistik .stat-card p { font-size: clamp(11px, 3vw, 18px); line-height: 1.4; overflow-wrap: anywhere; }
+  #statistik .stat-card > div:last-child > span { font-size: clamp(8px, 2vw, 11px); line-height: 1.4; }
 }
