@@ -86,6 +86,23 @@
 
   function removeNotice() { document.getElementById("admin-session-notice")?.remove(); }
 
+  function limitPosbankumNavigation(session) {
+    if (session?.payload?.role !== "petugas_posbankum") return;
+    const hideAdminOnlyLinks = () => {
+      document.querySelectorAll(
+        '#sidebar > nav > a[href]:not([href="/admin/Posbankum"]), #sidebar > nav > .nav-item',
+      ).forEach((element) => {
+        element.hidden = true;
+        element.style.display = "none";
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", hideAdminOnlyLinks, { once: true });
+    } else {
+      hideAdminOnlyLinks();
+    }
+  }
+
   function saveLogin(result) {
     const payload = decode(result?.token);
     if (!["admin", "petugas_posbankum"].includes(payload?.role) || payload.type !== "admin_access" || !payload.sid ||
@@ -192,6 +209,7 @@
       return;
     }
     mirror(current);
+    limitPosbankumNavigation(current);
     if (current.payload.role === "petugas_posbankum" &&
         !/\/Posbankum(?:\.html)?\/?$/i.test(window.location.pathname)) {
       window.location.replace("/admin/Posbankum");

@@ -1,6 +1,18 @@
 const bcrypt = require("bcryptjs");
 const supabase = require("../config/supabase");
 const jwt = require("jsonwebtoken");
+const loginSecurity = require("../services/loginSecurityService");
+const DUMMY_PASSWORD_HASH = "$2b$10$.96DZxHVZzYUMOeP4b6ZmeD6BgQZjEyIvF8dj6PahLz.8SsPE5JaW";
+
+async function rejectLogin(req, res, message) {
+  try {
+    if (req.loginSecurity?.keys) await loginSecurity.recordFailure(req.loginSecurity.keys);
+  } catch (error) {
+    console.error("Failed login could not be recorded:", error.code || error.name);
+    return res.status(503).json({ success: false, message: "Perlindungan login sementara tidak tersedia. Silakan coba lagi." });
+  }
+  return res.status(401).json({ success: false, message });
+}
 
 const registerWarga = async (req, res) => {
   try {
@@ -156,10 +168,10 @@ const loginWarga = async (req, res) => {
     const password = req.body.password;
 
     // 1. Validasi NIK dan password wajib diisi
-    if (!nik || !password) {
+    if (!/^\d{16}$/.test(nik) || typeof password !== "string" || !password || Buffer.byteLength(password, "utf8") > 72) {
       return res.status(400).json({
         success: false,
-        message: "NIK dan password wajib diisi!",
+        message: "NIK harus 16 angka dan password wajib diisi (maksimal 72 byte).",
       });
     }
 
@@ -168,25 +180,16 @@ const loginWarga = async (req, res) => {
       .from("users")
       .select("id, nik, nama_lengkap, email, password, role")
       .eq("nik", nik)
-      .single();
+      .maybeSingle();
 
-    if (error || !user) {
-      return res.status(401).json({
-        success: false,
-        message: "NIK atau password salah.",
-      });
-    }
-
-    // 3. Cocokkan password
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      return res.status(401).json({
-        success: false,
-        message: "NIK atau password salah.",
-      });
+    if (error) throw error;
+    const isPasswordMatch = await bcrypt.compare(password, user?.password || DUMMY_PASSWORD_HASH);
+    if (!user || !isPasswordMatch) {
+      return rejectLogin(req, res, "NIK atau password salah.");
     }
 
     if (user.role !== "warga") {
+      if (req.loginSecurity?.keys) await loginSecurity.clearSuccessfulAccount(req.loginSecurity.keys);
       return res.status(403).json({
         success: false,
         message: "Gunakan halaman login admin untuk akun ini.",
@@ -203,6 +206,8 @@ const loginWarga = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
     );
+
+    if (req.loginSecurity?.keys) await loginSecurity.clearSuccessfulAccount(req.loginSecurity.keys);
 
     // 5. Kirim balasan beserta role (warga / admin)
     return res.status(200).json({
