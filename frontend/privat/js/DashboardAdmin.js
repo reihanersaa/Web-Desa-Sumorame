@@ -4,6 +4,18 @@ const overlay = document.getElementById('overlay');
 const mainContent = document.getElementById('mainContent');
 const headerLeft = document.getElementById('headerLeft');
 
+// Menu POSBANKUM disisipkan pada seluruh shell admin lama tepat sebelum Kelola Website.
+if (sidebar && !sidebar.querySelector('a[href="/admin/Posbankum"]')) {
+  const cmsToggleGlobal = sidebar.querySelector('#cmsToggle');
+  const cmsGroup = cmsToggleGlobal?.parentElement;
+  if (cmsGroup) {
+    const item = document.createElement('div');
+    item.className = 'nav-item';
+    item.innerHTML = '<a href="/admin/Posbankum" class="nav-link flex items-center p-2 rounded"><span class="material-symbols-outlined mr-3">balance</span><span class="menu-text">POSBANKUM</span></a>';
+    cmsGroup.before(item);
+  }
+}
+
 // ================= DAFTAR SEMUA SUBMENU (DIKELOLA OTOMATIS) =================
 const submenus = [
   {

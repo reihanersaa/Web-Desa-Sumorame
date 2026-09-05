@@ -12,6 +12,7 @@ const ppidRoutes = require("./src/routes/ppidRoutes");
 const cmsprofilRoutes = require("./src/routes/cmsprofilRoutes");
 const statistikRoutes = require("./src/routes/statistikRoutes");
 const uploadRoutes = require("./src/routes/upload");
+const posbankumRoutes = require("./src/routes/posbankumRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -86,6 +87,7 @@ app.use("/api/ppid", ppidRoutes);
 app.use("/api/cmsprofil", cmsprofilRoutes);
 app.use("/api/statistik", statistikRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/posbankum", posbankumRoutes);
 
 // Health checks
 app.get("/", (req, res) => {

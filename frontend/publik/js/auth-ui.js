@@ -179,6 +179,28 @@
   }
 
   function renderAuthNavigation() {
+    document.querySelectorAll("header nav").forEach((nav) => {
+      if (nav.querySelector('a[href="/posbankum"]')) return;
+      const reference = nav.querySelector('a[href="/Publikasi"]');
+      if (!reference) return;
+      const separator = document.createElement("div");
+      separator.className = "h-5 w-px bg-gray-400";
+      const link = document.createElement("a");
+      link.href = "/posbankum";
+      link.className = "nav-item relative px-3 font-bold";
+      link.textContent = "POSBANKUM";
+      reference.after(separator, link);
+    });
+    document.querySelectorAll("#mobileMenu").forEach((menu) => {
+      if (menu.querySelector('a[href="/posbankum"]')) return;
+      const reference = menu.querySelector('a[href="/Publikasi"]');
+      if (!reference) return;
+      const link = document.createElement("a");
+      link.href = "/posbankum";
+      link.className = "py-4 px-6 border-b border-gray-300 font-semibold text-emerald-900 hover:bg-gray-100 transition";
+      link.textContent = "POSBANKUM";
+      reference.after(link);
+    });
     const session = getSession();
     injectAccountMenuStyles();
     const authLinks = document.querySelectorAll('a[href="/login"], [data-auth-navigation]');

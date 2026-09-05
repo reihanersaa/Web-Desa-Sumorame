@@ -27,7 +27,7 @@
     try {
       const stored = JSON.parse(localStorage.getItem(KEY));
       const payload = decode(stored?.token);
-      return payload?.role === "admin" && payload.type === "admin_access" && payload.sid
+      return ["admin", "petugas_posbankum"].includes(payload?.role) && payload.type === "admin_access" && payload.sid
         ? { ...stored, payload } : null;
     } catch (_) { return null; }
   }
@@ -51,7 +51,7 @@
 
   function clear() {
     localStorage.removeItem(KEY);
-    if (decode(localStorage.getItem("token"))?.role === "admin") {
+    if (["admin", "petugas_posbankum"].includes(decode(localStorage.getItem("token"))?.role)) {
       localStorage.removeItem("token");
     }
     localStorage.removeItem("admin");
@@ -88,7 +88,7 @@
 
   function saveLogin(result) {
     const payload = decode(result?.token);
-    if (payload?.role !== "admin" || payload.type !== "admin_access" || !payload.sid ||
+    if (!["admin", "petugas_posbankum"].includes(payload?.role) || payload.type !== "admin_access" || !payload.sid ||
         !(payload.exp * 1000 > Date.now())) throw new Error("Sesi admin dari server tidak valid.");
     const stored = { token: result.token, data: result.data,
       expires_at: result.expires_at, absolute_expires_at: result.absolute_expires_at };
@@ -192,6 +192,11 @@
       return;
     }
     mirror(current);
+    if (current.payload.role === "petugas_posbankum" &&
+        !/\/Posbankum(?:\.html)?\/?$/i.test(window.location.pathname)) {
+      window.location.replace("/admin/Posbankum");
+      return;
+    }
     void renewIfDue();
     ["pointerdown", "keydown", "scroll", "touchstart"].forEach((event) => {
       document.addEventListener(event, () => {

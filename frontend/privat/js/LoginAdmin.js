@@ -101,7 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
             background: "#f0fff4",
             color: "#2e7d32",
           }).then(() => {
-            window.location.href = "/admin/DashboardAdmin";
+            window.location.href = result.data.role === "petugas_posbankum"
+              ? "/admin/Posbankum"
+              : "/admin/DashboardAdmin";
           });
         }
       } else {
