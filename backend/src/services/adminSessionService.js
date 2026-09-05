@@ -18,12 +18,12 @@ function credentialTag(passwordHash) {
 
 function publicAdmin(user, username) {
   return { id: user.id, nik: user.nik, nama_lengkap: user.nama_lengkap,
-    email: user.email, role: "admin", ...(username ? { username } : {}) };
+    email: user.email, role: user.role, ...(username ? { username } : {}) };
 }
 
 function issueToken(user, session) {
   const exp = Math.floor(new Date(session.expires_at).getTime() / 1000);
-  return jwt.sign({ id: user.id, nik: user.nik, role: "admin", sid: session.id,
+  return jwt.sign({ id: user.id, nik: user.nik, role: user.role, sid: session.id,
     type: "admin_access", exp }, process.env.JWT_SECRET,
   { algorithm: "HS256", issuer: ISSUER, audience: AUDIENCE });
 }
@@ -42,7 +42,7 @@ async function createSession(user) {
 }
 
 async function validateSession(payload) {
-  if (payload.role !== "admin" || payload.type !== "admin_access" ||
+  if (!["admin", "petugas_posbankum"].includes(payload.role) || payload.type !== "admin_access" ||
       payload.iss !== ISSUER || payload.aud !== AUDIENCE ||
       typeof payload.sid !== "string" || !/^[a-f0-9-]{36}$/i.test(payload.sid)) {
     throw authError();
@@ -53,7 +53,7 @@ async function validateSession(payload) {
   if (error) throw error; // DB/network failure is NOT an authentication failure.
   const now = Date.now();
   const user = session?.users;
-  if (!session || session.revoked_at || !user || user.role !== "admin" ||
+  if (!session || session.revoked_at || !user || user.role !== payload.role ||
       !(Date.parse(session.expires_at) > now) ||
       !(Date.parse(session.absolute_expires_at) > now) ||
       session.credential_tag !== credentialTag(user.password)) {

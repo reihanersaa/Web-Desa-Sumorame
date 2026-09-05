@@ -33,7 +33,7 @@ async function loginAdmin(req, res) {
       .eq("username", username).maybeSingle();
     if (error) throw error;
     const user = account?.users;
-    if (!user || user.role !== "admin" || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !["admin", "petugas_posbankum"].includes(user.role) || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ success: false, message: "Username atau password admin salah." });
     }
     const result = await sessions.createSession(user);

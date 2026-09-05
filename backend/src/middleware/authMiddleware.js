@@ -21,7 +21,7 @@ const verifyToken = async (req, res, next) => {
       return res.status(401).json({ success: false, message: "Token tidak ditemukan." });
     }
     const verified = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ["HS256"] });
-    if (verified.role === "admin") {
+    if (["admin", "petugas_posbankum"].includes(verified.role)) {
       req.adminSession = await validateSession(verified);
     }
     req.user = verified;
@@ -52,5 +52,6 @@ const requireRole = (...roles) => (req, res, next) => {
 };
 
 const requireAdmin = requireRole("admin");
+const requirePosbankumStaff = requireRole("admin", "petugas_posbankum");
 
-module.exports = { verifyToken, requireRole, requireAdmin };
+module.exports = { verifyToken, requireRole, requireAdmin, requirePosbankumStaff };

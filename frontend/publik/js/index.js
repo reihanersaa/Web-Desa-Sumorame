@@ -703,18 +703,6 @@ async function loadDataBeranda() {
     if (misiList) misiList.innerHTML = "<li>Misi belum tersedia.</li>";
   }
 
-  // 6. UPDATE KONTAK FOOTER
-      const emailFooterEl = document.getElementById("emailFooter");
-      const noTelpFooterEl = document.getElementById("noTelpFooter");
-
-      if (emailFooterEl) {
-        emailFooterEl.textContent = dataUtama.email_desa || "PemdesSumorame@gmail.com";
-      }
-      if (noTelpFooterEl) {
-        // Tampilkan nomor telepon jika ada, jika tidak tampilkan pesan default
-        noTelpFooterEl.textContent = dataUtama.no_telp_desa || "Gunakan menu Aduan untuk menyampaikan laporan.";
-      }
-
 }
 
 document.addEventListener("DOMContentLoaded", () => {
