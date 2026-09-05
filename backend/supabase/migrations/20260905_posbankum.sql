@@ -4,6 +4,7 @@ create sequence if not exists public.posbankum_register_seq;
 
 create table if not exists public.posbankum_pengaduan (
   id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.users(id) on delete restrict,
   nomor_register text not null unique default (
     'POS-' || to_char(now(), 'YYYY') || '-' ||
     lpad(nextval('public.posbankum_register_seq')::text, 6, '0')
