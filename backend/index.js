@@ -11,6 +11,7 @@ const informasiRoutes = require("./src/routes/informasiRoutes");
 const ppidRoutes = require("./src/routes/ppidRoutes");
 const cmsprofilRoutes = require("./src/routes/cmsprofilRoutes");
 const statistikRoutes = require("./src/routes/statistikRoutes");
+const uploadRoutes = require("./src/routes/upload");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -84,6 +85,7 @@ app.use("/api/informasi", informasiRoutes);
 app.use("/api/ppid", ppidRoutes);
 app.use("/api/cmsprofil", cmsprofilRoutes);
 app.use("/api/statistik", statistikRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // Health checks
 app.get("/", (req, res) => {
