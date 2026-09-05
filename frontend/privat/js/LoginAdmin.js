@@ -52,6 +52,17 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+    if (!/^[a-z0-9][a-z0-9._-]{2,39}$/.test(username)) {
+      return Swal.fire({ title: "Login Gagal", text: "Format username petugas tidak valid.", icon: "error" });
+    }
+
+    let turnstileToken;
+    try {
+      turnstileToken = await window.LoginSecurity.getToken();
+    } catch (error) {
+      return Swal.fire({ title: "Verifikasi Diperlukan", text: error.message, icon: "warning" });
+    }
+
     const submitButton = form.querySelector('button[type="submit"]');
     if (submitButton.disabled) return;
     submitButton.disabled = true;
@@ -64,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password: pass }),
+          body: JSON.stringify({ username, password: pass, turnstileToken }),
         },
       );
 
@@ -116,6 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
         color: "#b91c1c",
       });
     } finally {
+      window.LoginSecurity.reset();
       submitButton.disabled = false;
       submitButton.textContent = oldLabel;
     }

@@ -1,6 +1,17 @@
 const bcrypt = require("bcryptjs");
 const supabase = require("../config/supabase");
 const sessions = require("../services/adminSessionService");
+const loginSecurity = require("../services/loginSecurityService");
+const DUMMY_PASSWORD_HASH = "$2b$10$.96DZxHVZzYUMOeP4b6ZmeD6BgQZjEyIvF8dj6PahLz.8SsPE5JaW";
+
+async function rejectLogin(req, res) {
+  try {
+    if (req.loginSecurity?.keys) await loginSecurity.recordFailure(req.loginSecurity.keys);
+  } catch (error) {
+    return serverError(res, error);
+  }
+  return res.status(401).json({ success: false, message: "Username atau password admin salah." });
+}
 
 function sendSession(res, status, result, user, username) {
   res.set("Cache-Control", "no-store");
@@ -33,10 +44,12 @@ async function loginAdmin(req, res) {
       .eq("username", username).maybeSingle();
     if (error) throw error;
     const user = account?.users;
-    if (!user || user.role !== "admin" || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ success: false, message: "Username atau password admin salah." });
+    const isPasswordMatch = await bcrypt.compare(password, user?.password || DUMMY_PASSWORD_HASH);
+    if (!user || user.role !== "admin" || !isPasswordMatch) {
+      return rejectLogin(req, res);
     }
     const result = await sessions.createSession(user);
+    if (req.loginSecurity?.keys) await loginSecurity.clearSuccessfulAccount(req.loginSecurity.keys);
     return sendSession(res, 200, result, user, account.username);
   } catch (error) { return serverError(res, error); }
 }

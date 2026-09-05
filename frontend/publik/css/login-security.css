@@ -1,0 +1,20 @@
+.turnstile-area {
+  display: flex;
+  min-height: 72px;
+  margin: 16px 0 12px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.turnstile-status {
+  min-height: 18px;
+  margin: 7px 0 0;
+  color: #476357;
+  font-size: 12px;
+  text-align: center;
+}
+.turnstile-status.turnstile-error { color: #b42318; }
+.btn-login:disabled { cursor: not-allowed; opacity: .65; }
+@media (max-width: 360px) {
+  .turnstile-area { align-items: flex-start; overflow-x: auto; }
+}

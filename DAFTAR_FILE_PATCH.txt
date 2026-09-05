@@ -1,0 +1,26 @@
+PATCH KEAMANAN DESA SUMORAME - 5 SEPTEMBER 2026
+
+Salin file berikut dengan mempertahankan struktur foldernya:
+
+PANDUAN_PATCH_KEAMANAN_20260905.md
+backend/.env.example
+backend/src/controllers/adminAuthController.js
+backend/src/controllers/authController.js
+backend/src/controllers/persuratanController.js
+backend/src/middleware/loginSecurityMiddleware.js
+backend/src/routes/authRoutes.js
+backend/src/services/loginSecurityService.js
+backend/src/services/persuratanValidationService.js
+backend/supabase/migrations/20260905_login_throttle.sql
+backend/tests/admin-session.test.js
+backend/tests/login-security.test.js
+frontend/privat/LoginAdmin.html
+frontend/privat/js/LoginAdmin.js
+frontend/publik/css/login-security.css
+frontend/publik/js/AdminP.js
+frontend/publik/js/login-security.js
+frontend/publik/js/login.js
+frontend/publik/login.html
+
+Tidak ada file Produk atau Statistika yang diubah.
+ZIP ini tidak berisi .env, secret, node_modules, gambar, atau file repo lainnya.

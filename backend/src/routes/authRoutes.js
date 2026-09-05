@@ -8,12 +8,7 @@ const {
 const { createRateLimiter } = require("../middleware/rateLimitMiddleware");
 const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
 const { renewAdmin, logoutAdmin } = require("../controllers/adminAuthController");
-
-const loginLimiter = createRateLimiter({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: "Terlalu banyak percobaan login. Coba lagi dalam 15 menit.",
-});
+const { loginThrottle, requireTurnstile } = require("../middleware/loginSecurityMiddleware");
 
 const registerLimiter = createRateLimiter({
   windowMs: 60 * 60 * 1000,
@@ -25,10 +20,19 @@ const registerLimiter = createRateLimiter({
 router.post("/register", registerLimiter, registerWarga);
 
 // Endpoint: POST /api/auth/login
-router.post("/login", loginLimiter, loginWarga);
+router.get("/security-config", (req, res) => {
+  res.set("Cache-Control", "public, max-age=300");
+  const siteKey = String(process.env.TURNSTILE_SITE_KEY || "").trim();
+  if (!siteKey) {
+    return res.status(503).json({ success: false, message: "Keamanan login belum dikonfigurasi." });
+  }
+  return res.json({ success: true, turnstileSiteKey: siteKey });
+});
+
+router.post("/login", loginThrottle("warga"), requireTurnstile("login_warga"), loginWarga);
 
 // Endpoint: POST /api/auth/login-admin
-router.post("/login-admin", loginLimiter, loginAdmin);
+router.post("/login-admin", loginThrottle("admin"), requireTurnstile("login_admin"), loginAdmin);
 // Renewal memakai token admin yang masih valid; tidak menerima token kedaluwarsa.
 router.post("/admin/session/renew", verifyToken, requireAdmin, renewAdmin);
 router.post("/admin/session/logout", verifyToken, requireAdmin, logoutAdmin);

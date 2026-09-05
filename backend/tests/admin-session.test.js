@@ -5,6 +5,11 @@ const assert = require("node:assert/strict");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 process.env.JWT_SECRET = "test-only-not-a-production-secret";
+process.env.NODE_ENV = "test";
+process.env.TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
+process.env.TURNSTILE_SECRET_KEY = "1x0000000000000000000000000000000AA";
+process.env.TURNSTILE_ALLOWED_HOSTNAMES = "localhost";
+process.env.AUTH_THROTTLE_SECRET = "test-only-throttle-secret-at-least-32-bytes";
 
 let tables;
 let databaseError;
@@ -14,6 +19,10 @@ const admin = { id: userId, nik: "1234567890123456", role: "admin", email: "test
 
 // Supabase query double: executes all eq/is/gt filters, including revoke races.
 const fakeSupabase = {
+  async rpc(name) {
+    if (name === "check_login_throttle") return { data: [{ allowed: true, retry_after: 0 }], error: null };
+    return { data: null, error: null };
+  },
   from(table) {
     let mode = "read", body, single = false;
     const filters = [];
@@ -43,6 +52,10 @@ const fakeSupabase = {
 };
 
 require.cache[require.resolve("../src/config/supabase")] = { exports: fakeSupabase };
+const nativeFetch = global.fetch;
+global.fetch = (url, options) => String(url).includes("challenges.cloudflare.com/turnstile/v0/siteverify")
+  ? Promise.resolve({ ok: true, json: async () => ({ success: true, hostname: "localhost", action: "test" }) })
+  : nativeFetch(url, options);
 const service = require("../src/services/adminSessionService");
 const controllers = require("../src/controllers/adminAuthController");
 const { verifyToken, requireAdmin } = require("../src/middleware/authMiddleware");
@@ -180,7 +193,7 @@ test("HTTP routes: login, renewal, logout and revoked JWT round trip", async (t)
   assert.equal((await fetch(`${base}/health`)).status, 200);
   const login = await fetch(`${base}/auth/login-admin`, { method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: "admin.sumorame", password: "password-test" }) });
+    body: JSON.stringify({ username: "admin.sumorame", password: "password-test", turnstileToken: "XXXX.DUMMY.TOKEN.XXXX" }) });
   assert.equal(login.status, 200);
   const original = await login.json();
   const renewed = await fetch(`${base}/auth/admin/session/renew`, { method: "POST",

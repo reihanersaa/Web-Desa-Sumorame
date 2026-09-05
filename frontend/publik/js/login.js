@@ -62,6 +62,21 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      if (!/^\d{16}$/.test(nip)) {
+        return Swal.fire({ title: "NIK Tidak Valid", text: "NIK harus terdiri dari tepat 16 angka.", icon: "warning" });
+      }
+
+      let turnstileToken;
+      try {
+        turnstileToken = await window.LoginSecurity.getToken();
+      } catch (error) {
+        return Swal.fire({ title: "Verifikasi Diperlukan", text: error.message, icon: "warning" });
+      }
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton.disabled) return;
+      submitButton.disabled = true;
+
       // Animasi loading
       Swal.fire({
         title: "Mengecek Data...",
@@ -78,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ nik: nip, password: pass }),
+          body: JSON.stringify({ nik: nip, password: pass, turnstileToken }),
         });
 
         const result = await response.json();
@@ -141,6 +156,9 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "error",
           confirmButtonColor: "#d33",
         });
+      } finally {
+        window.LoginSecurity.reset();
+        submitButton.disabled = false;
       }
     });
   }

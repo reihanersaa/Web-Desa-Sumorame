@@ -1,42 +1,42 @@
 const supabase = require("../config/supabase");
+const { validateApplication } = require("../services/persuratanValidationService");
 
 const ajukanSurat = async (req, res) => {
   try {
     const created_by = req.user.id;
-    const { judul_surat, jenis_surat, data_form } = req.body;
-
-    if (!judul_surat || !jenis_surat || !data_form) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Data tidak lengkap. judul_surat, jenis_surat, dan data_form wajib diisi.",
-      });
+    const { jenis_surat, data_form } = req.body || {};
+    if (!jenis_surat || !data_form) {
+      return res.status(400).json({ success: false, message: "Data formulir dan jenis surat wajib diisi." });
     }
 
-    const tanggal_surat = new Date().toISOString().split("T")[0];
+    const validation = validateApplication({ jenis_surat, data_form, authenticatedNik: req.user.nik });
+    if (!validation.valid) {
+      return res.status(400).json({ success: false, message: validation.message });
+    }
 
-    const { data, error } = await supabase
-      .from("surat")
-      .insert([
-        {
-          created_by: created_by,
-          judul_surat: judul_surat,
-          jenis_surat: jenis_surat,
-          tanggal_surat: tanggal_surat,
-          data_form: data_form,
-          status: "draft",
-        },
-      ])
-      .select();
+    const cleanForm = validation.clean;
+    const labels = {
+      domisili: "Surat Keterangan Domisili",
+      kehilangan: "Surat Keterangan Kehilangan",
+      tanah: "Surat Keterangan Harga Tanah",
+      tidakmampu: "Surat Keterangan Tidak Mampu",
+    };
+    const applicantName = cleanForm.nama || cleanForm.kepala || "Warga";
+    const tanggal_surat = new Date().toISOString().split("T")[0];
+    const { data, error } = await supabase.from("surat").insert([{
+      created_by,
+      judul_surat: `${labels[jenis_surat]} - ${applicantName}`,
+      jenis_surat,
+      tanggal_surat,
+      data_form: cleanForm,
+      status: "draft",
+    }]).select();
 
     if (error) throw error;
-    return res.status(201).json({
-      success: true,
-      message: "Surat berhasil diajukan.",
-      data: data[0],
-    });
+    return res.status(201).json({ success: true, message: "Surat berhasil diajukan.", data: data[0] });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    console.error("Ajukan surat gagal:", error.code || error.name);
+    return res.status(500).json({ success: false, message: "Pengajuan surat gagal diproses. Silakan coba lagi." });
   }
 };
 
