@@ -77,17 +77,21 @@ async function loginAdmin(req, res) {
       .maybeSingle();
     if (error) throw error;
     const user = account?.users;
+
+    // Tetap lakukan satu perbandingan bcrypt meskipun username tidak ditemukan.
+    // Ini mengurangi perbedaan waktu respons yang dapat dipakai untuk menebak akun.
+    const isPasswordMatch = await bcrypt.compare(
+      password,
+      user?.password || DUMMY_PASSWORD_HASH,
+    );
+    const allowedRoles = ["admin", "petugas_posbankum"];
+
     if (
       !user ||
-      !["admin", "petugas_posbankum"].includes(user.role) ||
-      !(await bcrypt.compare(password, user.password))
+      !allowedRoles.includes(user.role) ||
+      !isPasswordMatch
     ) {
-      return res
-        .status(401)
-        .json({
-          success: false,
-          message: "Username atau password admin salah.",
-        });
+      return rejectLogin(req, res);
     }
     const result = await sessions.createSession(user);
     if (req.loginSecurity?.keys)

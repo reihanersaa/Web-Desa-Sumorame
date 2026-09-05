@@ -170,3 +170,16 @@ test("migration is RLS-protected and exposes RPC only to service_role", () => {
   assert.match(sql, /REVOKE ALL ON TABLE public\.login_throttle FROM PUBLIC, anon, authenticated/);
   assert.match(sql, /GRANT EXECUTE ON FUNCTION public\.check_login_throttle\(text\[\]\) TO service_role/);
 });
+
+test("Posbankum migration grants only backend access and replaces only the users.role check", () => {
+  const sql = fs.readFileSync(
+    path.resolve(__dirname, "../supabase/migrations/20260905_posbankum.sql"),
+    "utf8",
+  );
+  assert.match(sql, /enable row level security/i);
+  assert.match(sql, /revoke all privileges on table public\.posbankum_pengaduan from anon, authenticated/i);
+  assert.match(sql, /grant select, insert, update on table public\.posbankum_pengaduan to service_role/i);
+  assert.match(sql, /column_row\.attname = 'role'/i);
+  assert.doesNotMatch(sql, /pg_get_constraintdef\(oid\) ilike '%role%'/i);
+  assert.match(sql, /check \(role in \('warga', 'admin', 'petugas_posbankum'\)\)/i);
+});

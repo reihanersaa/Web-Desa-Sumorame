@@ -1,3 +1,7 @@
+-- Jalankan sebagai project owner/postgres melalui Supabase SQL Editor.
+-- Aman dijalankan ulang; tidak mengubah tabel Produk atau Statistika.
+begin;
+
 create extension if not exists pgcrypto;
 
 create sequence if not exists public.posbankum_register_seq;
@@ -52,6 +56,9 @@ create index if not exists posbankum_pengaduan_status_idx
 
 alter table public.posbankum_pengaduan enable row level security;
 revoke all privileges on table public.posbankum_pengaduan from anon, authenticated;
+grant select, insert, update on table public.posbankum_pengaduan to service_role;
+revoke all privileges on sequence public.posbankum_register_seq from public, anon, authenticated;
+grant usage, select on sequence public.posbankum_register_seq to service_role;
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values (
@@ -69,10 +76,14 @@ do $$
 declare role_constraint record;
 begin
   for role_constraint in
-    select conname from pg_constraint
-    where conrelid = 'public.users'::regclass
-      and contype = 'c'
-      and pg_get_constraintdef(oid) ilike '%role%'
+    select distinct constraint_row.conname
+      from pg_constraint as constraint_row
+      join pg_attribute as column_row
+        on column_row.attrelid = constraint_row.conrelid
+       and column_row.attnum = any(constraint_row.conkey)
+     where constraint_row.conrelid = 'public.users'::regclass
+       and constraint_row.contype = 'c'
+       and column_row.attname = 'role'
   loop
     execute format('alter table public.users drop constraint %I', role_constraint.conname);
   end loop;
@@ -82,3 +93,5 @@ alter table public.users add constraint users_role_check
   check (role in ('warga', 'admin', 'petugas_posbankum'));
 
 notify pgrst, 'reload schema';
+
+commit;

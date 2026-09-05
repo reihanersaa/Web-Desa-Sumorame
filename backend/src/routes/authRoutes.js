@@ -6,7 +6,7 @@ const {
   loginAdmin,
 } = require("../controllers/authController");
 const { createRateLimiter } = require("../middleware/rateLimitMiddleware");
-const { verifyToken, requireAdmin } = require("../middleware/authMiddleware");
+const { verifyToken, requirePosbankumStaff } = require("../middleware/authMiddleware");
 const { renewAdmin, logoutAdmin } = require("../controllers/adminAuthController");
 const { loginThrottle, requireTurnstile } = require("../middleware/loginSecurityMiddleware");
 
@@ -34,7 +34,9 @@ router.post("/login", loginThrottle("warga"), requireTurnstile("login_warga"), l
 // Endpoint: POST /api/auth/login-admin
 router.post("/login-admin", loginThrottle("admin"), requireTurnstile("login_admin"), loginAdmin);
 // Renewal memakai token admin yang masih valid; tidak menerima token kedaluwarsa.
-router.post("/admin/session/renew", verifyToken, requireAdmin, renewAdmin);
-router.post("/admin/session/logout", verifyToken, requireAdmin, logoutAdmin);
+// Kedua jenis akun CMS memiliki sesi server yang sama. Middleware ini hanya
+// berlaku pada renewal/logout dan tidak memberi petugas akses ke route admin lain.
+router.post("/admin/session/renew", verifyToken, requirePosbankumStaff, renewAdmin);
+router.post("/admin/session/logout", verifyToken, requirePosbankumStaff, logoutAdmin);
 
 module.exports = router;
