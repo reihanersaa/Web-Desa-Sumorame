@@ -181,7 +181,7 @@
   function renderAuthNavigation() {
     document.querySelectorAll("header nav").forEach((nav) => {
       if (nav.querySelector('a[href="/posbankum"]')) return;
-      const reference = nav.querySelector('a[href="/Publikasi"]');
+      const reference = nav.querySelector('a[href="/Informasi"]');
       if (!reference) return;
       const separator = document.createElement("div");
       separator.className = "h-5 w-px bg-gray-400";
@@ -193,7 +193,7 @@
     });
     document.querySelectorAll("#mobileMenu").forEach((menu) => {
       if (menu.querySelector('a[href="/posbankum"]')) return;
-      const reference = menu.querySelector('a[href="/Publikasi"]');
+      const reference = menu.querySelector('a[href="/Informasi"]');
       if (!reference) return;
       const link = document.createElement("a");
       link.href = "/posbankum";
