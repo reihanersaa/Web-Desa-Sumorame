@@ -45,3 +45,84 @@
   background: #f3f4f6;
   outline: none;
 }
+
+.login-submit-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  color: #4b5563;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.login-submit-hint[hidden] {
+  display: none;
+}
+
+.login-submit-hint .material-symbols-outlined {
+  color: #006633;
+  font-size: 1.25rem;
+}
+
+.login-required-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(6, 24, 15, 0.68);
+  backdrop-filter: blur(2px);
+}
+
+.login-required-modal[hidden] {
+  display: none;
+}
+
+.login-required-card {
+  width: min(27.5rem, 100%);
+  border-radius: 1rem;
+  background: #fff;
+  padding: 2rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  text-align: center;
+}
+
+.login-required-icon {
+  color: #047857;
+  font-size: 2.6rem;
+}
+
+.login-required-card h2 {
+  margin-top: 0.8rem;
+  color: #1b1c1c;
+  font: 700 1.35rem "Plus Jakarta Sans", sans-serif;
+}
+
+.login-required-card p {
+  margin: 0.7rem auto 1.3rem;
+  max-width: 22rem;
+  color: #5f6877;
+  line-height: 1.5;
+}
+
+.login-required-action,
+.login-required-dismiss {
+  width: 100%;
+}
+
+.login-required-dismiss {
+  min-height: 2.75rem;
+  margin-top: 0.35rem;
+  border-radius: 0.5rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.login-required-dismiss:hover,
+.login-required-dismiss:focus-visible {
+  background: #f3f4f6;
+  color: #004b24;
+  outline: none;
+}
