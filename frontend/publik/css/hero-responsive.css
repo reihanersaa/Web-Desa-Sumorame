@@ -26,8 +26,6 @@
   font-size: clamp(2.25rem, 5vw, 4rem);
   line-height: 1.08;
   max-width: 58rem;
-  opacity: 1 !important;
-  transform: none !important;
   white-space: normal;
 }
 
@@ -36,9 +34,18 @@
   animation: public-hero-enter 0.65s 0.12s ease-out both;
   font-size: clamp(1rem, 1.7vw, 1.2rem);
   max-width: 42rem;
-  opacity: 1 !important;
-  transform: none !important;
 }
+
+/* Urutan animasi teks hero POSBANKUM mengikuti gerak masuk hero Informasi. */
+#heroSection .posbankum-hero-copy {
+  animation: public-hero-enter 0.65s ease-out both !important;
+}
+
+#heroSection .posbankum-hero-copy:nth-child(1) { animation-delay: 0.05s !important; }
+#heroSection .posbankum-hero-copy:nth-child(2) { animation-delay: 0.14s !important; }
+#heroSection .posbankum-hero-copy:nth-child(3) { animation-delay: 0.23s !important; }
+#heroSection .posbankum-hero-copy:nth-child(4) { animation-delay: 0.32s !important; }
+#heroSection .posbankum-hero-copy:nth-child(5) { animation-delay: 0.41s !important; }
 
 @keyframes public-hero-enter {
   from {
@@ -68,6 +75,24 @@
   .public-hero__content {
     padding-top: 4rem;
   }
+
+  /* Konten POSBANKUM lebih panjang; tinggi mengikuti isi agar CTA tidak terpotong. */
+  .public-hero.posbankum-hero {
+    height: auto !important;
+    min-height: 38rem;
+  }
+
+  .posbankum-hero .public-hero__content {
+    padding-block: 6rem 3rem;
+  }
+
+  .posbankum-hero .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    white-space: normal;
+  }
 }
 
 @media (max-width: 640px) and (max-height: 600px) {
@@ -75,13 +100,19 @@
     height: clamp(22rem, 88svh, 30rem) !important;
     min-height: 22rem;
   }
+
+  .public-hero.posbankum-hero {
+    height: auto !important;
+    min-height: 36rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .public-hero__title,
   .public-hero .hero-title,
   .public-hero__subtitle,
-  .public-hero .hero-item {
+  .public-hero .hero-item,
+  #heroSection .posbankum-hero-copy {
     animation: none !important;
   }
 }
