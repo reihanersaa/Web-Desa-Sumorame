@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const { verifyToken, requirePosbankumStaff } = require("../middleware/authMiddleware");
+const { verifyToken, requireRole, requirePosbankumStaff } = require("../middleware/authMiddleware");
 const { verifyUploadSignatures } = require("../middleware/uploadSecurityMiddleware");
 const { createRateLimiter } = require("../middleware/rateLimitMiddleware");
 const controller = require("../controllers/posbankumController");
@@ -18,7 +18,7 @@ const upload = multer({
 const submitLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 5,
   message: "Batas pengiriman tercapai. Silakan coba kembali satu jam lagi." });
 
-router.post("/", submitLimiter, upload.array("documents", 10), verifyUploadSignatures, controller.submitComplaint);
+router.post("/", verifyToken, requireRole("warga"), submitLimiter, upload.array("documents", 10), verifyUploadSignatures, controller.submitComplaint);
 router.get("/admin", verifyToken, requirePosbankumStaff, controller.listComplaints);
 router.get("/admin/:id", verifyToken, requirePosbankumStaff, controller.detailComplaint);
 router.put("/admin/:id", verifyToken, requirePosbankumStaff, controller.updateHandling);

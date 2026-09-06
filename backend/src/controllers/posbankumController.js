@@ -96,6 +96,7 @@ async function submitComplaint(req, res) {
     }
 
     const payload = {
+      user_id: req.user.id,
       nama_lengkap: clean(req.body.nama_lengkap, 150), nik: clean(req.body.nik, 16),
       tempat_lahir: clean(req.body.tempat_lahir, 100), tanggal_lahir: req.body.tanggal_lahir,
       jenis_kelamin: req.body.jenis_kelamin, alamat: clean(req.body.alamat, 1000),

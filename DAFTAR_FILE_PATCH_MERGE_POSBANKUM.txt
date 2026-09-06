@@ -1,0 +1,11 @@
+PATCH MERGE POSBANKUM - 5 SEPTEMBER 2026
+
+PANDUAN_MERGE_POSBANKUM_20260905.md
+backend/src/controllers/adminAuthController.js
+backend/src/routes/authRoutes.js
+backend/supabase/migrations/20260905_posbankum.sql
+backend/tests/admin-session.test.js
+backend/tests/login-security.test.js
+frontend/privat/js/api-config.js
+
+Tidak berisi .env, secret, node_modules, Produk, Statistika, gambar, atau file repo lain.

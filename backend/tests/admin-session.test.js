@@ -5,15 +5,26 @@ const assert = require("node:assert/strict");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 process.env.JWT_SECRET = "test-only-not-a-production-secret";
+process.env.NODE_ENV = "test";
+process.env.TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
+process.env.TURNSTILE_SECRET_KEY = "1x0000000000000000000000000000000AA";
+process.env.TURNSTILE_ALLOWED_HOSTNAMES = "localhost";
+process.env.AUTH_THROTTLE_SECRET = "test-only-throttle-secret-at-least-32-bytes";
 
 let tables;
 let databaseError;
+let rpcCalls;
 const userId = "11111111-1111-4111-8111-111111111111";
 const admin = { id: userId, nik: "1234567890123456", role: "admin", email: "test@example.invalid",
   nama_lengkap: "Petugas Uji", password: bcrypt.hashSync("password-test", 4) };
 
 // Supabase query double: executes all eq/is/gt filters, including revoke races.
 const fakeSupabase = {
+  async rpc(name) {
+    rpcCalls.push(name);
+    if (name === "check_login_throttle") return { data: [{ allowed: true, retry_after: 0 }], error: null };
+    return { data: null, error: null };
+  },
   from(table) {
     let mode = "read", body, single = false;
     const filters = [];
@@ -43,13 +54,18 @@ const fakeSupabase = {
 };
 
 require.cache[require.resolve("../src/config/supabase")] = { exports: fakeSupabase };
+const nativeFetch = global.fetch;
+global.fetch = (url, options) => String(url).includes("challenges.cloudflare.com/turnstile/v0/siteverify")
+  ? Promise.resolve({ ok: true, json: async () => ({ success: true, hostname: "localhost", action: "test" }) })
+  : nativeFetch(url, options);
 const service = require("../src/services/adminSessionService");
 const controllers = require("../src/controllers/adminAuthController");
-const { verifyToken, requireAdmin } = require("../src/middleware/authMiddleware");
+const { verifyToken, requireAdmin, requirePosbankumStaff } = require("../src/middleware/authMiddleware");
 const realNow = Date.now;
 beforeEach(() => {
   Date.now = realNow;
   databaseError = null;
+  rpcCalls = [];
   tables = { users: [{ ...admin }], admin_accounts: [{ username: "admin.sumorame", user_id: userId }], admin_sessions: [] };
 });
 
@@ -89,10 +105,16 @@ test("NIK-only login, malformed input and wrong passwords rejected", async () =>
     const res = response(); await controllers.loginAdmin({ body }, res); assert.equal(res.statusCode, 400);
   }
   for (const username of ["unknown", "admin.sumorame"]) {
-    const res = response(); await controllers.loginAdmin({ body: { username, password: "wrong" } }, res);
+    const res = response();
+    const request = {
+      body: { username, password: "wrong" },
+      loginSecurity: { keys: { all: ["ip:key", "account:key", "pair:key"], limits: [25, 5, 5] } },
+    };
+    await controllers.loginAdmin(request, res);
     assert.equal(res.statusCode, 401);
     assert.equal(res.body.message, "Username atau password admin salah.");
   }
+  assert.equal(rpcCalls.filter((name) => name === "record_login_failure").length, 2);
   assert.equal(tables.admin_sessions.length, 0);
 });
 
@@ -171,6 +193,27 @@ test("warga JWT contract unchanged; cannot pass admin role check", async () => {
   assert.equal(result.res.statusCode, 403);
 });
 
+test("petugas Posbankum gets a valid CMS session without receiving full admin access", async () => {
+  tables.users[0].role = "petugas_posbankum";
+  const loginResponse = response();
+  await controllers.loginAdmin({
+    body: { username: "admin.sumorame", password: "password-test" },
+  }, loginResponse);
+  assert.equal(loginResponse.statusCode, 200);
+  assert.equal(loginResponse.body.data.role, "petugas_posbankum");
+
+  const authenticated = await authenticate(loginResponse.body.token);
+  assert.equal(authenticated.passed, true);
+
+  let staffPassed = false;
+  requirePosbankumStaff(authenticated.req, authenticated.res, () => { staffPassed = true; });
+  assert.equal(staffPassed, true);
+
+  const adminResponse = response();
+  requireAdmin(authenticated.req, adminResponse, () => assert.fail("petugas reached full admin route"));
+  assert.equal(adminResponse.statusCode, 403);
+});
+
 test("HTTP routes: login, renewal, logout and revoked JWT round trip", async (t) => {
   const app = require("../index");
   const server = require("node:http").createServer(app);
@@ -180,7 +223,7 @@ test("HTTP routes: login, renewal, logout and revoked JWT round trip", async (t)
   assert.equal((await fetch(`${base}/health`)).status, 200);
   const login = await fetch(`${base}/auth/login-admin`, { method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: "admin.sumorame", password: "password-test" }) });
+    body: JSON.stringify({ username: "admin.sumorame", password: "password-test", turnstileToken: "XXXX.DUMMY.TOKEN.XXXX" }) });
   assert.equal(login.status, 200);
   const original = await login.json();
   const renewed = await fetch(`${base}/auth/admin/session/renew`, { method: "POST",
@@ -197,4 +240,19 @@ test("HTTP routes: login, renewal, logout and revoked JWT round trip", async (t)
   const warga = jwt.sign({ id: userId, role: "warga" }, process.env.JWT_SECRET, { expiresIn: "1d" });
   assert.equal((await fetch(`${base}/auth/admin/session/renew`, { method: "POST",
     headers: { Authorization: `Bearer ${warga}` } })).status, 403);
+
+  // Akun Posbankum memakai mekanisme sesi yang sama, tetapi otorisasinya tetap terbatas.
+  tables.users[0].role = "petugas_posbankum";
+  const staffLogin = await fetch(`${base}/auth/login-admin`, { method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: "admin.sumorame", password: "password-test", turnstileToken: "XXXX.DUMMY.TOKEN.XXXX" }) });
+  assert.equal(staffLogin.status, 200);
+  const staffOriginal = await staffLogin.json();
+  const staffRenew = await fetch(`${base}/auth/admin/session/renew`, { method: "POST",
+    headers: { Authorization: `Bearer ${staffOriginal.token}` } });
+  assert.equal(staffRenew.status, 200);
+  const staffNext = await staffRenew.json();
+  const staffLogout = await fetch(`${base}/auth/admin/session/logout`, { method: "POST",
+    headers: { Authorization: `Bearer ${staffNext.token}` } });
+  assert.equal(staffLogout.status, 200);
 });

@@ -11,6 +11,8 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="css/LoginAdmin.css?v=20260827-1" />
+    <link rel="preconnect" href="https://challenges.cloudflare.com" />
+    <link rel="stylesheet" href="/css/login-security.css?v=20260905-1" />
   </head>
 
   <body>
@@ -64,12 +66,18 @@
                 type="password"
                 id="password"
                 name="password" autocomplete="current-password" required
+                maxlength="72"
                 placeholder="Masukkan Password"
               />
               <i
                 class="fa fa-eye-slash toggle-password"
                 id="togglePassword"
               ></i>
+            </div>
+
+            <div class="turnstile-area">
+              <div id="turnstileWidget" data-action="login_admin"></div>
+              <p id="turnstileStatus" class="turnstile-status" role="status">Memuat verifikasi keamanan…</p>
             </div>
 
             <!-- BUTTON -->
@@ -114,6 +122,8 @@
     </div>
 
     <script src="js/api-config.js?v=20260902-1"></script>
-    <script src="js/LoginAdmin.js?v=20260902-1"></script>
+    <script src="/js/login-security.js?v=20260905-1"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=onTurnstileApiReady" async defer></script>
+    <script src="js/LoginAdmin.js?v=20260905-1"></script>
   </body>
 </html>

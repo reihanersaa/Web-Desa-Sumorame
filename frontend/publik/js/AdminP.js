@@ -177,10 +177,13 @@ document.addEventListener("DOMContentLoaded", function () {
     isiForm.innerHTML = "";
     // ================= TEMPLATE FIELD =================
     function inputText(id, label, placeholder) {
+      const type = id === "email" ? "email" : "text";
+      const numeric = ["nohp", "umur"].includes(id) ? ' inputmode="numeric"' : "";
+      const max = id === "email" ? 254 : 160;
       return `
         <div class="mb-4">
           <label>${label}</label>
-          <input type="text" id="${id}" class="w-full border p-2 rounded" placeholder="${placeholder}">
+          <input type="${type}" id="${id}" maxlength="${max}"${numeric} required class="w-full border p-2 rounded" placeholder="${placeholder}">
         </div>`;
     }
 
@@ -188,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return `
         <div class="mb-4">
           <label>Nomor Induk Kependudukan (NIK)*</label>
-          <input type="text" id="nik" class="w-full border p-2 rounded" placeholder="Masukkan NIK">
+          <input type="text" id="nik" inputmode="numeric" minlength="16" maxlength="16" pattern="[0-9]{16}" required class="w-full border p-2 rounded" placeholder="Masukkan NIK">
           <small class="text-xs text-gray-500">Masukkan NIK berupa angka 16 digit (3515135552450008)</small>
         </div>`;
     }
@@ -197,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return `
         <div class="mb-4">
           <label>Nomor Kartu Keluarga (No KK)</label>
-          <input type="text" id="nokk" class="w-full border p-2 rounded" placeholder="Masukkan No KK">
+          <input type="text" id="nokk" inputmode="numeric" minlength="16" maxlength="16" pattern="[0-9]{16}" required class="w-full border p-2 rounded" placeholder="Masukkan No KK">
           <small class="text-xs text-gray-500">Masukkan No KK berupa angka 16 digit</small>
         </div>`;
     }
@@ -206,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return `
         <div class="mb-4">
           <label>${label}</label>
-          <textarea id="${id}" class="w-full border p-2 rounded" placeholder="${placeholder}"></textarea>
+          <textarea id="${id}" maxlength="1000" required class="w-full border p-2 rounded" placeholder="${placeholder}"></textarea>
         </div>`;
     }
 
@@ -214,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return `
         <div class="mb-4">
           <label>${label}</label>
-          <select id="${id}" class="w-full border p-2 rounded">
+          <select id="${id}" required class="w-full border p-2 rounded">
             <option value="">Pilih ${label}</option>
             ${options.map((o) => `<option>${o}</option>`).join("")}
           </select>
@@ -225,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return `
         <div class="mb-4">
           <label>${label}</label>
-          <input type="text" id="${id}" class="w-full border p-2 rounded datepicker" placeholder="DD-MM-YYYY">
+          <input type="text" id="${id}" maxlength="10" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" required class="w-full border p-2 rounded datepicker" placeholder="DD-MM-YYYY">
         </div>`;
     }
 
@@ -400,7 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const data_form = {};
 
     fields.forEach((field) => {
-      if (!field.value.trim()) kosong = true;
+      if (!field.value.trim() || !field.checkValidity()) kosong = true;
       data_form[field.id] = field.value.trim();
     });
 
@@ -429,10 +432,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     const token = session.token;
 
-    // judul_surat wajib diisi di backend, kita generate otomatis
-    const namaPemohon = data_form.nama || data_form.kepala || "Warga";
-    const judul_surat = `${judul.textContent} - ${namaPemohon}`;
-
+    const submitButton = document.getElementById("btnKirim");
+    if (submitButton.disabled) return;
+    submitButton.disabled = true;
     fetch(`${window.API_BASE_URL}/surat/ajukan`, {
       method: "POST",
       headers: {
@@ -440,7 +442,6 @@ document.addEventListener("DOMContentLoaded", function () {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        judul_surat,
         jenis_surat: currentJenis,
         data_form,
       }),
@@ -476,7 +477,8 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "error",
           confirmButtonColor: "#d33",
         });
-      });
+      })
+      .finally(() => { submitButton.disabled = false; });
   });
 
   // ===============================

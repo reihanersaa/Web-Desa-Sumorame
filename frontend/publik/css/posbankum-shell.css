@@ -1,0 +1,47 @@
+.nav-item::after {
+  content: "";
+  position: absolute;
+  right: 0.75rem;
+  bottom: -5px;
+  left: 0.75rem;
+  height: 2px;
+  background: #006633;
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.nav-item:hover::after,
+.nav-item:focus-visible::after,
+.nav-item.active::after {
+  transform: scaleX(1);
+}
+
+.nav-item:focus-visible {
+  border-radius: 8px;
+  outline: 3px solid rgba(0, 102, 51, 0.2);
+}
+
+.mobile-menu {
+  max-height: 0;
+  padding: 0;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+}
+
+.mobile-menu.open {
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  opacity: 1;
+}
+
+.mobile-menu a {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.mobile-menu a:hover,
+.mobile-menu a:focus-visible,
+.mobile-menu a.active {
+  background: #f3f4f6;
+  outline: none;
+}
