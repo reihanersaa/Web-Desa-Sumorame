@@ -37,6 +37,7 @@ const WORKFLOW_STATUSES = [
   "Menunggu", "Identifikasi", "Mediasi", "Koordinasi", "Dirujuk",
   "Selesai", "Tidak dapat dilanjutkan",
 ];
+const SERVICE_TYPES = ["non_litigasi", "litigasi"];
 
 function parseArray(value) {
   if (Array.isArray(value)) return value;
@@ -80,6 +81,7 @@ async function submitComplaint(req, res) {
     if (!/^\+?\d{9,15}$/.test(clean(req.body.no_hp, 16))) throw validationError("Nomor HP/WhatsApp harus terdiri dari 9 sampai 15 angka.");
     if (!['Laki-laki', 'Perempuan'].includes(req.body.jenis_kelamin)) throw validationError("Jenis kelamin tidak valid.");
     if (String(req.body.persetujuan_data) !== "true") throw validationError("Persetujuan penggunaan data wajib diberikan sebelum mengirim formulir.");
+    if (!SERVICE_TYPES.includes(req.body.jenis_layanan)) throw validationError("Pilih jenis layanan yang diajukan.");
 
     const jenisPermasalahan = selected(req.body.jenis_permasalahan, PROBLEM_TYPES);
     if (!jenisPermasalahan.length) throw validationError("Pilih minimal satu jenis permasalahan.");
@@ -97,6 +99,7 @@ async function submitComplaint(req, res) {
 
     const payload = {
       user_id: req.user.id,
+      jenis_layanan: req.body.jenis_layanan,
       nama_lengkap: clean(req.body.nama_lengkap, 150), nik: clean(req.body.nik, 16),
       tempat_lahir: clean(req.body.tempat_lahir, 100), tanggal_lahir: req.body.tanggal_lahir,
       jenis_kelamin: req.body.jenis_kelamin, alamat: clean(req.body.alamat, 1000),
