@@ -77,11 +77,22 @@
           <fieldset><legend>6. Harapan dan Pernyataan</legend><label>Harapan Pengadu <em>*</em><textarea name="harapan_pengadu" required rows="5"></textarea></label>
             <label class="consent"><input name="persetujuan_data" type="checkbox" value="true" required><span>Saya menyatakan informasi dan dokumen yang disampaikan benar berdasarkan pengetahuan saya. Saya menyetujui penggunaan data secara terbatas untuk konsultasi, koordinasi, dan penanganan oleh pihak berwenang atau mitra bantuan hukum, dengan tetap menjaga kerahasiaan informasi.</span></label>
           </fieldset>
-          <div id="formMessage" class="form-message" role="status" aria-live="polite"></div><button id="submitButton" class="btn-primary" type="submit">Kirim Pengaduan</button>
+          <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
+          <p id="loginSubmitHint" class="login-submit-hint"><span class="material-symbols-outlined" aria-hidden="true">info</span><span>Formulir dapat dilihat dan diisi oleh publik. Anda perlu login sebagai warga untuk mengirim pengaduan.</span></p>
+          <button id="submitButton" class="btn-primary" type="submit">Kirim Pengaduan</button>
         </form>
       </div>
     </section>
   </main>
+  <div id="loginRequiredModal" class="login-required-modal" role="dialog" aria-modal="true" aria-labelledby="login-required-title" aria-describedby="login-required-description" hidden>
+    <div class="login-required-card">
+      <span class="material-symbols-outlined login-required-icon" aria-hidden="true">lock</span>
+      <h2 id="login-required-title">Login Warga Diperlukan</h2>
+      <p id="login-required-description">Hanya warga terdaftar yang dapat mengirim pengaduan POSBANKUM.</p>
+      <button id="loginRequiredButton" type="button" class="btn-primary login-required-action">Login Warga</button>
+      <button id="dismissLoginModal" type="button" class="login-required-dismiss">Nanti Saja</button>
+    </div>
+  </div>
   <footer id="footer" class="mt-16 bg-green-900 px-6 py-10 text-white"></footer>
   <script src="js/api-config.js"></script><script src="js/footer.js"></script><script src="js/posbankum.js"></script>
 </body></html>
