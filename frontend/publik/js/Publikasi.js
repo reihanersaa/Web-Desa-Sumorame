@@ -158,6 +158,9 @@ function initHeroSlider() {
   }
 
   total = slider.children.length;
+  slider.setAttribute("tabindex", "0");
+  slider.setAttribute("role", "region");
+  slider.setAttribute("aria-label", "Carousel publikasi terbaru. Gunakan tombol panah kiri dan kanan untuk berpindah.");
 
   index = 0;
 
@@ -705,8 +708,11 @@ document.addEventListener(
     }
 
 
+    const carouselFocused = slider && (document.activeElement === slider || slider.contains(document.activeElement));
+    if (!carouselFocused) return;
+
     // Slide selanjutnya
-    if (e.key === "End") {
+    if (e.key === "ArrowRight" || e.key === "End") {
       e.preventDefault();
 
       showSlide(index + 1);
@@ -714,7 +720,7 @@ document.addEventListener(
 
 
     // Slide sebelumnya
-    if (e.key === "Home") {
+    if (e.key === "ArrowLeft" || e.key === "Home") {
       e.preventDefault();
 
       showSlide(index - 1);

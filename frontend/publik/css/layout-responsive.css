@@ -1,3 +1,21 @@
+/* Shell navigasi publik konsisten dengan POSBANKUM. */
+#mainHeader > div { column-gap: clamp(1rem, 2vw, 2rem); }
+#mainHeader nav { flex: 1 1 auto; justify-content: center; gap: 0; font-size: .875rem; line-height: 1.25rem; }
+#mainHeader .nav-item { padding-inline: .75rem !important; white-space: nowrap; }
+#mainHeader > div > :first-child { flex: 0 0 auto; margin-right: clamp(.5rem, 1vw, 1rem); }
+#mainHeader > div > a[href="/login"] { flex: 0 0 auto; margin-left: clamp(.5rem, 1vw, 1rem); padding: .5rem !important; }
+#heroSection { scroll-margin-top: 4rem; }
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  #mainHeader nav, #mainHeader > div > a[href="/login"] { display: none !important; }
+  #mainHeader #menuBtn { display: inline-flex !important; }
+}
+
+@media (min-width: 1280px) {
+  #mainHeader nav, #mainHeader > div > a[href="/login"] { display: flex !important; }
+  #mainHeader #menuBtn { display: none !important; }
+}
+
 /* Perlindungan layout bersama untuk seluruh halaman publik. */
 html,
 body {

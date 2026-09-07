@@ -7,8 +7,12 @@ const DUMMY_PASSWORD_HASH =
 
 async function rejectLogin(req, res) {
   try {
-    if (req.loginSecurity?.keys)
-      await loginSecurity.recordFailure(req.loginSecurity.keys);
+    const state = req.loginSecurity?.keys ? await loginSecurity.recordFailure(req.loginSecurity.keys) : null;
+    if (state && state.allowed === false) {
+      const retryAfter = Math.max(1, Number(state.retry_after) || loginSecurity.BLOCK_SECONDS);
+      res.set("Retry-After", String(retryAfter));
+      return res.status(429).json({ success: false, code: "LOGIN_TEMPORARILY_BLOCKED", retry_after: retryAfter, message: `Lima percobaan login gagal. Form dinonaktifkan selama ${retryAfter} detik.` });
+    }
   } catch (error) {
     return serverError(res, error);
   }
