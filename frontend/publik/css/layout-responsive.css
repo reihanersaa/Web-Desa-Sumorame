@@ -1,19 +1,97 @@
 /* Shell navigasi publik konsisten dengan POSBANKUM. */
 #mainHeader > div { column-gap: clamp(1rem, 2vw, 2rem); }
+#mainHeader > div { height: 4rem; max-width: 80rem; padding-inline: 1.5rem; }
+#mainHeader > div > :first-child { align-items: center; display: flex; gap: .75rem; }
+#mainHeader > div > :first-child img { height: 2.25rem; object-fit: contain; width: 2.5rem; }
+#mainHeader > div > :first-child h1 { color: #064e3b; font-family: "Plus Jakarta Sans", sans-serif; font-size: 1.25rem; font-weight: 700; line-height: 1.75rem; }
 #mainHeader nav { flex: 1 1 auto; justify-content: center; gap: 0; font-size: .875rem; line-height: 1.25rem; }
-#mainHeader .nav-item { padding-inline: .75rem !important; white-space: nowrap; }
+#mainHeader .nav-item {
+  opacity: 0;
+  padding-inline: .75rem !important;
+  position: relative;
+  transform: translateY(-20px);
+  transition: opacity .4s ease, color .3s ease, transform .4s ease;
+  white-space: nowrap;
+}
+#mainHeader .nav-item::after {
+  background: #006633;
+  bottom: -5px;
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  right: auto;
+  transform: none;
+  transition: width .3s ease;
+  width: 0;
+}
+#mainHeader .nav-item:hover::after,
+#mainHeader .nav-item:focus-visible::after,
+#mainHeader .nav-item.active::after,
+#mainHeader .nav-item[aria-current="page"]::after { width: 100%; }
+#mainHeader .nav-item:focus-visible { border-radius: .5rem; outline: 3px solid rgba(0,102,51,.2); outline-offset: 3px; }
 #mainHeader > div > :first-child { flex: 0 0 auto; margin-right: clamp(.5rem, 1vw, 1rem); }
 #mainHeader > div > a[href="/login"] { flex: 0 0 auto; margin-left: clamp(.5rem, 1vw, 1rem); padding: .5rem !important; }
 #heroSection { scroll-margin-top: 4rem; }
 
+#mainHeader {
+  transition: transform .3s ease;
+}
+
+#mainHeader.header-hidden {
+  transform: translateY(-100%);
+}
+
+#mobileMenu {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, opacity .3s ease;
+}
+
+#mobileMenu.max-h-\[600px\],
+#mobileMenu.max-h-\[500px\],
+#mobileMenu.open {
+  max-height: min(600px, calc(100vh - 4rem));
+  opacity: 1;
+  overflow-y: auto;
+}
+
+#mobileMenu a {
+  border-bottom: 1px solid #d1d5db;
+  color: #064e3b;
+  display: block;
+  font-size: .875rem;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  transition: background-color .2s ease;
+}
+
+#mobileMenu a:hover,
+#mobileMenu a:focus-visible,
+#mobileMenu a.active,
+#mobileMenu a[aria-current="page"] {
+  background: #f3f4f6;
+  outline: none;
+}
+
 @media (min-width: 768px) and (max-width: 1279px) {
   #mainHeader nav, #mainHeader > div > a[href="/login"] { display: none !important; }
   #mainHeader #menuBtn { display: inline-flex !important; }
+  #mobileMenu { display: flex !important; flex-direction: column; }
 }
 
 @media (min-width: 1280px) {
   #mainHeader nav, #mainHeader > div > a[href="/login"] { display: flex !important; }
   #mainHeader #menuBtn { display: none !important; }
+  #mobileMenu { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #mainHeader,
+  #mainHeader .nav-item,
+  #mainHeader .nav-item::after,
+  #mobileMenu { transition: none !important; }
 }
 
 /* Perlindungan layout bersama untuk seluruh halaman publik. */
