@@ -1,15 +1,31 @@
 .material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
+
+
+/* ======================================================
+   BODY
+====================================================== */
 
 body {
   min-height: 100dvh;
 }
 
+
+/* ======================================================
+   NAVBAR
+====================================================== */
+
 .nav-item {
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .nav-item::after {
@@ -27,6 +43,11 @@ body {
   width: 100%;
 }
 
+
+/* ======================================================
+   HEADER
+====================================================== */
+
 #mainHeader {
   transition: transform 0.3s ease;
 }
@@ -35,54 +56,116 @@ body {
   transform: translateY(-100%);
 }
 
+
+/* ======================================================
+   HERO
+====================================================== */
+
 #heroSection {
   transition: margin-top 0.3s ease;
 }
 
+
+/* ======================================================
+   CARD PRODUK
+====================================================== */
+
 #produk .produk-item {
   aspect-ratio: 4 / 5;
   min-height: 22rem;
+
   opacity: 0;
+
   position: relative;
+
   transform: translateY(2rem);
-  transition: box-shadow 0.35s ease, opacity 0.55s ease, transform 0.55s ease;
+
+  transition:
+    box-shadow 0.35s ease,
+    opacity 0.55s ease,
+    transform 0.55s ease;
 }
+
+
+/* ======================================================
+   ANIMASI CARD MUNCUL
+====================================================== */
 
 #produk .produk-item.show {
   opacity: 1;
   transform: translateY(0);
 }
 
+
+/* ======================================================
+   HOVER CARD
+====================================================== */
+
 #produk .produk-item:hover {
   box-shadow: 0 18px 45px rgba(13, 68, 41, 0.22);
+
   transform: translateY(-5px);
 }
 
+
+/* ======================================================
+   GAMBAR PRODUK
+====================================================== */
+
 .produk-image-wrap {
-  background: linear-gradient(145deg, #ecfdf5, #f3f4f6);
+  background: linear-gradient(
+    145deg,
+    #ecfdf5,
+    #f3f4f6
+  );
+
   height: 100%;
 }
 
 .produk-image-wrap img {
   height: 100%;
-  transition: transform 0.45s ease;
   width: 100%;
+
+  transition: transform 0.45s ease;
 }
+
+
+/* ======================================================
+   ZOOM GAMBAR SAAT HOVER
+====================================================== */
 
 .produk-item:hover .produk-image-wrap img {
   transform: scale(1.045);
 }
 
+
+/* ======================================================
+   FALLBACK GAMBAR
+====================================================== */
+
 .produk-image-fallback {
   align-items: center;
-  background: linear-gradient(145deg, #ecfdf5, #f3f4f6);
+
+  background: linear-gradient(
+    145deg,
+    #ecfdf5,
+    #f3f4f6
+  );
+
   color: #4b5563;
+
   display: flex;
+
   flex-direction: column;
+
   gap: 0.55rem;
+
   height: 100%;
+
   justify-content: center;
+
   padding: 1.5rem;
+
   text-align: center;
 }
 
@@ -91,23 +174,58 @@ body {
   font-size: 2.5rem;
 }
 
+
+/* ======================================================
+   INFORMASI PRODUK
+====================================================== */
+
+/*
+  Posisi normal:
+  seluruh bagian informasi berada di bawah card.
+
+  Jadi:
+  - nama produk
+  - harga
+  - nama penjual
+  - tombol beli
+
+  semuanya tersembunyi ketika cursor belum diarahkan.
+*/
+
 .produk-info {
   bottom: 0;
   left: 0;
+
   position: absolute;
-  transform: translateY(100%);
-  transition: transform 0.35s ease;
+
   width: 100%;
+
+  transform: translateY(100%);
+
+  transition: transform 0.35s ease;
+
+  z-index: 5;
 }
+
+
+/* ======================================================
+   INFORMASI NAIK SAAT HOVER
+====================================================== */
 
 .produk-item:hover .produk-info,
 .produk-item:focus-within .produk-info {
   transform: translateY(0);
 }
 
+
+/* ======================================================
+   MODAL PRODUK
+====================================================== */
+
 #produkModal,
 #guestProdukModal {
   opacity: 0;
+
   transition: opacity 0.2s ease;
 }
 
@@ -116,18 +234,37 @@ body {
   opacity: 1;
 }
 
+
+/* ======================================================
+   CONTENT MODAL
+====================================================== */
+
 #produkModalContent,
 #guestProdukBox {
   opacity: 0;
-  transform: scale(0.96) translateY(0.5rem);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  transform:
+    scale(0.96)
+    translateY(0.5rem);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 #produkModal.modal-show #produkModalContent,
 #guestProdukModal.modal-show #guestProdukBox {
   opacity: 1;
-  transform: scale(1) translateY(0);
+
+  transform:
+    scale(1)
+    translateY(0);
 }
+
+
+/* ======================================================
+   SCROLL TOP BUTTON
+====================================================== */
 
 #scrollTopBtn {
   transform: translateY(20px);
@@ -135,42 +272,103 @@ body {
 
 #scrollTopBtn.show {
   opacity: 1;
+
   transform: translateY(0);
+
   visibility: visible;
 }
 
-@media (hover: none), (max-width: 768px) {
+
+/* ======================================================
+   DEVICE YANG TIDAK MENDUKUNG HOVER
+   HP / TABLET TOUCHSCREEN
+====================================================== */
+
+/*
+  PENTING:
+  Sebelumnya Anda menggunakan:
+
+  @media (hover: none), (max-width: 768px)
+
+  Itu menyebabkan semua layar <= 768px
+  selalu mendapatkan:
+
+  transform: translateY(0);
+
+  sehingga animasi hover tidak bekerja.
+
+  Sekarang hanya perangkat tanpa hover
+  yang mendapatkan aturan ini.
+*/
+
+@media (hover: none) {
+
   #produk .produk-item {
     aspect-ratio: auto;
+
     min-height: 25rem;
   }
 
+
+  /*
+    Di HP informasi selalu ditampilkan
+    karena tidak ada mouse hover.
+  */
+
   .produk-info {
+    position: relative;
+
+    bottom: auto;
+    left: auto;
+
     transform: translateY(0);
+
+    width: 100%;
   }
+
 
   .produk-image-wrap {
     height: 17rem;
   }
 }
 
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
 @media (max-width: 640px) {
+
   #produkModal {
     align-items: flex-end;
+
     padding: 0;
   }
 
+
   #produkModalContent {
-    border-radius: 1.25rem 1.25rem 0 0;
+    border-radius:
+      1.25rem
+      1.25rem
+      0
+      0;
+
     max-height: 92dvh;
   }
 }
 
+
+/* ======================================================
+   REDUCE MOTION
+====================================================== */
+
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
     scroll-behavior: auto !important;
+
     transition-duration: 0.01ms !important;
   }
 }
