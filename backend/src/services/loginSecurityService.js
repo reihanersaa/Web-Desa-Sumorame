@@ -57,11 +57,12 @@ async function checkLimit(keys) {
 }
 
 async function recordFailure(keys) {
-  return rpc("record_login_failure", {
+  await rpc("record_login_failure", {
     p_keys: keys.all,
     p_limits: keys.limits,
     p_block_seconds: BLOCK_SECONDS,
   });
+  return checkLimit(keys);
 }
 
 async function clearSuccessfulAccount(keys) {

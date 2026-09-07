@@ -107,6 +107,9 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       } else {
+        if (response.status === 429 && result.code === "LOGIN_TEMPORARILY_BLOCKED") {
+          window.LoginLockout?.lock(result.retry_after);
+        }
         // Password tetap sama; username berasal dari akun admin hasil migration.
         Swal.fire({
           title: "Login Gagal",
@@ -130,8 +133,10 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     } finally {
       window.LoginSecurity.reset();
-      submitButton.disabled = false;
-      submitButton.textContent = oldLabel;
+      if (!window.LoginLockout?.isLocked()) {
+        submitButton.disabled = false;
+        submitButton.textContent = oldLabel;
+      }
     }
   });
 });

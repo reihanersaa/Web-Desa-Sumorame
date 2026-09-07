@@ -11,7 +11,10 @@
   function updateHeader() {
     const currentScrollY = Math.max(window.scrollY, 0);
 
-    if (currentScrollY <= 0 || currentScrollY < lastScrollY) {
+    if (currentScrollY <= 0) {
+      header.classList.add("header-hidden");
+      header.style.transform = "translateY(-100%)";
+    } else if (currentScrollY < lastScrollY || currentScrollY <= 80) {
       header.classList.remove("header-hidden");
       header.style.transform = "translateY(0)";
     } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
@@ -34,6 +37,5 @@
     { passive: true },
   );
 
-  header.classList.remove("header-hidden");
-  header.style.transform = "translateY(0)";
+  updateHeader();
 })();

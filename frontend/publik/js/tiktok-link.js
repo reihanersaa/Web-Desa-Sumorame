@@ -4,8 +4,6 @@
   const TIKTOK_WEB_URL =
     "https://www.tiktok.com/search?q=pemdes%20sumorame";
   const TIKTOK_SEARCH_TERM = "pemdes sumorame";
-  // Paket TikTok yang didistribusikan untuk wilayah Asia, termasuk Indonesia.
-  const TIKTOK_INDONESIA_ANDROID_PACKAGE = "com.ss.android.ugc.trill";
   const TIKTOK_APP_SCHEME = "snssdk1233";
 
   function isAndroid() {
@@ -27,7 +25,6 @@
       window.location.href =
         `intent://search?keyword=${encodeURIComponent(TIKTOK_SEARCH_TERM)}` +
         `#Intent;scheme=${TIKTOK_APP_SCHEME};` +
-        `package=${TIKTOK_INDONESIA_ANDROID_PACKAGE};` +
         `S.browser_fallback_url=${fallbackUrl};end`;
       return;
     }

@@ -137,6 +137,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }
         } else {
+          if (response.status === 429 && result.code === "LOGIN_TEMPORARILY_BLOCKED") {
+            window.LoginLockout?.lock(result.retry_after);
+          }
           // 3. JIKA GAGAL: TAMPILKAN PESAN DARI BACKEND
           Swal.fire({
             title: "Login Gagal",
@@ -158,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } finally {
         window.LoginSecurity.reset();
-        submitButton.disabled = false;
+        if (!window.LoginLockout?.isLocked()) submitButton.disabled = false;
       }
     });
   }

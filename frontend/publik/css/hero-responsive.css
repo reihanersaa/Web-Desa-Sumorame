@@ -8,6 +8,11 @@
   height: clamp(26rem, 70svh, 43.75rem) !important;
   min-height: 26rem;
   max-height: 43.75rem;
+  margin-top: 4rem;
+}
+
+body:has(#mainHeader.header-hidden) #heroSection {
+  margin-top: 0 !important;
 }
 
 .public-hero__content {
