@@ -25,7 +25,7 @@ async function loadGlobalFooter() {
           <h3 class="text-lg font-bold">Desa Sumorame</h3>
         </div>
         <p class="text-sm text-gray-300">
-          Desa mandiri berbasis teknologi untuk masa depan yang lebih baik.
+          Makmur Dan Unggul.
         </p>
       </div>
       <div class="footer-item">
