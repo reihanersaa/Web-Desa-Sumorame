@@ -918,21 +918,15 @@ async function renderProduk() {
 // ======================================================
 
 function buatCardProduk(item) {
-  const card =
-    document.createElement("div");
-
+  const card = document.createElement("div");
 
   card.className =
     "produk-item produk-dynamic group " +
     "w-full bg-white rounded-md " +
     "overflow-hidden shadow-lg";
 
-
   const imageCandidates =
-    getProductImageCandidates(
-      item
-    );
-
+    getProductImageCandidates(item);
 
   card.innerHTML = `
 
@@ -951,55 +945,64 @@ function buatCardProduk(item) {
 
 
     <!-- INFORMASI -->
-    <div class="produk-info bg-yellow-400/85 px-3 py-2">
+    <div class="produk-info bg-yellow-400/85">
 
-      <!-- NAMA -->
-      <h3 class="produk-nama font-bold text-lg">
-        ${escapeHTML(item.nama || "")}
-      </h3>
+      <!-- NAMA PRODUK SELALU TERLIHAT -->
+      <div class="produk-header px-3 py-2">
 
-
-      <div
-        class="flex justify-between items-center mt-2"
-      >
-
-        <!-- HARGA -->
-        <p
-          class="produk-harga text-2xl font-bold text-green-800"
-        >
-          ${formatRupiah(item.harga)}
-        </p>
-
-
-        <!-- PENJUAL -->
-        <span class="produk-penjual text-sm text-gray-700">
-          ${escapeHTML(item.penjual || "")}
-        </span>
+        <h3 class="produk-nama font-bold text-lg">
+          ${escapeHTML(item.nama || "")}
+        </h3>
 
       </div>
 
 
-      <!-- BELI -->
-      <button
-        type="button"
-        class="btn-beli mt-2 w-full
-               bg-green-700 text-white
-               py-2 rounded-md
-               hover:bg-green-800
-               transition"
-        data-id="${escapeHTML(item.id || "")}"
-        data-kontak="${escapeHTML(item.kontak || "")}"
-      >
-        Beli
-      </button>
+      <!-- DETAIL YANG NAIK / TURUN -->
+      <div class="produk-detail px-3 pb-3">
+
+        <div
+          class="flex justify-between items-center"
+        >
+
+          <!-- HARGA -->
+          <p
+            class="produk-harga text-2xl font-bold text-green-800"
+          >
+            ${formatRupiah(item.harga)}
+          </p>
+
+
+          <!-- PENJUAL -->
+          <span
+            class="produk-penjual text-sm text-gray-700"
+          >
+            ${escapeHTML(item.penjual || "")}
+          </span>
+
+        </div>
+
+
+        <!-- BELI -->
+        <button
+          type="button"
+          class="btn-beli mt-2 w-full
+                 bg-green-700 text-white
+                 py-2 rounded-md
+                 hover:bg-green-800
+                 transition"
+          data-id="${escapeHTML(item.id || "")}"
+          data-kontak="${escapeHTML(item.kontak || "")}"
+        >
+          Beli
+        </button>
+
+      </div>
 
     </div>
   `;
 
-
   const productImage =
     card.querySelector("img");
-
 
   if (productImage) {
     pasangFallbackGambar(
@@ -1008,7 +1011,6 @@ function buatCardProduk(item) {
       item.nama || "produk"
     );
   }
-
 
   return card;
 }
