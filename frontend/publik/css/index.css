@@ -87,7 +87,7 @@ body {
   );
 }
 
-.produk-info {
+.produk-card .produk-info {
   position: absolute;
   left: 20px;
   bottom: 20px;
@@ -95,12 +95,12 @@ body {
   z-index: 2;
 }
 
-.produk-info h3 {
+.produk-card .produk-info h3 {
   font-size: 32px;
   font-weight: 700;
 }
 
-.produk-info p {
+.produk-card .produk-info p {
   font-size: 22px;
   font-weight: 500;
 }
