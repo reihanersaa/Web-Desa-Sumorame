@@ -99,7 +99,10 @@
             <label>Tempat Lahir <em>*</em><input name="tempat_lahir" required maxlength="100"></label><label>Tanggal Lahir <em>*</em><input name="tanggal_lahir" type="date" required></label>
             <label>Jenis Kelamin <em>*</em><select name="jenis_kelamin" required><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></label><label>No. HP/WhatsApp <em>*</em><input name="no_hp" required inputmode="tel" pattern="\+?[0-9]{9,15}"></label>
             <label>Pekerjaan <em>*</em><input name="pekerjaan" required maxlength="150"></label><label>Status dalam Permasalahan <em>*</em><input name="status_dalam_permasalahan" required maxlength="300" placeholder="Contoh: pihak pertama, saksi, ahli waris"></label>
-            <label class="wide">Alamat <em>*</em><textarea name="alamat" required rows="3"></textarea></label>
+            <label>Dusun/Perumahan <em>*</em><input name="dusun" required maxlength="100" list="dusunOptions" placeholder="Contoh: Sumotuwo"></label>
+            <label>RT <em>*</em><input name="rt" required inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" placeholder="Contoh: 01"></label>
+            <label>RW <em>*</em><input name="rw" required inputmode="numeric" pattern="[0-9]{1,3}" maxlength="3" placeholder="Contoh: 01"></label>
+            <datalist id="dusunOptions"><option value="SUMOTUWO"><option value="KERAMEAN"><option value="PERUM MCA"><option value="GRIYA NIRWANA"></datalist>
           </div></fieldset>
           <fieldset><legend>2. Identitas Pihak Terkait <small>(opsional)</small></legend><div class="form-grid">
             <label>Nama<input name="pihak_nama" maxlength="150"></label><label>No. HP/WhatsApp<input name="pihak_no_hp" inputmode="tel"></label><label>Hubungan dengan Pengadu<input name="pihak_hubungan" maxlength="200"></label><label class="wide">Alamat<textarea name="pihak_alamat" rows="3"></textarea></label>

@@ -19,6 +19,9 @@ const submitLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 5,
   message: "Batas pengiriman tercapai. Silakan coba kembali satu jam lagi." });
 
 router.post("/", verifyToken, requireRole("warga"), submitLimiter, upload.array("documents", 10), verifyUploadSignatures, controller.submitComplaint);
+router.get("/admin/warga-rujukan", verifyToken, requirePosbankumStaff, controller.listReferenceResidents);
+router.post("/admin/warga-rujukan", verifyToken, requirePosbankumStaff, controller.createReferenceResident);
+router.put("/admin/warga-rujukan/:id", verifyToken, requirePosbankumStaff, controller.updateReferenceResident);
 router.get("/admin", verifyToken, requirePosbankumStaff, controller.listComplaints);
 router.get("/admin/:id", verifyToken, requirePosbankumStaff, controller.detailComplaint);
 router.put("/admin/:id", verifyToken, requirePosbankumStaff, controller.updateHandling);
