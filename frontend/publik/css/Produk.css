@@ -1,5 +1,9 @@
 .material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 body {
@@ -9,7 +13,9 @@ body {
 .nav-item {
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .nav-item::after {
@@ -44,8 +50,12 @@ body {
   min-height: 22rem;
   opacity: 0;
   position: relative;
+  overflow: hidden;
   transform: translateY(2rem);
-  transition: box-shadow 0.35s ease, opacity 0.55s ease, transform 0.55s ease;
+  transition:
+    box-shadow 0.35s ease,
+    opacity 0.55s ease,
+    transform 0.55s ease;
 }
 
 #produk .produk-item.show {
@@ -59,14 +69,20 @@ body {
 }
 
 .produk-image-wrap {
-  background: linear-gradient(145deg, #ecfdf5, #f3f4f6);
+  background: linear-gradient(
+    145deg,
+    #ecfdf5,
+    #f3f4f6
+  );
   height: 100%;
+  overflow: hidden;
 }
 
 .produk-image-wrap img {
   height: 100%;
-  transition: transform 0.45s ease;
   width: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
 }
 
 .produk-item:hover .produk-image-wrap img {
@@ -75,7 +91,11 @@ body {
 
 .produk-image-fallback {
   align-items: center;
-  background: linear-gradient(145deg, #ecfdf5, #f3f4f6);
+  background: linear-gradient(
+    145deg,
+    #ecfdf5,
+    #f3f4f6
+  );
   color: #4b5563;
   display: flex;
   flex-direction: column;
@@ -91,17 +111,34 @@ body {
   font-size: 2.5rem;
 }
 
-.produk-info {
+#produk .produk-info {
+  position: absolute;
   bottom: 0;
   left: 0;
-  position: absolute;
-  transform: translateY(calc(100% - 4.25rem));
-  transition: transform 0.35s ease;
   width: 100%;
+  z-index: 10;
 }
 
-.produk-item:hover .produk-info,
-.produk-item:focus-within .produk-info {
+#produk .produk-header {
+  position: relative;
+  z-index: 2;
+}
+
+#produk .produk-detail {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(20px);
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    transform 0.35s ease;
+}
+
+#produk .produk-item:hover .produk-detail,
+#produk .produk-item:focus-within .produk-detail {
+  max-height: 180px;
+  opacity: 1;
   transform: translateY(0);
 }
 
@@ -120,7 +157,9 @@ body {
 #guestProdukBox {
   opacity: 0;
   transform: scale(0.96) translateY(0.5rem);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 #produkModal.modal-show #produkModalContent,
@@ -139,13 +178,15 @@ body {
   visibility: visible;
 }
 
-@media (hover: none), (max-width: 768px) {
+@media (hover: none) {
   #produk .produk-item {
     aspect-ratio: auto;
     min-height: 25rem;
   }
 
-  .produk-info {
+  #produk .produk-detail {
+    max-height: 180px;
+    opacity: 1;
     transform: translateY(0);
   }
 
