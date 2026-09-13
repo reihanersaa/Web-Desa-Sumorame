@@ -1,49 +1,3 @@
-// === Menu NavBar Mobile ===
-const menuBtn = document.getElementById("menuBtn");
-const mobileMenu = document.getElementById("mobileMenu");
-
-let isOpen = false;
-
-menuBtn.addEventListener("click", () => {
-  isOpen = !isOpen;
-
-  if (isOpen) {
-    mobileMenu.classList.remove("max-h-0", "opacity-0");
-    mobileMenu.classList.add("max-h-[500px]", "opacity-100");
-    menuBtn.textContent = "close";
-  } else {
-    mobileMenu.classList.remove("max-h-[500px]", "opacity-100");
-    mobileMenu.classList.add("max-h-0", "opacity-0");
-    menuBtn.textContent = "menu";
-  }
-});
-
-document.addEventListener("click", (e) => {
-  const isClickInsideMenu = mobileMenu.contains(e.target);
-  const isClickButton = menuBtn.contains(e.target);
-
-  if (isOpen && !isClickInsideMenu && !isClickButton) {
-    mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
-    mobileMenu.classList.add("max-h-0", "opacity-0");
-    menuBtn.textContent = "menu";
-    isOpen = false;
-  }
-});
-
-const mainHeader = document.getElementById("mainHeader");
-const heroSection = document.getElementById("heroSection");
-
-window.addEventListener("scroll", function () {
-  if (window.scrollY <= 0) {
-    mainHeader.classList.add("header-hidden");
-    heroSection.classList.add("hero-top");
-  } else {
-    mainHeader.classList.remove("header-hidden");
-    heroSection.classList.remove("hero-top");
-  }
-});
-
-// =====================================================
 // HELPER: Reveal-on-scroll pakai IntersectionObserver
 // =====================================================
 function revealOnScroll(
@@ -75,26 +29,6 @@ function revealOnScroll(
 
   observer.observe(target);
 }
-
-// ===== Animasi Footer (+ Kontak) =====
-const footer = document.getElementById("footer");
-const footerItems = document.querySelectorAll(".footer-item");
-const kontakItems = document.querySelectorAll(".kontak-item");
-
-revealOnScroll(footer, [footer], ["opacity-0", "translate-y-10"]);
-revealOnScroll(footer, footerItems, ["opacity-0", "translate-y-6"], 200);
-revealOnScroll(
-  footer,
-  kontakItems,
-  [
-    "opacity-0",
-    "-translate-y-6",
-    "-translate-x-10",
-    "translate-x-10",
-    "translate-y-10",
-  ],
-  200,
-);
 
 // ===== Animasi Sambutan Kepala Desa =====
 const sambutan = document.getElementById("sambutan");
@@ -315,18 +249,6 @@ produkUnggulanBeranda?.addEventListener("click", (event) => {
 });
 
 muatProdukUnggulanBeranda();
-
-// === Animasi Navbar ===
-const navItems = document.querySelectorAll(".nav-item");
-
-window.addEventListener("load", () => {
-  navItems.forEach((item, i) => {
-    setTimeout(() => {
-      item.style.opacity = "1";
-      item.style.transform = "translateY(0)";
-    }, i * 100);
-  });
-});
 
 // === ANIMASI CARD PUBLIKASI (SCROLL REVEAL + STAGGER) ===
 document.addEventListener("DOMContentLoaded", () => {

@@ -14,19 +14,11 @@
   <link rel="stylesheet" href="css/posbankum-shell.css">
   <link rel="stylesheet" href="css/hero-responsive.css">
   <link rel="stylesheet" href="css/layout-responsive.css">
-  <script src="/js/auth-ui.js"></script>
+  <script src="/js/site-components.js?v=20260913-2"></script>
+    <script src="/js/auth-ui.js"></script>
 </head>
 <body class="bg-surface font-body text-on-surface">
-  <header id="mainHeader" class="fixed top-0 z-50 w-full bg-gradient-to-r from-green-200/70 via-gray-200/70 to-teal-200/70 shadow-md backdrop-blur-xl">
-    <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-      <div class="flex items-center gap-3"><img src="img/logo3.png" alt="Logo Desa Digital" width="40" height="36"><h1 class="font-headline text-xl font-bold text-emerald-900">Desa Sumorame</h1></div>
-      <nav aria-label="Navigasi utama" class="hidden items-center font-medium text-green-900 lg:flex">
-        <a class="nav-item relative px-3 font-bold" href="/">Profile Desa</a><div class="h-5 w-px bg-gray-400"></div><a class="nav-item relative px-3 font-bold" href="/PPID">PPID</a><div class="h-5 w-px bg-gray-400"></div><a class="nav-item relative px-3 font-bold" href="/Lembaga">Lembaga</a><div class="h-5 w-px bg-gray-400"></div><a class="nav-item relative px-3 font-bold" href="/Informasi">Informasi</a><div class="h-5 w-px bg-gray-400"></div><a class="nav-item active relative px-3 font-bold" href="/posbankum" aria-current="page">POSBANKUM</a><div class="h-5 w-px bg-gray-400"></div><a class="nav-item relative px-3 font-bold" href="/AdminP">Administrasi Persuratan</a><div class="h-5 w-px bg-gray-400"></div><a class="nav-item relative px-3 font-bold" href="/Aduan">Aduan</a><div class="h-5 w-px bg-gray-400"></div><a class="nav-item relative px-3 font-bold" href="/Publikasi">Publikasi</a>
-      </nav>
-      <a class="nav-item hidden items-center text-black transition lg:flex" href="/login"><span class="material-symbols-outlined text-2xl">logout</span></a><button id="menuBtn" class="material-symbols-outlined h-11 w-11 text-3xl text-emerald-900 lg:hidden" aria-label="Buka menu" aria-expanded="false">menu</button>
-    </div>
-  </header>
-  <nav id="mobileMenu" class="mobile-menu fixed left-0 top-16 z-40 w-full bg-white shadow-md lg:hidden" aria-label="Navigasi seluler"><a href="/">Profile Desa</a><a href="/PPID">PPID</a><a href="/Lembaga">Lembaga</a><a href="/Informasi">Informasi</a><a class="active" href="/posbankum">POSBANKUM</a><a href="/AdminP">Administrasi Persuratan</a><a href="/Aduan">Aduan</a><a href="/Publikasi">Publikasi</a><a href="/login">Log Out</a></nav>
+    <site-header></site-header>
 
   <main>
     <section id="heroSection" class="public-hero posbankum-hero relative flex items-center overflow-hidden bg-primary">
@@ -132,6 +124,7 @@
       <button id="dismissLoginModal" type="button" class="login-required-dismiss">Nanti Saja</button>
     </div>
   </div>
-  <footer id="footer" class="mt-16 bg-green-900 px-6 py-10 text-white"></footer>
-  <script src="js/api-config.js"></script><script src="js/footer.js"></script><script src="js/posbankum.js"></script><script src="js/header-scroll.js?v=20260907-2"></script><script src="js/tiktok-link.js?v=20260907-1"></script>
-</body></html>
+
+  <script src="js/api-config.js"></script><script src="js/posbankum.js"></script><script src="js/tiktok-link.js?v=20260907-1"></script>
+    <site-footer></site-footer>
+  </body></html>

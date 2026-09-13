@@ -7,6 +7,10 @@
     <meta name="description" content="Masuk ke akun warga untuk menggunakan layanan administrasi, pengaduan, dan pengajuan produk Desa Sumorame." />
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <link rel="icon" href="img/logo3.png?v=20260824-1" type="image/png" />
+    <link href="css/tailwind.css?v=20260913-2" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="/js/site-components.js?v=20260913-2"></script>
+    <script src="/js/auth-ui.js?v=20260828-1"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -19,6 +23,7 @@
 </head>
 
   <body>
+    <site-header></site-header>
     <div class="circle c1"></div>
     <div class="circle c2"></div>
     <div class="circle c3"></div>
@@ -110,17 +115,11 @@
       </div>
     </div>
 
-    <div class="footer">
-      <p>
-        @ 2026 Instalasi Teknologi Komunikasi Dan Informasi, Kantor Desa
-        Sumorame.
-      </p>
-    </div>
-
     <script src="js/api-config.js"></script>
     <script src="js/login-security.js?v=20260905-1"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=onTurnstileApiReady" async defer></script>
     <script src="js/login-lockout.js?v=20260907-1"></script>
     <script src="js/login.js?v=20260907-1"></script>
+    <site-footer></site-footer>
   </body>
 </html>

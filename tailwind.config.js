@@ -2,7 +2,7 @@
 module.exports = {
   darkMode: "class",
   content: [
-    "./frontend/publik/index.html",
+    "./frontend/publik/*.html",
     "./frontend/publik/js/**/*.js",
   ],
   theme: {

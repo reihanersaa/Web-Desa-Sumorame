@@ -1,53 +1,3 @@
-// NAVBAR MOBILE
-const menuBtn = document.getElementById("menuBtn");
-const mobileMenu = document.getElementById("mobileMenu");
-
-let isOpen = false;
-
-menuBtn.addEventListener("click", () => {
-  isOpen = !isOpen;
-
-  if (isOpen) {
-    mobileMenu.classList.remove("max-h-0", "opacity-0");
-    mobileMenu.classList.add("max-h-[600px]", "opacity-100");
-    menuBtn.textContent = "close";
-  } else {
-    mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
-    mobileMenu.classList.add("max-h-0", "opacity-0");
-    menuBtn.textContent = "menu";
-  }
-});
-
-document.addEventListener("click", (e) => {
-  const isClickInsideMenu = mobileMenu.contains(e.target);
-  const isClickButton = menuBtn.contains(e.target);
-
-  if (isOpen && !isClickInsideMenu && !isClickButton) {
-    mobileMenu.classList.remove("max-h-[600px]", "opacity-100");
-    mobileMenu.classList.add("max-h-0", "opacity-0");
-    menuBtn.textContent = "menu";
-    isOpen = false;
-  }
-});
-
-
-// ======================================================
-// ANIMASI NAVBAR
-// ======================================================
-
-const navItems = document.querySelectorAll(".nav-item");
-
-window.addEventListener("load", () => {
-  navItems.forEach((item, i) => {
-    setTimeout(() => {
-      item.style.opacity = "1";
-      item.style.transform = "translateY(0)";
-    }, i * 100);
-  });
-});
-
-
-// ======================================================
 // MODAL CARD
 // ======================================================
 
@@ -449,42 +399,6 @@ loadPublikasi({ reset: true });
 
 
 // ======================================================
-// ANIMASI FOOTER
-// ======================================================
-
-const footer = document.getElementById("footer");
-
-const footerItems =
-  document.querySelectorAll(".footer-item");
-
-
-window.addEventListener("scroll", () => {
-  const trigger = window.innerHeight;
-
-  if (
-    footer &&
-    footer.getBoundingClientRect().top <
-      trigger - 100
-  ) {
-    footer.classList.remove(
-      "opacity-0",
-      "translate-y-10",
-    );
-
-
-    footerItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.remove(
-          "opacity-0",
-          "translate-y-6",
-        );
-      }, i * 200);
-    });
-  }
-});
-
-
-// ======================================================
 // ANIMASI HEADER
 // ======================================================
 
@@ -502,83 +416,6 @@ window.addEventListener("load", () => {
     }, i * 200);
   });
 });
-
-
-// ======================================================
-// ANIMASI KONTAK
-// ======================================================
-
-const kontakItems =
-  document.querySelectorAll(".kontak-item");
-
-
-window.addEventListener("scroll", () => {
-  const trigger = window.innerHeight;
-
-  if (
-    footer &&
-    footer.getBoundingClientRect().top <
-      trigger - 100
-  ) {
-    kontakItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.remove(
-          "opacity-0",
-          "-translate-y-6",
-          "-translate-x-10",
-          "translate-x-10",
-          "translate-y-10",
-        );
-      }, i * 200);
-    });
-  }
-});
-
-
-// ======================================================
-// ANIMASI SUARA NAVBAR
-// ======================================================
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-    const navItems =
-      document.querySelectorAll(".nav-item");
-
-
-    navItems.forEach((item) => {
-      item.addEventListener(
-        "mouseenter",
-        () => {
-          const text =
-            item.textContent.trim();
-
-
-          if (!text) {
-            return;
-          }
-
-
-          const speech =
-            new SpeechSynthesisUtterance(
-              text,
-            );
-
-
-          speech.lang = "id-ID";
-          speech.rate = 1;
-
-
-          window.speechSynthesis.cancel();
-
-          window.speechSynthesis.speak(
-            speech,
-          );
-        },
-      );
-    });
-  },
-);
 
 
 // ======================================================
@@ -620,45 +457,6 @@ function initScrollRevealCards() {
       `${i * 0.03}s`;
   });
 }
-
-
-// ======================================================
-// HEADER HILANG SAAT SCROLL TURUN, MUNCUL SAAT SCROLL NAIK
-// ======================================================
-
-const mainHeader =
-  document.getElementById("mainHeader");
-
-const heroSection =
-  document.getElementById("heroSection");
-
-let lastScrollY = Math.max(window.scrollY, 0);
-
-window.addEventListener(
-  "scroll",
-  function () {
-    const currentScrollY = Math.max(window.scrollY, 0);
-
-    if (currentScrollY <= 0 || currentScrollY < lastScrollY) {
-      mainHeader.classList.remove(
-        "header-hidden",
-      );
-      heroSection.classList.remove(
-        "hero-top",
-      );
-    } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
-      mainHeader.classList.add(
-        "header-hidden",
-      );
-      heroSection.classList.add(
-        "hero-top",
-      );
-    }
-
-    lastScrollY = currentScrollY;
-  },
-  { passive: true },
-);
 
 
 // ======================================================
