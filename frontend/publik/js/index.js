@@ -614,14 +614,30 @@ async function loadDataBeranda() {
           const imageUrl = isSafeHttpUrl(item.gambar_url);
           if (!imageUrl) return;
           const slide = document.createElement("div");
-          slide.className = "min-w-full relative";
+          slide.className = "min-w-full relative aspect-video";
+          const backgroundImage = document.createElement("img");
+          backgroundImage.alt = "";
+          backgroundImage.className = "hero-image-background";
+          backgroundImage.src = imageUrl;
+          backgroundImage.width = "1600";
+          backgroundImage.height = "900";
+          backgroundImage.decoding = "async";
+          backgroundImage.setAttribute("aria-hidden", "true");
           const image = document.createElement("img");
           image.alt = item.judul_hero || "Hero Desa Sumorame";
-          image.className = "hero-image object-cover w-full";
+          image.className = "hero-image object-contain w-full";
           image.src = imageUrl;
+          image.width = "1600";
+          image.height = "900";
           image.decoding = "async";
-          if (slideIndex === 0) image.fetchPriority = "high";
-          else image.loading = "lazy";
+          if (slideIndex === 0) {
+            image.fetchPriority = "high";
+            backgroundImage.fetchPriority = "high";
+          } else {
+            image.loading = "lazy";
+            backgroundImage.loading = "lazy";
+          }
+          slide.appendChild(backgroundImage);
           slide.appendChild(image);
           sliderEl.appendChild(slide);
         });
