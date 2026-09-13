@@ -179,3 +179,40 @@ textarea {
 #globalFooter .footer-item {
   min-width: 0;
 }
+/* Halaman autentikasi tidak memakai header global. Footer tetap menjadi
+   komponen bersama dan didorong ke dasar viewport tanpa scrollbar visual. */
+html.auth-page-root,
+html.auth-page-root body.auth-page {
+  min-height: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html.auth-page-root::-webkit-scrollbar,
+html.auth-page-root body.auth-page::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+html.auth-page-root body.auth-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body.auth-page > .login-card {
+  flex: 0 0 auto;
+  margin-top: auto;
+}
+
+body.auth-page #footer {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  margin-top: auto !important;
+}
