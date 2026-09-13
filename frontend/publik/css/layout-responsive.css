@@ -203,11 +203,13 @@ html.auth-page-root body.auth-page {
   justify-content: flex-start;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-bottom: 0 !important;
 }
 
 body.auth-page > .login-card {
   flex: 0 0 auto;
   margin-top: auto;
+  margin-bottom: clamp(2rem, 5vh, 4rem) !important;
 }
 
 body.auth-page #footer {
