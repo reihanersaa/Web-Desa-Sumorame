@@ -417,8 +417,7 @@ body {
   height: 0 !important;
 }
 
-/* Slider - tingginya mengikuti gambar (auto), bukan gambar yang
-   dipaksa mengikuti tinggi slider */
+/* Slider responsif; tinggi setiap slide ditentukan oleh rasio 16:9. */
 #heroSection #slider {
   position: relative !important;
   display: flex !important;
@@ -429,12 +428,13 @@ body {
   margin: 0 !important;
 }
 
-/* Slide - lebar penuh 100%, tinggi auto mengikuti gambar di dalamnya */
+/* Slide - lebar penuh dengan rasio 16:9 di semua ukuran layar. */
 #heroSection #slider > div {
   position: relative !important;
   min-width: 100% !important;
   width: 100% !important;
   height: auto !important;
+  aspect-ratio: 16 / 9;
   padding: 0 !important;
   margin: 0 !important;
   overflow: hidden !important;
@@ -444,12 +444,30 @@ body {
   justify-content: center !important;
 }
 
-/* Gambar: lebar penuh, tinggi menyesuaikan rasio asli gambar (auto),
-   sehingga tinggi hero otomatis mengikuti ukuran gambar itu sendiri. */
+/* Salinan gambar memenuhi bidang dan diburamkan untuk mewarnai ruang kosong
+   di belakang gambar utama tanpa memotong isi gambar utama. */
+#heroSection .hero-image-background {
+  position: absolute;
+  inset: -3%;
+  width: 106%;
+  height: 106%;
+  object-fit: cover;
+  object-position: center;
+  filter: blur(18px);
+  transform: scale(1.06);
+  opacity: 0.72;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Seluruh gambar tetap terlihat di dalam bidang 16:9. Gambar yang rasio
+   aslinya berbeda akan mendapat ruang kosong, bukan dipotong. */
 #heroSection .hero-image {
+  position: relative !important;
+  z-index: 1;
   display: block !important;
   width: 100% !important;
-  height: auto !important;
+  height: 100% !important;
   max-width: 100% !important;
   margin: 0 auto !important;
   padding: 0 !important;
